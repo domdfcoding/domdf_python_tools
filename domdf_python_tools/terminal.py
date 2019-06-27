@@ -39,7 +39,7 @@ import shlex
 import struct
 import platform
 import subprocess
-from . import pyversion
+from .__init__ import pyversion
 
 
 def clear():  # clear the display

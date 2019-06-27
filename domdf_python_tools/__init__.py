@@ -40,7 +40,8 @@ __email__ = "dominic@davis-foster.co.uk"
 
 import sys
 
-from . import *
+from . import paths
+from . import terminal
 
 pyversion = int(sys.version[0])  # Python Version
 
