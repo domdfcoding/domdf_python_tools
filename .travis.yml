@@ -11,6 +11,8 @@ script:
 - coverage run --source=domdf_python_tools -m pytest
 after_success:
 - coveralls
+before_deploy:
+    - git clean -f -x
 deploy:
   provider: pypi
   user: "DomDF"
