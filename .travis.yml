@@ -1,0 +1,14 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+# command to install dependencies
+install:
+  - pip install -U coveralls pytest
+# command to run tests
+script:
+  - coverage run --source=domdf_python_tools -m pytest
+after_success:
+  - coveralls

@@ -53,15 +53,44 @@ def as_text(value):
 
 
 def str2tuple(input_string, sep=","):
+	"""
+	Convert a comma-seperated string of integers into a tuple
+	
+	:param input_string: The string to be converted into a tuple
+	:type input_string: str
+	:param sep: The separator in the string, default ","
+	:type sep: str
+	
+	:rtype: tuple
+	"""
+	
 	return tuple(int(x) for x in input_string.split(sep))
 
 
 def tuple2str(input_tuple, sep=","):
-	return sep.join(input_tuple)
+	"""
+	Convert a tuple into a comma-seperated string
+
+	:param input_tuple: The tuple to be joined into a string
+	:type input_tuple: tuple
+	:param sep: The separator in the string, default ","
+	:type sep: str
+
+	:rtype: str
+	"""
+	
+	return sep.join([str(x) for x in input_tuple])
 
 
 def chunks(l, n):
-	"""Yield successive n-sized chunks from l."""
+	"""
+	Yield successive n-sized chunks from l.
+	
+	:param l:
+	:param n:
+	:return:
+	"""
+	
 	for i in range(0, len(l), n):
 		yield l[i:i + n]
 
