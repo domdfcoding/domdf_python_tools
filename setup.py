@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
 	name="domdf_python_tools",
-	version="0.1.4",
+	version="0.1.5",
     author='Dominic Davis-Foster',
 	author_email="dominic@davis-foster.co.uk",
 	packages=find_packages(),
