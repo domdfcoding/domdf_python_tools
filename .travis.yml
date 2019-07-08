@@ -12,7 +12,7 @@ script:
 after_success:
 - coveralls
 before_deploy:
-    - git clean -f -x
+    - git clean -f
 deploy:
   provider: pypi
   user: "DomDF"
@@ -21,4 +21,4 @@ deploy:
   on:
     tags: true
 after_deploy:
-  - git clean -f -x
+  - git clean -f
