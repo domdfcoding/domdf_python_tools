@@ -4,7 +4,7 @@ python:
 - '3.5'
 - '3.6'
 - '3.7'
-- 3.8-dev
+- "3.8-dev"
 install:
 - pip install -U coveralls pytest
 script:
@@ -18,3 +18,5 @@ deploy:
     secure: GQVX7JKDfUWcHQzjmZ8yadF4eIM/AUaXu/Zl8U2hwhB6NavbzUayvMXalT+pfgZ6NaWFMPZOETlxv5d+hf98Io/5HIV4i1KB98ze90KXpUU2Icz7IdxWDWGhc36Vkhb7hU0HUfXLu8WxcxQCJB3t7uIB9SO36dh/cMayW5YvBy3HhluaTvgLax4nOJYjN/FJCgs9kTCBYrjJzheS0pgj37bXZCrB06H0bsxgnbaAiL8FiG6tgJLABDLfqPhtJgVRhtdYeuqGv31/OV0vkj1zG6bExp9ENQ4/5L7FijLRznW+DnsRJt6BdTBtxNxK+v1ZccTdVJzTzhoUH/TbXdI+qtBeatTYz880du7TujKoxfFxGZ9+bSaYURaClMHn7/Ndj7ioj5f51jLf8+BCEk3cWEfUL7yeKF6RBWLww6cFKQ9yDNOiXgrsndz6Oh535LV28rKXS1qeGBppMAv09RmR/YfHu+XMp5yWa+vDwjmrQDH7qEkA3wYYMfMRnwi9+LrOHtS7IqFkgbAXZPmh3C0X1UEqD4cuARcyD9FRU2PAXM1tBprxEFi1L/sv4O8KRP+I3jXXsBHTmzbWWVqXiySGOlX6R9vOma35WS3mkllS/Oz7IyhUtONrwpaLHnuBLKMgi+RnsoEYgLx6KgSXVSQ0JUZq8cP2yewC8nx626w675w=
   on:
     tags: true
+after_deploy:
+  - git clean -f -x
