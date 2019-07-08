@@ -11,8 +11,6 @@ script:
 - coverage run --source=domdf_python_tools -m pytest
 after_success:
 - coveralls
-before_deploy:
-    - git clean -f
 deploy:
   provider: pypi
   user: "DomDF"
@@ -21,5 +19,5 @@ deploy:
   on:
     tags: true
     python: "3.6"
-after_deploy:
-  - git clean -f
+  distributions: "sdist bdist_wheel"
+  skip_existing: true
