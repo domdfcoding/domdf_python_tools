@@ -35,27 +35,54 @@ import subprocess
 from .__init__ import pyversion
 
 
-def clear():  # clear the display
-	os.system('cls' if os.name == 'nt' else 'clear')
-	# works for Windows and UNIX, but does not clear Python Shell
+def clear():
+	"""
+	Clear the display
+	
+	works for Windows and UNIX, but does not clear Python Shell
+	
+	:return:
+	"""
+	
+	return os.system('cls' if os.name == 'nt' else 'clear')
+	
 
-def br():  # Line Break
+def br():
+	"""
+	Prints a line break
+	"""
+	
 	print("")
 
 def entry(text_to_print):
+	"""
+	Version-agnostic input function
+	
+	# TODO: Deprecation warning
+	
+	:param text_to_print: Text to print before the input field
+	:type text_to_print: str
+	
+	:return: Text entered
+	:rtype: str
+	"""
+	
 	if pyversion == 3:
 		return input(text_to_print)
 	elif pyversion == 2:
 		return raw_input(text_to_print)
 
-
 def get_terminal_size():
-	""" getTerminalSize()
-	 - get width and height of console
-	 - works on linux,os x,windows,cygwin(windows)
-	 originally retrieved from:
-	 http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
 	"""
+	Get width and height of console
+	
+	Works on linux,os x,windows,cygwin(windows)
+	
+	Originally retrieved from: http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
+	
+	:return: tuple_xy
+	"""
+	
 	current_os = platform.system()
 	tuple_xy = None
 	if current_os == 'Windows':
