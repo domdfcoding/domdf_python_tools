@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("README.rst", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
@@ -13,7 +13,7 @@ setup(
 	url="https://github.com/domdfcoding/domdf_python_tools",
 	description='Helpful functions for Python',
 	long_description=long_description,
-	long_description_content_type="text/x-rst",
+	long_description_content_type="text/markdown",
 	classifiers=[
         "Programming Language :: Python :: 3",
 		"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
