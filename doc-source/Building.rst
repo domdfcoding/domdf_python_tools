@@ -47,7 +47,7 @@ Different formats are available for built distributions
 **setup.py**
 
 
-.. literalinclude:: ../../setup.py
+.. literalinclude:: ../setup.py
     :language: python
     :linenos:
 
