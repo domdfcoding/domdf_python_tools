@@ -140,3 +140,17 @@ def list2str(the_list, sep=","):
 	"""
 	
 	return sep.join([str(x) for x in the_list])
+
+
+def splitLen(string,n):
+	"""
+	Split a string every x characters
+	
+	:param string:
+	:param n:
+	
+	:return:
+	"""
+	
+	return [string[i:i+n] for i in range(0,len(string),n)]
+

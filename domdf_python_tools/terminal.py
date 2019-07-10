@@ -28,6 +28,7 @@
 #
 
 import os
+import sys
 import shlex
 import struct
 import platform
@@ -71,6 +72,46 @@ def entry(text_to_print):
 		return input(text_to_print)
 	elif pyversion == 2:
 		return raw_input(text_to_print)
+
+
+def interrupt():
+	"""
+	Print what to do to abort the script; dynamic depending on OS
+	Useful when you have a long-running script that you might want t interrupt part way through
+	"""
+	
+	print('(Press Ctrl-%s to quit at any time.)' % 'C' if os.name == 'nt' else 'D')
+
+
+def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
+	"""
+	Print `objects` to the text stream `file`, starting with "\r", separated by `sep` and followed by `end`.
+	`sep`, `end`, `file` and `flush`, if present, must be given as keyword arguments
+
+	All non-keyword arguments are converted to strings like ``str()`` does and written to the stream,
+	separated by `sep` and followed by `end`.
+
+	If no objects are given, ``overwrite()` will just write "\r".
+
+	Based on the Python print() docs: https://docs.python.org/3/library/functions.html#print
+
+	# This does not currently work in the PyCharm console, at least on Windows
+
+	:param objects:
+	:param sep: String to separate the objects with, by default " "
+	:type sep: str
+	:param end: String to end with, by default nothing
+	:type end: str
+	:param file: An object with a ``write(string)`` method; default ``sys.stdout``
+	:param flush: If true, the stream is forcibly flushed.
+	:type flush: bool
+	:return:
+	"""
+	
+	object0 = f"\r{objects[0]}"
+	objects = (object0, *objects[1:])
+	print(*objects, sep=sep, end=end, file=file, flush=flush)
+
 
 def get_terminal_size():
 	"""

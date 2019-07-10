@@ -113,3 +113,66 @@ def relpath(path, relative_to=None):
 		return os.path.relpath(os.path.abspath(path))
 	else:
 		return os.path.abspath(path)
+
+
+
+def delete(filename):
+	"""
+	Delete the file in the current directory
+	
+	# TODO: make this the file in the given directory, by default the current directory
+	
+	:param filename:
+	
+	:return:
+	"""
+	
+	os.remove(os.path.join(os.getcwd(), filename))
+
+
+def write(var, filename):
+	"""
+	Write a variable to file in the current directory
+	
+	# TODO: make this the file in the given directory, by default the current directory
+	
+	:param var:
+	:param filename:
+	
+	:return:
+	"""
+	
+	with open(os.path.join(os.getcwd(), filename), 'w') as f:
+		f.write(var)
+
+
+def read(filename):
+	"""
+	Read a file in the current directory; Untested
+	
+	# TODO: make this the file in the given directory, by default the current directory
+	
+	:param filename:
+	
+	:return:
+	"""
+	
+	with open(os.path.join(os.getcwd(), filename)) as f:
+		return f.read()
+
+
+def append(var, filename):
+	"""
+	Append `var` to the file `filename` in the current directory; Untested
+	
+	# TODO: make this the file in the given directory, by default the current directory
+	
+	:param var:
+	:param filename:
+	
+	:return:
+	"""
+	
+	with open(os.path.join(os.getcwd(), filename), 'a') as f:
+		f.write(var)
+
