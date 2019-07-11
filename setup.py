@@ -1,24 +1,24 @@
+#!/usr/bin/env python
+"""Setup script"""
+
+from __pkginfo__ import \
+    author,           author_email,       install_requires,          \
+    license,          long_description,   classifiers,               \
+    entry_points,     modname,            py_modules,                \
+    short_desc,       VERSION,            web
+
 from setuptools import setup, find_packages
-
-with open("README.rst", "r") as fh:
-    long_description = fh.read()
-
 setup(
-	name="domdf_python_tools",
-	version="0.1.10",
-    author='Dominic Davis-Foster',
-	author_email="dominic@davis-foster.co.uk",
-	packages=find_packages(),
-	license="OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
-	url="https://github.com/domdfcoding/domdf_python_tools",
-	description='Helpful functions for Python',
-	long_description=long_description,
-	long_description_content_type="text/x-rst",
-	classifiers=[
-        "Programming Language :: Python :: 3",
-		"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
-        "Operating System :: OS Independent",
-		"Development Status :: 4 - Beta",
-    ],
-
-)
+       author             = author,
+       author_email       = author_email,
+       classifiers        = classifiers,
+       description        = short_desc,
+       entry_points       = entry_points,
+       install_requires   = install_requires,
+       license            = license,
+       long_description   = long_description,
+       name               = modname,
+       packages           = find_packages(),
+       py_modules         = py_modules,
+       url                = web,
+       version            = VERSION)
