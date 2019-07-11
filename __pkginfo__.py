@@ -25,7 +25,7 @@ modname            = "domdf_python_tools"
 py_modules		   = None
 entry_points	   = None
 
-license            = 'GPL3'
+license            = 'LGPL3'
 
 short_desc         = 'Helpful functions for Python'
 
