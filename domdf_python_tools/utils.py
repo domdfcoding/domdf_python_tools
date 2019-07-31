@@ -154,3 +154,21 @@ def splitLen(string,n):
 	
 	return [string[i:i+n] for i in range(0,len(string),n)]
 
+
+def permutations(data, n=2):
+	"""
+	Return permutations containing `n` items from `data` without any reverse duplicates
+	
+	:type data: list or string
+	:type n: int
+	
+	:rtype: list of tuples
+	"""
+	
+	import itertools
+	perms = []
+	for i in itertools.permutations(data, n):
+		"""from https://stackoverflow.com/questions/10201977/how-to-reverse-tuples-in-python"""
+		if i[::-1] not in perms:
+			perms.append(i)
+	return perms
