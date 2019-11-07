@@ -115,7 +115,7 @@ def list2string(the_list, sep=","):
 	Convert a list to a comma separated string
 
 	:param the_list: The list to convert to a string
-	:type the_list: list
+	:type the_list: list, tuple
 	:param sep: Separator to use for the string, default ","
 	:type sep: str
 
@@ -131,7 +131,7 @@ def list2str(the_list, sep=","):
 	Convert a list to a comma separated string
 	
 	:param the_list: The list to convert to a string
-	:type the_list: list
+	:type the_list: list, tuple
 	:param sep: Separator to use for the string, default ","
 	:type sep: str
 	
@@ -172,3 +172,52 @@ def permutations(data, n=2):
 		if i[::-1] not in perms:
 			perms.append(i)
 	return perms
+
+
+class bdict(dict):
+	"""
+	Returns a new dictionary initialized from an optional positional argument
+		and a possibly empty set of keyword arguments.
+	
+	Each key:value pair is entered into the dictionary in both directions,
+		so you can perform lookups with either the key or the value.
+	
+	If no positional argument is given, an empty dictionary is created.
+	If a positional argument is given and it is a mapping object, a dictionary
+		is created with the same key-value pairs as the mapping object.
+	Otherwise, the positional argument must be an iterable object.
+		Each item in the iterable must itself be an iterable with exactly two
+		objects. The first object of each item becomes a key in the new
+		dictionary, and the second object the corresponding value.
+	
+	If keyword arguments are given, the keyword arguments and their values are
+	added to the dictionary created from the positional argument.
+	
+	If an attempt is made to add a key or value that already exists in the
+		dictionary a ValueError will be raised
+	
+	Based on https://stackoverflow.com/a/1063393 by https://stackoverflow.com/users/9493/brian
+	"""
+	
+	def __init__(self, *args, **kwargs):
+		super().__init__(self)
+		if len(args) == 1:
+			for key, value in dict(*args).items():
+				self.__setitem__(key, value)
+		if len(args) == 0:
+			for key, value in kwargs.items():
+				self.__setitem__(key, value)
+
+	def __setitem__(self, key, val):
+		if key in self or val in self:
+			if key in self and self[key] != val:
+				raise ValueError(f"The key '{key}' is already present in the dictionary")
+			if val in self and self[val] != key:
+				raise ValueError(f"The key '{val}' is already present in the dictionary")
+				
+		dict.__setitem__(self, key, val)
+		dict.__setitem__(self, val, key)
+	
+	def __delitem__(self, key):
+		dict.__delitem__(self, self[key])
+		dict.__delitem__(self, key)
