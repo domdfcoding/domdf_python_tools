@@ -196,6 +196,9 @@ class bdict(dict):
 	If an attempt is made to add a key or value that already exists in the
 		dictionary a ValueError will be raised
 	
+	Keys or values of "None", "True" and "False" will be stored internally as
+		"_None" "_True" and "_False" respectively
+	
 	Based on https://stackoverflow.com/a/1063393 by https://stackoverflow.com/users/9493/brian
 	"""
 	
@@ -214,10 +217,61 @@ class bdict(dict):
 				raise ValueError(f"The key '{key}' is already present in the dictionary")
 			if val in self and self[val] != key:
 				raise ValueError(f"The key '{val}' is already present in the dictionary")
-				
+		
+		if key is None:
+			key = "_None"
+		if val is None:
+			val = "_None"
+		
+		if isinstance(key, bool):
+			if key:
+				key = "_True"
+			else:
+				key = "_False"
+		
+		if isinstance(val, bool):
+			if val:
+				val = "_True"
+			else:
+				val = "_False"
+		
 		dict.__setitem__(self, key, val)
 		dict.__setitem__(self, val, key)
 	
 	def __delitem__(self, key):
 		dict.__delitem__(self, self[key])
 		dict.__delitem__(self, key)
+	
+	def __getitem__(self, key):
+		if key is None:
+			key = "_None"
+		
+		if isinstance(key, bool):
+			if key:
+				key = "_True"
+			else:
+				key = "_False"
+		
+		val = dict.__getitem__(self, key)
+
+		if val == "_None":
+			return None
+		elif val == "_True":
+			return True
+		elif val == "_False":
+			return False
+		else:
+			return val
+	
+	def __contains__(self, key):
+		print("Contains")
+		if key is None:
+			key = "_None"
+		
+		if isinstance(key, bool):
+			if key:
+				key = "_True"
+			else:
+				key = "_False"
+		
+		return dict.__contains__(self, key)

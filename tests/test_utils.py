@@ -113,3 +113,30 @@ def test_bdict_errors():
 		new_dict["Value1"] = 1234
 	new_dict["Key1"] = "Value1"
 	new_dict["Value1"] = "Key1"
+
+
+def test_bdict_bool():
+	new_dict = bdict(N=None, T=True, F=False)
+	
+	print(new_dict)
+	
+	assert None in new_dict
+	assert True in new_dict
+	assert True in new_dict
+	
+	assert isinstance(new_dict["T"], bool) and new_dict["T"]
+	assert isinstance(new_dict["F"], bool) and not new_dict["F"]
+	
+	assert new_dict[True] == "T"
+	assert new_dict[False] == "F"
+	assert new_dict[None] == "N"
+	
+	assert "_None" in new_dict
+	assert new_dict["_None"] == "N"
+	
+	# Test for pyMHDAC
+	new_dict_2 = bdict(Unspecified=0, _None=1, GC=2, LC=3, CE=4)
+	
+	assert None in new_dict_2
+	
+	assert new_dict_2[None] == 1
