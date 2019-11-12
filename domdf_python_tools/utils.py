@@ -264,7 +264,6 @@ class bdict(dict):
 			return val
 	
 	def __contains__(self, key):
-		print("Contains")
 		if key is None:
 			key = "_None"
 		
