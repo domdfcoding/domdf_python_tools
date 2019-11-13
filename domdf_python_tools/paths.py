@@ -37,6 +37,7 @@
 #
 
 import os
+import pathlib
 
 def copytree(src, dst, symlinks=False, ignore=None):
 	"""
@@ -114,6 +115,39 @@ def relpath(path, relative_to=None):
 	else:
 		return os.path.abspath(path)
 
+
+def relpath2(path, relative_to=None):
+	"""
+	Returns the path for the given file or directory relative to the given
+		directory or, if that would require path traversal, returns the
+		absolute path.
+
+	:param path: Path to find the relative path for
+	:type path: str or pathlib.Path
+	:param relative_to: The directory to find the path relative to.
+		Defaults to the current directory
+	:type relative_to: str or pathlib.Path
+
+	:return:
+	"""
+	
+	if not isinstance(path, pathlib.Path):
+		path = pathlib.Path(path)
+	
+	abs_path = path.absolute()
+	
+	if relative_to is None:
+		relative_to = pathlib.Path().absolute()
+	
+	if not isinstance(relative_to, pathlib.Path):
+		relative_to = pathlib.Path(relative_to)
+	
+	relative_to = relative_to.absolute()
+	
+	try:
+		return abs_path.relative_to(relative_to)
+	except ValueError:
+		return abs_path
 
 
 def delete(filename):
