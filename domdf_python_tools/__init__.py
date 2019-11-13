@@ -23,7 +23,7 @@ __author__ = "Dominic Davis-Foster"
 __copyright__ = "2014-2019 Dominic Davis-Foster"
 
 __license__ = "LGPL"
-__version__ = "0.1.14"
+__version__ = "0.1.15"
 __email__ = "dominic@davis-foster.co.uk"
 
 

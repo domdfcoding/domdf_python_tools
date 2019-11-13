@@ -19,7 +19,7 @@ copyright   = """
 2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 """
 
-VERSION = "0.1.14"
+VERSION = "0.1.15"
 
 modname            = "domdf_python_tools"
 py_modules		   = None
