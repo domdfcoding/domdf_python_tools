@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 #
 #  terminal.py
-"""Useful functions for terminal-based programs"""
+"""
+Useful functions for terminal-based programs
+"""
 #
 #  Copyright 2014-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  get_terminal_size, _get_terminal_size_windows, _get_terminal_size_tput and _get_terminal_size_linux
-#		from https://gist.github.com/jtriley/1108174
+# 		from https://gist.github.com/jtriley/1108174
 #  		Copyright 2011 jtriley
 #
 #  This program is free software; you can redistribute it and/or modify
@@ -27,13 +29,16 @@
 #
 #
 
+# stdlib
 import os
 import sys
 import shlex
 import struct
 import platform
 import subprocess
-from .__init__ import pyversion
+
+# this package
+from domdf_python_tools import pyversion
 
 
 def clear():
@@ -54,6 +59,7 @@ def br():
 	"""
 	
 	print("")
+
 
 def entry(text_to_print):
 	"""
@@ -194,6 +200,7 @@ def _get_terminal_size_linux():
 		except:
 			return None
 	return int(cr[1]), int(cr[0])
+
 
 if __name__ == "__main__":
 	sizex, sizey = get_terminal_size()

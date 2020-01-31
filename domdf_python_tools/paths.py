@@ -2,22 +2,23 @@
 # -*- coding: utf-8 -*-
 #
 #  paths.py
-"""Functions for paths and files"""
+"""
+Functions for paths and files
+"""
 #
 #  Copyright 2018-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
 #  		Copyright 2015 TehTechGuy
-#		Licensed under CC-BY-SA
+# 		Licensed under CC-BY-SA
 #
 #  as_text from https://stackoverflow.com/a/40935194
-#		Copyright 2016 User3759685
-#		Available under the MIT License
+# 		Copyright 2016 User3759685
+# 		Available under the MIT License
 #
 #  chunks from https://stackoverflow.com/a/312464/3092681
-#		Copytight 2008 Ned Batchelder
-#		Licensed under CC-BY-SA
-#
+# 		Copytight 2008 Ned Batchelder
+# 		Licensed under CC-BY-SA
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -38,6 +39,7 @@
 
 import os
 import pathlib
+
 
 def copytree(src, dst, symlinks=False, ignore=None):
 	"""
@@ -70,6 +72,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 		else:
 			return shutil.copy2(s, d)
 
+
 def maybe_make(directory):
 	"""
 	Makes a directory only if it doesn't already exist
@@ -82,6 +85,7 @@ def maybe_make(directory):
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 
+
 def parent_path(path):
 	"""
 	Returns the path of the parent directory for the given file or directory
@@ -93,6 +97,7 @@ def parent_path(path):
 	"""
 	
 	return os.path.abspath(os.path.join(path,os.pardir))
+
 
 def relpath(path, relative_to=None):
 	"""
@@ -209,4 +214,3 @@ def append(var, filename):
 	
 	with open(os.path.join(os.getcwd(), filename), 'a') as f:
 		f.write(var)
-

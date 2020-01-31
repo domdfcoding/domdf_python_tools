@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 #  utils.py
-"""General Functions"""
+"""
+General Functions
+"""
 #
 #  Copyright 2018-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #

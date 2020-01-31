@@ -10,6 +10,16 @@
     :special-members:
 
 ==================================
+:mod:`domdf_python_tools.doctools`
+==================================
+
+
+.. automodule:: domdf_python_tools.doctools
+    :members:
+    :private-members:
+    :special-members:
+
+==================================
 :mod:`domdf_python_tools.paths`
 ==================================
 
