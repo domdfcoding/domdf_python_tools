@@ -25,6 +25,10 @@ General Functions
 #
 #
 
+import sys
+
+pyversion = int(sys.version[0])  # Python Version
+
 
 def as_text(value):
 	"""

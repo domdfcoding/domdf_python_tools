@@ -29,6 +29,3 @@ __copyright__ = "2014-2019 Dominic Davis-Foster"
 __license__ = "LGPL"
 __version__ = "0.1.16"
 __email__ = "dominic@davis-foster.co.uk"
-
-
-pyversion = int(sys.version[0])  # Python Version
