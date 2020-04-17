@@ -12,6 +12,13 @@ Useful functions for terminal-based programs
 # 		from https://gist.github.com/jtriley/1108174
 #  		Copyright © 2011 jtriley
 #
+#  Parts of the docstrings based on the Python 3.8.2 Documentation
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com . All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation; either version 3 of the License, or
@@ -27,25 +34,21 @@ Useful functions for terminal-based programs
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-#
 
 # stdlib
 import os
-import sys
+import platform
 import shlex
 import struct
-import platform
 import subprocess
-
-# this package
-from domdf_python_tools import pyversion
+import sys
 
 
 def clear():
 	"""
 	Clear the display
 	
-	works for Windows and UNIX, but does not clear Python Shell
+	works for Windows and UNIX, but does not clear Python Interpreter
 	
 	:return:
 	"""
@@ -61,24 +64,6 @@ def br():
 	print("")
 
 
-def entry(text_to_print):
-	"""
-	Version-agnostic input function
-	
-	# TODO: Deprecation warning
-	
-	:param text_to_print: Text to print before the input field
-	:type text_to_print: str
-	
-	:return: Text entered
-	:rtype: str
-	"""
-	
-	if pyversion == 3:
-		return input(text_to_print)
-	elif pyversion == 2:
-		return raw_input(text_to_print)
-
 
 def interrupt():
 	"""
@@ -86,7 +71,7 @@ def interrupt():
 	Useful when you have a long-running script that you might want t interrupt part way through
 	"""
 	
-	print('(Press Ctrl-%s to quit at any time.)' % 'C' if os.name == 'nt' else 'D')
+	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
 
 
 def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
@@ -97,11 +82,9 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	All non-keyword arguments are converted to strings like ``str()`` does and written to the stream,
 	separated by `sep` and followed by `end`.
 
-	If no objects are given, ``overwrite()` will just write "\r".
+	If no objects are given, ``overtype()`` will just write "\r".
 
-	Based on the Python print() docs: https://docs.python.org/3/library/functions.html#print
-
-	# This does not currently work in the PyCharm console, at least on Windows
+	TODO: This does not currently work in the PyCharm console, at least on Windows
 
 	:param objects:
 	:param sep: String to separate the objects with, by default " "
@@ -155,12 +138,12 @@ def _get_terminal_size_windows():
 		csbi = create_string_buffer(22)
 		res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
 		if res:
-			(bufx, bufy, curx, cury, wattr,
+			(buf_x, buf_y, cur_x, cur_y, wattr,
 			 left, top, right, bottom,
 			 maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
-			sizex = right - left + 1
-			sizey = bottom - top + 1
-			return sizex, sizey
+			size_x = right - left + 1
+			size_y = bottom - top + 1
+			return size_x, size_y
 	except:
 		pass
 
@@ -171,7 +154,7 @@ def _get_terminal_size_tput():
 	try:
 		cols = int(subprocess.check_call(shlex.split('tput cols')))
 		rows = int(subprocess.check_call(shlex.split('tput lines')))
-		return (cols, rows)
+		return cols, rows
 	except:
 		pass
 
@@ -181,8 +164,7 @@ def _get_terminal_size_linux():
 		try:
 			import fcntl
 			import termios
-			cr = struct.unpack('hh',
-							   fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+			cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
 			return cr
 		except:
 			pass
@@ -203,5 +185,5 @@ def _get_terminal_size_linux():
 
 
 if __name__ == "__main__":
-	sizex, sizey = get_terminal_size()
-	print('width =', sizex, 'height =', sizey)
+	size_x, size_y = get_terminal_size()
+	print('width =', size_x, 'height =', size_y)

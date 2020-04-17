@@ -14,7 +14,13 @@
 # 			Copyright © 2012 atzz
 # 			Licensed under CC-BY-SA
 #
-
+#  Parts of the docstrings based on the Python 3.8.2 Documentation
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com . All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#
 
 from domdf_python_tools.utils import *
 from domdf_python_tools import paths, terminal, utils, doctools

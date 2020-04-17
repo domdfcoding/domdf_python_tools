@@ -110,8 +110,8 @@ def make_sphinx_links(input_string, builtins_list=None):
 	
 	
 	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
-	 `intersphinx_mapping` dict of your conf.py for sphinx.
-	 
+	`intersphinx_mapping` dict of your conf.py for sphinx.
+	
 	:param input_string: The string to process
 	:type input_string: str
 	:param builtins_list: A list of builtins to make links for
@@ -139,7 +139,7 @@ def sphinxify_docstring():
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
 	
 	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
-	 `intersphinx_mapping` dict of your conf.py for sphinx.
+	`intersphinx_mapping` dict of your conf.py for sphinx.
 	"""
 	
 	def wrapper(target):

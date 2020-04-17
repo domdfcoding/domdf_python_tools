@@ -42,7 +42,7 @@ try:
 		"""
 		Returns a tzinfo object for the current timezone
 		
-		:rtype: :class:`~python:datetime.datetime.tzinfo`
+		:rtype: :class:`~python:datetime.tzinfo`
 		"""
 		
 		return datetime.datetime.now().astimezone().tzinfo
@@ -56,7 +56,7 @@ try:
 		:type datetime: :class:`datetime.datetime`
 		:param current_tzinfo: A tzinfo object representing the current timezone.
 			If None it will be inferred.
-		:type current_tzinfo: :class:`~python:datetime.datetime.tzinfo`
+		:type current_tzinfo: :class:`~python:datetime.tzinfo`
 		
 		:return: Timestamp in UTC timezone
 		:rtype: float
@@ -72,15 +72,15 @@ try:
 		If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
 		and the local timezone is inferred and set for the object.
 	
-		If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.datetime.tzinfo` subclass,
-		and the timestamp is converted to tz’s time zone.
+		If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.tzinfo` subclass,
+		and the timestamp is converted to ``output_tz``’s time zone.
 	
 		
 		:param utc_timestamp: The timestamp to convert to a datetime object
 		:type utc_timestamp: float, int
 		:param output_tz: The timezone to output the datetime object for.
 			If None it will be inferred.
-		:type output_tz: :class:`~python:datetime.datetime.tzinfo`
+		:type output_tz: :class:`~python:datetime.tzinfo`
 		
 		:return: The timestamp as a datetime object.
 		:rtype: :class:`datetime.datetime`

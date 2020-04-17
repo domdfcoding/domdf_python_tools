@@ -107,9 +107,9 @@ def check_dependencies(dependencies, prt=True):
 		if len(missing_modules) == 0:
 			print("All modules installed")
 		else:
-			print("""\rThe following modules are missing.
-	Please check the documentation.""")
+			print("The following modules are missing.")
 			print(missing_modules)
+			print("Please check the documentation.")
 		print("")
 	
 	else:
@@ -148,7 +148,7 @@ def list2str(the_list, sep=","):
 	return sep.join([str(x) for x in the_list])
 
 
-def splitLen(string,n):
+def splitLen(string, n):
 	"""
 	Split a string every x characters
 	
@@ -158,7 +158,7 @@ def splitLen(string,n):
 	:return:
 	"""
 	
-	return [string[i:i+n] for i in range(0,len(string),n)]
+	return [string[i:i + n] for i in range(0, len(string), n)]
 
 
 def permutations(data, n=2):
@@ -216,7 +216,7 @@ class bdict(dict):
 		if len(args) == 0:
 			for key, value in kwargs.items():
 				self.__setitem__(key, value)
-
+	
 	def __setitem__(self, key, val):
 		if key in self or val in self:
 			if key in self and self[key] != val:
@@ -259,7 +259,7 @@ class bdict(dict):
 				key = "_False"
 		
 		val = dict.__getitem__(self, key)
-
+		
 		if val == "_None":
 			return None
 		elif val == "_True":
