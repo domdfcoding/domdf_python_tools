@@ -16,16 +16,14 @@
 #
 
 
-import sys
-
 from domdf_python_tools.utils import *
 from domdf_python_tools import paths, terminal, utils, doctools
 
-__all__ = ["paths", "terminal", "utils"]
+__all__ = ["paths", "terminal", "utils", "dates"]
 
 __author__ = "Dominic Davis-Foster"
 __copyright__ = "2014-2019 Dominic Davis-Foster"
 
-__license__ = "LGPL"
+__license__ = "LGPLv3+"
 __version__ = "0.1.21"
 __email__ = "dominic@davis-foster.co.uk"
