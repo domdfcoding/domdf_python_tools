@@ -7,7 +7,7 @@ python:
 install:
 - pip install coveralls -r tests/requirements.txt
 script:
-- pytest --cov=sdjson tests/
+- pytest --cov=domdf_python_tools tests/
 after_success:
 - coveralls
 deploy:
