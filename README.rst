@@ -17,6 +17,10 @@ domdf_python_tools
 .. image:: https://coveralls.io/repos/github/domdfcoding/domdf_python_tools/badge.svg?branch=master
     :target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
     :alt: Coverage
+.. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
+    :alt: PyPI - License
+    :target: https://github.com/domdfcoding/domdf_python_tools/blob/master/LICENSE
+
 
 
 Helpful functions for Python
