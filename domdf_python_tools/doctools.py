@@ -30,6 +30,23 @@ Utilities for documenting functions, classes and methods
 import builtins
 
 
+def deindent_string(string):
+	"""
+	Removes all indentation from the given string
+
+	:param string:
+	:type string: str
+
+	:return:
+	:rtype: str
+	"""
+	
+	split_string = string.split("\n")
+	deindented_string = [line.lstrip("\t ") for line in split_string]
+	return "\n".join(deindented_string)
+
+
+# Functions that do the work
 def document_object_from_another(target, original):
 	"""
 	Sets the docstring of the `target` function to that of the `original` function.
@@ -43,20 +60,6 @@ def document_object_from_another(target, original):
 	"""
 	
 	target.__doc__ = original.__doc__
-
-
-def is_documented_by(original):
-	"""
-	Sets the docstring of the `target` function to that of the `original` function.
-
-	This may be useful for subclasses or wrappers that use the same arguments.
-	"""
-	
-	def wrapper(target):
-		document_object_from_another(target, original)
-		return target
-	
-	return wrapper
 
 
 def append_doctring_from_another(target, original):
@@ -75,31 +78,10 @@ def append_doctring_from_another(target, original):
 	:type original: any
 	"""
 	
-	split_target_doc = target.__doc__.split("\n")
-	deindented_target_doc = [line.lstrip("\t ") for line in split_target_doc]
+	deindented_target_doc = deindent_string(target.__doc__)
+	deindented_original_doc = deindent_string(original.__doc__)
 	
-	split_original_doc = original.__doc__.split("\n")
-	deindented_original_doc = [line.lstrip("\t ") for line in split_original_doc]
-	
-	target.__doc__ = f"\n".join(deindented_target_doc + deindented_original_doc)
-
-
-def append_docstring_from(original):
-	"""
-	Appends the docstring from the `original` function to the `target` function.
-
-	This may be useful for subclasses or wrappers that use the same arguments.
-
-	Any indentation in either docstring is removed to
-	ensure consistent indentation between the two docstrings.
-	Bear this in mind if additional indentation is used in the docstring.
-	"""
-	
-	def wrapper(target):
-		append_doctring_from_another(target, original)
-		return target
-	
-	return wrapper
+	target.__doc__ = deindented_target_doc + "\n" + deindented_original_doc
 
 
 def make_sphinx_links(input_string, builtins_list=None):
@@ -107,11 +89,11 @@ def make_sphinx_links(input_string, builtins_list=None):
 	Make proper sphinx links out of double-backticked strings in docstring.
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
-	
-	
+
+
 	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
 	`intersphinx_mapping` dict of your conf.py for sphinx.
-	
+
 	:param input_string: The string to process
 	:type input_string: str
 	:param builtins_list: A list of builtins to make links for
@@ -130,6 +112,39 @@ def make_sphinx_links(input_string, builtins_list=None):
 		working_string = working_string.replace(f"``{builtin}``", f":class:`~python:{builtin}`")
 	
 	return working_string
+
+
+# Decorators that call the above functions
+def is_documented_by(original):
+	"""
+	Sets the docstring of the `target` function to that of the `original` function.
+
+	This may be useful for subclasses or wrappers that use the same arguments.
+	"""
+	
+	def wrapper(target):
+		document_object_from_another(target, original)
+		return target
+	
+	return wrapper
+
+
+def append_docstring_from(original):
+	"""
+	Appends the docstring from the `original` function to the `target` function.
+
+	This may be useful for subclasses or wrappers that use the same arguments.
+
+	Any indentation in either docstring is removed to
+	ensure consistent indentation between the two docstrings.
+	Bear this in mind if additional indentation is used in the docstring.
+	"""
+	
+	def wrapper(target):
+		append_doctring_from_another(target, original)
+		return target
+	
+	return wrapper
 
 
 def sphinxify_docstring():

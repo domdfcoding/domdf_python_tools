@@ -148,7 +148,7 @@ def list2str(the_list, sep=","):
 	return sep.join([str(x) for x in the_list])
 
 
-def splitLen(string, n):
+def split_len(string, n):
 	"""
 	Split a string every x characters
 	
@@ -161,9 +161,13 @@ def splitLen(string, n):
 	return [string[i:i + n] for i in range(0, len(string), n)]
 
 
+splitLen = split_len
+
+
 def permutations(data, n=2):
 	"""
-	Return permutations containing `n` items from `data` without any reverse duplicates
+	Return permutations containing `n` items from `data` without any reverse duplicates.
+	If ``n`` is equal to or greater than the length of the data an empty list of returned
 	
 	:type data: list or string
 	:type n: int
@@ -172,6 +176,10 @@ def permutations(data, n=2):
 	"""
 	
 	import itertools
+	
+	if n == 0:
+		raise ValueError("`n` cannot be 0")
+	
 	perms = []
 	for i in itertools.permutations(data, n):
 		"""from https://stackoverflow.com/questions/10201977/how-to-reverse-tuples-in-python"""

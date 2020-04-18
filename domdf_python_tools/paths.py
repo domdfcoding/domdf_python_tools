@@ -85,12 +85,15 @@ def maybe_make(directory):
 	Makes a directory only if it doesn't already exist
 
 	:param directory: Directory to create
-	:type directory: str
+	:type directory: str or pathlib.Path
 	
 	"""
 	
-	if not os.path.exists(directory):
-		os.makedirs(directory)
+	if not isinstance(directory, pathlib.Path):
+		directory = pathlib.Path(directory)
+	
+	if not directory.exists():
+		directory.mkdir()
 
 
 def parent_path(path):
@@ -98,14 +101,18 @@ def parent_path(path):
 	Returns the path of the parent directory for the given file or directory
 	
 	:param path: Path to find the parent for
-	:type path: str
+	:type path: str or pathlib.Path
 	
-	:return:
+	:return: The parent directory
+	:rtype: pathlib.Path
 	"""
 	
-	return os.path.abspath(os.path.join(path,os.pardir))
+	if not isinstance(path, pathlib.Path):
+		path = pathlib.Path(path)
+	
+	return path.parent
 
-
+	
 def relpath(path, relative_to=None):
 	"""
 	Returns the path for the given file or directory relative to the given directory

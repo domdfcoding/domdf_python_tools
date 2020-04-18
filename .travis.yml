@@ -5,7 +5,7 @@ python:
 - '3.7'
 - "3.8"
 install:
-- pip install -U coveralls pytest
+- pip install -U coveralls pytest pytz
 script:
 - coverage run --source=domdf_python_tools -m pytest
 after_success:
