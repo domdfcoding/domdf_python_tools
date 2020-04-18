@@ -6,7 +6,7 @@
 General Functions
 """
 #
-#  Copyright © 2018-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -100,7 +100,7 @@ def check_dependencies(dependencies, prt=True):
 	
 	missing_modules = []
 	for requirement in dependencies:
-		if not requirement in modules:
+		if requirement not in modules:
 			missing_modules.append(requirement)
 	
 	if prt:

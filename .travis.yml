@@ -5,9 +5,9 @@ python:
 - '3.7'
 - "3.8"
 install:
-- pip install -U coveralls pytest pytz
+- pip install coveralls -r tests/requirements.txt
 script:
-- coverage run --source=domdf_python_tools -m pytest
+- pytest --cov=sdjson tests/
 after_success:
 - coveralls
 deploy:

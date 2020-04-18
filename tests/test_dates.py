@@ -42,7 +42,6 @@ def test_utc_offset():
 	# TODO: Finish
 
 
-
 def test_converting_timezone():
 	# No matter what timezone we convert to the timestamp should be the same
 	for tz in pytz.all_timezones:

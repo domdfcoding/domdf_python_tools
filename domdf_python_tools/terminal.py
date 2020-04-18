@@ -6,7 +6,7 @@
 Useful functions for terminal-based programs
 """
 #
-#  Copyright © 2014-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2014-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  get_terminal_size, _get_terminal_size_windows, _get_terminal_size_tput and _get_terminal_size_linux
 # 		from https://gist.github.com/jtriley/1108174
@@ -64,7 +64,6 @@ def br():
 	print("")
 
 
-
 def interrupt():
 	"""
 	Print what to do to abort the script; dynamic depending on OS
@@ -94,7 +93,9 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	:param file: An object with a ``write(string)`` method; default ``sys.stdout``
 	:param flush: If true, the stream is forcibly flushed.
 	:type flush: bool
+	
 	:return:
+	:rtype:
 	"""
 	
 	object0 = f"\r{objects[0]}"
@@ -111,6 +112,7 @@ def get_terminal_size():
 	Originally retrieved from: http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
 	
 	:return: tuple_xy
+	:rtype:
 	"""
 	
 	current_os = platform.system()
@@ -138,9 +140,11 @@ def _get_terminal_size_windows():
 		csbi = create_string_buffer(22)
 		res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
 		if res:
-			(buf_x, buf_y, cur_x, cur_y, wattr,
-			 left, top, right, bottom,
-			 maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+			(
+					buf_x, buf_y, cur_x, cur_y, wattr,
+					left, top, right, bottom,
+					maxx, maxy,
+					) = struct.unpack("hhhhHhhhhhh", csbi.raw)
 			size_x = right - left + 1
 			size_y = bottom - top + 1
 			return size_x, size_y

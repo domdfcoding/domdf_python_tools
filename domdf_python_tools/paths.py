@@ -6,7 +6,7 @@
 Functions for paths and files
 """
 #
-#  Copyright © 2018-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
 #  		Copyright © 2015 TehTechGuy
@@ -58,15 +58,26 @@ def copytree(src, dst, symlinks=False, ignore=None):
 	:type src: str
 	:param dst: Destination to copy file to
 	:type dst: str
-	:param symlinks: Whether to represent symbolic links in the source as symbolic links in the destination
-		If false or omitted, the contents and metadata of the linked files are copied to the new tree.
-		When symlinks is false, if the file pointed by the symlink doesn’t exist, an exception will be added in the list of errors raised in an Error exception at the end of the copy process. You can set the optional ignore_dangling_symlinks flag to true if you want to silence this exception. Notice that this option has no effect on platforms that don’t support os.symlink().
+	:param symlinks: Whether to represent symbolic links in the source as symbolic
+		links in the destination. If false or omitted, the contents and metadata
+		of the linked files are copied to the new tree. When symlinks is false,
+		if the file pointed by the symlink doesn't exist, an exception will be
+		added in the list of errors raised in an Error exception at the end of
+		the copy process. You can set the optional ignore_dangling_symlinks
+		flag to true if you want to silence this exception. Notice that this
+		option has no effect on platforms that don’t support os.symlink().
 	:type symlinks: bool
-	:param ignore: A callable that will receive as its arguments the source directory, and a list of its contents.
-		The ignore callable will be called once for each directory that is copied.
-		The callable must return a sequence of directory and file names relative to the current directory (i.e. a subset of the items in its second argument); these names will then be ignored in the copy process. ignore_patterns() can be used to create such a callable that ignores names based on glob-style patterns.
+	:param ignore: A callable that will receive as its arguments the source
+		directory, and a list of its contents. The ignore callable will be
+		called once for each directory that is copied. The callable must return
+		a sequence of directory and file names relative to the current
+		directory (i.e. a subset of the items in its second argument); these
+		names will then be ignored in the copy process. ignore_patterns() can
+		be used to create such a callable that ignores names based on
+		glob-style patterns.
 
 	:return:
+	:rtype:
 	"""
 	
 	import shutil
@@ -119,7 +130,8 @@ def relpath(path, relative_to=None):
 	
 	:param path: Path to find the relative path for
 	:type path: str
-	:param relative_to: The directory to find the path relative to. Defaults to the current working directory (i.e. os.getcwd())
+	:param relative_to: The directory to find the path relative to.
+		Defaults to the current working directory (i.e. os.getcwd())
 	:type relative_to: str
 	
 	:return:
@@ -128,8 +140,10 @@ def relpath(path, relative_to=None):
 	if relative_to is None:
 		relative_to = os.getcwd()
 	
-	#if os.path.normpath(os.path.abspath(path)).startswith(os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
-	if os.path.normpath(os.path.abspath(path)).startswith(os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(relative_to))))):
+	# if os.path.normpath(os.path.abspath(path)).startswith(
+	# 		os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
+	if os.path.normpath(os.path.abspath(path)).startswith(
+			os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(relative_to))))):
 		return os.path.relpath(os.path.abspath(path))
 	else:
 		return os.path.abspath(path)

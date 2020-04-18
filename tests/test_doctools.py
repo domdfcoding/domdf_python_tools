@@ -15,6 +15,7 @@ from domdf_python_tools import doctools
 
 # TODO: test sphinxification of docstrings
 
+
 class Cafe:
 	"""
 	Generic class for a Cafe
@@ -197,7 +198,8 @@ def test_decorators():
 	
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
-	assert partially_documented_function.__doc__.startswith("\nThis function works like documented function except it returns the result telepathically.")
+	assert partially_documented_function.__doc__.startswith(
+			"\nThis function works like documented function except it returns the result telepathically.")
 	assert doctools.deindent_string(partially_documented_function.__doc__).endswith(
 			doctools.deindent_string(documented_function.__doc__))
 	# Deindented both strings to be sure of equivalence
@@ -234,5 +236,3 @@ def test_append_doctring_from_another():
 	
 	doctools.append_doctring_from_another(funB, funC)
 	assert funB.__doc__ == "Hello\nWorld"
-	
-	
