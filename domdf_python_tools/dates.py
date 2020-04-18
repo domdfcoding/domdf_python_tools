@@ -33,6 +33,7 @@ Utilities for working with dates and times
 
 # stdlib
 import datetime
+from collections import OrderedDict
 
 # 3rd party
 try:
@@ -153,6 +154,101 @@ try:
 		
 		new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
 		return new_datetime.astimezone(output_tz)
+	
+	
+	# List of months and their 3-character shortcodes.
+	months = OrderedDict(
+			Jan="January",
+			Feb="February",
+			Mar="March",
+			Apr="April",
+			May="May",
+			Jun="June",
+			Jul="July",
+			Aug="August",
+			Sep="September",
+			Oct="October",
+			Nov="November",
+			Dec="December",
+			)
+	
+	
+	def parse_month(month):
+		"""
+		Converts an integer or shorthand month into the full month name
+
+		:param month:
+		:type month: str or int
+
+		:return:
+		:rtype: str
+		"""
+		
+		try:
+			month = int(month)
+		except ValueError:
+			try:
+				return months[month.capitalize()[:3]]
+			except KeyError:
+				raise ValueError("Unrecognised month value")
+		
+		# Only get here if first try succeeded
+		if 0 < month <= 12:
+			return list(months.values())[month - 1]
+		else:
+			raise ValueError("Unrecognised month value")
+	
+	
+	def get_month_number(month):
+		"""
+		Returns the number of the given month. If ``month`` is already a
+		number between 1 and 12 it will be returned immediately.
+
+		:param month: The month to convert to a number
+		:type month: str or int
+
+		:return: The number of the month
+		:rtype:
+		"""
+		
+		if isinstance(month, int):
+			if 0 < month <= 12:
+				return month
+			else:
+				raise ValueError("The given month is not recognised.")
+		else:
+			month = parse_month(month)
+			return list(months.values()).index(month) + 1
+	
+	
+	def check_date(month, day, leap_year=True):
+		"""
+		Returns ``True`` if the day number is valid for the given month.
+		Note that this will return ``True`` for the 29th Feb. If you don't
+		want this behaviour set ``leap_year`` to ``False``.
+
+		:param month: The month to test
+		:type month: str, int
+		:param day: The day number to test
+		:type day: int
+		:param leap_year: Whether to return ``True`` for 29th Feb
+		:type leap_year: bool
+
+		:return: ``True`` if the date is valid
+		:rtype: bool
+		"""
+		
+		# Ensure day is an integer
+		day = int(day)
+		month = get_month_number(month)
+		year = 2020 if leap_year else 2019
+		
+		try:
+			datetime.date(year, month, day)
+			return True
+		except ValueError:
+			return False
+
 
 except ImportError:
 	import warnings
