@@ -91,20 +91,31 @@ def copytree(src, dst, symlinks=False, ignore=None):
 			return shutil.copy2(s, d)
 
 
-def maybe_make(directory):
+def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
 	"""
-	Makes a directory only if it doesn't already exist
-
+	Create a directory at this given path, but only if the directory does
+	not already exist.
+	
 	:param directory: Directory to create
 	:type directory: str or pathlib.Path
-	
+	:param mode: Combined with the process’ umask value to determine the file mode and access flags
+	:type mode:
+	:param parents: If ``False`` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
+		If ``True``, any missing parents of this path are created as needed; they are created with the
+		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
+	:type parents: bool
+	:param exist_ok: If ``False`` (the default), a :class:`~python:FileExistsError` is raised if the
+		target directory already exists. If ``True``, :class:`~python:FileExistsError` exceptions
+		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
+		component is not an existing non-directory file.
+	:type exist_ok: bool
 	"""
 	
 	if not isinstance(directory, pathlib.Path):
 		directory = pathlib.Path(directory)
 	
 	if not directory.exists():
-		directory.mkdir()
+		directory.mkdir(mode, parents, exist_ok)
 
 
 def parent_path(path):

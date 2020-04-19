@@ -20,6 +20,8 @@ from domdf_python_tools import paths
 
 
 def test_maybe_make():
+	# TODO: test making parents
+	
 	# TODO: test with strings as well as pathlib
 	with TemporaryDirectory() as tmpdir:
 		
