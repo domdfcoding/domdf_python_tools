@@ -216,12 +216,12 @@ class bdict(dict):
 	Based on https://stackoverflow.com/a/1063393 by https://stackoverflow.com/users/9493/brian
 	"""
 	
-	def __init__(self, *args, **kwargs):
+	def __init__(self, seq=None, **kwargs):
 		super().__init__(self)
-		if len(args) == 1:
-			for key, value in dict(*args).items():
+		if seq:
+			for key, value in dict(seq).items():
 				self.__setitem__(key, value)
-		if len(args) == 0:
+		else:
 			for key, value in kwargs.items():
 				self.__setitem__(key, value)
 	
