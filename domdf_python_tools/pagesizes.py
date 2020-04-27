@@ -314,11 +314,14 @@ def _sequence_convert(seq, to):
 
 
 def parse_measurement(measurement):
-	match = re.findall(r"\d*\.?\d+", measurement)
+	match = re.findall(r"(\d*\.?\d+) *([A-Za-z]*)", measurement)[0]
+	print(match)
+	print(len(match))
 	if len(match) < 2:
 		raise ValueError("Unable to parse measurement")
 	else:
-		val, unit, *_ = match
+		val = float(match[0])
+		unit = match[1]
 		if unit == "mm":
 			return val*mm
 		elif unit == "cm":
@@ -327,6 +330,8 @@ def parse_measurement(measurement):
 		elif unit == "pt":
 			return val
 		elif unit == "inch":
+			return val*inch
+		elif unit == "in":
 			return val*inch
 		elif unit == "pc":
 			return val*pc
