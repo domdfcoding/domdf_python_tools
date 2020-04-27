@@ -14,6 +14,17 @@
 # 			Copyright © 2012 atzz
 # 			Licensed under CC-BY-SA
 #
+#  pagesizes.py
+# 		Based on reportlab.lib.pagesizes and reportlab.lib.units
+# 		    www.reportlab.co.uk
+# 		    Copyright ReportLab Europe Ltd. 2000-2017
+# 		    Copyright (c) 2000-2018, ReportLab Inc.
+# 		    All rights reserved.
+# 		    Licensed under the BSD License
+#
+# 		Includes data from en.wikipedia.org.
+# 		Licensed under the Creative Commons Attribution-ShareAlike License
+#
 #  Parts of the docstrings based on the Python 3.8.2 Documentation
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
@@ -38,7 +49,7 @@
 #
 
 from domdf_python_tools.utils import *
-from domdf_python_tools import paths, terminal, utils, doctools
+from domdf_python_tools import paths, terminal, utils, doctools, pagesizes
 
 __all__ = ["paths", "terminal", "utils", "dates"]
 
