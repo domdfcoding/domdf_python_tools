@@ -7,13 +7,6 @@ Test functions in pagesizes.py
 
 """
 
-import types
-import pathlib
-import decimal
-
-import pytest
-
-from domdf_python_tools.utils import str2tuple, tuple2str, chunks, list2str, list2string, bdict, pyversion
 from domdf_python_tools.pagesizes import *
 
 

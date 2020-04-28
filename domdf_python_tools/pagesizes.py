@@ -35,7 +35,7 @@ List of common pagesizes and some tools for working with them
 #
 
 
-from collections import Sequence
+from collections.abc import Sequence
 import re
 
 
