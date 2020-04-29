@@ -114,12 +114,14 @@ try:
 		"""
 		Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
 		This will not convert the time (i.e. the hours will stay the same).
-		Use :func:`python:datetime.datetime.astimezone` to accomplish that
+		Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
+		
 		:param obj:
 		:type obj:
 		:param tzinfo: 
 		:type tzinfo: 
-		:return: 
+		
+		:return:
 		:rtype: 
 		"""
 		
@@ -177,10 +179,10 @@ try:
 		"""
 		Converts an integer or shorthand month into the full month name
 
-		:param month:
+		:param month: The month number or shorthand name
 		:type month: str or int
 
-		:return:
+		:return: The full name of the month
 		:rtype: str
 		"""
 		

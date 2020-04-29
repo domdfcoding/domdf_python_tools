@@ -46,14 +46,12 @@ import sys
 
 def clear():
 	"""
-	Clear the display
+	Clears the display
 	
-	works for Windows and UNIX, but does not clear Python Interpreter
-	
-	:return:
+	Works for Windows and UNIX, but does not clear Python Interpreter
 	"""
 	
-	return os.system('cls' if os.name == 'nt' else 'clear')
+	os.system('cls' if os.name == 'nt' else 'clear')
 	
 
 def br():
@@ -66,8 +64,10 @@ def br():
 
 def interrupt():
 	"""
-	Print what to do to abort the script; dynamic depending on OS
-	Useful when you have a long-running script that you might want t interrupt part way through
+	Print what to do to abort the script; dynamic depending on OS.
+	
+	Useful when you have a long-running script that you might want to
+	interrupt part way through
 	"""
 	
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
@@ -75,27 +75,27 @@ def interrupt():
 
 def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	"""
-	Print `objects` to the text stream `file`, starting with "\r", separated by `sep` and followed by `end`.
-	`sep`, `end`, `file` and `flush`, if present, must be given as keyword arguments
+	Print ``objects`` to the text stream ``file``, starting with "\\r", separated by ``sep``
+	and followed by ``end``.
+	
+	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
 
 	All non-keyword arguments are converted to strings like ``str()`` does and written to the stream,
 	separated by `sep` and followed by `end`.
 
-	If no objects are given, ``overtype()`` will just write "\r".
+	If no objects are given, ``overtype()`` will just write "\\r".
 
 	TODO: This does not currently work in the PyCharm console, at least on Windows
 
-	:param objects:
+	:param objects: A list of strings or string-like objects to write to the terminal.
 	:param sep: String to separate the objects with, by default " "
 	:type sep: str
 	:param end: String to end with, by default nothing
 	:type end: str
 	:param file: An object with a ``write(string)`` method; default ``sys.stdout``
+	:type file:
 	:param flush: If true, the stream is forcibly flushed.
 	:type flush: bool
-	
-	:return:
-	:rtype:
 	"""
 	
 	object0 = f"\r{objects[0]}"
@@ -112,7 +112,7 @@ def get_terminal_size():
 	Originally retrieved from: http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
 	
 	:return: tuple_xy
-	:rtype:
+	:rtype: (int, int)
 	"""
 	
 	current_os = platform.system()

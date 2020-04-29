@@ -200,13 +200,15 @@ ID_000 = (25*mm, 15*mm)  # SIM cards
 # functions to mess with pagesizes
 def landscape(pagesize):
 	"""
-	Returns the given pagesize in landscape orientation
+	Returns the given pagesize in portrait orientation
+
+	:param pagesize: The pagesize to return as portrait
+	:type pagesize: (float, float)
+
+	:return: The pagesize in the portrait orientation
+	:rtype: (float, float)
 	
-	:param pagesize:
-	:type pagesize:
-	
-	:return:
-	:rtype:
+	# TODO: separate width and height as kwargs
 	"""
 	
 	a, b = pagesize
@@ -220,11 +222,13 @@ def portrait(pagesize):
 	"""
 	Returns the given pagesize in portrait orientation
 	
-	:param pagesize:
-	:type pagesize:
+	:param pagesize: The pagesize to return as portrait
+	:type pagesize: (float, float)
 	
-	:return:
-	:rtype:
+	:return: The pagesize in the portrait orientation
+	:rtype: (float, float)
+	
+	# TODO: separate width and height as kwargs
 	"""
 	
 	a, b = pagesize
@@ -243,17 +247,66 @@ def _w_h_from_size(size=None, width=None, height=None):
 	
 	return width, height
 
+
 def is_portrait(size=None, *, width=None, height=None):
+	"""
+	Returns whether the given page is in the portrait orientation
+
+	:param size: A tuple of (width, height) to check, in point
+	:type size: (float, float)
+	:param width: The width of the page, in point
+	:type width: float or int
+	:param height: The height of the page, in point
+	:type height: float or int
+	
+	If ``size`` is given ``width`` and ``height`` are ignored.
+
+	:return: ``True`` if the page is portrait, ``False`` otherwise.
+	:rtype: bool
+	"""
+	
 	width, height = _w_h_from_size(size, width, height)
 	return width <= height
 	
 	
 def is_landscape(size=None, *, width=None, height=None):
+	"""
+	Returns whether the given page is in the landscape orientation
+	
+	:param size: A tuple of (width, height) to check, in point
+	:type size: (float, float)
+	:param width: The width of the page, in point
+	:type width: float or int
+	:param height: The height of the page, in point
+	:type height: float or int
+	
+	If ``size`` is given ``width`` and ``height`` are ignored.
+	
+	:return: ``True`` if the page is landscape, ``False`` otherwise.
+	:rtype: bool
+	"""
+	
 	width, height = _w_h_from_size(size, width, height)
 	return width >= height
 	
 	
 def is_square(size=None, *, width=None, height=None):
+	"""
+	Returns whether the given pagesize is square
+
+	:param size: A tuple of (width, height) to check, in point
+	:type size: (float, float)
+	:param width: The width of the page, in point
+	:type width: float or int
+	:param height: The height of the page, in point
+	:type height: float or int
+
+	If ``size`` is given ``width`` and ``height`` are ignored.
+
+	:return: ``True`` if the page is square, ``False`` otherwise.
+	:rtype: bool
+	"""
+	
 	width, height = _w_h_from_size(size, width, height)
 	return width == height
 	
@@ -262,8 +315,8 @@ def to_mm(val):
 	"""
 	Convert from pt to mm
 	
-	:type val: float
-	:rtype: float
+	:type val: float or int
+	:rtype: float or int
 	"""
 	
 	return _convert(val, mm)
@@ -273,8 +326,8 @@ def to_cm(val):
 	"""
 	Convert from pt to cm
 	
-	:type val: float
-	:rtype: float
+	:type val: float or int
+	:rtype: float or int
 	"""
 	
 	return _convert(val, cm)
@@ -284,8 +337,8 @@ def to_inch(val):
 	"""
 	Convert from pt to inch
 	
-	:type val: float
-	:rtype: float
+	:type val: float or int
+	:rtype: float or int
 	"""
 	
 	return _convert(val, inch)
@@ -295,8 +348,8 @@ def to_pica(val):
 	"""
 	Convert from pt to pica
 	
-	:type val: float
-	:rtype: float
+	:type val: float or int
+	:rtype: float or int
 	"""
 	
 	return _convert(val, pica)
@@ -314,6 +367,7 @@ def _sequence_convert(seq, to):
 
 
 def parse_measurement(measurement):
+	# TODO: docstring
 	match = re.findall(r"(\d*\.?\d+) *([A-Za-z]*)", measurement)[0]
 	print(match)
 	print(len(match))
@@ -356,6 +410,8 @@ def toLength(s):
 	:type s:
 	:return:
 	:rtype:
+	
+	# TODO: combine with parse_measurement
 	"""
 	
 	try:

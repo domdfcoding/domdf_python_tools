@@ -34,10 +34,10 @@ def deindent_string(string):
 	"""
 	Removes all indentation from the given string
 
-	:param string:
+	:param string: The string to deindent
 	:type string: str
 
-	:return:
+	:return: The string without indentation
 	:rtype: str
 	"""
 	
@@ -49,7 +49,7 @@ def deindent_string(string):
 # Functions that do the work
 def document_object_from_another(target, original):
 	"""
-	Sets the docstring of the `target` function to that of the `original` function.
+	Sets the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 
@@ -64,7 +64,7 @@ def document_object_from_another(target, original):
 
 def append_doctring_from_another(target, original):
 	"""
-	Sets the docstring of the `target` function to that of the `original` function.
+	Sets the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 
@@ -97,7 +97,7 @@ def make_sphinx_links(input_string, builtins_list=None):
 	:param input_string: The string to process
 	:type input_string: str
 	:param builtins_list: A list of builtins to make links for
-	:type builtins_list: list of str
+	:type builtins_list: [str]
 
 	:return: processed string with links
 	:rtype: str
@@ -117,7 +117,7 @@ def make_sphinx_links(input_string, builtins_list=None):
 # Decorators that call the above functions
 def is_documented_by(original):
 	"""
-	Sets the docstring of the `target` function to that of the `original` function.
+	Sets the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 	"""
@@ -131,7 +131,7 @@ def is_documented_by(original):
 
 def append_docstring_from(original):
 	"""
-	Appends the docstring from the `original` function to the `target` function.
+	Appends the docstring from the ``original`` function to the ``target`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 

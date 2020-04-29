@@ -26,6 +26,8 @@ General Functions
 #
 
 import sys
+from collections.abc import Sequence
+from domdf_python_tools.doctools import is_documented_by
 
 pyversion = int(sys.version[0])  # Python Version
 
@@ -35,6 +37,7 @@ def as_text(value):
 	Convert the given value to a string
 	
 	:param value: value to convert to a string
+	:type value: any
 	
 	:rtype: str
 	"""
@@ -79,9 +82,10 @@ def chunks(l, n):
 	"""
 	Yield successive n-sized chunks from l.
 
-	:param l:
-	:param n:
-	:return:
+	:param l: The objects to yield chunks from
+	:type l: Sequence
+	:param n: The size of the chunks
+	:type n: int
 	"""
 	
 	for i in range(0, len(l), n):
@@ -93,9 +97,12 @@ def check_dependencies(dependencies, prt=True):
 	
 	:param dependencies:
 	:param prt:
+	
 	:return:
 	"""
+	
 	from pkgutil import iter_modules
+	
 	modules = set(x[1] for x in iter_modules())
 	
 	missing_modules = []
@@ -116,22 +123,6 @@ def check_dependencies(dependencies, prt=True):
 		return missing_modules
 
 
-def list2string(the_list, sep=","):
-	"""
-	Convert a list to a comma separated string
-
-	:param the_list: The list to convert to a string
-	:type the_list: list, tuple
-	:param sep: Separator to use for the string, default ","
-	:type sep: str
-
-	:return: Comma separated string
-	:rtype: str
-	"""
-	
-	return list2str(the_list, sep)
-
-
 def list2str(the_list, sep=","):
 	"""
 	Convert a list to a comma separated string
@@ -148,14 +139,20 @@ def list2str(the_list, sep=","):
 	return sep.join([str(x) for x in the_list])
 
 
+list2string = list2str
+
+
 def split_len(string, n):
 	"""
 	Split a string every x characters
 	
-	:param string:
+	:param string: The string to split
+	:type string: str
 	:param n:
+	:type n: int
 	
-	:return:
+	:return: The split string
+	:rtype: list
 	"""
 	
 	return [string[i:i + n] for i in range(0, len(string), n)]
@@ -172,7 +169,7 @@ def permutations(data, n=2):
 	:type data: list or string
 	:type n: int
 	
-	:rtype: list of tuples
+	:rtype: [tuple]
 	"""
 	
 	import itertools
@@ -299,5 +296,7 @@ def cmp(x, y):
 
 	:rtype: int
 	"""
+	
+	# TODO: see how this compares to version in functools
 	
 	return int((x > y) - (x < y))

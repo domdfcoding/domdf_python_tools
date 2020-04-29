@@ -65,15 +65,16 @@ def copytree(src, dst, symlinks=False, ignore=None):
 		added in the list of errors raised in an Error exception at the end of
 		the copy process. You can set the optional ignore_dangling_symlinks
 		flag to true if you want to silence this exception. Notice that this
-		option has no effect on platforms that don’t support os.symlink().
+		option has no effect on platforms that don’t support :class:`python:os.symlink`.
 	:type symlinks: bool
 	:param ignore: A callable that will receive as its arguments the source
 		directory, and a list of its contents. The ignore callable will be
 		called once for each directory that is copied. The callable must return
 		a sequence of directory and file names relative to the current
 		directory (i.e. a subset of the items in its second argument); these
-		names will then be ignored in the copy process. ignore_patterns() can
-		be used to create such a callable that ignores names based on
+		names will then be ignored in the copy process.
+		:class:`python:shutil.ignore_patterns` can be used to create such a callable
+		that ignores names based on
 		glob-style patterns.
 
 	:return:
@@ -134,7 +135,8 @@ def parent_path(path):
 	
 	return path.parent
 
-	
+
+# TODO: consolidate
 def relpath(path, relative_to=None):
 	"""
 	Returns the path for the given file or directory relative to the given directory
@@ -205,6 +207,8 @@ def delete(filename):
 	:return:
 	"""
 	
+	# TODO: docstring
+	
 	os.remove(os.path.join(os.getcwd(), filename))
 
 
@@ -219,6 +223,8 @@ def write(var, filename):
 	
 	:return:
 	"""
+	
+	# TODO: docstring
 	
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
@@ -235,6 +241,8 @@ def read(filename):
 	:return:
 	"""
 	
+	# TODO: docstring
+	
 	with open(os.path.join(os.getcwd(), filename)) as f:
 		return f.read()
 
@@ -250,6 +258,8 @@ def append(var, filename):
 	
 	:return:
 	"""
+	
+	# TODO: docstring
 	
 	with open(os.path.join(os.getcwd(), filename), 'a') as f:
 		f.write(var)

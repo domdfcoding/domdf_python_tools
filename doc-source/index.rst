@@ -6,9 +6,19 @@ View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/i
 `Browse the GitHub Repository <https://github.com/domdfcoding/domdf_python_tools>`__
 
 .. toctree::
+   :hidden:
+
+   Home<self>
+
+.. toctree::
     :maxdepth: 3
     :caption: Documentation
 
-    docs
+    dates
+    doctools
+    pagesizes
+    paths
+    terminal
+    utils
     Source
     Building

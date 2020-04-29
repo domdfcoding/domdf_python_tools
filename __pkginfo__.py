@@ -1,4 +1,4 @@
-# Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+# Copyright (C) 2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 import pathlib
 
 copyright = """
-2019 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 """
 
 VERSION = "0.2.6"
@@ -31,22 +31,15 @@ license = 'LGPLv3+'
 
 short_desc = 'Helpful functions for Python'
 
-classifiers = [
-		'Development Status :: 4 - Beta',
-		'Intended Audience :: Developers',
-		"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
-		'Operating System :: OS Independent',
-		'Programming Language :: Python',
-		'Programming Language :: Python :: 3.6',
-		'Programming Language :: Python :: 3.7',
-		'Programming Language :: Python :: 3.8',
-		'Topic :: Software Development :: Libraries :: Python Modules',
-		]
-
 author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
 github_username = "domdfcoding"
 web = github_url = f"https://github.com/{github_username}/{modname}"
+project_urls = {
+		"Documentation": f"https://{modname}.readthedocs.io",  # TODO: Make this link match the package version
+		"Issue Tracker": f"{github_url}/issues",
+		"Source Code": github_url,
+		}
 
 install_requires = []
 
@@ -55,3 +48,22 @@ if pathlib.Path.cwd().name == "doc-source":
 	long_description = (pathlib.Path.cwd().parent / "README.rst").read_text() + '\n'
 else:
 	long_description = pathlib.Path("README.rst").read_text() + '\n'
+
+
+classifiers = [
+		'Development Status :: 4 - Beta',
+		# "Development Status :: 4 - Beta",
+		# "Development Status :: 5 - Production/Stable",
+		# "Development Status :: 6 - Mature",
+		# "Development Status :: 7 - Inactive",
+		'Intended Audience :: Developers',
+		"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+		'Operating System :: OS Independent',
+		'Programming Language :: Python',
+		'Programming Language :: Python :: 3.6',
+		'Programming Language :: Python :: 3.7',
+		'Programming Language :: Python :: 3.8',
+		"Programming Language :: Python :: 3 :: Only",
+		"Programming Language :: Python :: Implementation :: CPython",
+		'Topic :: Software Development :: Libraries :: Python Modules',
+		]
