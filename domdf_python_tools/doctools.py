@@ -97,7 +97,7 @@ def make_sphinx_links(input_string, builtins_list=None):
 	:param input_string: The string to process
 	:type input_string: str
 	:param builtins_list: A list of builtins to make links for
-	:type builtins_list: [str]
+	:type builtins_list: list of str
 
 	:return: processed string with links
 	:rtype: str
