@@ -34,14 +34,42 @@ Useful functions for terminal-based programs
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+#  Based on ChemPy (https://github.com/bjodah/chempy)
+#  |  Copyright (c) 2015-2018, Björn Dahlgren
+#  |  All rights reserved.
+#  |
+#  |  Redistribution and use in source and binary forms, with or without modification,
+#  |  are permitted provided that the following conditions are met:
+#  |
+#  |    Redistributions of source code must retain the above copyright notice, this
+#  |    list of conditions and the following disclaimer.
+#  |
+#  |    Redistributions in binary form must reproduce the above copyright notice, this
+#  |    list of conditions and the following disclaimer in the documentation and/or
+#  |    other materials provided with the distribution.
+#  |
+#  |  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+#  |  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+#  |  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+#  |  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+#  |  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+#  |  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+#  |  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+#  |  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#  |  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+#  |  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
 
 # stdlib
+import inspect
 import os
 import platform
+import pprint
 import shlex
 import struct
 import subprocess
 import sys
+import textwrap
 
 
 def clear():
@@ -186,6 +214,25 @@ def _get_terminal_size_linux():
 		except:
 			return None
 	return int(cr[1]), int(cr[0])
+
+
+class Echo:
+	"""
+	Context manager for echoing variable assignments (in CPython)
+	"""
+	
+	def __init__(self, msg, indent='  '):
+		self.msg = msg
+		self.indent = indent
+		self.parent_frame = inspect.currentframe().f_back
+	
+	def __enter__(self):
+		print(self.msg)
+		self.locals_on_entry = self.parent_frame.f_locals.copy()
+	
+	def __exit__(self, exc_t, exc_v, tb):
+		new_locals = {k: v for k, v in self.parent_frame.f_locals.items() if k not in self.locals_on_entry}
+		print(textwrap.indent(pprint.pformat(new_locals), self.indent))
 
 
 if __name__ == "__main__":
