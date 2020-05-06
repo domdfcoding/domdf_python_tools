@@ -4,7 +4,7 @@ set -e -x
 
 export VERSION_NO="$TRAVIS_TAG"
 
-./make_conda_recipe.py || exit 1
+python3 ./make_conda_recipe.py || exit 1
 
 # Switch to miniconda
 source "$HOME/miniconda/etc/profile.d/conda.sh"
