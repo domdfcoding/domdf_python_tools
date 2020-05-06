@@ -11,6 +11,7 @@ source "$HOME/miniconda/etc/profile.d/conda.sh"
 hash -r
 conda config --set always_yes yes --set changeps1 no
 conda update -q conda
+conda install conda-build
 conda info -a
 conda config --add channels domdfcoding || exit 1
 conda build conda --output-directory conda/dist
