@@ -6,6 +6,7 @@ from __pkginfo__ import (
 	license, long_description, classifiers,
 	entry_points, modname, py_modules,
 	short_desc, VERSION, web, project_urls,
+	extras_require,
 	)
 
 from setuptools import setup, find_packages
@@ -17,7 +18,7 @@ setup(
 		description=short_desc,
 		entry_points=entry_points,
 		install_requires=install_requires,
-		extras_require={"dates": ["pytz>=2019.1"]},
+		extras_require=extras_require,
 		license=license,
 		long_description=long_description,
 		name=modname,

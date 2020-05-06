@@ -24,3 +24,8 @@ domdf_python_tools
 
 
 Helpful functions for Python
+
+
+.. conda install domdf_python_tools --channel http://conda.anaconda.org/domdfcoding
+
+.. conda config --add channels http://conda.anaconda.org/domdfcoding

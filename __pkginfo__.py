@@ -41,14 +41,12 @@ project_urls = {
 		"Source Code": github_url,
 		}
 
-install_requires = []
+repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
-if pathlib.Path.cwd().name == "doc-source":
-	long_description = (pathlib.Path.cwd().parent / "README.rst").read_text() + '\n'
-else:
-	long_description = pathlib.Path("README.rst").read_text() + '\n'
-
+install_requires = []
+long_description = (repo_root / "README.rst").read_text() + '\n'
+extras_require = {"dates": ["pytz>=2019.1"]}
 
 classifiers = [
 		'Development Status :: 4 - Beta',
