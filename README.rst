@@ -14,6 +14,9 @@ domdf_python_tools
 .. image:: https://img.shields.io/pypi/pyversions/domdf_python_tools.svg
     :target: https://pypi.org/project/domdf_python_tools/
     :alt: PyPI - Python Version
+.. image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools
+    :alt: Conda
+    :target: https://anaconda.org/domdfcoding/domdf_python_tools
 .. image:: https://coveralls.io/repos/github/domdfcoding/domdf_python_tools/badge.svg?branch=master
     :target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
     :alt: Coverage
@@ -25,7 +28,23 @@ domdf_python_tools
 
 Helpful functions for Python
 
+|
 
-.. conda install domdf_python_tools --channel http://conda.anaconda.org/domdfcoding
+Installation
+--------------
 
-.. conda config --add channels http://conda.anaconda.org/domdfcoding
+``domdf_python_tools`` can be installed from PyPI or Anaconda.
+
+To install with ``pip``:
+
+.. code-block:: bash
+
+    $ python -m pip install domdf_python_tools
+
+To install with ``conda``:
+
+.. code-block:: bash
+
+    $ conda config --add channels http://conda.anaconda.org/domdfcoding
+    $ conda install domdf_python_tools
+
