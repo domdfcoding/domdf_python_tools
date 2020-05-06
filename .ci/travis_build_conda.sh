@@ -14,7 +14,7 @@ conda update -q conda
 conda install conda-build
 conda info -a
 conda config --add channels domdfcoding || exit 1
-conda build conda --output-directory conda/dist
+conda build conda --output-folder conda/dist
 
 
 for f in ../conda/dist/noarch/domdf_python_tools-*.tar.bz2; do
