@@ -63,5 +63,6 @@ classifiers = [
 		'Programming Language :: Python :: 3.8',
 		"Programming Language :: Python :: 3 :: Only",
 		"Programming Language :: Python :: Implementation :: CPython",
+		"Programming Language :: Python :: Implementation :: PyPy",
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		]
