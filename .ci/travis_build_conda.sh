@@ -10,6 +10,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
   # Switch to miniconda
   source "$HOME/miniconda/etc/profile.d/conda.sh"
   hash -r
+  conda activate base
   conda config --set always_yes yes --set changeps1 no
   conda update -q conda
   conda install conda-build
@@ -17,8 +18,6 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
   conda info -a
   conda config --add channels domdfcoding || exit 1
   conda config --add channels conda-forge || exit 1
-
-  python -m anaconda || exit 1
 
   conda build conda --output-folder conda/dist
 
