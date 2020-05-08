@@ -13,6 +13,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
   conda config --set always_yes yes --set changeps1 no
   conda update -q conda
   conda install conda-build
+  conda install anaconda-client
   conda info -a
   conda config --add channels domdfcoding || exit 1
   conda config --add channels conda-forge || exit 1
