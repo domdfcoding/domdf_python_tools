@@ -43,8 +43,16 @@ To install with ``pip``:
 
 To install with ``conda``:
 
-.. code-block:: bash
+    * First add the required channels
 
-    $ conda config --add channels http://conda.anaconda.org/domdfcoding
-    $ conda install domdf_python_tools
+    .. code-block:: bash
+
+        $ conda config --add channels http://conda.anaconda.org/domdfcoding
+        $ conda config --add channels http://conda.anaconda.org/conda-forge
+
+    * Then install
+
+    .. code-block:: bash
+
+        $ conda install domdf_python_tools
 

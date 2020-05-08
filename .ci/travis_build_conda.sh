@@ -11,7 +11,7 @@ conda config --set always_yes yes --set changeps1 no
 conda update -q conda
 conda install conda-build
 conda info -a
-conda config --add channels domdfcoding || exit 1
+conda config --add channels domdfcoding conda-forge || exit 1
 conda build conda --output-folder conda/dist
 
 
