@@ -28,6 +28,7 @@ all_requirements = set(x.replace(" ", '') for x in set(all_requirements))
 requirements_block = "\n".join(f"    - {req}" for req in all_requirements)
 
 txt_readme = publish_file(source=StringIO(long_description), writer=rst2txt.Writer())
+description_block = "\n".join([line.replace('"', '\\"') for line in txt_readme.split("\n")])
 
 with open(recipe_dir / "meta.yaml", "w") as fp:
 	fp.write(f"""{{% set name = "{modname}" %}}
@@ -71,7 +72,7 @@ about:
   license_family: LGPL
   # license_file: requirements.txt
   summary: "{short_desc}"
-  description: "txt_readme"
+  description: "{description_block}"
   doc_url: {project_urls["Documentation"]}
   dev_url: {project_urls["Source Code"]}
 
