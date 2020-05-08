@@ -7,17 +7,18 @@ Test functions in pagesizes.py
 
 """
 
-from domdf_python_tools.pagesizes import *
+from domdf_python_tools.pagesizes import A4, BaseSize, inch, mm, parse_measurement
 
 
 def test_orientation():
-	assert is_portrait(A4)
-	assert is_portrait(portrait(A4))
-	assert is_portrait(portrait(landscape(A4)))
-	assert is_landscape(landscape(A4))
-	assert is_landscape((10, 5))
-	assert landscape((10, 5)) == (10, 5)
-	assert portrait((5, 10)) == (5, 10)
+	assert A4.is_portrait()
+	assert A4.portrait().is_portrait()
+	assert A4.landscape().portrait().is_portrait()
+	assert A4.landscape().portrait() == A4
+	assert A4.landscape().is_landscape()
+	assert BaseSize(10, 5) == (10, 5)
+	assert BaseSize(10, 5).landscape() == (10, 5)
+	assert BaseSize(10, 5).portrait() == (5, 10)
 	
 	
 def test_parse_measurement():

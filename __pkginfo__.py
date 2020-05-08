@@ -44,8 +44,8 @@ project_urls = {
 repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
-install_requires = []
 long_description = (repo_root / "README.rst").read_text() + '\n'
+install_requires = (repo_root / "requirements.txt").read_text().split('\n')
 extras_require = {"dates": ["pytz>=2019.1"]}
 
 classifiers = [

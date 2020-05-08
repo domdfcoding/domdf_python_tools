@@ -85,7 +85,7 @@ def append_doctring_from_another(target, original):
 
 
 def make_sphinx_links(input_string, builtins_list=None):
-	"""
+	r"""
 	Make proper sphinx links out of double-backticked strings in docstring.
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
@@ -148,7 +148,7 @@ def append_docstring_from(original):
 
 
 def sphinxify_docstring():
-	"""
+	r"""
 	Make proper sphinx links out of double-backticked strings in docstring.
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
