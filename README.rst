@@ -2,7 +2,7 @@
 domdf_python_tools
 **********************
 
-.. image:: https://travis-ci.com/domdfcoding/domdf_python_tools.svg?branch=master
+.. image:: https://img.shields.io/travis/com/domdfcoding/domdf_python_tools/master?logo=travis
     :target: https://travis-ci.com/domdfcoding/domdf_python_tools
     :alt: Build Status
 .. image:: https://readthedocs.org/projects/domdf_python_tools/badge/?version=latest

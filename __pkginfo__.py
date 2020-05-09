@@ -45,6 +45,11 @@ repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
 long_description = (repo_root / "README.rst").read_text() + '\n'
+conda_description = """Helpful functions for Python
+
+
+Before installing please ensure you have added the "conda-forge" channel.
+"""
 install_requires = (repo_root / "requirements.txt").read_text().split('\n')
 extras_require = {"dates": ["pytz>=2019.1"]}
 

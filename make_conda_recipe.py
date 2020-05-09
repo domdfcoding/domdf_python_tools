@@ -7,8 +7,8 @@ from docutils.core import publish_file
 from io import StringIO
 
 from __pkginfo__ import (
-	author, extras_require, install_requires, long_description,
-	modname, project_urls, repo_root, short_desc, VERSION, web,
+	author, long_description, conda_description, extras_require, install_requires, modname, project_urls, repo_root, short_desc, VERSION,
+	web,
 	)
 
 recipe_dir = repo_root / "conda"
@@ -27,8 +27,9 @@ if isinstance(extras_require, dict):
 all_requirements = set(x.replace(" ", '') for x in set(all_requirements))
 requirements_block = "\n".join(f"    - {req}" for req in all_requirements)
 
-txt_readme = publish_file(source=StringIO(long_description), writer=rst2txt.Writer())
-description_block = "\n".join([line.replace('"', '\\"') for line in txt_readme.split("\n")])
+# txt_readme = publish_file(source=StringIO(long_description), writer=rst2txt.Writer())
+# description_block = "\n".join([line.replace('"', '\\"') for line in txt_readme.split("\n")])
+description_block = conda_description.replace('"', '\\"')
 
 with open(recipe_dir / "meta.yaml", "w") as fp:
 	fp.write(f"""{{% set name = "{modname}" %}}

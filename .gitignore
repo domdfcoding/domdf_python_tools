@@ -137,4 +137,4 @@ fabric.properties
 build
 *.egg-info
 **/__pycache__
-*/conda
+**/conda
