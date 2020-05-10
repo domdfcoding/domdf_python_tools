@@ -18,11 +18,12 @@ setup(
 		license=license,
 		long_description=long_description,
 		name=modname,
-		packages=find_packages(exclude=("tests",)),
+		packages=find_packages(exclude=("tests", "doc-source")),
 		project_urls=project_urls,
 		py_modules=py_modules,
 		python_requires=">=3.6",
 		url=web,
 		version=VERSION,
+		keywords=keywords,
 
 		)

@@ -20,6 +20,9 @@ script:
   - tox
 after_success:
   - coveralls
+
+before_deploy:
+  - .ci/travis_build_conda.sh || travis_terminate 1;
 deploy:
   provider: pypi
   user: "DomDF"
@@ -31,4 +34,4 @@ deploy:
   distributions: "sdist bdist_wheel"
   skip_existing: true
 after_deploy:
-  - .ci/travis_build_conda.sh || travis_terminate 1;
+  - .ci/travis_deploy_conda.sh || travis_terminate 1;

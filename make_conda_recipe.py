@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+# This file is managed by `git_helper`. Don't edit it directly
+
 import platform
 import rst2txt
 import sys

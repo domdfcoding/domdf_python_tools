@@ -25,7 +25,7 @@ copyright = """
 VERSION = "0.3.1"
 
 modname = "domdf_python_tools"
-py_modules = None
+py_modules = []
 entry_points = None
 
 license = 'LGPLv3+'
@@ -51,7 +51,7 @@ conda_description = """Helpful functions for Python
 
 Before installing please ensure you have added the "conda-forge" channel. """
 install_requires = (repo_root / "requirements.txt").read_text().split('\n')
-extras_require = {'dates': ['pytz>=2019.1']}
+extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 
 classifiers = [
 		'Development Status :: 4 - Beta',
@@ -68,3 +68,5 @@ classifiers = [
 		'Topic :: Software Development :: Libraries :: Python Modules',
 		
 		]
+
+keywords = ""
