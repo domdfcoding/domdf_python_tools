@@ -42,16 +42,16 @@ __all__ = [
 
 
 class Unit(Decimal):
-	
+
 	def __mul__(self, other):
 		if isinstance(other, float):
 			other = Decimal(str(other))
 
 		return self.__class__(super().__mul__(other))
-	
+
 	__rmul__ = __mul__
-	
-	
+
+
 # Units
 pt = 1
 inch = Unit("72.0")

@@ -80,9 +80,9 @@ def copytree(src, dst, symlinks=False, ignore=None):
 	:return:
 	:rtype:
 	"""
-	
+
 	import shutil
-	
+
 	for item in os.listdir(src):
 		s = os.path.join(src, item)
 		d = os.path.join(dst, item)
@@ -96,7 +96,7 @@ def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
 	"""
 	Create a directory at this given path, but only if the directory does
 	not already exist.
-	
+
 	:param directory: Directory to create
 	:type directory: str or pathlib.Path
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
@@ -111,10 +111,10 @@ def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
 		component is not an existing non-directory file.
 	:type exist_ok: bool
 	"""
-	
+
 	if not isinstance(directory, pathlib.Path):
 		directory = pathlib.Path(directory)
-	
+
 	if not directory.exists():
 		directory.mkdir(mode, parents, exist_ok)
 
@@ -122,17 +122,17 @@ def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
 def parent_path(path):
 	"""
 	Returns the path of the parent directory for the given file or directory
-	
+
 	:param path: Path to find the parent for
 	:type path: str or pathlib.Path
-	
+
 	:return: The parent directory
 	:rtype: pathlib.Path
 	"""
-	
+
 	if not isinstance(path, pathlib.Path):
 		path = pathlib.Path(path)
-	
+
 	return path.parent
 
 
@@ -140,19 +140,19 @@ def parent_path(path):
 def relpath(path, relative_to=None):
 	"""
 	Returns the path for the given file or directory relative to the given directory
-	
+
 	:param path: Path to find the relative path for
 	:type path: str
 	:param relative_to: The directory to find the path relative to.
 		Defaults to the current working directory (i.e. os.getcwd())
 	:type relative_to: str
-	
+
 	:return:
 	"""
-	
+
 	if relative_to is None:
 		relative_to = os.getcwd()
-	
+
 	# if os.path.normpath(os.path.abspath(path)).startswith(
 	# 		os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
 	if os.path.normpath(os.path.abspath(path)).startswith(
@@ -176,20 +176,20 @@ def relpath2(path, relative_to=None):
 
 	:return:
 	"""
-	
+
 	if not isinstance(path, pathlib.Path):
 		path = pathlib.Path(path)
-	
+
 	abs_path = path.absolute()
-	
+
 	if relative_to is None:
 		relative_to = pathlib.Path().absolute()
-	
+
 	if not isinstance(relative_to, pathlib.Path):
 		relative_to = pathlib.Path(relative_to)
-	
+
 	relative_to = relative_to.absolute()
-	
+
 	try:
 		return abs_path.relative_to(relative_to)
 	except ValueError:
@@ -199,33 +199,33 @@ def relpath2(path, relative_to=None):
 def delete(filename):
 	"""
 	Delete the file in the current directory
-	
+
 	# TODO: make this the file in the given directory, by default the current directory
-	
+
 	:param filename:
-	
+
 	:return:
 	"""
-	
+
 	# TODO: docstring
-	
+
 	os.remove(os.path.join(os.getcwd(), filename))
 
 
 def write(var, filename):
 	"""
 	Write a variable to file in the current directory
-	
+
 	# TODO: make this the file in the given directory, by default the current directory
-	
+
 	:param var:
 	:param filename:
-	
+
 	:return:
 	"""
-	
+
 	# TODO: docstring
-	
+
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
 
@@ -233,16 +233,16 @@ def write(var, filename):
 def read(filename):
 	"""
 	Read a file in the current directory; Untested
-	
+
 	# TODO: make this the file in the given directory, by default the current directory
-	
+
 	:param filename:
-	
+
 	:return:
 	"""
-	
+
 	# TODO: docstring
-	
+
 	with open(os.path.join(os.getcwd(), filename)) as f:
 		return f.read()
 
@@ -250,16 +250,16 @@ def read(filename):
 def append(var, filename):
 	"""
 	Append `var` to the file `filename` in the current directory; Untested
-	
+
 	# TODO: make this the file in the given directory, by default the current directory
-	
+
 	:param var:
 	:param filename:
-	
+
 	:return:
 	"""
-	
+
 	# TODO: docstring
-	
+
 	with open(os.path.join(os.getcwd(), filename), 'a') as f:
 		f.write(var)

@@ -40,7 +40,7 @@ def deindent_string(string):
 	:return: The string without indentation
 	:rtype: str
 	"""
-	
+
 	split_string = string.split("\n")
 	deindented_string = [line.lstrip("\t ") for line in split_string]
 	return "\n".join(deindented_string)
@@ -58,7 +58,7 @@ def document_object_from_another(target, original):
 	:param original: The object to copy the docstring from
 	:type original: any
 	"""
-	
+
 	target.__doc__ = original.__doc__
 
 
@@ -77,10 +77,10 @@ def append_doctring_from_another(target, original):
 	:param original: The object to copy the docstring from
 	:type original: any
 	"""
-	
+
 	deindented_target_doc = deindent_string(target.__doc__)
 	deindented_original_doc = deindent_string(original.__doc__)
-	
+
 	target.__doc__ = deindented_target_doc + "\n" + deindented_original_doc
 
 
@@ -102,15 +102,15 @@ def make_sphinx_links(input_string, builtins_list=None):
 	:return: processed string with links
 	:rtype: str
 	"""
-	
+
 	if builtins_list is None:
 		builtins_list = dir(builtins)
-	
+
 	working_string = f"{input_string}"
-	
+
 	for builtin in {x for x in builtins_list if not x.startswith("__") and x != "None"}:
 		working_string = working_string.replace(f"``{builtin}``", f":class:`~python:{builtin}`")
-	
+
 	return working_string
 
 
@@ -121,11 +121,11 @@ def is_documented_by(original):
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 	"""
-	
+
 	def wrapper(target):
 		document_object_from_another(target, original)
 		return target
-	
+
 	return wrapper
 
 
@@ -139,11 +139,11 @@ def append_docstring_from(original):
 	ensure consistent indentation between the two docstrings.
 	Bear this in mind if additional indentation is used in the docstring.
 	"""
-	
+
 	def wrapper(target):
 		append_doctring_from_another(target, original)
 		return target
-	
+
 	return wrapper
 
 
@@ -152,13 +152,13 @@ def sphinxify_docstring():
 	Make proper sphinx links out of double-backticked strings in docstring.
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
-	
+
 	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
 	`intersphinx_mapping` dict of your conf.py for sphinx.
 	"""
-	
+
 	def wrapper(target):
 		target.__doc__ = make_sphinx_links(target.__doc__)
 		return target
-	
+
 	return wrapper

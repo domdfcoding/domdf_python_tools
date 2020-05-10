@@ -55,16 +55,16 @@ def _rounders(val_to_round, round_format):
 def convert_from(val, from_):
 	"""
 	Convert ``value`` to point from the unit specified in ``from_``
-	
+
 	:param val:
 	:type val: Number or Sequence[Number]
 	:param from_: The unit to convert from, specified as a number of points
 	:type from_: Number
-	
+
 	:return:
 	:rtype:
 	"""
-	
+
 	if isinstance(val, Sequence):
 		return _sequence_convert_from(val, from_)
 	else:
@@ -123,7 +123,7 @@ def to_length(s):
 
 	# TODO: combine with parse_measurement
 	"""
-	
+
 	try:
 		if s[-2:] == 'cm':
 			return float(s[:-2]) * cm

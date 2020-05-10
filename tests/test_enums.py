@@ -24,7 +24,7 @@ def test_str_enum():
 	assert DramatisPersonae.Alice != "An eavesdropper"
 	assert str(DramatisPersonae.Craig) == "A password cracker"
 	assert DramatisPersonae("The sender") == DramatisPersonae.Bob == repr(DramatisPersonae.Bob) == "The sender"
-	
+
 
 class Numbers(enums.IntEnum):
 	One = 1
@@ -39,5 +39,3 @@ def test_int_enum():
 	assert Numbers.Two != 3
 	assert int(Numbers.Four) == 4
 	assert Numbers(5) == Numbers.Five == 5
-	
-

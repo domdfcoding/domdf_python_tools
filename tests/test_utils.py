@@ -31,7 +31,7 @@ def test_str2tuple():
 def test_tuple2str():
 	assert isinstance(tuple2str(("1", "2", "3",)), str)
 	assert tuple2str((1, 2, 3)) == "1,2,3"
-	
+
 	assert isinstance(tuple2str((1, 2, 3,), sep=";"), str)  # tests with semicolon
 	assert tuple2str((1, 2, 3), sep=";") == "1;2;3"
 
@@ -44,13 +44,13 @@ def test_chunks():
 def test_list2str():
 	assert isinstance(list2str([1, 2, 3, ]), str)
 	assert list2str([1, 2, 3]) == "1,2,3"
-	
+
 	assert isinstance(list2str([1, 2, 3], sep=";"), str)  # tests with semicolon
 	assert list2str((1, 2, 3), sep=";") == "1;2;3"
-	
+
 	assert isinstance(list2string([1, 2, 3, ]), str)
 	assert list2string([1, 2, 3]) == "1,2,3"
-	
+
 	assert isinstance(list2string([1, 2, 3], sep=";"), str)  # tests with semicolon
 	assert list2string((1, 2, 3), sep=";") == "1;2;3"
 
@@ -68,6 +68,7 @@ def test_list2str():
 #
 #
 
+
 def test_as_text():
 	assert utils.as_text(12345) == "12345"
 	assert utils.as_text(123.45) == "123.45"
@@ -80,12 +81,12 @@ def test_as_text():
 
 
 def test_split_len():
-	assert utils.split_len("Spam Spam Spam Spam Spam Spam Spam Spam ", 5) == ["Spam "]*8
+	assert utils.split_len("Spam Spam Spam Spam Spam Spam Spam Spam ", 5) == ["Spam "] * 8
 
 
 def test_permutations():
 	data = ["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"]
-	
+
 	assert utils.permutations(data, 1) == [(x,) for x in data]
 	assert utils.permutations(data, 2) == [
 			('egg and bacon', 'egg sausage and bacon'),
@@ -125,6 +126,6 @@ def test_permutations():
 	assert utils.permutations(data, 10) == []
 	assert utils.permutations(data, 30) == []
 	assert utils.permutations(data, 100) == []
-	
+
 	with pytest.raises(ValueError):
 		utils.permutations(data, 0)

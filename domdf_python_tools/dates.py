@@ -38,13 +38,12 @@ from collections import OrderedDict
 # 3rd party
 try:
 	import pytz
-	
-	
+
 	def get_utc_offset(tz, date=None):
 		"""
 		Returns the offset between UTC and the requested timezone on the given date.
 		If ``date`` is ``None`` then the current date is used.
-		
+
 		:param tz: :class:`pytz.timezone` or a string representing the timezone
 		:type tz:
 		:param date:
@@ -52,16 +51,15 @@ try:
 		:return:
 		:rtype: :class:`python:datetime.timedelta`
 		"""
-		
+
 		if date is None:
 			date = datetime.datetime.utcnow()
-		
+
 		if isinstance(tz, str):
 			tz = get_timezone(tz, date)
-		
+
 		return date.replace(tzinfo=pytz.utc).astimezone(tz).utcoffset()
-	
-	
+
 	def get_timezone(tz, date=None):
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
@@ -74,24 +72,23 @@ try:
 		:return:
 		:rtype: :class:`python:datetime.timedelta`
 		"""
-		
+
 		if date is None:
 			date = datetime.datetime.utcnow()
-			
+
 		d = date.replace(tzinfo=None)
 
 		return pytz.timezone(tz).localize(d).tzinfo
-	
-	
+
 	def current_tzinfo():
 		"""
 		Returns a tzinfo object for the current timezone
-		
+
 		:rtype: :class:`python:datetime.tzinfo`
 		"""
-		
+
 		return datetime.datetime.now().astimezone().tzinfo
-	
+
 	#
 	# def datetime_to_utc_timestamp(datetime, current_tzinfo=None):
 	# 	"""
@@ -109,55 +106,53 @@ try:
 	#
 	# 	return datetime.astimezone(current_tzinfo).timestamp()
 	#
-		
+
 	def set_timezone(obj, tzinfo):
 		"""
 		Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
 		This will not convert the time (i.e. the hours will stay the same).
 		Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
-		
+
 		:param obj:
 		:type obj:
-		:param tzinfo: 
-		:type tzinfo: 
-		
+		:param tzinfo:
+		:type tzinfo:
+
 		:return:
-		:rtype: 
+		:rtype:
 		"""
-		
+
 		return obj.replace(tzinfo=tzinfo)
-		
-	
+
 	def utc_timestamp_to_datetime(utc_timestamp, output_tz=None):
 		"""
 		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object
-		
+
 		If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
 		and the local timezone is inferred and set for the object.
-	
+
 		If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.tzinfo` subclass,
 		and the timestamp is converted to ``output_tz``’s time zone.
-	
-		
+
+
 		:param utc_timestamp: The timestamp to convert to a datetime object
 		:type utc_timestamp: float, int
 		:param output_tz: The timezone to output the datetime object for.
 			If None it will be inferred.
 		:type output_tz: :class:`~python:datetime.tzinfo`
-		
+
 		:return: The timestamp as a datetime object.
 		:rtype: :class:`datetime.datetime`
-		
+
 		:raises: :class:`~python:OverflowError` if the timestamp is out of the range
 			of values supported by the platform C localtime() or gmtime() functions,
 			and OSError on localtime() or gmtime() failure. It’s common for this to
 			be restricted to years in 1970 through 2038.
 		"""
-		
+
 		new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
 		return new_datetime.astimezone(output_tz)
-	
-	
+
 	# List of months and their 3-character shortcodes.
 	months = OrderedDict(
 			Jan="January",
@@ -173,8 +168,7 @@ try:
 			Nov="November",
 			Dec="December",
 			)
-	
-	
+
 	def parse_month(month):
 		"""
 		Converts an integer or shorthand month into the full month name
@@ -185,7 +179,7 @@ try:
 		:return: The full name of the month
 		:rtype: str
 		"""
-		
+
 		try:
 			month = int(month)
 		except ValueError:
@@ -193,14 +187,13 @@ try:
 				return months[month.capitalize()[:3]]
 			except KeyError:
 				raise ValueError("Unrecognised month value")
-		
+
 		# Only get here if first try succeeded
 		if 0 < month <= 12:
 			return list(months.values())[month - 1]
 		else:
 			raise ValueError("Unrecognised month value")
-	
-	
+
 	def get_month_number(month):
 		"""
 		Returns the number of the given month. If ``month`` is already a
@@ -212,7 +205,7 @@ try:
 		:return: The number of the month
 		:rtype:
 		"""
-		
+
 		if isinstance(month, int):
 			if 0 < month <= 12:
 				return month
@@ -221,8 +214,7 @@ try:
 		else:
 			month = parse_month(month)
 			return list(months.values()).index(month) + 1
-	
-	
+
 	def check_date(month, day, leap_year=True):
 		"""
 		Returns ``True`` if the day number is valid for the given month.
@@ -239,12 +231,12 @@ try:
 		:return: ``True`` if the date is valid
 		:rtype: bool
 		"""
-		
+
 		# Ensure day is an integer
 		day = int(day)
 		month = get_month_number(month)
 		year = 2020 if leap_year else 2019
-		
+
 		try:
 			datetime.date(year, month, day)
 			return True

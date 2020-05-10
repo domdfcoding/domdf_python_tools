@@ -50,30 +50,30 @@ __all__ = [
 
 class BaseSize(namedtuple("__BaseSize", "width, height")):
 	__slots__ = []
-	
+
 	def __new__(cls, width, height):
 		return super().__new__(
 				cls,
 				_rounders(width, "0.000000"),
 				_rounders(height, "0.000000"),
 				)
-	
+
 	def __str__(self):
 		return f"{self.__class__.__name__}(width={_rounders(self.width, '0')}, height={_rounders(self.height, '0')})"
-	
+
 	@classmethod
 	def from_size(cls, size):
 		"""
-		
+
 		:param size:
 		:type size: Sequence
 
 		:return:
 		:rtype:
 		"""
-		
+
 		return cls(*size)
-	
+
 	def landscape(self):
 		"""
 		Returns the pagesize in landscape orientation
@@ -81,12 +81,12 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:return: The pagesize in the landscape orientation
 		:rtype: BaseSize
 		"""
-		
+
 		if self.is_portrait():
 			return self.__class__(self.height, self.width)
 		else:
 			return self
-	
+
 	def is_landscape(self):
 		"""
 		Returns whether the pagesize is in the landscape orientation
@@ -94,9 +94,9 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:return:
 		:rtype: bool
 		"""
-		
+
 		return self.width >= self.height
-	
+
 	def portrait(self):
 		"""
 		Returns the pagesize in portrait orientation
@@ -104,12 +104,12 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:return: The pagesize in the portrait orientation
 		:rtype: BaseSize
 		"""
-		
+
 		if self.is_landscape():
 			return self.__class__(self.height, self.width)
 		else:
 			return self
-	
+
 	def is_portrait(self):
 		"""
 		Returns whether the pagesize is in the portrait orientation
@@ -117,9 +117,9 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:return:
 		:rtype: bool
 		"""
-		
+
 		return self.width < self.height
-	
+
 	def is_square(self):
 		"""
 		Returns whether the given pagesize is square
@@ -127,33 +127,33 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:return:
 		:rtype:
 		"""
-		
+
 		return self.width == self.height
-	
+
 	_unit = pt
-	
+
 	@classmethod
 	def from_pt(cls, size):
 		"""
-		
+
 		:param size:
 		:type size: PageSize
-		
+
 		:return:
 		:rtype:
 		"""
-		
+
 		assert isinstance(size, PageSize)
-		
+
 		return cls(size.width / cls._unit, size.height / cls._unit)
 
 	def to_pt(self):
 		"""
-	
+
 		:return:
 		:rtype: PageSize
 		"""
-		
+
 		return PageSize(self.width * self._unit, self.height * self._unit)
 
 # TODO: conversion to Point for the __eq__ function in the below
@@ -161,7 +161,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 class Size_mm(BaseSize):
 	_unit = mm
-	
+
 
 class Size_inch(BaseSize):
 	_unit = inch
@@ -201,59 +201,59 @@ class Size_scaled_point(BaseSize):
 
 class PageSize(BaseSize):
 	__slots__ = []
-	
+
 	def __new__(cls, width, height, unit=pt):
 		width, height = convert_from((width, height), unit)
 		return super().__new__(cls, width, height)
-	
+
 	@property
 	def inch(self):
 		return Size_inch.from_pt(self)
-	
+
 	@property
 	def cm(self):
 		return Size_cm.from_pt(self)
-	
+
 	@property
 	def mm(self):
 		return Size_mm.from_pt(self)
-	
+
 	@property
 	def um(self):
 		return Size_um.from_pt(self)
-	
+
 	@property
 	def pc(self):
 		return Size_pica.from_pt(self)
-	
+
 	pica = pc
-	
+
 	@property
 	def dd(self):
 		return Size_didot.from_pt(self)
-	
+
 	didot = dd
-	
+
 	@property
 	def cc(self):
 		return Size_cicero.from_pt(self)
-	
+
 	cicero = cc
-	
+
 	@property
 	def nd(self):
 		return Size_new_didot.from_pt(self)
-	
+
 	new_didot = nd
-	
+
 	@property
 	def nc(self):
 		return Size_new_cicero.from_pt(self)
-	
+
 	new_cicero = nc
-	
+
 	@property
 	def sp(self):
 		return Size_scaled_point.from_pt(self)
-	
+
 	scaled_point = sp

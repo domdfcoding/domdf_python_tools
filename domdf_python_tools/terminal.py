@@ -75,29 +75,29 @@ import textwrap
 def clear():
 	"""
 	Clears the display
-	
+
 	Works for Windows and UNIX, but does not clear Python Interpreter
 	"""
-	
+
 	os.system('cls' if os.name == 'nt' else 'clear')
-	
+
 
 def br():
 	"""
 	Prints a line break
 	"""
-	
+
 	print("")
 
 
 def interrupt():
 	"""
 	Print what to do to abort the script; dynamic depending on OS.
-	
+
 	Useful when you have a long-running script that you might want to
 	interrupt part way through
 	"""
-	
+
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
 
 
@@ -105,7 +105,7 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	"""
 	Print ``objects`` to the text stream ``file``, starting with "\\r", separated by ``sep``
 	and followed by ``end``.
-	
+
 	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
 
 	All non-keyword arguments are converted to strings like ``str()`` does and written to the stream,
@@ -125,7 +125,7 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	:param flush: If true, the stream is forcibly flushed.
 	:type flush: bool
 	"""
-	
+
 	object0 = f"\r{objects[0]}"
 	objects = (object0, *objects[1:])
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
@@ -134,15 +134,15 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 def get_terminal_size():
 	"""
 	Get width and height of console
-	
+
 	Works on linux,os x,windows,cygwin(windows)
-	
+
 	Originally retrieved from: http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
-	
+
 	:return: tuple_xy
 	:rtype: (int, int)
 	"""
-	
+
 	current_os = platform.system()
 	tuple_xy = None
 	if current_os == 'Windows':
@@ -220,16 +220,16 @@ class Echo:
 	"""
 	Context manager for echoing variable assignments (in CPython)
 	"""
-	
+
 	def __init__(self, msg, indent='  '):
 		self.msg = msg
 		self.indent = indent
 		self.parent_frame = inspect.currentframe().f_back
-	
+
 	def __enter__(self):
 		print(self.msg)
 		self.locals_on_entry = self.parent_frame.f_locals.copy()
-	
+
 	def __exit__(self, exc_t, exc_v, tb):
 		new_locals = {k: v for k, v in self.parent_frame.f_locals.items() if k not in self.locals_on_entry}
 		print(textwrap.indent(pprint.pformat(new_locals), self.indent))
