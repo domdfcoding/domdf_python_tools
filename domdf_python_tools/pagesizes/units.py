@@ -56,9 +56,7 @@ class Unit(Decimal):
 pt = 1
 inch = Unit("72.0")
 cm = inch / Unit("2.54")
-print(cm)
 mm = cm * Unit("0.1")
-print(mm)
 um = mm * Unit("0.01")
 pc = pica = Unit("12.0")
 dd = didot = Unit("1.07")

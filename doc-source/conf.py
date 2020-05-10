@@ -12,22 +12,21 @@ sys.path.append(os.path.abspath('..'))
 
 from sphinx.locale import _
 
-from domdf_python_tools import __author__, __version__, __copyright__
-from __pkginfo__ import github_username, modname
+from domdf_python_tools import __copyright__
 
-github_url = f"https://github.com/{github_username}/{modname}"
 
-rst_prolog = f""".. |pkgname| replace:: {modname}
-.. |pkgname2| replace:: ``{modname}``
+github_url = f"https://github.com/domdfcoding/domdf_python_tools"
+
+rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
+.. |pkgname2| replace:: ``domdf_python_tools``
 .. |browse_github| replace:: `Browse the GitHub Repository <{github_url}>`__
 .. |ghurl| replace:: {github_url}
 """
 
-project = modname
+author = "Dominic Davis-Foster"
+project = "domdf_python_tools"
 slug = re.sub(r'\W+', '-', project.lower())
-version = __version__
-release = __version__
-author = __author__
+version = release = "0.3.1"
 copyright = __copyright__
 language = 'en'
 
@@ -37,6 +36,7 @@ extensions = [
 		'sphinx.ext.mathjax',
 		'sphinx.ext.viewcode',
 		'sphinxcontrib.httpdomain',
+		
 		]
 
 templates_path = ['_templates']
@@ -52,6 +52,7 @@ intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
 		'sphinx': ('http://www.sphinx-doc.org/en/stable/', None),
 		'python': ('https://docs.python.org/3/', None),
+		
 		}
 
 html_theme = 'sphinx_rtd_theme'

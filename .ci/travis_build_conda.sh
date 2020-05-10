@@ -16,9 +16,11 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
   conda install conda-build
   conda install anaconda-client
   conda info -a
+  
   conda config --add channels domdfcoding || exit 1
+  
   conda config --add channels conda-forge || exit 1
-
+  
   conda build conda --output-folder conda/dist
 
   for f in conda/dist/noarch/domdf_python_tools-*.tar.bz2; do

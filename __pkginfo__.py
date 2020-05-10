@@ -48,26 +48,22 @@ long_description = (repo_root / "README.rst").read_text() + '\n'
 conda_description = """Helpful functions for Python
 
 
-Before installing please ensure you have added the "conda-forge" channel.
-"""
+Before installing please ensure you have added the "conda-forge" channel. """
 install_requires = (repo_root / "requirements.txt").read_text().split('\n')
-extras_require = {"dates": ["pytz>=2019.1"]}
+extras_require = {'dates': ['pytz>=2019.1']}
 
 classifiers = [
 		'Development Status :: 4 - Beta',
-		# "Development Status :: 4 - Beta",
-		# "Development Status :: 5 - Production/Stable",
-		# "Development Status :: 6 - Mature",
-		# "Development Status :: 7 - Inactive",
 		'Intended Audience :: Developers',
-		"License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+		'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
 		'Operating System :: OS Independent',
 		'Programming Language :: Python',
 		'Programming Language :: Python :: 3.6',
 		'Programming Language :: Python :: 3.7',
 		'Programming Language :: Python :: 3.8',
-		"Programming Language :: Python :: 3 :: Only",
-		"Programming Language :: Python :: Implementation :: CPython",
-		"Programming Language :: Python :: Implementation :: PyPy",
+		'Programming Language :: Python :: 3 :: Only',
+		'Programming Language :: Python :: Implementation :: CPython',
+		'Programming Language :: Python :: Implementation :: PyPy',
 		'Topic :: Software Development :: Libraries :: Python Modules',
+		
 		]

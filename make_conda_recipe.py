@@ -65,7 +65,7 @@ requirements:
 
 test:
   imports:
-    - domdf_python_tools
+    - {modname}
 
 about:
   home: "{web}"
@@ -80,7 +80,7 @@ about:
 extra:
   maintainers:
     - {author}
-    - github.com/domdfcoding
+    - github.com/{{ username }}
 
 """)
 
