@@ -110,7 +110,7 @@ def test_permutations():
 			('egg and spam', 'egg sausage and bacon', 'egg bacon and spam')]
 	assert utils.permutations(data, 4) == [
 			('egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
-			('egg and bacon',  'egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
+			('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
 			('egg and bacon', 'egg and spam', 'egg sausage and bacon', 'egg bacon and spam'),
 			('egg and bacon', 'egg and spam', 'egg bacon and spam', 'egg sausage and bacon'),
 			('egg and bacon', 'egg bacon and spam', 'egg sausage and bacon', 'egg and spam'),
