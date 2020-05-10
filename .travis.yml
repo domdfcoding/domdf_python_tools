@@ -1,3 +1,5 @@
+# This file is managed by `git_helper`. Don't edit it directly
+
 language: python
 dist: xenial
 python:
@@ -5,12 +7,15 @@ python:
   - '3.7'
   - '3.8'
   - 'pypy3'
-
+  
 install:
   - sudo apt-get update
-  - pip install coveralls tox tox-travis rst2txt []
+  
+  - pip install rst2txt 
+  - pip install coveralls tox tox-travis
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
+  
 script:
   - tox
 after_success:

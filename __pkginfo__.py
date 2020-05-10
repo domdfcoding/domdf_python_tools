@@ -1,3 +1,4 @@
+# This file is managed by `git_helper`. Don't edit it directly
 # Copyright (C) 2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  This program is free software: you can redistribute it and/or modify
@@ -34,9 +35,9 @@ short_desc = 'Helpful functions for Python'
 author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
 github_username = "domdfcoding"
-web = github_url = f"https://github.com/{github_username}/{modname}"
+web = github_url = f"https://github.com/domdfcoding/domdf_python_tools"
 project_urls = {
-		"Documentation": f"https://{modname}.readthedocs.io",  # TODO: Make this link match the package version
+		"Documentation": f"https://domdf_python_tools.readthedocs.io",  # TODO: Make this link match the package version
 		"Issue Tracker": f"{github_url}/issues",
 		"Source Code": github_url,
 		}

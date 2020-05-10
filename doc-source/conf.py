@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#### No need to change anything in this file ####
+# This file is managed by `git_helper`. Don't edit it directly
 
 import os
 import re
@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath('..'))
 
 from sphinx.locale import _
 
-from domdf_python_tools import __copyright__
+from __pkginfo__ import VERSION
 
 
 github_url = f"https://github.com/domdfcoding/domdf_python_tools"
@@ -26,8 +26,8 @@ rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
 author = "Dominic Davis-Foster"
 project = "domdf_python_tools"
 slug = re.sub(r'\W+', '-', project.lower())
-version = release = "0.3.1"
-copyright = __copyright__
+release = version = VERSION
+copyright = "Copyright 2019-2020 Dominic Davis-Foster"
 language = 'en'
 
 extensions = [

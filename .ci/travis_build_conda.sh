@@ -1,4 +1,5 @@
 #!/bin/bash
+# This file is managed by `git_helper`. Don't edit it directly
 
 set -e -x
 
