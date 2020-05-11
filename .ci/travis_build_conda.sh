@@ -4,7 +4,7 @@
 set -e -x
 
 if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
-  if [ -z "$TRAVIS_TAG" ]; then
+  if [ -z "$TRAVIS_TAG" ] and [ $TRAVIS_COMMIT_MESSAGE != "Bump Version*" ]; then
 
     python3 ./make_conda_recipe.py || exit 1
 
