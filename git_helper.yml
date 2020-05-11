@@ -54,12 +54,7 @@ username: "domdfcoding"
 license: 'LGPLv3+'
 short_desc: 'Helpful functions for Python'
 
-conda_description: "Helpful functions for Python
-
-
-
-Before installing please ensure you have added the \"conda-forge\" channel.
-"
+conda_description: "Helpful functions for Python"
 
 classifiers:
   - 'Development Status :: 4 - Beta'

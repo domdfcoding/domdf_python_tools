@@ -27,7 +27,7 @@ if isinstance(extras_require, dict):
 		all_requirements += requires
 
 all_requirements = set(x.replace(" ", '') for x in set(all_requirements))
-requirements_block = "\n".join(f"    - {req}" for req in all_requirements)
+requirements_block = "\n".join(f"    - {req}" for req in all_requirements if req)
 
 # txt_readme = publish_file(source=StringIO(long_description), writer=rst2txt.Writer())
 # description_block = "\n".join([line.replace('"', '\\"') for line in txt_readme.split("\n")])
@@ -82,7 +82,7 @@ about:
 extra:
   maintainers:
     - {author}
-    - github.com/{{ username }}
+    - github.com/domdfcoding
 
 """)
 

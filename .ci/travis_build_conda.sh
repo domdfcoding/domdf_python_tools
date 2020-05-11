@@ -22,7 +22,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
     
     conda config --add channels conda-forge || exit 1
     
-    conda build conda --output-folder conda/dist --skip-existing
+    conda build conda -c domdfcoding -c conda-forge --output-folder conda/dist --skip-existing
 
     for f in conda/dist/noarch/domdf_python_tools-*.tar.bz2; do
       [ -e "$f" ] || continue
