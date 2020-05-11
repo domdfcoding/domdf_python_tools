@@ -5,13 +5,23 @@ set -e -x
 
 if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
 
+  python3 ./make_conda_recipe.py || exit 1
+
   # Switch to miniconda
   source "$HOME/miniconda/etc/profile.d/conda.sh"
   hash -r
   conda activate base
   conda config --set always_yes yes --set changeps1 no
+  conda update -q conda
+  conda install conda-build
   conda install anaconda-client
   conda info -a
+  
+  conda config --add channels domdfcoding || exit 1
+  
+  conda config --add channels conda-forge || exit 1
+  
+  conda build conda --output-folder conda/dist
 
   for f in conda/dist/noarch/domdf_python_tools-*.tar.bz2; do
     echo "$f"

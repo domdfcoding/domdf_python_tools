@@ -2,9 +2,11 @@
 domdf_python_tools
 **********************
 
+.. start shields
+
 .. image:: https://img.shields.io/travis/com/domdfcoding/domdf_python_tools/master?logo=travis
     :target: https://travis-ci.com/domdfcoding/domdf_python_tools
-    :alt: Build Status
+    :alt: Travis Build Status
 .. image:: https://readthedocs.org/projects/domdf_python_tools/badge/?version=latest
     :target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
@@ -21,8 +23,12 @@ domdf_python_tools
     :target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
     :alt: Coverage
 .. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
-    :alt: PyPI - License
+    :alt: License
     :target: https://github.com/domdfcoding/domdf_python_tools/blob/master/LICENSE
+.. image:: https://img.shields.io/github/languages/top/domdfcoding/domdf_python_tools
+    :alt: GitHub top language
+
+.. end shields
 
 
 

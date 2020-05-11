@@ -13,23 +13,23 @@ declare -a warnings=(
   E703 E711 E712 E713 E714 E721 W503 W504
   )
 
-if [ -z "$(git status --porcelain --untracked-files=no)" ] || [ $1 == "-f" ]; then
+if [ -z "$(git status --porcelain --untracked-files=no)" ] || [ "$1" == "-f" ]; then
   # Working directory clean
 
   for error in "${errors[@]}"
   do
     echo "Correcting $error"
     autopep8 --in-place --select "$error" -a --recursive domdf_python_tools/
-    flake8 --select "$error" domdf_python_tools/
+    >&2 flake8 --select "$error" domdf_python_tools/
     autopep8 --in-place --select "$error" -a --recursive tests/
-    flake8 --select "$error" tests/
+    >&2 flake8 --select "$error" tests/
 
   done
 
   for warning in "${warnings[@]}"; do
     echo "Searching for $warning"
-    flake8 --select "$warning" domdf_python_tools/
-    flake8 --select "$warning" tests/
+    >&2 flake8 --select "$warning" domdf_python_tools/
+    >&2 flake8 --select "$warning" tests/
   done
 
   exit 0
