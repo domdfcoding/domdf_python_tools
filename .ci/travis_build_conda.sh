@@ -25,6 +25,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
     conda build conda --output-folder conda/dist --skip-existing
 
     for f in conda/dist/noarch/domdf_python_tools-*.tar.bz2; do
+      [ -e "$f" ] || continue
       echo "$f"
       conda install $f || exit 1
       echo "Deploying to Anaconda.org..."
