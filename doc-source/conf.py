@@ -36,7 +36,7 @@ extensions = [
 		'sphinx.ext.mathjax',
 		'sphinx.ext.viewcode',
 		'sphinxcontrib.httpdomain',
-		
+
 		]
 
 templates_path = ['_templates']
@@ -52,7 +52,7 @@ intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
 		'sphinx': ('http://www.sphinx-doc.org/en/stable/', None),
 		'python': ('https://docs.python.org/3/', None),
-		
+
 		}
 
 html_theme = 'sphinx_rtd_theme'
@@ -91,7 +91,7 @@ texinfo_documents = [
 def setup(app):
 	from sphinx.domains.python import PyField
 	from sphinx.util.docfields import Field
-	
+
 	app.add_object_type(
 			'confval',
 			'confval',
@@ -113,3 +113,5 @@ def setup(app):
 							),
 					]
 			)
+
+

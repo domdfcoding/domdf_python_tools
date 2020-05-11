@@ -7,15 +7,15 @@ python:
   - '3.7'
   - '3.8'
   - 'pypy3'
-  
+
 install:
   - sudo apt-get update
-  
-  - pip install rst2txt yolk3k 
+
+  - pip install rst2txt yolk3k
   - pip install coveralls tox tox-travis
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
-  
+
 script:
   - tox
 after_success:
