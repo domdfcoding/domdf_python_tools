@@ -34,6 +34,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
 
   else
     echo "Deferring building conda package because this is not a tagged commit"
+  fi
 else
   echo "Skipping building conda package because this is not the required runtime"
 fi
