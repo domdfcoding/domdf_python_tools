@@ -28,6 +28,3 @@ INSUFFICIENT INFO WILL GET THE ISSUE CLOSED. IT WILL ONLY BE REOPENED AFTER SUFF
 
 ## Other Additional Information:
 <!--Any additional information, related issues, etc.-->
-
-
-

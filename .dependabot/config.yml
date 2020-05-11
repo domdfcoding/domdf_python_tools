@@ -7,4 +7,3 @@ update_configs:
     update_schedule: "weekly"
     default_reviewers:
       - "domdfcoding"
-
