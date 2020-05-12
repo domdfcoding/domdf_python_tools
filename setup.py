@@ -15,7 +15,7 @@ setup(
 		extras_require=extras_require,
 		include_package_data=True,
 		install_requires=install_requires,
-		license=license,
+		license=__license__,
 		long_description=long_description,
 		name=modname,
 		packages=find_packages(exclude=("tests", "doc-source")),
@@ -23,7 +23,7 @@ setup(
 		py_modules=py_modules,
 		python_requires=">=3.6",
 		url=web,
-		version=VERSION,
+		version=__version__,
 		keywords=keywords,
 
 		)

@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath('..'))
 
 from sphinx.locale import _
 
-from __pkginfo__ import VERSION
+from __pkginfo__ import __version__
 
 
 github_url = f"https://github.com/domdfcoding/domdf_python_tools"
@@ -26,7 +26,7 @@ rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
 author = "Dominic Davis-Foster"
 project = "domdf_python_tools"
 slug = re.sub(r'\W+', '-', project.lower())
-release = version = VERSION
+release = version = __version__
 copyright = "Copyright 2019-2020 Dominic Davis-Foster"
 language = 'en'
 

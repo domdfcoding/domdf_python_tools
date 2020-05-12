@@ -4,7 +4,7 @@
 set -e -x
 
 if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
-  if [ -z "$TRAVIS_TAG" ] and [ $TRAVIS_COMMIT_MESSAGE != "Bump Version*" ]; then
+  if [ -z "$TRAVIS_TAG" ] && [ "$TRAVIS_COMMIT_MESSAGE" != "Bump Version*" ]; then
 
     python3 ./make_conda_recipe.py || exit 1
 
@@ -34,7 +34,7 @@ if [ $TRAVIS_PYTHON_VERSION == 3.6 ]; then
     done
 
   else
-    echo "Deferring building conda package because this is not a tagged commit"
+    echo "Deferring building conda package because this is a tagged commit or a release"
   fi
 else
   echo "Skipping building conda package because this is not the required runtime"

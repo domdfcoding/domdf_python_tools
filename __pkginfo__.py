@@ -18,19 +18,41 @@
 
 import pathlib
 
-copyright = """
+__all__ = [
+		"__copyright__",
+		"__version__",
+		"modname",
+		"py_modules",
+		"entry_points",
+		"__license__",
+		"short_desc",
+		"author",
+		"author_email",
+		"github_username",
+		"web",
+		"github_url",
+		"project_urls",
+		"repo_root",
+		"long_description",
+		"install_requires",
+		"extras_require",
+		"classifiers",
+		"keywords",
+		]
+
+__copyright__ = """
 2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 """
 
-VERSION = "0.3.1"
+__version__ = "0.3.1"
 
 modname = "domdf_python_tools"
 py_modules = []
 entry_points = None
 
-license = 'LGPLv3+'
+__license__ = "GNU Lesser General Public License v3 or later (LGPLv3+)"
 
-short_desc = 'Helpful functions for Python'
+short_desc = "Helpful functions for Python"
 
 author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
@@ -45,11 +67,13 @@ project_urls = {
 repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
-long_description = (repo_root / "README.rst").read_text() + '\n'
+long_description = (repo_root / "README.rst").read_text().replace("0.3.1", __version__) + '\n'
 conda_description = """Helpful functions for Python
 
 
 Before installing please ensure you have added the following channels: domdfcoding, conda-forge"""
+__all__.append("conda_description")
+
 install_requires = (repo_root / "requirements.txt").read_text().split('\n')
 extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 
@@ -66,6 +90,7 @@ classifiers = [
 		'Programming Language :: Python :: Implementation :: CPython',
 		'Programming Language :: Python :: Implementation :: PyPy',
 		'Topic :: Software Development :: Libraries :: Python Modules',
+		'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
 
 		]
 
