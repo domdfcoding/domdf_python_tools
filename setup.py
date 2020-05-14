@@ -17,7 +17,7 @@ setup(
 		install_requires=install_requires,
 		license=__license__,
 		long_description=long_description,
-		name=modname,
+		name=pypi_name,
 		packages=find_packages(exclude=("tests", "doc-source")),
 		project_urls=project_urls,
 		py_modules=py_modules,

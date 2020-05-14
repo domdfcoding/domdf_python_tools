@@ -31,7 +31,7 @@ requirements_block = "\n".join(f"    - {req}" for req in all_requirements if req
 description_block = conda_description.replace('"', '\\"')
 
 with open(recipe_dir / "meta.yaml", "w") as fp:
-	fp.write(f"""{{% set name = "{modname}" %}}
+	fp.write(f"""{{% set name = "{pypi_name}" %}}
 {{% set version = "{__version__}" %}}
 
 package:
@@ -43,7 +43,7 @@ source:
 
 build:
 #  entry_points:
-#    - {modname} = {modname}:main
+#    - {import_name} = {import_name}:main
 #  skip_compile_pyc:
 #    - "*/templates/*.py"          # These should not (and cannot) be compiled
   noarch: python
@@ -64,7 +64,7 @@ requirements:
 
 test:
   imports:
-    - {modname}
+    - {import_name}
 
 about:
   home: "{web}"

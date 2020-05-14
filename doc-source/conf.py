@@ -15,6 +15,7 @@ from sphinx.locale import _
 from __pkginfo__ import __version__
 
 
+
 github_url = f"https://github.com/domdfcoding/domdf_python_tools"
 
 rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
@@ -52,12 +53,21 @@ intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
 		'sphinx': ('http://www.sphinx-doc.org/en/stable/', None),
 		'python': ('https://docs.python.org/3/', None),
+		"NumPy": ('https://docs.scipy.org/doc/numpy/', None),
+		"SciPy": ('https://docs.scipy.org/doc/scipy/reference', None),
+		"matplotlib": ('https://matplotlib.org', None),
+		"h5py": ('https://docs.h5py.org/en/latest/', None),
+		"Sphinx": ('https://www.sphinx-doc.org/en/stable/', None),
+		"Django": ('https://docs.djangoproject.com/en/dev/', 'https://docs.djangoproject.com/en/dev/_objects/'),
+		"sarge": ('https://sarge.readthedocs.io/en/latest/', None),
+		"attrs": ('https://www.attrs.org/en/stable/', None),
 
 		}
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
 		'logo_only': False,  # True will show just the logo
+
 		}
 html_theme_path = ["../.."]
 # html_logo = "logo/pyms.png"

@@ -1,3 +1,4 @@
-sphinxcontrib-httpdomain
+pytz >=2019.1
 sphinx
-pytz >= 2019.1
+sphinx_rtd_theme
+sphinxcontrib-httpdomain

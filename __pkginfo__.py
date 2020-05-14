@@ -22,6 +22,7 @@ __all__ = [
 		"__copyright__",
 		"__version__",
 		"modname",
+		"pypi_name",
 		"py_modules",
 		"entry_points",
 		"__license__",
@@ -38,6 +39,7 @@ __all__ = [
 		"extras_require",
 		"classifiers",
 		"keywords",
+		"import_name",
 		]
 
 __copyright__ = """
@@ -47,14 +49,18 @@ __copyright__ = """
 __version__ = "0.3.1"
 
 modname = "domdf_python_tools"
+pypi_name = "domdf_python_tools"
+import_name = "domdf_python_tools"
 py_modules = []
-entry_points = None
+entry_points = {
+		"console_scripts": []
+		}
 
 __license__ = "GNU Lesser General Public License v3 or later (LGPLv3+)"
 
 short_desc = "Helpful functions for Python"
 
-author = "Dominic Davis-Foster"
+__author__ = author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
 github_username = "domdfcoding"
 web = github_url = f"https://github.com/domdfcoding/domdf_python_tools"
@@ -80,16 +86,15 @@ extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 classifiers = [
 		'Development Status :: 4 - Beta',
 		'Intended Audience :: Developers',
-		'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
 		'Operating System :: OS Independent',
 		'Programming Language :: Python',
+		'Programming Language :: Python :: 3 :: Only',
+		'Topic :: Software Development :: Libraries :: Python Modules',
 		'Programming Language :: Python :: 3.6',
+		'Programming Language :: Python :: Implementation :: CPython',
 		'Programming Language :: Python :: 3.7',
 		'Programming Language :: Python :: 3.8',
-		'Programming Language :: Python :: 3 :: Only',
-		'Programming Language :: Python :: Implementation :: CPython',
 		'Programming Language :: Python :: Implementation :: PyPy',
-		'Topic :: Software Development :: Libraries :: Python Modules',
 		'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
 
 		]
