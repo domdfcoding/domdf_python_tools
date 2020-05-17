@@ -32,8 +32,6 @@ jobs:
   include:
     - stage: deploy_pypi
       python: "3.6"
-      install: skip
-      script: skip
       deploy:
         on:
           tags: true
@@ -46,7 +44,6 @@ jobs:
         skip_existing: true
     - stage: deploy_conda
       python: "3.6"
-      install: skip
       script: skip
       deploy:
         on:
