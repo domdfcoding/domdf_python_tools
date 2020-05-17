@@ -159,7 +159,6 @@ def partially_documented_function(a, b, c, d):
 	"""
 	This function works like documented function except it returns the result telepathically.
 	"""
-	pass
 
 
 class DummyClass:
@@ -226,12 +225,8 @@ def test_append_doctring_from_another():
 	def funB():
 		"""Hello"""
 
-		pass
-
 	def funC():
 		"""World"""
-
-		pass
 
 	assert funB.__doc__ == "Hello"
 	assert funC.__doc__ == "World"

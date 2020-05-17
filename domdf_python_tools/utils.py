@@ -179,7 +179,6 @@ def permutations(data, n=2):
 
 	perms = []
 	for i in itertools.permutations(data, n):
-		"""from https://stackoverflow.com/questions/10201977/how-to-reverse-tuples-in-python"""
 		if i[::-1] not in perms:
 			perms.append(i)
 	return perms
