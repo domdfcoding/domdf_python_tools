@@ -30,6 +30,7 @@ jobs:
   include:
     - stage: deploy_pypi
       python: "3.6"
+      script: skip
       deploy:
         on:
           tags: true
