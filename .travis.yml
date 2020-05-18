@@ -11,12 +11,8 @@ python:
 install:
   - sudo apt-get update
 
-  - pip install rst2txt yolk3k
-  - pip install PyGithub requests
+  - pip install pip  --upgrade
   - pip install coveralls tox tox-travis
-  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - chmod +x .ci/travis_deploy_conda.sh
 
 script:
   - tox
@@ -46,6 +42,12 @@ jobs:
         skip_existing: true
     - stage: deploy_conda
       python: "3.6"
+      install:
+        - sudo apt-get update
+        - pip install rst2txt yolk3k
+        - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+        - bash miniconda.sh -b -p $HOME/miniconda
+        - chmod +x .ci/travis_deploy_conda.sh
       script: skip
       deploy:
         on:
@@ -55,6 +57,8 @@ jobs:
 
     - stage: deploy_releases
       python: "3.6"
+      install:
+        - pip install PyGithub requests
       script: skip
       deploy:
         on:
