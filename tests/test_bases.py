@@ -44,6 +44,7 @@ class Child(Person):
 		class_dict["School"] = self.school
 		return class_dict
 
+
 @pytest.fixture(scope="function")
 def alice():
 	return Person("Alice", 20, "IRC Lurker")
