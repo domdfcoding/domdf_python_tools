@@ -25,6 +25,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.egg*
+
 MANIFEST
 
 # PyInstaller
@@ -48,6 +50,8 @@ coverage.xml
 *.cover
 .hypothesis/
 .pytest_cache/
+cover/
+.coverage*
 
 # Translations
 *.mo
@@ -67,6 +71,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+doc/build
 
 # PyBuilder
 target/

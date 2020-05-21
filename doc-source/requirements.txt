@@ -1,4 +1,6 @@
+extras_require
 pytz >=2019.1
 sphinx
 sphinx_rtd_theme
 sphinxcontrib-httpdomain
+sphinxemoji

@@ -36,7 +36,7 @@ domdf_python_tools
     :target: https://github.com/domdfcoding/domdf_python_tools/blob/master/LICENSE
 .. image:: https://img.shields.io/github/languages/top/domdfcoding/domdf_python_tools
     :alt: GitHub top language
-.. image:: https://img.shields.io/github/commits-since/domdfcoding/domdf_python_tools/v0.3.1
+.. image:: https://img.shields.io/github/commits-since/domdfcoding/domdf_python_tools/v0.3.2
     :target: https://github.com/domdfcoding/domdf_python_tools/pulse
     :alt: GitHub commits since tagged version
 .. image:: https://img.shields.io/github/last-commit/domdfcoding/domdf_python_tools

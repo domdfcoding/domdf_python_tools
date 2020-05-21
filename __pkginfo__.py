@@ -46,7 +46,7 @@ __copyright__ = """
 2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 """
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 
 modname = "domdf_python_tools"
 pypi_name = "domdf_python_tools"
@@ -73,7 +73,7 @@ project_urls = {
 repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
-long_description = (repo_root / "README.rst").read_text().replace("0.3.1", __version__) + '\n'
+long_description = (repo_root / "README.rst").read_text().replace("0.3.2", __version__) + '\n'
 conda_description = """Helpful functions for Python
 
 

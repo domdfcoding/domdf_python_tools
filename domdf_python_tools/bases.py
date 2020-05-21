@@ -47,28 +47,29 @@ class Dictable(ABC):
 		return self.__repr__()
 
 	def __iter__(self):
-		for key, value in self.__dict__().items():
+		for key, value in self.__dict__.items():
 			yield key, value
 
 	def __getstate__(self):
-		return self.__dict__()
+		return self.__dict__
 
 	def __setstate__(self, state):
 		self.__init__(**state)
 
 	def __copy__(self):
-		return self.__class__(**self.__dict__())
+		return self.__class__(**self.__dict__)
 
 	def __deepcopy__(self, memodict={}):
 		return self.__copy__()
 
+	@property
 	@abstractmethod
 	def __dict__(self):
 		return dict()
 
 	def __eq__(self, other):
 		if isinstance(other, self.__class__):
-			return pydash.predicates.is_match(other.__dict__(), self.__dict__())
+			return pydash.predicates.is_match(other.__dict__, self.__dict__)
 
 		return NotImplemented
 
