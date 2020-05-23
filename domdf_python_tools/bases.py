@@ -36,7 +36,7 @@ import pydash
 
 class Dictable(ABC):
 	"""
-	The basic structure of a class than can be converted into a dictionary
+	The basic structure of a class that can be converted into a dictionary
 	"""
 
 	@abstractmethod
