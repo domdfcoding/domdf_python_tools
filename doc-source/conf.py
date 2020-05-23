@@ -27,7 +27,7 @@ author = "Dominic Davis-Foster"
 project = "domdf_python_tools"
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = __version__
-copyright = "Copyright 2019-2020 Dominic Davis-Foster"
+copyright = "2019-2020 Dominic Davis-Foster"
 language = 'en'
 package_root = "domdf_python_tools"
 
@@ -39,7 +39,8 @@ extensions = [
 		'sphinxcontrib.httpdomain',
 		"sphinxcontrib.extras_require",
 		"sphinx.ext.todo",
-		"sphinxemoji.sphinxemojii",
+		"sphinxemoji.sphinxemoji",
+		"sphinx_autodoc_typehints",
 
 		]
 
