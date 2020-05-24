@@ -58,7 +58,7 @@ pygments_style = 'default'
 
 intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
-		'sphinx': ('http://www.sphinx-doc.org/en/stable/', None),
+		'sphinx': ('https://www.sphinx-doc.org/en/stable/', None),
 		'python': ('https://docs.python.org/3/', None),
 		"NumPy": ('https://numpy.org/doc/stable/', None),
 		"SciPy": ('https://docs.scipy.org/doc/scipy/reference', None),
