@@ -1,7 +1,7 @@
 extras_require
 pytz >=2019.1
 sphinx >=3.0.3
-sphinx-autodoc-typehints
+sphinx-autodoc-typehints >=1.10.3
 sphinx_rtd_theme >=0.4.3
 sphinxcontrib-httpdomain >=1.7.0
 sphinxemoji >=0.1.5

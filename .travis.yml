@@ -56,7 +56,7 @@ jobs:
         on:
           repo: domdfcoding/domdf_python_tools
         provider: script
-        script: .ci/travis_deploy_conda.sh || travis_terminate 1;
+        script: .ci/travis_deploy_conda.sh || travis_terminate 1
 
     - stage: deploy_releases
       python: "3.6"
@@ -67,4 +67,4 @@ jobs:
         on:
           repo: domdfcoding/domdf_python_tools
         provider: script
-        script: python .ci/copy_pypi_2_github.py || travis_terminate 1;
+        script: python .ci/copy_pypi_2_github.py || travis_terminate 1

@@ -41,7 +41,6 @@ extensions = [
 		"sphinx.ext.todo",
 		"sphinxemoji.sphinxemoji",
 		"sphinx_autodoc_typehints",
-
 		]
 
 sphinxemoji_style = 'twemoji'
@@ -68,7 +67,6 @@ intersphinx_mapping = {
 		"Django": ('https://docs.djangoproject.com/en/dev/', 'https://docs.djangoproject.com/en/dev/_objects/'),
 		"sarge": ('https://sarge.readthedocs.io/en/latest/', None),
 		"attrs": ('https://www.attrs.org/en/stable/', None),
-
 		}
 
 html_theme = 'sphinx_rtd_theme'
@@ -92,7 +90,7 @@ html_context = {
 htmlhelp_basename = slug
 
 latex_documents = [
-		('index', '{0}.tex'.format(slug), project, author, 'manual'),
+		('index', f'{slug}.tex', project, author, 'manual'),
 		]
 
 man_pages = [
