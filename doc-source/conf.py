@@ -71,20 +71,18 @@ intersphinx_mapping = {
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
-		'logo_only': False,  # True will show just the logo
-
+		'logo_only': False,
 		}
 html_theme_path = ["../.."]
 # html_logo = "logo/pyms.png"
 html_show_sourcelink = False  # True will show link to source
 
 html_context = {
-		# Github Settings
-		"display_github": True,  # Integrate GitHub
-		"github_user": "domdfcoding",  # Username
-		"github_repo": "domdf_python_tools",  # Repo name
-		"github_version": "master",  # Version
-		"conf_py_path": "/",  # Path in the checkout to the docs root
+		'display_github': True,
+		'github_user': 'domdfcoding',
+		'github_repo': 'domdf_python_tools',
+		'github_version': 'master',
+		'conf_py_path': '/',
 		}
 
 htmlhelp_basename = slug
