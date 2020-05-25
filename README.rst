@@ -2,7 +2,7 @@
 domdf_python_tools
 **********************
 
-.. start shields
+.. start shields 
 
 .. list-table::
 	:stub-columns: 1
