@@ -37,7 +37,7 @@ class Cafe:
 		:return:
 		:rtype:
 		"""
-		return [self._dish1, self._dish2, self._dish3, self._dish4, ]
+		return [self._dish1, self._dish2, self._dish3, self._dish4]
 
 	@property
 	def opening_hours(self):
@@ -95,7 +95,8 @@ class SpamCafe(Cafe):
 				"Lobster Thermidor au Crevette with a Mornay "
 				"sauce served in a Provencale manner with "
 				"shallots and aubergines garnished with truffle "
-				"pate, brandy and with a fried egg on top and spam.")
+				"pate, brandy and with a fried egg on top and spam."
+				)
 
 	@doctools.is_documented_by(Cafe.menu)
 	@property
@@ -188,21 +189,22 @@ def test_decorators():
 
 	# set_opening_hours and ceil should have extra text at the beginning
 	assert SpamCafe.set_opening_hours.__doc__.startswith("\nI will not buy this record, it is scratched.")
-	assert doctools.deindent_string(SpamCafe.set_opening_hours.__doc__).endswith(
-			doctools.deindent_string(Cafe.set_opening_hours.__doc__))
+	assert doctools.deindent_string(SpamCafe.set_opening_hours.__doc__
+									).endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
 	# Deindented both strings to be sure of equivalence
 	assert SpamCafe.ceil.__doc__.startswith(
-			"\nI don't know why the cafe has a ceil function, but we'd better document it properly.")
-	assert doctools.deindent_string(SpamCafe.ceil.__doc__).endswith(
-			doctools.deindent_string(math.ceil.__doc__))
+			"\nI don't know why the cafe has a ceil function, but we'd better document it properly."
+			)
+	assert doctools.deindent_string(SpamCafe.ceil.__doc__).endswith(doctools.deindent_string(math.ceil.__doc__))
 	# Deindented both strings to be sure of equivalence
 
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
 	assert partially_documented_function.__doc__.startswith(
-			"\nThis function works like documented function except it returns the result telepathically.")
-	assert doctools.deindent_string(partially_documented_function.__doc__).endswith(
-			doctools.deindent_string(documented_function.__doc__))
+			"\nThis function works like documented function except it returns the result telepathically."
+			)
+	assert doctools.deindent_string(partially_documented_function.__doc__
+									).endswith(doctools.deindent_string(documented_function.__doc__))
 	# Deindented both strings to be sure of equivalence
 	assert DummyClass.function_in_class_with_same_args.__doc__ == documented_function.__doc__
 

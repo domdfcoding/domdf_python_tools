@@ -34,16 +34,24 @@ Tools for working with pagesizes
 #  MA 02110-1301, USA.
 #
 
-
 import re
 from collections.abc import Sequence
 from decimal import Decimal, ROUND_HALF_UP
 from numbers import Number
 
 from .units import (
-	cc, cm, dd, inch, mm, nc, nd, pc, pica, sp,
-	um,
-	)
+		cc,
+		cm,
+		dd,
+		inch,
+		mm,
+		nc,
+		nd,
+		pc,
+		pica,
+		sp,
+		um,
+		)
 
 __all__ = ["convert_from", "parse_measurement"]
 

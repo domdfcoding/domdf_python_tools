@@ -16,6 +16,7 @@ from domdf_python_tools.bases import Dictable
 
 
 class Person(Dictable):
+
 	def __init__(self, name, age, occupation=None):
 		super().__init__()
 
@@ -33,6 +34,7 @@ class Person(Dictable):
 
 
 class Child(Person):
+
 	def __init__(self, name, age, school):
 		super().__init__(name, age, "Student")
 
@@ -51,6 +53,7 @@ def alice():
 
 
 class TestDictable:
+
 	def test_creation(self, alice):
 		assert alice.name == "Alice"
 		assert alice.age == 20
@@ -87,6 +90,3 @@ class TestDictable:
 		child = Child("Bob", 12, "Big School")
 		assert person == child
 		assert "School" not in person.__dict__
-
-
-

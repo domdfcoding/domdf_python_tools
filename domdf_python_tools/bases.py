@@ -24,7 +24,6 @@ Useful base classes
 #  MA 02110-1301, USA.
 #
 
-
 # stdlib
 from abc import ABC, abstractmethod
 from collections import UserList

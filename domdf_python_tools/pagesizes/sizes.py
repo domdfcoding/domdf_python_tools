@@ -34,9 +34,7 @@ List of common pagesizes in point/pt
 #  MA 02110-1301, USA.
 #
 
-
 from .classes import Size_inch, Size_mm
-
 
 # ISO 216 standard paper sizes; see eg https://en.wikipedia.org/wiki/ISO_216
 # also http://www.printernational.org/iso-paper-sizes.php

@@ -20,7 +20,6 @@ from domdf_python_tools import dates
 test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
 today = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
 
-
 # TODO: travis matrix to test without pytz installed
 # TODO: test get_timezone
 
@@ -49,8 +48,8 @@ def test_utc_offset():
 def test_converting_timezone():
 	# No matter what timezone we convert to the timestamp should be the same
 	for tz in pytz.all_timezones:
-		assert test_date.astimezone(
-			dates.get_timezone(tz, test_date)).timestamp() == test_date.timestamp() == 845173200.0
+		assert test_date.astimezone(dates.get_timezone(tz, test_date)
+									).timestamp() == test_date.timestamp() == 845173200.0
 
 		if dates.get_utc_offset(tz, test_date):  # otherwise the timezone stayed as UTC
 			assert test_date.astimezone(dates.get_timezone(tz, test_date)).hour != test_date.hour
@@ -83,14 +82,18 @@ def test_set_timezone():
 			assert dates.set_timezone(today, dates.get_timezone(tz, today)).timestamp() != today.timestamp()
 
 			# Difference between "today" and the new timezone should be the timezone difference
-			assert \
-				dates.set_timezone(today, dates.get_timezone(tz, today)).timestamp() + \
-				dates.get_utc_offset(tz, today).total_seconds() \
-				== today.timestamp()
+			assert (
+						dates.set_timezone(today, dates.get_timezone(tz, today)).timestamp() +
+						dates.get_utc_offset(tz, today).total_seconds()
+					) == today.timestamp()
 
 		if tz in {
-				"America/Punta_Arenas", "America/Santiago", 'Antarctica/Palmer',
-				'Chile/Continental', 'Chile/EasterIsland', 'Pacific/Easter',
+				"America/Punta_Arenas",
+				"America/Santiago",
+				'Antarctica/Palmer',
+				'Chile/Continental',
+				'Chile/EasterIsland',
+				'Pacific/Easter',
 				}:
 			continue
 
@@ -108,10 +111,10 @@ def test_set_timezone():
 			# 		get_utc_offset(tz, test_date).total_seconds()
 			#
 			# 		)
-			assert \
-				dates.set_timezone(test_date, dates.get_timezone(tz, test_date)).timestamp() + \
-				dates.get_utc_offset(tz, test_date).total_seconds() \
-				== test_date.timestamp()
+			assert (
+						dates.set_timezone(test_date, dates.get_timezone(tz, test_date)).timestamp() +
+						dates.get_utc_offset(tz, test_date).total_seconds()
+					) == test_date.timestamp()
 
 
 months = [

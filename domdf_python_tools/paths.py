@@ -155,8 +155,8 @@ def relpath(path, relative_to=None):
 
 	# if os.path.normpath(os.path.abspath(path)).startswith(
 	# 		os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
-	if os.path.normpath(os.path.abspath(path)).startswith(
-			os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(relative_to))))):
+	if os.path.normpath(os.path.abspath(path)
+						).startswith(os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(relative_to))))):
 		return os.path.relpath(os.path.abspath(path))
 	else:
 		return os.path.abspath(path)

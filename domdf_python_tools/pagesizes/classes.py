@@ -31,20 +31,37 @@
 #  MA 02110-1301, USA.
 #
 
-
 from collections import namedtuple
 from collections.abc import Sequence
 
 from .units import (
-	cicero, cm, didot, inch, mm, new_cicero, new_didot, pica, pt, scaled_point, um,
-	)
+		cicero,
+		cm,
+		didot,
+		inch,
+		mm,
+		new_cicero,
+		new_didot,
+		pica,
+		pt,
+		scaled_point,
+		um,
+		)
 from .utils import _rounders, convert_from
 
-
 __all__ = [
-		"BaseSize", "Size_mm", "Size_inch", "Size_cm", "Size_um",
-		"Size_pica", "Size_didot", "Size_cicero", "Size_new_didot",
-		"Size_new_cicero", "Size_scaled_point", "PageSize",
+		"BaseSize",
+		"Size_mm",
+		"Size_inch",
+		"Size_cm",
+		"Size_um",
+		"Size_pica",
+		"Size_didot",
+		"Size_cicero",
+		"Size_new_didot",
+		"Size_new_cicero",
+		"Size_scaled_point",
+		"PageSize",
 		]
 
 
@@ -155,6 +172,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		"""
 
 		return PageSize(self.width * self._unit, self.height * self._unit)
+
 
 # TODO: conversion to Point for the __eq__ function in the below
 

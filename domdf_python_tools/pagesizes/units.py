@@ -31,13 +31,26 @@
 #  MA 02110-1301, USA.
 #
 
-
 from decimal import Decimal
 
 __all__ = [
-		"pt", "inch", "cm", "mm", "um", "pc", "pica",
-		"dd", "didot", "cc", "cicero", "nd", "new_didot",
-		"nc", "new_cicero", "sp", "scaled_point",
+		"pt",
+		"inch",
+		"cm",
+		"mm",
+		"um",
+		"pc",
+		"pica",
+		"dd",
+		"didot",
+		"cc",
+		"cicero",
+		"nd",
+		"new_didot",
+		"nc",
+		"new_cicero",
+		"sp",
+		"scaled_point",
 		]
 
 

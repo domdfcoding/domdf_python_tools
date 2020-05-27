@@ -154,7 +154,7 @@ def get_terminal_size():
 		tuple_xy = _get_terminal_size_linux()
 	if tuple_xy is None:
 		print("default")
-		tuple_xy = (80, 25)      # default value
+		tuple_xy = (80, 25)  # default value
 	return tuple_xy
 
 
@@ -171,7 +171,7 @@ def _get_terminal_size_windows():
 			(
 					buf_x, buf_y, cur_x, cur_y, wattr,
 					left, top, right, bottom,
-					maxx, maxy,
+					maxx, maxy
 					) = struct.unpack("hhhhHhhhhhh", csbi.raw)
 			size_x = right - left + 1
 			size_y = bottom - top + 1
@@ -192,6 +192,7 @@ def _get_terminal_size_tput():
 
 
 def _get_terminal_size_linux():
+
 	def ioctl_GWINSZ(fd):
 		try:
 			import fcntl
@@ -200,6 +201,7 @@ def _get_terminal_size_linux():
 			return cr
 		except:
 			pass
+
 	cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
 	if not cr:
 		try:
