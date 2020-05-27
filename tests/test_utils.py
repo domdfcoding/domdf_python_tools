@@ -89,23 +89,31 @@ def test_permutations():
 	data = ["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"]
 
 	assert utils.permutations(data, 1) == [(x, ) for x in data]
-	assert utils.permutations(data, 2) == [('egg and bacon', 'egg sausage and bacon'),
-											('egg and bacon', 'egg and spam'), ('egg and bacon', 'egg bacon and spam'),
-											('egg sausage and bacon', 'egg and spam'),
-											('egg sausage and bacon', 'egg bacon and spam'),
-											('egg and spam', 'egg bacon and spam')]
-	assert utils.permutations(data, 3) == [('egg and bacon', 'egg sausage and bacon', 'egg and spam'),
-											('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam'),
-											('egg and bacon', 'egg and spam', 'egg sausage and bacon'),
-											('egg and bacon', 'egg and spam', 'egg bacon and spam'),
-											('egg and bacon', 'egg bacon and spam', 'egg sausage and bacon'),
-											('egg and bacon', 'egg bacon and spam', 'egg and spam'),
-											('egg sausage and bacon', 'egg and bacon', 'egg and spam'),
-											('egg sausage and bacon', 'egg and bacon', 'egg bacon and spam'),
-											('egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
-											('egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
-											('egg and spam', 'egg and bacon', 'egg bacon and spam'),
-											('egg and spam', 'egg sausage and bacon', 'egg bacon and spam')]
+
+	assert utils.permutations(data, 2) == [
+			('egg and bacon', 'egg sausage and bacon'),
+			('egg and bacon', 'egg and spam'),
+			('egg and bacon', 'egg bacon and spam'),
+			('egg sausage and bacon', 'egg and spam'),
+			('egg sausage and bacon', 'egg bacon and spam'),
+			('egg and spam', 'egg bacon and spam'),
+			]
+
+	assert utils.permutations(data, 3) == [
+			('egg and bacon', 'egg sausage and bacon', 'egg and spam'),
+			('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam'),
+			('egg and bacon', 'egg and spam', 'egg sausage and bacon'),
+			('egg and bacon', 'egg and spam', 'egg bacon and spam'),
+			('egg and bacon', 'egg bacon and spam', 'egg sausage and bacon'),
+			('egg and bacon', 'egg bacon and spam', 'egg and spam'),
+			('egg sausage and bacon', 'egg and bacon', 'egg and spam'),
+			('egg sausage and bacon', 'egg and bacon', 'egg bacon and spam'),
+			('egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
+			('egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
+			('egg and spam', 'egg and bacon', 'egg bacon and spam'),
+			('egg and spam', 'egg sausage and bacon', 'egg bacon and spam'),
+			]
+
 	assert utils.permutations(data, 4) == [
 			('egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
 			('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
@@ -118,8 +126,9 @@ def test_permutations():
 			('egg sausage and bacon', 'egg and spam', 'egg and bacon', 'egg bacon and spam'),
 			('egg sausage and bacon', 'egg bacon and spam', 'egg and bacon', 'egg and spam'),
 			('egg and spam', 'egg and bacon', 'egg sausage and bacon', 'egg bacon and spam'),
-			('egg and spam', 'egg sausage and bacon', 'egg and bacon', 'egg bacon and spam')
+			('egg and spam', 'egg sausage and bacon', 'egg and bacon', 'egg bacon and spam'),
 			]
+
 	assert utils.permutations(data, 5) == []
 	assert utils.permutations(data, 6) == []
 	assert utils.permutations(data, 10) == []
