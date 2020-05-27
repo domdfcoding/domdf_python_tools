@@ -83,8 +83,8 @@ def test_set_timezone():
 
 			# Difference between "today" and the new timezone should be the timezone difference
 			assert (
-					dates.set_timezone(today, dates.get_timezone(tz, today)).timestamp() +
-					dates.get_utc_offset(tz, today).total_seconds()
+					dates.set_timezone(today, dates.get_timezone(tz, today)).timestamp()
+					+ dates.get_utc_offset(tz, today).total_seconds()
 					) == today.timestamp()
 
 		if tz in {
@@ -112,8 +112,8 @@ def test_set_timezone():
 			#
 			# 		)
 			assert (
-					dates.set_timezone(test_date, dates.get_timezone(tz, test_date)).timestamp() +
-					dates.get_utc_offset(tz, test_date).total_seconds()
+					dates.set_timezone(test_date, dates.get_timezone(tz, test_date)).timestamp()
+					+ dates.get_utc_offset(tz, test_date).total_seconds()
 					) == test_date.timestamp()
 
 
