@@ -168,11 +168,8 @@ def _get_terminal_size_windows():
 		csbi = create_string_buffer(22)
 		res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
 		if res:
-			(
-					buf_x, buf_y, cur_x, cur_y, wattr,
-					left, top, right, bottom,
-					maxx, maxy
-					) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+			(buf_x, buf_y, cur_x, cur_y, wattr, left, top, right, bottom, maxx,
+				maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
 			size_x = right - left + 1
 			size_y = bottom - top + 1
 			return size_x, size_y
