@@ -78,7 +78,7 @@ blank_line_before_nested_class_or_def=True
 coalesce_brackets=True
 
 # The column limit.
-column_limit=120
+column_limit=115
 
 # The style for continuation alignment. Possible values are:
 #
@@ -117,7 +117,7 @@ dedent_closing_brackets=False
 disable_ending_comma_heuristic=False
 
 # Place each dictionary entry onto its own line.
-each_dict_entry_on_separate_line=True
+each_dict_entry_on_separate_line=False
 
 # Require multiline dictionary even if it would normally fit on one line.
 # For example:
@@ -277,7 +277,7 @@ split_all_comma_separated_values=False
 
 # Split before arguments, but do not split all subexpressions recursively
 # (unless needed).
-split_all_top_level_comma_separated_values=False
+split_all_top_level_comma_separated_values=True
 
 # Split before arguments if the argument list is terminated by a
 # comma.
@@ -285,7 +285,7 @@ split_arguments_when_comma_terminated=False
 
 # Set to True to prefer splitting before '+', '-', '*', '/', '//', or '@'
 # rather than after.
-split_before_arithmetic_operator=False
+split_before_arithmetic_operator=True
 
 # Set to True to prefer splitting before '&', '|' or '^' rather than
 # after.
@@ -316,7 +316,7 @@ split_before_dot=False
 
 # Split after the opening paren which surrounds an expression if it doesn't
 # fit on a single line.
-split_before_expression_after_opening_paren=False
+split_before_expression_after_opening_paren=True
 
 # If an argument / parameter list is going to be split, then split before
 # the first argument.
@@ -346,7 +346,7 @@ split_before_named_assigns=True
 split_complex_comprehension=True
 
 # The penalty for splitting right after the opening bracket.
-split_penalty_after_opening_bracket=300
+split_penalty_after_opening_bracket=100
 
 # The penalty for splitting the line after a unary operator.
 split_penalty_after_unary_operator=10000
