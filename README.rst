@@ -18,7 +18,7 @@ domdf_python_tools
 	  - |conda-version| |conda-platform|
 	* - Other
 	  - |license| |language| |commits-since| |commits-latest| |maintained| 
-	
+
 .. |docs| image:: https://readthedocs.org/projects/domdf_python_tools/badge/?version=latest
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
@@ -26,7 +26,7 @@ domdf_python_tools
 .. |travis| image:: https://img.shields.io/travis/com/domdfcoding/domdf_python_tools/master?logo=travis
 	:target: https://travis-ci.com/domdfcoding/domdf_python_tools
 	:alt: Travis Build Status
-	
+
 .. |requires| image:: https://requires.io/github/domdfcoding/domdf_python_tools/requirements.svg?branch=master
 	:target: https://requires.io/github/domdfcoding/domdf_python_tools/requirements/?branch=master
 	:alt: Requirements Status
@@ -89,8 +89,7 @@ Helpful functions for Python
 
 |
 
-Installation
---------------
+.. start installation
 
 ``domdf_python_tools`` can be installed from PyPI or Anaconda.
 
@@ -98,20 +97,21 @@ To install with ``pip``:
 
 .. code-block:: bash
 
-    $ python -m pip install domdf_python_tools
+	$ python -m pip install domdf_python_tools
 
 To install with ``conda``:
 
-    * First add the required channels
+	* First add the required channels
 
-    .. code-block:: bash
+	.. code-block:: bash
 
-        $ conda config --add channels http://conda.anaconda.org/domdfcoding
-        $ conda config --add channels http://conda.anaconda.org/conda-forge
+		$ conda config --add channels http://conda.anaconda.org/domdfcoding
+		$ conda config --add channels http://conda.anaconda.org/conda-forge
 
-    * Then install
+	* Then install
 
-    .. code-block:: bash
+	.. code-block:: bash
 
-        $ conda install domdf_python_tools
+		$ conda install domdf_python_tools
 
+.. end installation
