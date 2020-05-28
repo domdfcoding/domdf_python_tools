@@ -1,6 +1,12 @@
-**********************
+=====================
 domdf_python_tools
-**********************
+=====================
+
+.. start short_desc
+
+**Helpful functions for Python**
+
+.. end short_desc
 
 .. start shields 
 
