@@ -35,7 +35,7 @@ pyversion = int(sys.version[0])  # Python Version
 
 def as_text(value: Any) -> str:
 	"""
-	Convert the given value to a string.
+	Convert the given value to a string. ``None`` is converted to ``''``.
 
 	:param value: Value to convert to a string
 
@@ -126,7 +126,7 @@ def list2str(the_list: Iterable, sep: str = ",") -> str:
 	return sep.join([str(x) for x in the_list])
 
 
-list2string = list2str
+tuple2str = list2string = list2str
 
 
 def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any]]:
@@ -206,16 +206,3 @@ def str2tuple(input_string: str, sep: str = ",") -> Tuple[int]:
 
 	return tuple(int(x) for x in input_string.split(sep))
 
-
-def tuple2str(input_tuple: Iterable[Any], sep: str = ",") -> str:
-	"""
-	Convert an iterable, such as a tuple into a comma-separated string.
-
-	:param input_tuple: The iterable to be joined into a string
-	:param sep: The separator in the string. Default `,`
-	:type sep: str
-
-	:rtype: str
-	"""
-
-	return sep.join([str(x) for x in input_tuple])

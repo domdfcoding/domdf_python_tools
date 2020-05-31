@@ -7,12 +7,17 @@ Test functions in bases.py
 
 """
 
+# stdlib
 import copy
 import pickle
+from collections import UserList
 
+# 3rd party
 import pytest
 
-from domdf_python_tools.bases import Dictable
+# this package
+from domdf_python_tools.bases import Dictable, namedlist
+from domdf_python_tools.utils import printr, printt
 
 
 class Person(Dictable):
@@ -90,3 +95,23 @@ class TestDictable:
 		child = Child("Bob", 12, "Big School")
 		assert person == child
 		assert "School" not in person.__dict__
+
+
+def test_namedlist(capsys):
+	mylist = namedlist()
+	assert isinstance(mylist(), UserList)
+
+	ShoppingList = namedlist("ShoppingList")
+	shopping_list = ShoppingList(["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"])
+	assert isinstance(shopping_list, UserList)
+	assert shopping_list[0] == "egg and bacon"
+
+	printt(shopping_list)
+	printr(shopping_list)
+	print(shopping_list)
+
+	captured = capsys.readouterr()
+	stdout = captured.out.split("\n")
+	assert stdout[0] == "<class 'domdf_python_tools.bases.namedlist.<locals>.NamedList'>"
+	assert stdout[1] == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
+	assert stdout[2] == "ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
