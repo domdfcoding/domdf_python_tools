@@ -18,7 +18,6 @@ import pytest
 # this package
 from domdf_python_tools import paths
 
-
 # TODO: Still need tests for copytree, relpath, relpath2, delete, write,
 #  read and append.
 #  Some of those might want deprecating in favour of pathlib
@@ -69,12 +68,15 @@ def test_parent_path():
 		assert str(paths.parent_path("spam/spam/spam")) == "spam/spam"
 
 
-@pytest.mark.parametrize("relto, relpath", [
-		("/home/username/Documents/games/chess.py", "/home/username/Documents/letter.doc"),
-		("/home/username/Documents", "letter.doc"),
-		(pathlib.Path("/home/username/Documents/games/chess.py"), "/home/username/Documents/letter.doc"),
-		(pathlib.Path("/home/username/Documents"), "letter.doc"),
-		])
+@pytest.mark.parametrize(
+		"relto, relpath",
+		[
+				("/home/username/Documents/games/chess.py", "/home/username/Documents/letter.doc"),
+				("/home/username/Documents", "letter.doc"),
+				(pathlib.Path("/home/username/Documents/games/chess.py"), "/home/username/Documents/letter.doc"),
+				(pathlib.Path("/home/username/Documents"), "letter.doc"),
+				]
+		)
 def test_relpath(relto, relpath):
 	path = "/home/username/Documents/letter.doc"
 	assert paths.relpath(path, relative_to=relto) == pathlib.Path(relpath)
@@ -82,6 +84,7 @@ def test_relpath(relto, relpath):
 
 
 class TestCurrentDirOperations:
+
 	def test_append(self):
 		file = pathlib.Path("paths_append_test_file.txt")
 		file.write_text("initial content\n")

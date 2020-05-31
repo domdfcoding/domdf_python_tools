@@ -21,16 +21,19 @@ def test_pyversion():
 	assert isinstance(pyversion, int)
 
 
-@pytest.mark.parametrize("value, expects", [
-		(12345, "12345"),
-		(123.45, "123.45"),
-		([123.45], "[123.45]"),
-		({123.45}, "{123.45}"),
-		((123.45, ), "(123.45,)"),
-		(None, ""),
-		(pathlib.Path("."), "."),
-		(decimal.Decimal("1234"), "1234"),
-		])
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				(12345, "12345"),
+				(123.45, "123.45"),
+				([123.45], "[123.45]"),
+				({123.45}, "{123.45}"),
+				((123.45, ), "(123.45,)"),
+				(None, ""),
+				(pathlib.Path("."), "."),
+				(decimal.Decimal("1234"), "1234"),
+				]
+		)
 def test_as_text(value, expects):
 	assert utils.as_text(value) == expects
 
@@ -69,15 +72,19 @@ def test_chunks():
 	assert list(chunks(list(range(100)), 5))[0] == [0, 1, 2, 3, 4]
 	assert list(chunks(["a", "b", "c"], 1)) == [["a"], ["b"], ["c"]]
 
+
 # TODO: cmp
 
 
-@pytest.mark.parametrize("value, expects", [
-		([1, 2, 3], "1,2,3"),
-		(["a", "b", "c"], "a,b,c"),
-		(["a", "b", 1, 2], "a,b,1,2"),
-		(["a", 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
-		])
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				([1, 2, 3], "1,2,3"),
+				(["a", "b", "c"], "a,b,c"),
+				(["a", "b", 1, 2], "a,b,1,2"),
+				(["a", 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
+				]
+		)
 def test_list2str(value, expects):
 	str_representation = list2str(value)
 	assert isinstance(str_representation, str)
@@ -88,12 +95,15 @@ def test_list2str(value, expects):
 	assert str_representation == expects
 
 
-@pytest.mark.parametrize("value, expects", [
-		([1, 2, 3], "1;2;3"),
-		(["a", "b", "c"], "a;b;c"),
-		(["a", "b", 1, 2], "a;b;1;2"),
-		(["a", 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
-		])
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				([1, 2, 3], "1;2;3"),
+				(["a", "b", "c"], "a;b;c"),
+				(["a", "b", 1, 2], "a;b;1;2"),
+				(["a", 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
+				]
+		)
 def test_list2str_semicolon(value, expects):
 	str_representation = list2str(value, sep=";")
 	assert isinstance(str_representation, str)
@@ -159,6 +169,7 @@ def test_permutations():
 
 
 class CustomRepr:
+
 	def __init__(self):
 		pass
 
@@ -167,6 +178,7 @@ class CustomRepr:
 
 
 class NoRepr:
+
 	def __init__(self):
 		pass
 
@@ -211,19 +223,25 @@ def test_split_len():
 	assert utils.split_len("Spam Spam Spam Spam Spam Spam Spam Spam ", 5) == ["Spam "] * 8
 
 
-@pytest.mark.parametrize("value, expects", [
-		("1,2,3", (1, 2, 3)),  # tests without spaces
-		("1, 2, 3", (1, 2, 3)),  # tests with spaces
-		])
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				("1,2,3", (1, 2, 3)),  # tests without spaces
+				("1, 2, 3", (1, 2, 3)),  # tests with spaces
+				]
+		)
 def test_str2tuple(value, expects):
 	assert isinstance(str2tuple(value), tuple)
 	assert str2tuple(value) == expects
 
 
-@pytest.mark.parametrize("value, expects", [
-		("1;2;3", (1, 2, 3)),  # tests without semicolon
-		("1; 2; 3", (1, 2, 3)),  # tests with semicolon
-		])
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				("1;2;3", (1, 2, 3)),  # tests without semicolon
+				("1; 2; 3", (1, 2, 3)),  # tests with semicolon
+				]
+		)
 def test_str2tuple_semicolon(value, expects):
 	assert isinstance(str2tuple(value, sep=";"), tuple)
 	assert str2tuple(value, sep=";") == expects

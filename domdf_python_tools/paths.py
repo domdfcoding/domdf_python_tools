@@ -76,7 +76,8 @@ def copytree(
 		src: Union[str, pathlib.Path, os.PathLike],
 		dst: Union[str, pathlib.Path, os.PathLike],
 		symlinks: bool = False,
-		ignore: Callable = None):
+		ignore: Callable = None,
+		):
 	"""
 	Alternative to :func:`shutil.copytree` to work in some situations where it doesn't.
 
@@ -135,7 +136,8 @@ def maybe_make(
 		directory: Union[str, pathlib.Path, os.PathLike],
 		mode=0o777,
 		parents: bool = False,
-		exist_ok: bool = False):
+		exist_ok: bool = False
+		):
 	"""
 	Create a directory at this given path, but only if the directory does not already exist.
 
@@ -201,7 +203,10 @@ def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
 		return f.read()
 
 
-def relpath(path: Union[str, pathlib.Path, os.PathLike], relative_to: Union[str, pathlib.Path, os.PathLike] = None) -> pathlib.Path:
+def relpath(
+		path: Union[str, pathlib.Path, os.PathLike],
+		relative_to: Union[str, pathlib.Path, os.PathLike] = None
+		) -> pathlib.Path:
 	"""
 	Returns the path for the given file or directory relative to the given
 	directory or, if that would require path traversal, returns the absolute path.
@@ -250,4 +255,3 @@ def write(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
 
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
-

@@ -205,4 +205,3 @@ def str2tuple(input_string: str, sep: str = ",") -> Tuple[int]:
 	"""
 
 	return tuple(int(x) for x in input_string.split(sep))
-
