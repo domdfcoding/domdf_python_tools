@@ -28,7 +28,6 @@ from aenum import Enum, IntEnum
 
 __all__ = ["IntEnum", "StrEnum"]
 
-
 # class IntEnum(Enum):
 # 	"""
 # 	An Enum that can be converted into an integer
@@ -51,6 +50,7 @@ class StrEnum(str, Enum):
 
 	def __str__(self):
 		return self.value
+
 	#
 	# def __repr__(self):
 	# 	return self.value

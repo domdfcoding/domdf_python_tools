@@ -61,7 +61,6 @@ try:
 
 		return date.replace(tzinfo=pytz.utc).astimezone(tz).utcoffset()
 
-
 	def get_timezone(tz: str, date: datetime.datetime = None) -> datetime.timedelta:
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
@@ -81,7 +80,6 @@ try:
 		d = date.replace(tzinfo=None)
 
 		return pytz.timezone(tz).localize(d).tzinfo
-
 
 	def current_tzinfo():
 		"""
@@ -127,8 +125,9 @@ try:
 
 		return obj.replace(tzinfo=tzinfo)
 
-
-	def utc_timestamp_to_datetime(utc_timestamp: Union[float, int], output_tz: datetime.tzinfo = None) -> datetime.datetime:
+	def utc_timestamp_to_datetime(
+			utc_timestamp: Union[float, int], output_tz: datetime.tzinfo = None
+			) -> datetime.datetime:
 		"""
 		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object
 
@@ -157,7 +156,6 @@ try:
 		new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
 		return new_datetime.astimezone(output_tz)
 
-
 	# List of months and their 3-character shortcodes.
 	months = OrderedDict(
 			Jan="January",
@@ -173,7 +171,6 @@ try:
 			Nov="November",
 			Dec="December",
 			)
-
 
 	def parse_month(month: Union[str, int]) -> str:
 		"""
@@ -199,7 +196,6 @@ try:
 			return list(months.values())[month - 1]
 		else:
 			raise ValueError("Unrecognised month value")
-
 
 	def get_month_number(month: Union[str, int]) -> int:
 		"""

@@ -115,4 +115,5 @@ def test_namedlist(capsys):
 	assert stdout[0] == "<class 'domdf_python_tools.bases.namedlist.<locals>.NamedList'>"
 	assert stdout[1] == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
 	assert stdout[2] == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']")
+			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
+			)
