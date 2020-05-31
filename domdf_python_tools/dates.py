@@ -34,22 +34,23 @@ Utilities for working with dates and times
 # stdlib
 import datetime
 from collections import OrderedDict
+from typing import Union
 
 # 3rd party
 try:
 	import pytz
 
-	def get_utc_offset(tz, date=None):
+	def get_utc_offset(tz, date: datetime.datetime = None) -> datetime.timedelta:
 		"""
 		Returns the offset between UTC and the requested timezone on the given date.
 		If ``date`` is ``None`` then the current date is used.
 
-		:param tz: :class:`pytz.timezone` or a string representing the timezone
+		:param tz: ``pytz.timezone`` or a string representing the timezone
 		:type tz:
 		:param date:
-		:type date: :class:`python:datetime.datetime` or None, optional
+		:type date: python:datetime.datetime, optional
 		:return:
-		:rtype: :class:`python:datetime.timedelta`
+		:rtype: datetime.timedelta
 		"""
 
 		if date is None:
@@ -60,17 +61,18 @@ try:
 
 		return date.replace(tzinfo=pytz.utc).astimezone(tz).utcoffset()
 
-	def get_timezone(tz, date=None):
+
+	def get_timezone(tz: str, date: datetime.datetime = None) -> datetime.timedelta:
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
 		If ``date`` is ``None`` then the current date is used.
 
 		:param tz: A string representing a pytz timezone
-		:type tz:
+		:type tz: str
 		:param date:
-		:type date: :class:`python:datetime.datetime` or None, optional
+		:type date: python:datetime.datetime, optional
 		:return:
-		:rtype: :class:`python:datetime.timedelta`
+		:rtype: datetime.timedelta
 		"""
 
 		if date is None:
@@ -79,6 +81,7 @@ try:
 		d = date.replace(tzinfo=None)
 
 		return pytz.timezone(tz).localize(d).tzinfo
+
 
 	def current_tzinfo():
 		"""
@@ -124,7 +127,8 @@ try:
 
 		return obj.replace(tzinfo=tzinfo)
 
-	def utc_timestamp_to_datetime(utc_timestamp, output_tz=None):
+
+	def utc_timestamp_to_datetime(utc_timestamp: Union[float, int], output_tz: datetime.tzinfo = None) -> datetime.datetime:
 		"""
 		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object
 
@@ -139,10 +143,10 @@ try:
 		:type utc_timestamp: float, int
 		:param output_tz: The timezone to output the datetime object for.
 			If None it will be inferred.
-		:type output_tz: :class:`~python:datetime.tzinfo`
+		:type output_tz: datetime.tzinfo
 
 		:return: The timestamp as a datetime object.
-		:rtype: :class:`datetime.datetime`
+		:rtype: datetime.datetime
 
 		:raises: :class:`~python:OverflowError` if the timestamp is out of the range
 			of values supported by the platform C localtime() or gmtime() functions,
@@ -152,6 +156,7 @@ try:
 
 		new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
 		return new_datetime.astimezone(output_tz)
+
 
 	# List of months and their 3-character shortcodes.
 	months = OrderedDict(
@@ -169,7 +174,8 @@ try:
 			Dec="December",
 			)
 
-	def parse_month(month):
+
+	def parse_month(month: Union[str, int]) -> str:
 		"""
 		Converts an integer or shorthand month into the full month name
 
@@ -194,7 +200,8 @@ try:
 		else:
 			raise ValueError("Unrecognised month value")
 
-	def get_month_number(month):
+
+	def get_month_number(month: Union[str, int]) -> int:
 		"""
 		Returns the number of the given month. If ``month`` is already a
 		number between 1 and 12 it will be returned immediately.
@@ -203,7 +210,7 @@ try:
 		:type month: str or int
 
 		:return: The number of the month
-		:rtype:
+		:rtype: int
 		"""
 
 		if isinstance(month, int):
@@ -215,7 +222,7 @@ try:
 			month = parse_month(month)
 			return list(months.values()).index(month) + 1
 
-	def check_date(month, day, leap_year=True):
+	def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool:
 		"""
 		Returns ``True`` if the day number is valid for the given month.
 		Note that this will return ``True`` for the 29th Feb. If you don't
@@ -225,8 +232,8 @@ try:
 		:type month: str, int
 		:param day: The day number to test
 		:type day: int
-		:param leap_year: Whether to return ``True`` for 29th Feb
-		:type leap_year: bool
+		:param leap_year: Whether to return ``True`` for 29th Feb. Default ``True``
+		:type leap_year: bool, optional
 
 		:return: ``True`` if the date is valid
 		:rtype: bool

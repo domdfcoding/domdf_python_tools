@@ -27,10 +27,12 @@ Utilities for documenting functions, classes and methods
 #  MA 02110-1301, USA.
 #
 
+# stdlib
 import builtins
+from typing import Callable, Type, Union
 
 
-def deindent_string(string):
+def deindent_string(string: str) -> str:
 	"""
 	Removes all indentation from the given string
 
@@ -47,22 +49,20 @@ def deindent_string(string):
 
 
 # Functions that do the work
-def document_object_from_another(target, original):
+def document_object_from_another(target: Union[Type, Callable], original: Union[Type, Callable]):
 	"""
 	Sets the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 
 	:param target: The object to set the docstring for
-	:type target: any
 	:param original: The object to copy the docstring from
-	:type original: any
 	"""
 
 	target.__doc__ = original.__doc__
 
 
-def append_doctring_from_another(target, original):
+def append_doctring_from_another(target: Union[Type, Callable], original: Union[Type, Callable]):
 	"""
 	Sets the docstring of the ``target`` function to that of the ``original`` function.
 
@@ -73,9 +73,7 @@ def append_doctring_from_another(target, original):
 	Bear this in mind if additional indentation is used in the docstring.
 
 	:param target: The object to append the docstring to
-	:type target: any
 	:param original: The object to copy the docstring from
-	:type original: any
 	"""
 
 	deindented_target_doc = deindent_string(target.__doc__)
@@ -115,23 +113,23 @@ def make_sphinx_links(input_string, builtins_list=None):
 
 
 # Decorators that call the above functions
-def is_documented_by(original):
+def is_documented_by(original: Union[Type, Callable]):
 	"""
-	Sets the docstring of the ``target`` function to that of the ``original`` function.
+	Decorator to set the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 	"""
 
-	def wrapper(target):
+	def wrapper(target: Union[Type, Callable]):
 		document_object_from_another(target, original)
 		return target
 
 	return wrapper
 
 
-def append_docstring_from(original):
+def append_docstring_from(original: Union[Type, Callable]):
 	"""
-	Appends the docstring from the ``original`` function to the ``target`` function.
+	Decorator to appends the docstring from the ``original`` function to the ``target`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
 
@@ -140,7 +138,7 @@ def append_docstring_from(original):
 	Bear this in mind if additional indentation is used in the docstring.
 	"""
 
-	def wrapper(target):
+	def wrapper(target: Union[Type, Callable]):
 		append_doctring_from_another(target, original)
 		return target
 
@@ -149,7 +147,7 @@ def append_docstring_from(original):
 
 def sphinxify_docstring():
 	r"""
-	Make proper sphinx links out of double-backticked strings in docstring.
+	Decorator to make proper sphinx links out of double-backticked strings in the docstring.
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
 
@@ -157,7 +155,7 @@ def sphinxify_docstring():
 	`intersphinx_mapping` dict of your conf.py for sphinx.
 	"""
 
-	def wrapper(target):
+	def wrapper(target: Union[Type, Callable]):
 		target.__doc__ = make_sphinx_links(target.__doc__)
 		return target
 

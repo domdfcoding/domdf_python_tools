@@ -26,6 +26,7 @@ def test_str_enum():
 	assert DramatisPersonae("The sender") == DramatisPersonae.Bob == "The sender"
 	assert repr(DramatisPersonae.Bob) == "<DramatisPersonae.Bob: 'The sender'>"
 
+
 class Numbers(enums.IntEnum):
 	One = 1
 	Two = 2
