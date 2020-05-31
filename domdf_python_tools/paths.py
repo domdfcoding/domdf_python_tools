@@ -44,20 +44,46 @@ Functions for paths and files
 #
 #
 
+# stdlib
 import os
 import pathlib
+import shutil
+from typing import AnyStr, Callable, Union
 
 
-def copytree(src, dst, symlinks=False, ignore=None):
+def append(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
 	"""
-	Because shutil.copytree is borked
+	Append ``var`` to the file ``filename`` in the current directory.
 
-	Some of this docstring from https://docs.python.org/3/library/shutil.html
+	.. warning::
+
+		This is currently untested
+
+	TODO: make this the file in the given directory, by default the current directory
+
+	:param var: The value to append to the file
+	:param filename: The file to append to
+	:type filename: str or pathlib.Path or os.PathLike
+	"""
+
+	# TODO: docstring
+
+	with open(os.path.join(os.getcwd(), filename), 'a') as f:
+		f.write(var)
+
+
+def copytree(
+		src: Union[str, pathlib.Path, os.PathLike],
+		dst: Union[str, pathlib.Path, os.PathLike],
+		symlinks: bool = False,
+		ignore: Callable = None):
+	"""
+	Alternative to :func:`shutil.copytree` to work in some situations where it doesn't.
 
 	:param src: Source file to copy
-	:type src: str
+	:type src: str or pathlib.Path or os.PathLike
 	:param dst: Destination to copy file to
-	:type dst: str
+	:type dst: str or pathlib.Path or os.PathLike
 	:param symlinks: Whether to represent symbolic links in the source as symbolic
 		links in the destination. If false or omitted, the contents and metadata
 		of the linked files are copied to the new tree. When symlinks is false,
@@ -66,7 +92,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 		the copy process. You can set the optional ignore_dangling_symlinks
 		flag to true if you want to silence this exception. Notice that this
 		option has no effect on platforms that don’t support :class:`python:os.symlink`.
-	:type symlinks: bool
+	:type symlinks: bool, optional
 	:param ignore: A callable that will receive as its arguments the source
 		directory, and a list of its contents. The ignore callable will be
 		called once for each directory that is copied. The callable must return
@@ -76,40 +102,56 @@ def copytree(src, dst, symlinks=False, ignore=None):
 		:class:`python:shutil.ignore_patterns` can be used to create such a callable
 		that ignores names based on
 		glob-style patterns.
-
-	:return:
-	:rtype:
+	:type ignore: ~typing.Callable, optional
 	"""
-
-	import shutil
 
 	for item in os.listdir(src):
 		s = os.path.join(src, item)
 		d = os.path.join(dst, item)
 		if os.path.isdir(s):
-			return shutil.copytree(s, d, symlinks, ignore)
+			shutil.copytree(s, d, symlinks, ignore)
 		else:
-			return shutil.copy2(s, d)
+			shutil.copy2(s, d)
 
 
-def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
+def delete(filename: Union[str, pathlib.Path, os.PathLike]):
 	"""
-	Create a directory at this given path, but only if the directory does
-	not already exist.
+	Delete the file in the current directory.
+
+	.. warning::
+
+		This is currently untested
+
+	TODO: make this the file in the given directory, by default the current directory
+
+	:param filename: The file to delete
+	:type filename: str or pathlib.Path or os.PathLike
+	"""
+
+	os.remove(os.path.join(os.getcwd(), filename))
+
+
+def maybe_make(
+		directory: Union[str, pathlib.Path, os.PathLike],
+		mode=0o777,
+		parents: bool = False,
+		exist_ok: bool = False):
+	"""
+	Create a directory at this given path, but only if the directory does not already exist.
 
 	:param directory: Directory to create
-	:type directory: str or pathlib.Path
+	:type directory: str or pathlib.Path or os.PathLike
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
 	:type mode:
 	:param parents: If ``False`` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
 		If ``True``, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
-	:type parents: bool
+	:type parents: bool, optional
 	:param exist_ok: If ``False`` (the default), a :class:`~python:FileExistsError` is raised if the
 		target directory already exists. If ``True``, :class:`~python:FileExistsError` exceptions
 		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 		component is not an existing non-directory file.
-	:type exist_ok: bool
+	:type exist_ok: bool, optional
 	"""
 
 	if not isinstance(directory, pathlib.Path):
@@ -119,12 +161,12 @@ def maybe_make(directory, mode=0o777, parents=False, exist_ok=False):
 		directory.mkdir(mode, parents, exist_ok)
 
 
-def parent_path(path):
+def parent_path(path: Union[str, pathlib.Path, os.PathLike]) -> pathlib.Path:
 	"""
 	Returns the path of the parent directory for the given file or directory
 
 	:param path: Path to find the parent for
-	:type path: str or pathlib.Path
+	:type path: str or pathlib.Path or os.PathLike
 
 	:return: The parent directory
 	:rtype: pathlib.Path
@@ -136,46 +178,41 @@ def parent_path(path):
 	return path.parent
 
 
-# TODO: consolidate
-def relpath(path, relative_to=None):
+def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
 	"""
-	Returns the path for the given file or directory relative to the given directory
+	Read a file in the current directory (in text mode)
 
-	:param path: Path to find the relative path for
-	:type path: str
-	:param relative_to: The directory to find the path relative to.
-		Defaults to the current working directory (i.e. os.getcwd())
-	:type relative_to: str
+	.. warning::
 
-	:return:
+		This is currently untested
+
+	TODO: make this the file in the given directory, by default the current directory
+
+	:param filename: The file to read from
+	:type filename: str or pathlib.Path or os.PathLike
+
+	:return: The contents of the file
+	:rtype: str
 	"""
 
-	if relative_to is None:
-		relative_to = os.getcwd()
+	# TODO: docstring
 
-	# if os.path.normpath(os.path.abspath(path)).startswith(
-	# 		os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))):
-	if os.path.normpath(os.path.abspath(path)).startswith(
-			os.path.normpath(os.path.dirname(os.path.dirname(os.path.abspath(relative_to))))
-			):
-		return os.path.relpath(os.path.abspath(path))
-	else:
-		return os.path.abspath(path)
+	with open(os.path.join(os.getcwd(), filename)) as f:
+		return f.read()
 
 
-def relpath2(path, relative_to=None):
+def relpath(path: Union[str, pathlib.Path, os.PathLike], relative_to: Union[str, pathlib.Path, os.PathLike] = None) -> pathlib.Path:
 	"""
 	Returns the path for the given file or directory relative to the given
-		directory or, if that would require path traversal, returns the
-		absolute path.
+	directory or, if that would require path traversal, returns the absolute path.
 
 	:param path: Path to find the relative path for
-	:type path: str or pathlib.Path
+	:type path: str or pathlib.Path or os.PathLike
 	:param relative_to: The directory to find the path relative to.
 		Defaults to the current directory
-	:type relative_to: str or pathlib.Path
+	:type relative_to: str or pathlib.Path or os.PathLike, optional
 
-	:return:
+	:rtype: pathlib.Path
 	"""
 
 	if not isinstance(path, pathlib.Path):
@@ -197,70 +234,20 @@ def relpath2(path, relative_to=None):
 		return abs_path
 
 
-def delete(filename):
-	"""
-	Delete the file in the current directory
-
-	# TODO: make this the file in the given directory, by default the current directory
-
-	:param filename:
-
-	:return:
-	"""
-
-	# TODO: docstring
-
-	os.remove(os.path.join(os.getcwd(), filename))
+relpath2 = relpath
 
 
-def write(var, filename):
+def write(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
 	"""
 	Write a variable to file in the current directory
 
-	# TODO: make this the file in the given directory, by default the current directory
+	TODO: make this the file in the given directory, by default the current directory
 
-	:param var:
-	:param filename:
-
-	:return:
+	:param var: The value to write to the file
+	:param filename: The file to write to
+	:type filename: str or pathlib.Path or os.PathLike
 	"""
-
-	# TODO: docstring
 
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
 
-
-def read(filename):
-	"""
-	Read a file in the current directory; Untested
-
-	# TODO: make this the file in the given directory, by default the current directory
-
-	:param filename:
-
-	:return:
-	"""
-
-	# TODO: docstring
-
-	with open(os.path.join(os.getcwd(), filename)) as f:
-		return f.read()
-
-
-def append(var, filename):
-	"""
-	Append `var` to the file `filename` in the current directory; Untested
-
-	# TODO: make this the file in the given directory, by default the current directory
-
-	:param var:
-	:param filename:
-
-	:return:
-	"""
-
-	# TODO: docstring
-
-	with open(os.path.join(os.getcwd(), filename), 'a') as f:
-		f.write(var)

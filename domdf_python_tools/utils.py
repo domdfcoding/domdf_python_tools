@@ -3,7 +3,7 @@
 #
 #  utils.py
 """
-General Functions
+General utility functions
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -25,19 +25,19 @@ General Functions
 #
 #
 
+# stdlib
 import sys
 from collections.abc import Sequence
-from domdf_python_tools.doctools import is_documented_by
+from typing import Any, Iterable, Generator, List, Tuple
 
 pyversion = int(sys.version[0])  # Python Version
 
 
-def as_text(value):
+def as_text(value: Any) -> str:
 	"""
-	Convert the given value to a string
+	Convert the given value to a string.
 
-	:param value: value to convert to a string
-	:type value: any
+	:param value: Value to convert to a string
 
 	:rtype: str
 	"""
@@ -48,64 +48,24 @@ def as_text(value):
 	return str(value)
 
 
-def str2tuple(input_string, sep=","):
+def check_dependencies(dependencies: Iterable, prt: bool = True) -> list:
 	"""
-	Convert a comma-separated string of integers into a tuple
+	Check whether one or more dependencies are available to be imported.
 
-	:param input_string: The string to be converted into a tuple
-	:type input_string: str
-	:param sep: The separator in the string, default ","
-	:type sep: str
+	:param dependencies: The list of dependencies to check the availability of.
+	:type dependencies: ~collections.abc.Iterable
+	:param prt: Whether the status should be printed to the terminal. Default ``True``.
+	:type prt: bool, optional
 
-	:rtype: tuple
-	"""
-
-	return tuple(int(x) for x in input_string.split(sep))
-
-
-def tuple2str(input_tuple, sep=","):
-	"""
-	Convert a tuple into a comma-separated string
-
-	:param input_tuple: The tuple to be joined into a string
-	:type input_tuple: tuple
-	:param sep: The separator in the string, default ","
-	:type sep: str
-
-	:rtype: str
-	"""
-
-	return sep.join([str(x) for x in input_tuple])
-
-
-def chunks(l, n):
-	"""
-	Yield successive n-sized chunks from l.
-
-	:param l: The objects to yield chunks from
-	:type l: Sequence
-	:param n: The size of the chunks
-	:type n: int
-	"""
-
-	for i in range(0, len(l), n):
-		yield l[i:i + n]
-
-
-def check_dependencies(dependencies, prt=True):
-	"""
-
-	:param dependencies:
-	:param prt:
-
-	:return:
+	:return: A list of any missing modules
+	:rtype: list
 	"""
 
 	from pkgutil import iter_modules
 
 	modules = set(x[1] for x in iter_modules())
-
 	missing_modules = []
+
 	for requirement in dependencies:
 		if requirement not in modules:
 			missing_modules.append(requirement)
@@ -119,17 +79,44 @@ def check_dependencies(dependencies, prt=True):
 			print("Please check the documentation.")
 		print("")
 
-	else:
-		return missing_modules
+	return missing_modules
 
 
-def list2str(the_list, sep=","):
+def chunks(l: Sequence, n: int) -> Generator[Any, None, None]:
 	"""
-	Convert a list to a comma separated string
+	Yield successive n-sized chunks from l.
 
-	:param the_list: The list to convert to a string
-	:type the_list: list, tuple
-	:param sep: Separator to use for the string, default ","
+	:param l: The objects to yield chunks from
+	:type l: ~collections.abc.Sequence
+	:param n: The size of the chunks
+	:type n: int
+	"""
+
+	for i in range(0, len(l), n):
+		yield l[i:i + n]
+
+
+def cmp(x, y) -> int:
+	"""
+	Implementation of cmp for Python 3.
+
+	Compare the two objects x and y and return an integer according to the outcome.
+
+	The return value is negative if x < y, zero if x == y and strictly positive if x > y.
+
+	:rtype: int
+	"""
+
+	return int((x > y) - (x < y))
+
+
+def list2str(the_list: Iterable, sep: str = ",") -> str:
+	"""
+	Convert an iterable, such as a list, to a comma separated string.
+
+	:param the_list: The iterable to convert to a string
+	:type the_list: ~collections.abc.Iterable
+	:param sep: Separator to use for the string. Default `,`
 	:type sep: str
 
 	:return: Comma separated string
@@ -142,34 +129,16 @@ def list2str(the_list, sep=","):
 list2string = list2str
 
 
-def split_len(string, n):
+def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any]]:
 	"""
-	Split a string every x characters
+	Return permutations containing ``n`` items from ``data`` without any reverse duplicates.
 
-	:param string: The string to split
-	:type string: str
+	If ``n`` is equal to or greater than the length of the data an empty list of returned.
+
+	:param data:
+	:type data: ~collections.abc.Iterable
 	:param n:
 	:type n: int
-
-	:return: The split string
-	:rtype: list
-	"""
-
-	return [string[i:i + n] for i in range(0, len(string), n)]
-
-
-splitLen = split_len
-
-
-def permutations(data, n=2):
-	"""
-	Return permutations containing `n` items from `data` without any reverse duplicates.
-	If ``n`` is equal to or greater than the length of the data an empty list of returned
-
-	:type data: list or string
-	:type n: int
-
-	:rtype: [tuple]
 	"""
 
 	import itertools
@@ -181,33 +150,72 @@ def permutations(data, n=2):
 	for i in itertools.permutations(data, n):
 		if i[::-1] not in perms:
 			perms.append(i)
+
 	return perms
 
 
-def cmp(x, y):
+def printr(obj: Any, *args, **kwargs):
 	"""
-	Implementation of cmp for Python 3
-
-	Compare the two objects x and y and return an integer according to the outcome.
-	The return value is negative if x < y, zero if x == y and strictly positive if x > y.
-
-	:rtype: int
+	Print the repr() of an object.
 	"""
 
-	return int((x > y) - (x < y))
+	return print(repr(obj), *args, **kwargs)
 
 
-def printr(item, *args, **kwargs):
+def printt(obj: Any, *args, **kwargs):
 	"""
-	Print the repr() of an object
-	"""
-
-	return print(repr(item), *args, **kwargs)
-
-
-def printt(item, *args, **kwargs):
-	"""
-	Print the type of an object
+	Print the type of an object.
 	"""
 
-	return print(type(item), *args, **kwargs)
+	return print(type(obj), *args, **kwargs)
+
+
+def split_len(string: str, n: int) -> List[str]:
+	"""
+	Split a string every ``n`` characters.
+
+	:param string: The string to split
+	:type string: str
+	:param n: The number of characters to split after
+	:type n: int
+
+	:return: The split string
+	"""
+
+	return [string[i:i + n] for i in range(0, len(string), n)]
+
+
+splitLen = split_len
+
+
+def str2tuple(input_string: str, sep: str = ",") -> Tuple[int]:
+	"""
+	Convert a comma-separated string of integers into a tuple.
+
+	.. important::
+
+		The input string must represent a comma-separated series of integers.
+
+	TODO: Allow custom types, not just ``int`` (making ``int`` the default)
+
+	:param input_string: The string to be converted into a tuple
+	:type input_string: str
+	:param sep: The separator in the string. Default `,`
+	:type sep: str
+	"""
+
+	return tuple(int(x) for x in input_string.split(sep))
+
+
+def tuple2str(input_tuple: Iterable[Any], sep: str = ",") -> str:
+	"""
+	Convert an iterable, such as a tuple into a comma-separated string.
+
+	:param input_tuple: The iterable to be joined into a string
+	:param sep: The separator in the string. Default `,`
+	:type sep: str
+
+	:rtype: str
+	"""
+
+	return sep.join([str(x) for x in input_tuple])

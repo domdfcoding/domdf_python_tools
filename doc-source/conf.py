@@ -43,6 +43,7 @@ extensions = [
 		"notfound.extension",
 		"sphinx_tabs.tabs",
 		"sphinx-prompt",
+		'sphinx_autodoc_typehints',
 		]
 
 sphinxemoji_style = 'twemoji'
