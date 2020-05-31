@@ -76,10 +76,13 @@ def clear():
 	"""
 	Clears the display
 
-	Works for Windows and UNIX, but does not clear Python Interpreter
+	Works for Windows and UNIX, but does not clear Python Interpreter or PyCharm Console
 	"""
 
-	os.system('cls' if os.name == 'nt' else 'clear')
+	if os.name == "nt":
+		os.system('cls')
+	else:
+		print("\033c", end='')
 
 
 def br():
