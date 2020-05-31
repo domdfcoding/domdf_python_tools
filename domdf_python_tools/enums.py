@@ -24,39 +24,39 @@ Enum subclasses with some extra features
 #  MA 02110-1301, USA.
 #
 
-from enum import Enum
+from aenum import Enum, IntEnum
 
 __all__ = ["IntEnum", "StrEnum"]
 
 
-class IntEnum(Enum):
-	"""
-	An Enum that can be converted into an integer
-	"""
+# class IntEnum(Enum):
+# 	"""
+# 	An Enum that can be converted into an integer
+# 	"""
+#
+# 	def __int__(self):
+# 		return self.value
+#
+# 	def __eq__(self, other):
+# 		if int(self) == other:
+# 			return True
+# 		else:
+# 			return super().__eq__(other)
 
-	def __int__(self):
-		return self.value
 
-	def __eq__(self, other):
-		if int(self) == other:
-			return True
-		else:
-			return super().__eq__(other)
-
-
-class StrEnum(Enum):
+class StrEnum(str, Enum):
 	"""
 	An Enum that can be converted into a string
 	"""
 
 	def __str__(self):
 		return self.value
+	#
+	# def __repr__(self):
+	# 	return self.value
 
-	def __repr__(self):
-		return self.value
-
-	def __eq__(self, other):
-		if str(self) == other:
-			return True
-		else:
-			return super().__eq__(other)
+	# def __eq__(self, other):
+	# 	if str(self) == other:
+	# 		return True
+	# 	else:
+	# 		return super().__eq__(other)
