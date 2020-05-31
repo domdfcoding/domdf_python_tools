@@ -2,7 +2,7 @@
 # This file is managed by `git_helper`. Don't edit it directly
 """Setup script"""
 
-from __pkginfo__ import *
+from __pkginfo__ import *  # noqa
 
 from setuptools import setup, find_packages
 

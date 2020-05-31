@@ -60,7 +60,7 @@ author_email = "dominic@davis-foster.co.uk"
 github_username = "domdfcoding"
 web = github_url = f"https://github.com/domdfcoding/domdf_python_tools"
 project_urls = {
-		"Documentation": f"https://domdf_python_tools.readthedocs.io",  # TODO: Make this link match the package version
+		"Documentation": f"https://domdf_python_tools.readthedocs.io",
 		"Issue Tracker": f"{github_url}/issues",
 		"Source Code": github_url,
 		}

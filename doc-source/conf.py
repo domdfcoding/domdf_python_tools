@@ -27,7 +27,7 @@ author = "Dominic Davis-Foster"
 project = "domdf_python_tools"
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = __version__
-copyright = "2019-2020 Dominic Davis-Foster"
+copyright = "2019-2020 Dominic Davis-Foster"  # noqa
 language = 'en'
 package_root = "domdf_python_tools"
 

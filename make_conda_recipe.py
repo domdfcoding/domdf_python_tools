@@ -8,7 +8,7 @@ import sys
 from docutils.core import publish_file
 from io import StringIO
 
-from __pkginfo__ import *
+from __pkginfo__ import *  # noqa
 
 recipe_dir = repo_root / "conda"
 
