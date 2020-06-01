@@ -45,7 +45,6 @@ from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, sp, um
 
 # from .units import Unit
 
-
 __all__ = ["convert_from", "parse_measurement"]
 
 
@@ -53,7 +52,8 @@ def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) 
 	return Decimal(Decimal(val_to_round).quantize(Decimal(str(round_format)), rounding=ROUND_HALF_UP))
 
 
-def convert_from(value: Union[Sequence[AnyNumber], AnyNumber], from_: AnyNumber) -> Union[float, Tuple[float, ...]]:
+def convert_from(value: Union[Sequence[AnyNumber], AnyNumber],
+					from_: AnyNumber) -> Union[float, Tuple[float, ...]]:
 	"""
 	Convert ``value`` to point from the unit specified in ``from_``
 

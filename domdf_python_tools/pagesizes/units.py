@@ -51,7 +51,6 @@ __all__ = [
 		"scaled_point",
 		]
 
-
 # Units
 pt = 1
 inch = 72.0
