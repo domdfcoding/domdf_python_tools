@@ -34,23 +34,24 @@ Utilities for working with dates and times
 # stdlib
 import datetime
 from collections import OrderedDict
-from typing import Union
+from typing import Optional, Union
 
 # 3rd party
 try:
 	import pytz
 
-	def get_utc_offset(tz, date: datetime.datetime = None) -> datetime.timedelta:
+	def get_utc_offset(tz, date: datetime.datetime = None) -> Optional[datetime.timedelta]:
 		"""
 		Returns the offset between UTC and the requested timezone on the given date.
 		If ``date`` is ``None`` then the current date is used.
 
 		:param tz: ``pytz.timezone`` or a string representing the timezone
 		:type tz:
-		:param date:
+		:param date: The date to obtain the UTC offset for
 		:type date: python:datetime.datetime, optional
+
 		:return:
-		:rtype: datetime.timedelta
+		:rtype: datetime.timedelta or None
 		"""
 
 		if date is None:
@@ -61,17 +62,18 @@ try:
 
 		return date.replace(tzinfo=pytz.utc).astimezone(tz).utcoffset()
 
-	def get_timezone(tz: str, date: datetime.datetime = None) -> datetime.timedelta:
+	def get_timezone(tz: str, date: datetime.datetime = None) -> Optional[datetime.tzinfo]:
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
 		If ``date`` is ``None`` then the current date is used.
 
 		:param tz: A string representing a pytz timezone
 		:type tz: str
-		:param date:
-		:type date: python:datetime.datetime, optional
+		:param date: The date to obtain the timezone for
+		:type date: datetime.datetime, optional
+
 		:return:
-		:rtype: datetime.timedelta
+		:rtype: datetime.tzinfo or None
 		"""
 
 		if date is None:
@@ -187,7 +189,7 @@ try:
 			month = int(month)
 		except ValueError:
 			try:
-				return months[month.capitalize()[:3]]
+				return months[month.capitalize()[:3]]  # type: ignore
 			except KeyError:
 				raise ValueError("Unrecognised month value")
 

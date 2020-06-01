@@ -12,7 +12,7 @@ import datetime
 
 # 3rd party
 import pytz
-import pytest
+import pytest  # type: ignore
 
 # this package
 from domdf_python_tools import dates

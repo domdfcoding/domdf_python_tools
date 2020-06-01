@@ -51,7 +51,7 @@ import shutil
 from typing import AnyStr, Callable, Union
 
 
-def append(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
+def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 	"""
 	Append ``var`` to the file ``filename`` in the current directory.
 
@@ -65,8 +65,6 @@ def append(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
 	:param filename: The file to append to
 	:type filename: str or pathlib.Path or os.PathLike
 	"""
-
-	# TODO: docstring
 
 	with open(os.path.join(os.getcwd(), filename), 'a') as f:
 		f.write(var)
@@ -242,7 +240,7 @@ def relpath(
 relpath2 = relpath
 
 
-def write(var: AnyStr, filename: Union[str, pathlib.Path, os.PathLike]):
+def write(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 	"""
 	Write a variable to file in the current directory
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#cython: language_level=3
 # -*- coding: utf-8 -*-
 #
 #  utils.py
@@ -129,7 +130,7 @@ def list2str(the_list: Iterable, sep: str = ",") -> str:
 tuple2str = list2string = list2str
 
 
-def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any]]:
+def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	"""
 	Return permutations containing ``n`` items from ``data`` without any reverse duplicates.
 
@@ -188,7 +189,7 @@ def split_len(string: str, n: int) -> List[str]:
 splitLen = split_len
 
 
-def str2tuple(input_string: str, sep: str = ",") -> Tuple[int]:
+def str2tuple(input_string: str, sep: str = ",") -> Tuple[int, ...]:
 	"""
 	Convert a comma-separated string of integers into a tuple.
 

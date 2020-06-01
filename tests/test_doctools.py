@@ -98,12 +98,12 @@ class SpamCafe(Cafe):
 				"pate, brandy and with a fried egg on top and spam."
 				)
 
-	@doctools.is_documented_by(Cafe.menu)
+	@doctools.is_documented_by(Cafe.menu)  # type: ignore
 	@property
 	def menu(self):
 		return super().menu + [self._todays_special]
 
-	@doctools.is_documented_by(Cafe.opening_hours)
+	@doctools.is_documented_by(Cafe.opening_hours)  # type: ignore
 	@property
 	def opening_hours(self):
 		return f"""Open Monday-Saturday {self._opens_at}am - {self._opens_at}pm

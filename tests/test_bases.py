@@ -13,7 +13,7 @@ import pickle
 from collections import UserList
 
 # 3rd party
-import pytest
+import pytest  # type: ignore
 
 # this package
 from domdf_python_tools.bases import Dictable, namedlist

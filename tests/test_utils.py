@@ -11,7 +11,7 @@ import types
 import pathlib
 import decimal
 
-import pytest
+import pytest  # type: ignore
 
 from domdf_python_tools.utils import str2tuple, tuple2str, chunks, list2str, list2string, pyversion
 from domdf_python_tools import utils

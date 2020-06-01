@@ -13,14 +13,12 @@ import pathlib
 from tempfile import TemporaryDirectory
 
 # 3rd party
-import pytest
+import pytest  # type: ignore
 
 # this package
 from domdf_python_tools import paths
 
-# TODO: Still need tests for copytree, relpath, relpath2, delete, write,
-#  read and append.
-#  Some of those might want deprecating in favour of pathlib
+# TODO: delete, write, read and append might want deprecating in favour of pathlib
 
 
 def test_maybe_make():

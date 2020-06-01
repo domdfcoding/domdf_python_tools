@@ -30,7 +30,7 @@ from collections import UserList
 from pprint import pformat
 
 # 3rd party
-import pydash
+import pydash  # type: ignore
 
 
 class Dictable(ABC):

@@ -31,8 +31,6 @@
 #  MA 02110-1301, USA.
 #
 
-from decimal import Decimal
-
 __all__ = [
 		"pt",
 		"inch",
@@ -54,26 +52,15 @@ __all__ = [
 		]
 
 
-class Unit(Decimal):
-
-	def __mul__(self, other):
-		if isinstance(other, float):
-			other = Decimal(str(other))
-
-		return self.__class__(super().__mul__(other))
-
-	__rmul__ = __mul__
-
-
 # Units
 pt = 1
-inch = Unit("72.0")
-cm = inch / Unit("2.54")
-mm = cm * Unit("0.1")
-um = mm * Unit("0.01")
-pc = pica = Unit("12.0")
-dd = didot = Unit("1.07")
+inch = 72.0
+cm = inch / 2.54
+mm = cm * 0.1
+um = mm * 0.01
+pc = pica = 12.0
+dd = didot = 1.07
 cc = cicero = dd * 12
-nd = new_didot = Unit("1.067")
+nd = new_didot = 1.067
 nc = new_cicero = nd * 12
 sp = scaled_point = 1 / 65536

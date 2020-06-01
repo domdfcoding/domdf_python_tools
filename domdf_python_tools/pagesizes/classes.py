@@ -33,7 +33,9 @@
 
 from collections import namedtuple
 from collections.abc import Sequence
+from typing import List, Tuple
 
+from ._types import AnyNumber
 from .units import (
 		cicero,
 		cm,
@@ -66,20 +68,17 @@ __all__ = [
 
 
 class BaseSize(namedtuple("__BaseSize", "width, height")):
-	__slots__ = []
+	__slots__: List[str] = []
+	_unit: float = pt
 
-	def __new__(cls, width, height):
-		return super().__new__(
-				cls,
-				_rounders(width, "0.000000"),
-				_rounders(height, "0.000000"),
-				)
+	def __new__(cls, width: AnyNumber, height: AnyNumber):
+		return super().__new__(cls, float(width), float(height))
 
 	def __str__(self):
 		return f"{self.__class__.__name__}(width={_rounders(self.width, '0')}, height={_rounders(self.height, '0')})"
 
 	@classmethod
-	def from_size(cls, size):
+	def from_size(cls, size: Tuple[AnyNumber, AnyNumber]):
 		"""
 
 		:param size:
@@ -91,7 +90,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 		return cls(*size)
 
-	def landscape(self):
+	def landscape(self) -> "BaseSize":
 		"""
 		Returns the pagesize in landscape orientation
 
@@ -104,7 +103,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		else:
 			return self
 
-	def is_landscape(self):
+	def is_landscape(self) -> bool:
 		"""
 		Returns whether the pagesize is in the landscape orientation
 
@@ -114,7 +113,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 		return self.width >= self.height
 
-	def portrait(self):
+	def portrait(self) -> "BaseSize":
 		"""
 		Returns the pagesize in portrait orientation
 
@@ -127,7 +126,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		else:
 			return self
 
-	def is_portrait(self):
+	def is_portrait(self) -> bool:
 		"""
 		Returns whether the pagesize is in the portrait orientation
 
@@ -137,7 +136,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 		return self.width < self.height
 
-	def is_square(self):
+	def is_square(self) -> bool:
 		"""
 		Returns whether the given pagesize is square
 
@@ -147,10 +146,8 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 		return self.width == self.height
 
-	_unit = pt
-
 	@classmethod
-	def from_pt(cls, size):
+	def from_pt(cls, size: "PageSize"):
 		"""
 
 		:param size:
@@ -164,7 +161,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 		return cls(size.width / cls._unit, size.height / cls._unit)
 
-	def to_pt(self):
+	def to_pt(self) -> "PageSize":
 		"""
 
 		:return:
@@ -218,7 +215,7 @@ class Size_scaled_point(BaseSize):
 
 
 class PageSize(BaseSize):
-	__slots__ = []
+	__slots__: List[str] = []
 
 	def __new__(cls, width, height, unit=pt):
 		width, height = convert_from((width, height), unit)

@@ -34,53 +34,46 @@ Tools for working with pagesizes
 #  MA 02110-1301, USA.
 #
 
+# stdlib
 import re
-from collections.abc import Sequence
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 from numbers import Number
+from typing import List, Sequence, Tuple, Union
 
-from .units import (
-		cc,
-		cm,
-		dd,
-		inch,
-		mm,
-		nc,
-		nd,
-		pc,
-		pica,
-		sp,
-		um,
-		)
+from ._types import AnyNumber
+from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, sp, um
+
+# from .units import Unit
+
 
 __all__ = ["convert_from", "parse_measurement"]
 
 
-def _rounders(val_to_round, round_format):
+def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) -> Decimal:
 	return Decimal(Decimal(val_to_round).quantize(Decimal(str(round_format)), rounding=ROUND_HALF_UP))
 
 
-def convert_from(val, from_):
+def convert_from(value: Union[Sequence[AnyNumber], AnyNumber], from_: AnyNumber) -> Union[float, Tuple[float, ...]]:
 	"""
 	Convert ``value`` to point from the unit specified in ``from_``
 
-	:param val:
-	:type val: Number or Sequence[Number]
+	:param value:
 	:param from_: The unit to convert from, specified as a number of points
-	:type from_: Number
 
 	:return:
 	:rtype:
 	"""
 
-	if isinstance(val, Sequence):
-		return _sequence_convert_from(val, from_)
+	if isinstance(value, Sequence):
+		return _sequence_convert_from(value, from_)
 	else:
-		return val * from_
+		return _sequence_convert_from((value, ), from_)[0]
 
 
-def _sequence_convert_from(seq, from_):
-	return type(seq)([x * from_ for x in seq])
+def _sequence_convert_from(seq: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]:
+	from_ = float(from_)
+
+	return tuple(float(x) * from_ for x in seq)
 
 
 def parse_measurement(measurement):
