@@ -48,8 +48,9 @@
 #  MA 02110-1301, USA.
 #
 
+# this package
+from domdf_python_tools import doctools, pagesizes, paths, terminal, utils
 from domdf_python_tools.utils import *
-from domdf_python_tools import paths, terminal, utils, doctools, pagesizes
 
 __all__ = ["paths", "terminal", "utils", "dates"]
 

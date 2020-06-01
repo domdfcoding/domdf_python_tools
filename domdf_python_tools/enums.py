@@ -24,6 +24,7 @@ Enum subclasses with some extra features
 #  MA 02110-1301, USA.
 #
 
+# 3rd party
 from aenum import Enum, IntEnum  # type: ignore
 
 __all__ = ["IntEnum", "StrEnum"]

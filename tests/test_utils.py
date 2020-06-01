@@ -7,14 +7,17 @@ Test functions in utils.py
 
 """
 
-import types
-import pathlib
+# stdlib
 import decimal
+import pathlib
+import types
 
+# 3rd party
 import pytest  # type: ignore
 
-from domdf_python_tools.utils import str2tuple, tuple2str, chunks, list2str, list2string, pyversion
+# this package
 from domdf_python_tools import utils
+from domdf_python_tools.utils import chunks, list2str, list2string, pyversion, str2tuple, tuple2str
 
 
 def test_pyversion():

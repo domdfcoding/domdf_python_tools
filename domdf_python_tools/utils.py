@@ -29,7 +29,7 @@ General utility functions
 # stdlib
 import sys
 from collections.abc import Sequence
-from typing import Any, Iterable, Generator, List, Tuple
+from typing import Any, Generator, Iterable, List, Tuple
 
 pyversion = int(sys.version[0])  # Python Version
 

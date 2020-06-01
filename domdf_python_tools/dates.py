@@ -36,7 +36,6 @@ import datetime
 from collections import OrderedDict
 from typing import Optional, Union
 
-# 3rd party
 try:
 	import pytz
 

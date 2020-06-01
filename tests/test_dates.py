@@ -11,8 +11,8 @@ Test functions in dates.py
 import datetime
 
 # 3rd party
-import pytz
 import pytest  # type: ignore
+import pytz
 
 # this package
 from domdf_python_tools import dates

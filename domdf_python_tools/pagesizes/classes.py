@@ -31,24 +31,13 @@
 #  MA 02110-1301, USA.
 #
 
+# stdlib
 from collections import namedtuple
 from collections.abc import Sequence
 from typing import List, Tuple
 
 from ._types import AnyNumber
-from .units import (
-		cicero,
-		cm,
-		didot,
-		inch,
-		mm,
-		new_cicero,
-		new_didot,
-		pica,
-		pt,
-		scaled_point,
-		um,
-		)
+from .units import cicero, cm, didot, inch, mm, new_cicero, new_didot, pica, pt, scaled_point, um
 from .utils import _rounders, convert_from
 
 __all__ = [

@@ -7,6 +7,7 @@ Test functions in enums.py
 
 """
 
+# this package
 from domdf_python_tools import enums
 
 
