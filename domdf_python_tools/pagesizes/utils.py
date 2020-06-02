@@ -36,10 +36,10 @@ Tools for working with pagesizes
 
 # stdlib
 import re
-from decimal import ROUND_HALF_UP, Decimal
-from numbers import Number
-from typing import List, Sequence, Tuple, Union
+from decimal import Decimal
+from typing import Sequence, Tuple, Union
 
+# this package
 from ._types import AnyNumber
 from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, sp, um
 
@@ -48,12 +48,10 @@ from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, sp, um
 __all__ = ["convert_from", "parse_measurement"]
 
 
-def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) -> Decimal:
-	return Decimal(Decimal(val_to_round).quantize(Decimal(str(round_format)), rounding=ROUND_HALF_UP))
-
-
-def convert_from(value: Union[Sequence[AnyNumber], AnyNumber],
-					from_: AnyNumber) -> Union[float, Tuple[float, ...]]:
+def convert_from(
+		value: Union[Sequence[AnyNumber], AnyNumber],
+		from_: AnyNumber,
+		) -> Union[float, Tuple[float, ...]]:
 	"""
 	Convert ``value`` to point from the unit specified in ``from_``
 

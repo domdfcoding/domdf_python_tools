@@ -31,6 +31,10 @@
 #  MA 02110-1301, USA.
 #
 
+# stdlib
+from decimal import ROUND_HALF_UP, Decimal
+from typing import Union
+
 __all__ = [
 		"pt",
 		"inch",
@@ -49,17 +53,248 @@ __all__ = [
 		"new_cicero",
 		"sp",
 		"scaled_point",
+		"Unit",
 		]
 
+
+def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) -> Decimal:
+	return Decimal(Decimal(val_to_round).quantize(Decimal(str(round_format)), rounding=ROUND_HALF_UP))
+
+
+class Unit(float):
+	"""
+	Represents a unit, such as a point.
+
+	Behaves much like a float (which it inherits from).
+
+	**Addition**
+
+	Units can be added to each other:
+
+	>>> (3*mm) + (7*mm)
+	<Unit '10.000 mm': 28.346pt>
+
+	When adding different :class:`~domdf_python_tools.pagesizes.units.Unit` objects,
+	the result has the type of the former unit:
+
+	>>> (2.54*cm) + inch
+	<Unit '5.080 cm': 144.000pt>
+	>>> inch + (2.54*cm)
+	<Unit '2.000 in': 144.000pt>
+
+	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can also be added to :class:`float` and :class:`int` objects:
+
+	>>> (3*cm) + 7
+	<Unit '10.000 cm': 283.465pt>
+	>>> 7 + (3*cm)
+	<Unit '10.000 cm': 283.465pt>
+
+
+	**Subtraction**
+
+	Subtraction works the same as addition:
+
+	>>> (17*mm) - (7*mm)
+	<Unit '10.000 mm': 28.346pt>
+	>>> (2.54*cm) - inch
+	<Unit '-0.000 cm': -0.000pt>
+	>>> inch - (2.54*cm)
+	<Unit '0.000 in': 0.000pt>
+	>>> (17*cm) - 7
+	<Unit '10.000 cm': 283.465pt>
+	>>> 17 - (7*cm)
+	<Unit '10.000 cm': 283.465pt>
+
+
+	**Multiplcation**
+
+	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can only be multipled by
+	:class:`float` and :class:`int` objects:
+
+	>>> (3*mm) * 3
+	<Unit '9.000 mm': 25.512pt>
+	>>> 3 * (3*mm)
+	<Unit '9.000 mm': 25.512pt>
+	>>> 3.5 * (3*mm)
+	<Unit '10.500 mm': 29.764pt>
+
+	Multiplication works either way round.
+
+	Multiplying by another :class:`~domdf_python_tools.pagesizes.units.Unit` results in a :exc:`TypeError`:
+
+	>>> inch * (7*cm)
+	TypeError: unsupported operand type(s) for *: 'UnitInch' and 'Unitcm'
+
+	**Division**
+
+	:class:`~domdf_python_tools.pagesizes.units.Unit`s can only be divided by :class:`float` and :class:`int` objects:
+
+	>>> (3*mm) / 3
+	<Unit '1.000 mm': 2.835pt>
+	>>> (10*mm) / 2.5
+	<Unit '4.000 mm': 11.339pt>
+
+	Dividing by another unit results in a :exc:`TypeError`:
+
+	>>> inch / (7*cm)
+	TypeError: unsupported operand type(s) for /: 'UnitInch' and 'Unitcm'
+
+	Likewise, trying to divide a:class:`float` and :class:`int` object by a unit results in a :exc:`TypeError`:
+
+	>>> 3 / (3*mm)
+	TypeError: unsupported operand type(s) for /: 'int' and 'Unitmm'
+
+
+	**Powers**
+
+	Powers (using ``**``) are not officially supported.
+
+
+	**Modulo Division**
+
+	Modulo division of a :class:`~domdf_python_tools.pagesizes.units.Unit` by a
+	:class:`float` or :class:`int` object is allowed:
+
+	>>> (3*mm) % 2.5
+	<Unit '0.500 mm': 1.417pt>
+
+	Diving by a unit, or modulo division of two units, is not officially supported.
+	"""
+
+	name: str = "pt"
+	_in_pt: float = 1
+
+	def __repr__(self):
+		value = _rounders(float(self), '0.000')
+		as_pt = _rounders(self.as_pt(), '0.000')
+		return f"<Unit '{value}\u205F{self.name}': {as_pt}pt>"
+
+	def __mul__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			return NotImplemented
+
+		return self.__class__(super().__mul__(other))
+
+	__rmul__ = __mul__
+
+	def __truediv__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			return NotImplemented
+
+		return self.__class__(super().__truediv__(other))
+
+	__div__ = __truediv__
+
+	def __mod__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			return NotImplemented
+
+		return self.__class__(super().__mod__(other))
+
+	def __pow__(self, power, modulo=None):
+		return NotImplemented
+
+	def __rtruediv__(self, other):
+		return NotImplemented
+
+	__rdiv__ = __rtruediv__
+
+	def __add__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			print(float(self.as_pt()) + float(other.as_pt()))
+			return self.__class__.from_pt(float(self.as_pt()) + float(other.as_pt()))
+		else:
+			return self.__class__(super().__add__(other))
+
+	__radd__ = __add__
+
+	def __sub__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			return self.__class__.from_pt(float(self.as_pt()) - float(other.as_pt()))
+		else:
+			return self.__class__(super().__sub__(other))
+
+	def __rsub__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			return self.__class__.from_pt(float(other.as_pt()) - float(self.as_pt()))
+		else:
+			return self.__class__(super().__rsub__(other))
+
+	def as_pt(self) -> "Unit":
+		return Unit(float(self) * self._in_pt)
+
+	@classmethod
+	def from_pt(cls, value: float) -> "Unit":
+		return cls(value / cls._in_pt)
+
+	def __call__(self, *args, **kwargs) -> "Unit":
+		return self.__class__(*args, **kwargs)
+
+
+class Unitpt(Unit):
+	name = "pt"
+	_in_pt = 1
+
+
+class UnitInch(Unit):
+	name = "in"
+	_in_pt = 72.0
+
+
+class Unitcm(Unit):
+	name = "cm"
+	_in_pt = 28.3464566929
+
+
+class Unitmm(Unit):
+	name = "mm"
+	_in_pt = 2.83464566929
+
+
+class Unitum(Unit):
+	name = "µm"
+	_in_pt = 0.283464566929
+
+
+class Unitpc(Unit):
+	name = "pc"
+	_in_pt = 12.0
+
+
+class Unitdd(Unit):
+	name = "dd"
+	_in_pt = 1.07
+
+
+class Unitcc(Unit):
+	name = "cc"
+	_in_pt = 12.84
+
+
+class Unitnd(Unit):
+	name = "nd"
+	_in_pt = 1.067
+
+
+class Unitnc(Unit):
+	name = "nc"
+	_in_pt = 12.804
+
+
+class Unitsp(Unit):
+	name = "sp"
+	_in_pt = 1 / 65536
+
+
 # Units
-pt = 1
-inch = 72.0
-cm = inch / 2.54
-mm = cm * 0.1
-um = mm * 0.01
-pc = pica = 12.0
-dd = didot = 1.07
-cc = cicero = dd * 12
-nd = new_didot = 1.067
-nc = new_cicero = nd * 12
-sp = scaled_point = 1 / 65536
+pt = Unitpt(1)
+inch = UnitInch(1)
+cm = Unitcm(1)
+mm = Unitmm(1)
+um = Unitum(1)
+pc = pica = Unitpc(1)
+dd = didot = Unitdd(1)
+cc = cicero = Unitcc(1)
+nd = new_didot = Unitnd(1)
+nc = new_cicero = Unitnc(1)
+sp = scaled_point = Unitsp(1)

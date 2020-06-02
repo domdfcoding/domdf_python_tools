@@ -33,12 +33,12 @@
 
 # stdlib
 from collections import namedtuple
-from collections.abc import Sequence
 from typing import List, Tuple
 
+# this package
 from ._types import AnyNumber
-from .units import cicero, cm, didot, inch, mm, new_cicero, new_didot, pica, pt, scaled_point, um
-from .utils import _rounders, convert_from
+from .units import Unit, _rounders, cicero, cm, didot, inch, mm, new_cicero, new_didot, pica, pt, scaled_point, um
+from .utils import convert_from
 
 __all__ = [
 		"BaseSize",
@@ -57,70 +57,63 @@ __all__ = [
 
 
 class BaseSize(namedtuple("__BaseSize", "width, height")):
+	"""
+	Base class namedtuple representing a page size, in point
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	__slots__: List[str] = []
-	_unit: float = pt
+	_unit: Unit = pt
+	width: Unit
+	height: Unit
 
 	def __new__(cls, width: AnyNumber, height: AnyNumber):
-		return super().__new__(cls, float(width), float(height))
+		return super().__new__(
+				cls,
+				cls._unit(width),
+				cls._unit(height),
+				)
 
 	def __str__(self):
 		return f"{self.__class__.__name__}(width={_rounders(self.width, '0')}, height={_rounders(self.height, '0')})"
 
 	@classmethod
-	def from_size(cls, size: Tuple[AnyNumber, AnyNumber]):
+	def from_pt(cls, size: Tuple[float, float]):
+		"""
+		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a
+		page size in point..
+
+		:param size: The size, in point, to convert from
+
+		:rtype: A subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
 		"""
 
-		:param size:
-		:type size: Sequence
+		assert isinstance(size, PageSize)
 
-		:return:
-		:rtype:
+		return cls(cls._unit.from_pt(size[0]), cls._unit.from_pt(size[1]))
+
+	@classmethod
+	def from_size(cls, size: Tuple[AnyNumber, AnyNumber]) -> "BaseSize":
+		"""
+		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a tuple
 		"""
 
 		return cls(*size)
 
-	def landscape(self) -> "BaseSize":
-		"""
-		Returns the pagesize in landscape orientation
-
-		:return: The pagesize in the landscape orientation
-		:rtype: BaseSize
-		"""
-
-		if self.is_portrait():
-			return self.__class__(self.height, self.width)
-		else:
-			return self
-
 	def is_landscape(self) -> bool:
 		"""
-		Returns whether the pagesize is in the landscape orientation
-
-		:return:
-		:rtype: bool
+		Returns whether the page is in the landscape orientation
 		"""
 
 		return self.width >= self.height
 
-	def portrait(self) -> "BaseSize":
-		"""
-		Returns the pagesize in portrait orientation
-
-		:return: The pagesize in the portrait orientation
-		:rtype: BaseSize
-		"""
-
-		if self.is_landscape():
-			return self.__class__(self.height, self.width)
-		else:
-			return self
-
 	def is_portrait(self) -> bool:
 		"""
-		Returns whether the pagesize is in the portrait orientation
-
-		:return:
-		:rtype: bool
+		Returns whether the page is in the portrait orientation
 		"""
 
 		return self.width < self.height
@@ -128,82 +121,194 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	def is_square(self) -> bool:
 		"""
 		Returns whether the given pagesize is square
-
-		:return:
-		:rtype:
 		"""
 
 		return self.width == self.height
 
-	@classmethod
-	def from_pt(cls, size: "PageSize"):
+	def landscape(self) -> "BaseSize":
+		"""
+		Returns the pagesize in landscape orientation
 		"""
 
-		:param size:
-		:type size: PageSize
+		if self.is_portrait():
+			return self.__class__(self.height, self.width)
+		else:
+			return self
 
-		:return:
-		:rtype:
+	def portrait(self) -> "BaseSize":
+		"""
+		Returns the pagesize in portrait orientation
 		"""
 
-		assert isinstance(size, PageSize)
-
-		return cls(size.width / cls._unit, size.height / cls._unit)
+		if self.is_landscape():
+			return self.__class__(self.height, self.width)
+		else:
+			return self
 
 	def to_pt(self) -> "PageSize":
 		"""
-
-		:return:
-		:rtype: PageSize
+		Returns the page size in point
 		"""
 
-		return PageSize(self.width * self._unit, self.height * self._unit)
+		return PageSize(self.width.as_pt(), self.height.as_pt())
 
 
 # TODO: conversion to Point for the __eq__ function in the below
 
 
 class Size_mm(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in millimeters.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = mm
 
 
 class Size_inch(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in inches.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = inch
 
 
 class Size_cm(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in centimeters.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = cm
 
 
 class Size_um(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in micrometers.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = um
 
 
 class Size_pica(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in pica.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = pica
 
 
 class Size_didot(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in didots / French Points.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = didot
 
 
 class Size_cicero(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in ciceros.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = cicero
 
 
 class Size_new_didot(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in new didots.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = new_didot
 
 
 class Size_new_cicero(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in ciceros.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = new_cicero
 
 
 class Size_scaled_point(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in scaled points.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+	"""
+
 	_unit = scaled_point
 
 
 class PageSize(BaseSize):
+	"""
+	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
+	representing a pagesize in point.
+
+	:param width: The page width
+	:type width: float
+	:param height: The page height
+	:type height: float
+
+	The pagesize can be converted to other units using the properties below.
+	"""
+
 	__slots__: List[str] = []
 
 	def __new__(cls, width, height, unit=pt):
@@ -211,53 +316,93 @@ class PageSize(BaseSize):
 		return super().__new__(cls, width, height)
 
 	@property
-	def inch(self):
+	def inch(self) -> Size_inch:
+		"""
+		Returns the pagesize in inches
+		"""
+
 		return Size_inch.from_pt(self)
 
 	@property
-	def cm(self):
+	def cm(self) -> Size_cm:
+		"""
+		Returns the pagesize in centimeters
+		"""
+
 		return Size_cm.from_pt(self)
 
 	@property
-	def mm(self):
+	def mm(self) -> Size_mm:
+		"""
+		Returns the pagesize in millimeters
+		"""
+
 		return Size_mm.from_pt(self)
 
 	@property
-	def um(self):
+	def um(self) -> Size_um:
+		"""
+		Returns the pagesize in micrometers
+		"""
+
 		return Size_um.from_pt(self)
 
 	@property
-	def pc(self):
+	def pc(self) -> Size_pica:
+		"""
+		Returns the pagesize in pica
+		"""
+
 		return Size_pica.from_pt(self)
 
 	pica = pc
 
 	@property
-	def dd(self):
+	def dd(self) -> Size_didot:
+		"""
+		Returns the pagesize in didots
+		"""
+
 		return Size_didot.from_pt(self)
 
 	didot = dd
 
 	@property
-	def cc(self):
+	def cc(self) -> Size_cicero:
+		"""
+		Returns the pagesize in ciceros
+		"""
+
 		return Size_cicero.from_pt(self)
 
 	cicero = cc
 
 	@property
-	def nd(self):
+	def nd(self) -> Size_new_didot:
+		"""
+		Returns the pagesize in new didots
+		"""
+
 		return Size_new_didot.from_pt(self)
 
 	new_didot = nd
 
 	@property
-	def nc(self):
+	def nc(self) -> Size_new_cicero:
+		"""
+		Returns the pagesize in new ciceros
+		"""
+
 		return Size_new_cicero.from_pt(self)
 
 	new_cicero = nc
 
 	@property
-	def sp(self):
+	def sp(self) -> Size_scaled_point:
+		"""
+		Returns the pagesize in scaled point
+		"""
+
 		return Size_scaled_point.from_pt(self)
 
 	scaled_point = sp

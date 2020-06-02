@@ -39,6 +39,7 @@ etc.
 #  MA 02110-1301, USA.
 #
 
+# this package
 from .classes import *
 from .sizes import *
 from .units import *

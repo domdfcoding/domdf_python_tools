@@ -3,7 +3,9 @@
 #
 #  sizes.py
 """
-List of common pagesizes in point/pt
+Common pagesizes in point/pt
+
+TODO: list of the page sizes
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -34,6 +36,7 @@ List of common pagesizes in point/pt
 #  MA 02110-1301, USA.
 #
 
+# this package
 from .classes import Size_inch, Size_mm
 
 # ISO 216 standard paper sizes; see eg https://en.wikipedia.org/wiki/ISO_216
