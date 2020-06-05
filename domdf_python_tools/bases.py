@@ -25,7 +25,7 @@ Useful base classes
 #
 
 # stdlib
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from collections import UserList
 from pprint import pformat
 from typing import Any, Callable, Dict, Iterable, Tuple
@@ -34,7 +34,7 @@ from typing import Any, Callable, Dict, Iterable, Tuple
 import pydash  # type: ignore
 
 
-class Dictable(ABC):
+class Dictable(Iterable):
 	"""
 	The basic structure of a class that can be converted into a dictionary
 	"""
@@ -46,7 +46,7 @@ class Dictable(ABC):
 	def __str__(self) -> str:
 		return self.__repr__()
 
-	def __iter__(self) -> Iterable[Tuple[str, Any]]:
+	def __iter__(self) -> Iterable[Tuple[str, Any]]:  # type: ignore[override]
 		for key, value in self.__dict__.items():
 			yield key, value
 
