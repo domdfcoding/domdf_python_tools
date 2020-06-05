@@ -30,7 +30,7 @@ Utilities for documenting functions, classes and methods
 # stdlib
 import builtins
 from textwrap import dedent
-from typing import Any, Callable, Type, TypeVar, Union
+from typing import Any, Callable, Optional, Sequence, Type, TypeVar, Union
 
 F = TypeVar('F', bound=Callable[..., Any])
 
@@ -92,7 +92,7 @@ def append_doctring_from_another(target: Union[Type, Callable], original: Union[
 		target.__doc__ = dedent(original_doc)
 
 
-def make_sphinx_links(input_string, builtins_list=None):
+def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] = None) -> str:
 	r"""
 	Make proper sphinx links out of double-backticked strings in docstring.
 
@@ -166,7 +166,11 @@ def sphinxify_docstring() -> Callable:
 	"""
 
 	def wrapper(target: F) -> F:
-		target.__doc__ = make_sphinx_links(target.__doc__)
+		target_doc = target.__doc__
+
+		if target_doc:
+			target.__doc__ = make_sphinx_links(target_doc)
+
 		return target
 
 	return wrapper

@@ -49,7 +49,7 @@ class StrEnum(str, Enum):
 	An Enum that can be converted into a string
 	"""
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.value
 
 	#

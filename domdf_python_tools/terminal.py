@@ -70,9 +70,10 @@ import struct
 import subprocess
 import sys
 import textwrap
+from typing import Optional, Tuple
 
 
-def clear():
+def clear() -> None:
 	"""
 	Clears the display
 
@@ -85,7 +86,7 @@ def clear():
 		print("\033c", end='')
 
 
-def br():
+def br() -> None:
 	"""
 	Prints a line break
 	"""
@@ -93,7 +94,7 @@ def br():
 	print("")
 
 
-def interrupt():
+def interrupt() -> None:
 	"""
 	Print what to do to abort the script; dynamic depending on OS.
 
@@ -104,7 +105,7 @@ def interrupt():
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
 
 
-def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
+def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bool = False) -> None:
 	"""
 	Print ``objects`` to the text stream ``file``, starting with "\\r", separated by ``sep``
 	and followed by ``end``.
@@ -134,53 +135,61 @@ def overtype(*objects, sep=' ', end='', file=sys.stdout, flush=False):
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
 
 
-def get_terminal_size():
+def get_terminal_size() -> Tuple[int, int]:
 	"""
 	Get width and height of console
 
-	Works on linux,os x,windows,cygwin(windows)
+	Works on Linux, macOS, Windows, and Cygwin
 
-	Originally retrieved from: http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
+	Based on http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
 
 	:return: tuple_xy
-	:rtype: (int, int)
 	"""
 
 	current_os = platform.system()
 	tuple_xy = None
+
 	if current_os == 'Windows':
 		tuple_xy = _get_terminal_size_windows()
 		if tuple_xy is None:
 			tuple_xy = _get_terminal_size_tput()
 		# needed for window's python in cygwin's xterm!
+
 	if current_os in ['Linux', 'Darwin'] or current_os.startswith('CYGWIN'):
 		tuple_xy = _get_terminal_size_linux()
+
 	if tuple_xy is None:
 		print("default")
 		tuple_xy = (80, 25)  # default value
+
 	return tuple_xy
 
 
-def _get_terminal_size_windows():
+def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:
 	try:
-		from ctypes import windll, create_string_buffer
+		from ctypes import windll, create_string_buffer  # type: ignore
+
 		# stdin handle is -10
 		# stdout handle is -11
 		# stderr handle is -12
 		h = windll.kernel32.GetStdHandle(-12)
 		csbi = create_string_buffer(22)
 		res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
+
 		if res:
 			(buf_x, buf_y, cur_x, cur_y, wattr, left, top, right, bottom, maxx,
 				maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
 			size_x = right - left + 1
 			size_y = bottom - top + 1
+
 			return size_x, size_y
 	except:
 		pass
 
+	return None
 
-def _get_terminal_size_tput():
+
+def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 	# get terminal width
 	# src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
 	try:
@@ -188,10 +197,10 @@ def _get_terminal_size_tput():
 		rows = int(subprocess.check_call(shlex.split('tput lines')))
 		return cols, rows
 	except:
-		pass
+		return None
 
 
-def _get_terminal_size_linux():
+def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	def ioctl_GWINSZ(fd):
 		try:
@@ -203,6 +212,7 @@ def _get_terminal_size_linux():
 			pass
 
 	cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+
 	if not cr:
 		try:
 			fd = os.open(os.ctermid(), os.O_RDONLY)
@@ -210,11 +220,13 @@ def _get_terminal_size_linux():
 			os.close(fd)
 		except:
 			pass
+
 	if not cr:
 		try:
 			cr = (os.environ['LINES'], os.environ['COLUMNS'])
 		except:
 			return None
+
 	return int(cr[1]), int(cr[0])
 
 
@@ -223,10 +235,15 @@ class Echo:
 	Context manager for echoing variable assignments (in CPython)
 	"""
 
-	def __init__(self, msg, indent='  '):
+	def __init__(self, msg: str, indent: str = '  '):
 		self.msg = msg
 		self.indent = indent
-		self.parent_frame = inspect.currentframe().f_back
+
+		frame = inspect.currentframe()
+		if frame is None:
+			raise ValueError("Unable to obtain the frame of the caller.")
+		else:
+			self.parent_frame = inspect.currentframe().f_back  # type: ignore  # TODO
 
 	def __enter__(self):
 		print(self.msg)

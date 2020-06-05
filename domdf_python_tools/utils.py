@@ -28,8 +28,7 @@ General utility functions
 
 # stdlib
 import sys
-from collections.abc import Sequence
-from typing import Any, Generator, Iterable, List, Tuple
+from typing import Any, Generator, Iterable, List, Sequence, Tuple
 
 pyversion = int(sys.version[0])  # Python Version
 
@@ -49,12 +48,11 @@ def as_text(value: Any) -> str:
 	return str(value)
 
 
-def check_dependencies(dependencies: Iterable, prt: bool = True) -> list:
+def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
 	"""
 	Check whether one or more dependencies are available to be imported.
 
 	:param dependencies: The list of dependencies to check the availability of.
-	:type dependencies: ~collections.abc.Iterable
 	:param prt: Whether the status should be printed to the terminal. Default ``True``.
 	:type prt: bool, optional
 
@@ -83,7 +81,7 @@ def check_dependencies(dependencies: Iterable, prt: bool = True) -> list:
 	return missing_modules
 
 
-def chunks(l: Sequence, n: int) -> Generator[Any, None, None]:
+def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
 	"""
 	Yield successive n-sized chunks from l.
 
@@ -111,7 +109,7 @@ def cmp(x, y) -> int:
 	return int((x > y) - (x < y))
 
 
-def list2str(the_list: Iterable, sep: str = ",") -> str:
+def list2str(the_list: Iterable[Any], sep: str = ",") -> str:
 	"""
 	Convert an iterable, such as a list, to a comma separated string.
 
@@ -155,20 +153,20 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	return perms
 
 
-def printr(obj: Any, *args, **kwargs):
+def printr(obj: Any, *args, **kwargs) -> None:
 	"""
 	Print the repr() of an object.
 	"""
 
-	return print(repr(obj), *args, **kwargs)
+	print(repr(obj), *args, **kwargs)
 
 
-def printt(obj: Any, *args, **kwargs):
+def printt(obj: Any, *args, **kwargs) -> None:
 	"""
 	Print the type of an object.
 	"""
 
-	return print(type(obj), *args, **kwargs)
+	print(type(obj), *args, **kwargs)
 
 
 def split_len(string: str, n: int) -> List[str]:

@@ -48,7 +48,7 @@ Functions for paths and files
 import os
 import pathlib
 import shutil
-from typing import AnyStr, Callable, Union
+from typing import Callable, Optional, Union
 
 
 def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
@@ -74,7 +74,7 @@ def copytree(
 		src: Union[str, pathlib.Path, os.PathLike],
 		dst: Union[str, pathlib.Path, os.PathLike],
 		symlinks: bool = False,
-		ignore: Callable = None,
+		ignore: Optional[Callable] = None,
 		):
 	"""
 	Alternative to :func:`shutil.copytree` to work in some situations where it doesn't.
@@ -203,7 +203,7 @@ def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
 
 def relpath(
 		path: Union[str, pathlib.Path, os.PathLike],
-		relative_to: Union[str, pathlib.Path, os.PathLike] = None
+		relative_to: Optional[Union[str, pathlib.Path, os.PathLike]] = None
 		) -> pathlib.Path:
 	"""
 	Returns the path for the given file or directory relative to the given

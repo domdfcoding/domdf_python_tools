@@ -28,6 +28,7 @@ Useful base classes
 from abc import ABC, abstractmethod
 from collections import UserList
 from pprint import pformat
+from typing import Any, Callable, Dict, Iterable, Tuple
 
 # 3rd party
 import pydash  # type: ignore
@@ -42,14 +43,14 @@ class Dictable(ABC):
 	def __init__(self, *args, **kwargs):
 		pass
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return self.__repr__()
 
-	def __iter__(self):
+	def __iter__(self) -> Iterable[Tuple[str, Any]]:
 		for key, value in self.__dict__.items():
 			yield key, value
 
-	def __getstate__(self):
+	def __getstate__(self) -> Dict[str, Any]:
 		return self.__dict__
 
 	def __setstate__(self, state):
@@ -66,14 +67,14 @@ class Dictable(ABC):
 	def __dict__(self):
 		return dict()
 
-	def __eq__(self, other):
+	def __eq__(self, other) -> bool:
 		if isinstance(other, self.__class__):
 			return pydash.predicates.is_match(other.__dict__, self.__dict__)
 
 		return NotImplemented
 
 
-def namedlist(name="NamedList"):
+def namedlist(name="NamedList") -> Callable:
 	"""
 	A factory function to return a custom list subclass with a name
 
@@ -88,10 +89,10 @@ def namedlist(name="NamedList"):
 		A list with a name
 		"""
 
-		def __repr__(self):
+		def __repr__(self) -> str:
 			return f"{super().__repr__()}"
 
-		def __str__(self):
+		def __str__(self) -> str:
 			return f"{self.__class__.__name__}{pformat(list(self))}"
 
 	NamedList.__name__ = name

@@ -39,7 +39,10 @@ from typing import Optional, Union
 try:
 	import pytz
 
-	def get_utc_offset(tz, date: datetime.datetime = None) -> Optional[datetime.timedelta]:
+	def get_utc_offset(
+			tz: Union[datetime.tzinfo, str],
+			date: Optional[datetime.datetime] = None,
+			) -> Optional[datetime.timedelta]:
 		"""
 		Returns the offset between UTC and the requested timezone on the given date.
 		If ``date`` is ``None`` then the current date is used.
@@ -47,21 +50,23 @@ try:
 		:param tz: ``pytz.timezone`` or a string representing the timezone
 		:type tz:
 		:param date: The date to obtain the UTC offset for
-		:type date: python:datetime.datetime, optional
 
 		:return:
-		:rtype: datetime.timedelta or None
 		"""
 
 		if date is None:
 			date = datetime.datetime.utcnow()
 
+		timezone: Optional[datetime.tzinfo]
+
 		if isinstance(tz, str):
-			tz = get_timezone(tz, date)
+			timezone = get_timezone(tz, date)
+		else:
+			timezone = tz
 
-		return date.replace(tzinfo=pytz.utc).astimezone(tz).utcoffset()
+		return date.replace(tzinfo=pytz.utc).astimezone(timezone).utcoffset()
 
-	def get_timezone(tz: str, date: datetime.datetime = None) -> Optional[datetime.tzinfo]:
+	def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
 		If ``date`` is ``None`` then the current date is used.
@@ -72,7 +77,6 @@ try:
 		:type date: datetime.datetime, optional
 
 		:return:
-		:rtype: datetime.tzinfo or None
 		"""
 
 		if date is None:
@@ -82,7 +86,7 @@ try:
 
 		return pytz.timezone(tz).localize(d).tzinfo
 
-	def current_tzinfo():
+	def current_tzinfo() -> Optional[datetime.tzinfo]:
 		"""
 		Returns a tzinfo object for the current timezone
 
@@ -109,25 +113,23 @@ try:
 	# 	return datetime.astimezone(current_tzinfo).timestamp()
 	#
 
-	def set_timezone(obj, tzinfo):
+	def set_timezone(obj: datetime.datetime, tzinfo: datetime.tzinfo) -> datetime.datetime:
 		"""
 		Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
 		This will not convert the time (i.e. the hours will stay the same).
 		Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
 
 		:param obj:
-		:type obj:
 		:param tzinfo:
-		:type tzinfo:
 
 		:return:
-		:rtype:
 		"""
 
 		return obj.replace(tzinfo=tzinfo)
 
 	def utc_timestamp_to_datetime(
-			utc_timestamp: Union[float, int], output_tz: datetime.tzinfo = None
+			utc_timestamp: Union[float, int],
+			output_tz: Optional[datetime.tzinfo] = None,
 			) -> datetime.datetime:
 		"""
 		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object
@@ -143,7 +145,7 @@ try:
 		:type utc_timestamp: float, int
 		:param output_tz: The timezone to output the datetime object for.
 			If None it will be inferred.
-		:type output_tz: datetime.tzinfo
+		:type output_tz: datetime.tzinfo, optional
 
 		:return: The timestamp as a datetime object.
 		:rtype: datetime.datetime

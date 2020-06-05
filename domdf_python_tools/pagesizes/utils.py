@@ -74,9 +74,12 @@ def _sequence_convert_from(seq: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[
 	return tuple(float(x) * from_ for x in seq)
 
 
+_measurement_re = re.compile(r"(\d*\.?\d+) *([A-Za-z]*)")
+
+
 def parse_measurement(measurement):
 	# TODO: docstring
-	match = re.findall(r"(\d*\.?\d+) *([A-Za-z]*)", measurement)[0]
+	match = _measurement_re.findall(measurement)[0]
 	print(match)
 	print(len(match))
 	if len(match) < 2:

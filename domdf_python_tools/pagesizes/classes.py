@@ -61,9 +61,9 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	Base class namedtuple representing a page size, in point
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	__slots__: List[str] = []
@@ -78,7 +78,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 				cls._unit(height),
 				)
 
-	def __str__(self):
+	def __str__(self) -> str:
 		return f"{self.__class__.__name__}(width={_rounders(self.width, '0')}, height={_rounders(self.height, '0')})"
 
 	@classmethod
@@ -162,9 +162,9 @@ class Size_mm(BaseSize):
 	representing a pagesize in millimeters.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = mm
@@ -176,9 +176,9 @@ class Size_inch(BaseSize):
 	representing a pagesize in inches.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = inch
@@ -190,9 +190,9 @@ class Size_cm(BaseSize):
 	representing a pagesize in centimeters.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = cm
@@ -204,9 +204,9 @@ class Size_um(BaseSize):
 	representing a pagesize in micrometers.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = um
@@ -218,9 +218,9 @@ class Size_pica(BaseSize):
 	representing a pagesize in pica.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = pica
@@ -232,9 +232,9 @@ class Size_didot(BaseSize):
 	representing a pagesize in didots / French Points.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = didot
@@ -246,9 +246,9 @@ class Size_cicero(BaseSize):
 	representing a pagesize in ciceros.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = cicero
@@ -260,9 +260,9 @@ class Size_new_didot(BaseSize):
 	representing a pagesize in new didots.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = new_didot
@@ -274,9 +274,9 @@ class Size_new_cicero(BaseSize):
 	representing a pagesize in ciceros.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = new_cicero
@@ -288,9 +288,9 @@ class Size_scaled_point(BaseSize):
 	representing a pagesize in scaled points.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 	"""
 
 	_unit = scaled_point
@@ -302,9 +302,9 @@ class PageSize(BaseSize):
 	representing a pagesize in point.
 
 	:param width: The page width
-	:type width: float
+	:type width: int, float, Decimal or Unit
 	:param height: The page height
-	:type height: float
+	:type height: int, float, Decimal or Unit
 
 	The pagesize can be converted to other units using the properties below.
 	"""
