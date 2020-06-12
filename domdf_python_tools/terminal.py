@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 #  terminal.py
 """
@@ -167,7 +166,9 @@ def get_terminal_size() -> Tuple[int, int]:
 
 def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:
 	try:
-		from ctypes import windll, create_string_buffer  # type: ignore
+
+		# stdlib
+		from ctypes import create_string_buffer, windll  # type: ignore
 
 		# stdin handle is -10
 		# stdout handle is -11
@@ -204,6 +205,8 @@ def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	def ioctl_GWINSZ(fd):
 		try:
+
+			# stdlib
 			import fcntl
 			import termios
 			cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))

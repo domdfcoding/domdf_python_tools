@@ -1,5 +1,4 @@
 #  !/usr/bin/env python
-#   -*- coding: utf-8 -*-
 #
 #  dates.py
 """
@@ -37,6 +36,8 @@ from collections import OrderedDict
 from typing import Optional, Union
 
 try:
+
+	# 3rd party
 	import pytz
 
 	def get_utc_offset(
@@ -250,6 +251,8 @@ try:
 			return False
 
 except ImportError:
+
+	# stdlib
 	import warnings
 	warnings.warn(
 			"'domdf_python_tools.dates' requires pytz (https://pypi.org/project/pytz/), but it is not installed."

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 test_utils
 ~~~~~~~~~~~~~~~
@@ -10,6 +9,7 @@ Test functions in utils.py
 # stdlib
 import decimal
 import pathlib
+import re
 import types
 
 # 3rd party
@@ -193,11 +193,11 @@ no_repr_instance = NoRepr()
 		"obj, expects",
 		[
 				("This is a test", "'This is a test'"),
-				(pathlib.PurePosixPath("foo.txt"), "PurePosixPath('foo.txt')"),
+				(pathlib.PurePosixPath("foo.txt"), r"PurePosixPath\('foo.txt'\)"),
 				(1234, "1234"),
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
-				(no_repr_instance, f"<tests.test_utils.NoRepr object at {hex(id(no_repr_instance))}>"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at 0x0*{hex(id(no_repr_instance))[2:]}>"),
 				]
 		)
 def test_printr(obj, expects, capsys):
@@ -205,7 +205,7 @@ def test_printr(obj, expects, capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout[0] == expects
+	assert re.match(expects, stdout[0])
 
 
 @pytest.mark.parametrize(
@@ -235,7 +235,7 @@ def test_printt(obj, expects, capsys):
 				(1234, "1234"),
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
-				(no_repr_instance, f"<tests.test_utils.NoRepr object at {hex(id(no_repr_instance))}>"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at 0x0*{hex(id(no_repr_instance))[2:]}>"),
 				]
 		)
 def test_stderr_writer(obj, expects, capsys):
@@ -243,7 +243,7 @@ def test_stderr_writer(obj, expects, capsys):
 
 	captured = capsys.readouterr()
 	stderr = captured.err.split("\n")
-	assert stderr[0] == expects
+	assert re.match(expects, stderr[0])
 
 
 def test_split_len():

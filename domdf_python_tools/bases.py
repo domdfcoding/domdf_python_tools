@@ -1,5 +1,4 @@
 #  !/usr/bin/env python
-#   -*- coding: utf-8 -*-
 #
 #  bases.py
 """
@@ -47,8 +46,7 @@ class Dictable(Iterable):
 		return self.__repr__()
 
 	def __iter__(self) -> Iterable[Tuple[str, Any]]:  # type: ignore[override]
-		for key, value in self.__dict__.items():
-			yield key, value
+		yield from self.__dict__.items()
 
 	def __getstate__(self) -> Dict[str, Any]:
 		return self.__dict__

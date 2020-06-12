@@ -25,7 +25,7 @@ domdf_python_tools
 	* - Other
 	  - |license| |language| |commits-since| |commits-latest| |maintained| 
 
-.. |docs| image:: https://readthedocs.org/projects/domdf_python_tools/badge/?version=latest
+.. |docs| image:: https://img.shields.io/readthedocs/domdf_python_tools/latest?logo=read-the-docs
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
 
@@ -37,19 +37,19 @@ domdf_python_tools
 	:target: https://requires.io/github/domdfcoding/domdf_python_tools/requirements/?branch=master
 	:alt: Requirements Status
 
-.. |coveralls| image:: https://coveralls.io/repos/github/domdfcoding/domdf_python_tools/badge.svg?branch=master
+.. |coveralls| image:: https://shields.io/coveralls/github/domdfcoding/domdf_python_tools/master?logo=coveralls
 	:target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
 	:alt: Coverage
 
-.. |codefactor| image:: https://img.shields.io/codefactor/grade/github/domdfcoding/domdf_python_tools
+.. |codefactor| image:: https://img.shields.io/codefactor/grade/github/domdfcoding/domdf_python_tools?logo=codefactor
 	:target: https://www.codefactor.io/repository/github/domdfcoding/domdf_python_tools
 	:alt: CodeFactor Grade
 
-.. |pypi-version| image:: https://img.shields.io/pypi/v/domdf_python_tools.svg
+.. |pypi-version| image:: https://img.shields.io/pypi/v/domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools.svg
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Supported Python Versions
 
@@ -61,7 +61,7 @@ domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Wheel
 
-.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools
+.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools?logo=anaconda
 	:alt: Conda - Package Version
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 

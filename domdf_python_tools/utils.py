@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#cython: language_level=3
+# cython: language_level=3
 # -*- coding: utf-8 -*-
 #
 #  utils.py
@@ -28,7 +28,7 @@ General utility functions
 
 # stdlib
 import sys
-from typing import Any, Generator, Iterable, List, Sequence, Tuple
+from typing import Any, Generator, Iterable, List, Sequence, Tuple, Union
 
 pyversion = int(sys.version[0])  # Python Version
 
@@ -60,9 +60,10 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	:rtype: list
 	"""
 
+	# stdlib
 	from pkgutil import iter_modules
 
-	modules = set(x[1] for x in iter_modules())
+	modules = {x[1] for x in iter_modules()}
 	missing_modules = []
 
 	for requirement in dependencies:
@@ -140,6 +141,7 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	:type n: int
 	"""
 
+	# stdlib
 	import itertools
 
 	if n == 0:

@@ -8,6 +8,8 @@ import os
 import re
 import sys
 import warnings
+
+# 3rd party
 from sphinx.locale import _
 
 # Suppress warnings from sphinx_autodoc_typehints
@@ -27,7 +29,6 @@ github_url = f"https://github.com/domdfcoding/domdf_python_tools"
 rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
 .. |pkgname2| replace:: ``domdf_python_tools``
 .. |browse_github| replace:: `Browse the GitHub Repository <{github_url}>`__
-.. |ghurl| replace:: {github_url}
 """
 
 author = "Dominic Davis-Foster"
@@ -51,6 +52,7 @@ extensions = [
 		"sphinx_tabs.tabs",
 		"sphinx-prompt",
 		"sphinx_autodoc_typehints",
+		"sphinx.ext.autosummary",
 		]
 
 sphinxemoji_style = 'twemoji'
