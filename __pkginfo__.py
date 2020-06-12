@@ -54,7 +54,7 @@ entry_points = {
 
 __license__ = "GNU Lesser General Public License v3 or later (LGPLv3+)"
 
-short_desc = "Helpful functions for Python"
+short_desc = "Helpful functions for Python."
 
 __author__ = author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
@@ -70,7 +70,7 @@ repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
 long_description = (repo_root / "README.rst").read_text().replace("0.3.6", __version__) + '\n'
-conda_description = """Helpful functions for Python
+conda_description = """Helpful functions for Python.
 
 
 Before installing please ensure you have added the following channels: domdfcoding, conda-forge"""

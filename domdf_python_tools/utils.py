@@ -169,6 +169,20 @@ def printt(obj: Any, *args, **kwargs) -> None:
 	print(type(obj), *args, **kwargs)
 
 
+def stderr_writer(*args, **kwargs):
+	"""
+	Write to stderr, flushing stdout beforehand and stderr afterwards.
+	"""
+
+	sys.stdout.flush()
+	kwargs["file"] = sys.stderr
+	print(*args, **kwargs)
+	sys.stderr.flush()
+
+
+printe = stderr_writer
+
+
 def split_len(string: str, n: int) -> List[str]:
 	"""
 	Split a string every ``n`` characters.
@@ -204,3 +218,45 @@ def str2tuple(input_string: str, sep: str = ",") -> Tuple[int, ...]:
 	"""
 
 	return tuple(int(x) for x in input_string.split(sep))
+
+
+def strtobool(val: Union[str, bool]) -> bool:
+	"""
+	Convert a string representation of truth to ``True`` or ``False``.
+
+	If val is an integer then its boolean representation is returned. If val is a boolean it is returned as-is.
+
+	True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
+	are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
+	'val' is anything else.
+
+	Based on distutils
+	"""
+
+	if isinstance(val, int):
+		return bool(val)
+
+	val = val.lower()
+	if val in ('y', 'yes', 't', 'true', 'on', '1'):
+		return True
+	elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+		return False
+	else:
+		raise ValueError(f"invalid truth value {val!r}")
+
+
+def enquote_value(value: Any) -> Union[str, bool, float]:
+	"""
+	Adds quotes to the given value, suitable for use in a templating system such as Jinja2.
+
+	floats, integerss, booleans, None, and the strings "True", "False" and "None" are returned as-is.
+
+	:param value: The value to enquote
+	"""
+
+	if value in {"True", "False", "None", True, False, None}:
+		return value
+	elif isinstance(value, (int, float)):
+		return value
+	else:
+		return f"'{value}'"

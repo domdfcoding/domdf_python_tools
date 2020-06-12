@@ -186,40 +186,64 @@ class NoRepr:
 		pass
 
 
-def test_printr(capsys):
-	utils.printr("This is a test")
-	utils.printr(pathlib.PurePosixPath("foo.txt"))
-	utils.printr(1234)
-	utils.printr(12.34)
-	utils.printr(CustomRepr())
-	utils.printr(NoRepr())
+no_repr_instance = NoRepr()
+
+
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				("This is a test", "'This is a test'"),
+				(pathlib.PurePosixPath("foo.txt"), "PurePosixPath('foo.txt')"),
+				(1234, "1234"),
+				(12.34, "12.34"),
+				(CustomRepr(), "This is my custom __repr__!"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at {hex(id(no_repr_instance))}>"),
+				]
+		)
+def test_printr(obj, expects, capsys):
+	utils.printr(obj)
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout[0] == "'This is a test'"
-	assert stdout[1] == "PurePosixPath('foo.txt')"
-	assert stdout[2] == "1234"
-	assert stdout[3] == "12.34"
-	assert stdout[4] == "This is my custom __repr__!"
-	assert stdout[5].startswith('')
+	assert stdout[0] == expects
 
 
-def test_printt(capsys):
-	utils.printt("This is a test")
-	utils.printt(pathlib.PurePosixPath("foo.txt"))
-	utils.printt(1234)
-	utils.printt(12.34)
-	utils.printt(CustomRepr())
-	utils.printt(NoRepr())
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				("This is a test", "<class 'str'>"),
+				(pathlib.PurePosixPath("foo.txt"), "<class 'pathlib.PurePosixPath'>"),
+				(1234, "<class 'int'>"),
+				(12.34, "<class 'float'>"),
+				(CustomRepr(), "<class 'tests.test_utils.CustomRepr'>"),
+				(no_repr_instance, "<class 'tests.test_utils.NoRepr'>"),
+				]
+		)
+def test_printt(obj, expects, capsys):
+	utils.printt(obj)
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout[0] == "<class 'str'>"
-	assert stdout[1] == "<class 'pathlib.PurePosixPath'>"
-	assert stdout[2] == "<class 'int'>"
-	assert stdout[3] == "<class 'float'>"
-	assert stdout[4] == "<class 'tests.test_utils.CustomRepr'>"
-	assert stdout[5] == "<class 'tests.test_utils.NoRepr'>"
+	assert stdout[0] == expects
+
+
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				("This is a test", "This is a test"),
+				(pathlib.PurePosixPath("foo.txt"), "foo.txt"),
+				(1234, "1234"),
+				(12.34, "12.34"),
+				(CustomRepr(), "This is my custom __repr__!"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at {hex(id(no_repr_instance))}>"),
+				]
+		)
+def test_stderr_writer(obj, expects, capsys):
+	utils.stderr_writer(obj)
+
+	captured = capsys.readouterr()
+	stderr = captured.err.split("\n")
+	assert stderr[0] == expects
 
 
 def test_split_len():
@@ -248,3 +272,98 @@ def test_str2tuple(value, expects):
 def test_str2tuple_semicolon(value, expects):
 	assert isinstance(str2tuple(value, sep=";"), tuple)
 	assert str2tuple(value, sep=";") == expects
+
+
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				(True, True),
+				("True", True),
+				("true", True),
+				("tRUe", True),
+				("y", True),
+				("Y", True),
+				("YES", True),
+				("yes", True),
+				("Yes", True),
+				("yEs", True),
+				("ON", True),
+				("on", True),
+				("1", True),
+				(1, True),
+				(50, True),
+				(-1, True),
+				(False, False),
+				("False", False),
+				("false", False),
+				("falSE", False),
+				("n", False),
+				("N", False),
+				("NO", False),
+				("no", False),
+				("nO", False),
+				("OFF", False),
+				("off", False),
+				("oFF", False),
+				("0", False),
+				(0, False),
+				]
+		)
+def test_strtobool(obj, expects):
+	assert utils.strtobool(obj) == expects
+
+
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				("truthy", ValueError),
+				("foo", ValueError),
+				("bar", ValueError),
+				(None, AttributeError),
+				(1.0, AttributeError),
+				(0.0, AttributeError),
+				]
+		)
+def test_strtobool_errors(obj, expects):
+	with pytest.raises(expects):
+		utils.strtobool(obj)
+
+
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				(True, True),
+				("True", "True"),
+				("true", "'true'"),
+				("y", "'y'"),
+				("Y", "'Y'"),
+				(1, 1),
+				(0, 0),
+				(50, 50),
+				(1.0, 1.0),
+				(0.0, 0.0),
+				(50.0, 50.0),
+				(decimal.Decimal("50.0"), "'50.0'"),
+				(False, False),
+				("False", "False"),
+				("false", "'false'"),
+				("Hello World", "'Hello World'"),
+				]
+		)
+def test_enquote_value(obj, expects):
+	assert utils.enquote_value(obj) == expects
+
+
+#
+#
+# @pytest.mark.parametrize("obj, expects", [
+# 		("truthy", ValueError),
+# 		("foo", ValueError),
+# 		("bar", ValueError),
+# 		(None, AttributeError),
+# 		(1.0, AttributeError),
+# 		(0.0, AttributeError),
+# 		])
+# def test_enquote_value_errors(obj, expects):
+# 	with pytest.raises(expects):
+# 		utils.enquote_value(obj)

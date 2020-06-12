@@ -48,7 +48,8 @@ Functions for paths and files
 import os
 import pathlib
 import shutil
-from typing import Callable, Optional, Union
+import stat
+from typing import IO, Callable, Optional, Union
 
 
 def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
@@ -253,3 +254,38 @@ def write(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
+
+
+def clean_writer(string: str, fp: IO[str]):
+	"""
+	Write string to fp without trailing spaces
+
+	:param string:
+	:type string:
+	:param fp:
+	:type fp:
+	"""
+
+	buffer = []
+
+	for line in string.split("\n"):
+		buffer.append(line.rstrip())
+
+	while buffer[-1:] == [""]:
+		buffer = buffer[:-1]
+
+	for line in buffer:
+		fp.write(line)
+		fp.write("\n")
+
+
+def make_executable(filename):
+	"""
+	Make the given file executable
+
+	:param filename:
+	:type filename: str or pathlib.Path
+	"""
+
+	st = os.stat(str(filename))
+	os.chmod(str(filename), st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)

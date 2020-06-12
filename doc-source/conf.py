@@ -21,6 +21,7 @@ sys.path.append(os.path.abspath('..'))
 from __pkginfo__ import __version__
 
 
+
 github_url = f"https://github.com/domdfcoding/domdf_python_tools"
 
 rst_prolog = f""".. |pkgname| replace:: domdf_python_tools

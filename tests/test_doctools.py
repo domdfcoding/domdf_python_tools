@@ -47,7 +47,7 @@ class Cafe:
 		:rtype: str
 		"""
 
-		return f"Open every day {self._opens_at}am - {self._opens_at}pm"
+		return f"Open every day {self._opens_at}am - {self._closes_at}pm"
 
 	def set_opening_hours(self, opens_at, closes_at):
 		"""
@@ -78,7 +78,7 @@ class Cafe:
 		"""
 		Returns whether the Cafe serves spam
 
-		:rtype:
+		:rtype: bool
 		"""
 
 		return True
@@ -106,7 +106,7 @@ class SpamCafe(Cafe):
 	@doctools.is_documented_by(Cafe.opening_hours)  # type: ignore
 	@property
 	def opening_hours(self):
-		return f"""Open Monday-Saturday {self._opens_at}am - {self._opens_at}pm
+		return f"""Open Monday-Saturday {self._opens_at}am - {self._closes_at}pm
 Please note our opening hours may vary due to COVID-19"""
 
 	@doctools.append_docstring_from(Cafe.set_opening_hours)
@@ -131,35 +131,31 @@ Please note our opening hours may vary due to COVID-19"""
 		return "Terry Jones"
 
 
-def documented_function(a, b, c, d):
+def documented_function(a: float, b: float, c: float, d: float) -> float:
 	"""
-	This function is documented
+	This function is documented. It multiplies the four values `a`, `b`, `c`, and `d` together.
 
-	:param a:
-	:type a:
-	:param b:
-	:type b:
-	:param c:
-	:type c:
-	:param d:
-	:type d:
-	:return:
-	:rtype:
+	:type a: float
+	:type b: float
+	:type c: float
+	:type d: float
 	"""
 
-	return
+	return a * b * c * d
 
 
 @doctools.is_documented_by(documented_function)
-def undocumented_function(a, b, c, d):
-	return
+def undocumented_function(a: float, b: float, c: float, d: float) -> float:
+	return d * c * b * a
 
 
 @doctools.append_docstring_from(documented_function)
-def partially_documented_function(a, b, c, d):
+def partially_documented_function(a: float, b: float, c: float, d: float) -> None:
 	"""
-	This function works like documented function except it returns the result telepathically.
+	This function works like ``documented_function`` except it returns the result telepathically.
 	"""
+
+	d * c * b * a
 
 
 class DummyClass:
@@ -201,7 +197,7 @@ def test_decorators():
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
 	assert partially_documented_function.__doc__.startswith(
-			"\nThis function works like documented function except it returns the result telepathically."
+			"\nThis function works like ``documented_function`` except it returns the result telepathically."
 			)
 	assert doctools.deindent_string(partially_documented_function.__doc__
 									).endswith(doctools.deindent_string(documented_function.__doc__))
@@ -235,3 +231,43 @@ def test_append_doctring_from_another():
 
 	doctools.append_doctring_from_another(funB, funC)
 	assert funB.__doc__ == "Hello\nWorld"
+
+
+def test_still_callable():
+	cafe = Cafe()
+	assert cafe.menu == [
+			"egg and bacon",
+			"egg sausage and bacon",
+			"egg and spam",
+			"egg bacon and spam",
+			]
+	assert cafe.opening_hours == "Open every day 7am - 6pm"
+
+	cafe.set_opening_hours(9, 5)
+	assert cafe.opening_hours == "Open every day 9am - 5pm"
+	assert cafe.owner == "Unknown"
+	assert cafe.serves_spam is True
+
+	spam_cafe = SpamCafe()
+	assert spam_cafe.menu == [
+			"egg and bacon",
+			"egg sausage and bacon",
+			"egg and spam",
+			"egg bacon and spam",
+			"Lobster Thermidor au Crevette with a Mornay "
+			"sauce served in a Provencale manner with "
+			"shallots and aubergines garnished with truffle "
+			"pate, brandy and with a fried egg on top and spam."
+			]
+	assert spam_cafe.opening_hours == """Open Monday-Saturday 7am - 6pm
+Please note our opening hours may vary due to COVID-19"""
+	spam_cafe.set_opening_hours(9, 5)
+	assert spam_cafe.opening_hours == """Open Monday-Saturday 9am - 5pm
+Please note our opening hours may vary due to COVID-19"""
+	assert spam_cafe.owner == "Terry Jones"
+	assert spam_cafe.serves_spam is True
+	assert spam_cafe.ceil(5.5) == 6
+
+	assert documented_function(1, 2, 3, 4) == 24
+	assert undocumented_function(1, 2, 3, 4) == 24
+	assert partially_documented_function(1, 2, 3, 4) is None

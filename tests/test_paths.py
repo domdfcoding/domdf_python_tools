@@ -111,8 +111,11 @@ class TestCurrentDirOperations:
 
 	@classmethod
 	def teardown_class(cls):
-		with contextlib.suppress(FileNotFoundError):
-			pathlib.Path("paths_append_test_file.txt").unlink()
-			pathlib.Path("paths_delete_test_file.txt").unlink()
-			pathlib.Path("paths_read_test_file.txt").unlink()
-			pathlib.Path("paths_write_test_file.txt").unlink()
+		for file in [
+				"paths_append_test_file.txt",
+				"paths_delete_test_file.txt",
+				"paths_read_test_file.txt",
+				"paths_write_test_file.txt",
+				]:
+			with contextlib.suppress(FileNotFoundError):
+				pathlib.Path(file).unlink()
