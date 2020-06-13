@@ -125,7 +125,7 @@ Installation
 
 		.. prompt:: bash
 
-			pip install git+https://github.com//domdf_python_tools@master
+			pip install git+https://github.com/domdfcoding/domdf_python_tools@master
 
 .. end installation
 
