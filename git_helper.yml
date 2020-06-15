@@ -53,7 +53,7 @@ email: "dominic@davis-foster.co.uk"
 version: "0.3.6"
 username: "domdfcoding"
 license: 'LGPLv3+'
-short_desc: 'Helpful functions for Python 👨🏻‍🔬 🐍 🛠️'
+short_desc: 'Helpful functions for Python 🐍 🛠️'
 
 classifiers:
   - 'Development Status :: 4 - Beta'
