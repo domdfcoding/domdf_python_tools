@@ -4,7 +4,7 @@ domdf_python_tools
 
 .. start short_desc
 
-**Helpful functions for Python.**
+**Helpful functions for Python 👨🏻‍🔬 🐍 🛠️**
 
 .. end short_desc
 
@@ -38,7 +38,7 @@ domdf_python_tools
 	:target: https://requires.io/github/domdfcoding/domdf_python_tools/requirements/?branch=master
 	:alt: Requirements Status
 
-.. |coveralls| image:: https://shields.io/coveralls/github/domdfcoding/domdf_python_tools/master?logo=coveralls
+.. |coveralls| image:: https://img.shields.io/coveralls/github/domdfcoding/domdf_python_tools/master?logo=coveralls
 	:target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
 	:alt: Coverage
 
