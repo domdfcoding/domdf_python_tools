@@ -97,4 +97,4 @@ classifiers = [
 
 		]
 
-keywords = ""
+keywords = "utilities"
