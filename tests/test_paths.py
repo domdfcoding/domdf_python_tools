@@ -10,6 +10,7 @@ Test functions in paths.py
 import contextlib
 import os
 import pathlib
+import sys
 from tempfile import TemporaryDirectory
 
 # 3rd party
@@ -66,6 +67,7 @@ def test_parent_path():
 		assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason="Needs special-casing for Windows")
 @pytest.mark.parametrize(
 		"relto, relpath",
 		[
