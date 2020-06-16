@@ -18,7 +18,8 @@ domdf_python_tools
 	* - Docs
 	  - |docs|
 	* - Tests
-	  - |travis| |requires| |coveralls| |codefactor|
+	  - |travis| |actions_windows| |actions_macos|
+	    |requires| |coveralls| |codefactor|
 	* - PyPI
 	  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
 	* - Anaconda
@@ -33,6 +34,14 @@ domdf_python_tools
 .. |travis| image:: https://img.shields.io/travis/com/domdfcoding/domdf_python_tools/master?logo=travis
 	:target: https://travis-ci.com/domdfcoding/domdf_python_tools
 	:alt: Travis Build Status
+
+.. |actions_windows| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Windows%20Tests/badge.svg
+	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Windows+Tests%22
+	:alt: Windows Tests Status
+	
+.. |actions_macos| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/macOS%20Tests/badge.svg
+	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22macOS+Tests%22
+	:alt: macOS Tests Status
 
 .. |requires| image:: https://requires.io/github/domdfcoding/domdf_python_tools/requirements.svg?branch=master
 	:target: https://requires.io/github/domdfcoding/domdf_python_tools/requirements/?branch=master
