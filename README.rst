@@ -18,13 +18,15 @@ domdf_python_tools
 	  - |docs|
 	* - Tests
 	  - |travis| |actions_windows| |actions_macos|
-	    |requires| |coveralls| |codefactor|
+	    |coveralls| |codefactor|
 	* - PyPI
 	  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
 	* - Anaconda
 	  - |conda-version| |conda-platform|
+	* - Activity
+	  - |commits-latest| |commits-since| |maintained|
 	* - Other
-	  - |license| |language| |commits-since| |commits-latest| |maintained| 
+	  - |license| |language| |requires|
 
 .. |docs| image:: https://img.shields.io/readthedocs/domdf_python_tools/latest?logo=read-the-docs
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
