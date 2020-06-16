@@ -1,5 +1,5 @@
 ---
-name: CI
+name: CI_windows-2019
 
 on:
   push:
