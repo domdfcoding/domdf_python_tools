@@ -193,9 +193,9 @@ no_repr_instance = NoRepr()
 
 def get_mem_addr(obj):
 	if sys.platform == "win32" and platform.python_implementation() != "PyPy":
-		return f"0x0*{hex(id(no_repr_instance))[2:].upper()}"
+		return f"0x0*{hex(id(obj))[2:].upper()}"
 	else:
-		return f"0x0*{hex(id(no_repr_instance))[2:]}"
+		return f"0x0*{hex(id(obj))[2:]}"
 
 
 @pytest.mark.parametrize(
