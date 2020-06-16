@@ -69,14 +69,14 @@ project_urls = {
 repo_root = pathlib.Path(__file__).parent
 
 # Get info from files; set: long_description
-long_description = (repo_root / "README.rst").read_text().replace("0.3.6", __version__) + '\n'
+long_description = (repo_root / "README.rst").read_text(encoding="utf-8").replace("0.3.6", __version__) + '\n'
 conda_description = """Helpful functions for Python 🐍 🛠️
 
 
 Before installing please ensure you have added the following channels: domdfcoding, conda-forge"""
 __all__.append("conda_description")
 
-install_requires = (repo_root / "requirements.txt").read_text().split('\n')
+install_requires = (repo_root / "requirements.txt").read_text(encoding="utf-8").split('\n')
 extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 
 classifiers = [
