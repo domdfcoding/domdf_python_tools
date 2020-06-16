@@ -10,6 +10,7 @@ Test functions in utils.py
 import decimal
 import pathlib
 import re
+import sys
 import types
 
 # 3rd party
@@ -189,6 +190,13 @@ class NoRepr:
 no_repr_instance = NoRepr()
 
 
+def get_mem_addr(obj):
+	if sys.platform == "win32":
+		return f"0x0*{hex(id(no_repr_instance))[2:].upper()}"
+	else:
+		return f"0x0*{hex(id(no_repr_instance))[2:]}"
+
+
 @pytest.mark.parametrize(
 		"obj, expects",
 		[
@@ -197,7 +205,7 @@ no_repr_instance = NoRepr()
 				(1234, "1234"),
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
-				(no_repr_instance, f"<tests.test_utils.NoRepr object at 0x0*{hex(id(no_repr_instance))[2:]}>"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
 				]
 		)
 def test_printr(obj, expects, capsys):
@@ -235,7 +243,7 @@ def test_printt(obj, expects, capsys):
 				(1234, "1234"),
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
-				(no_repr_instance, f"<tests.test_utils.NoRepr object at 0x0*{hex(id(no_repr_instance))[2:]}>"),
+				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
 				]
 		)
 def test_stderr_writer(obj, expects, capsys):

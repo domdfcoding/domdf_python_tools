@@ -8,6 +8,7 @@ Test functions in paths.py
 
 # stdlib
 import contextlib
+import os
 import pathlib
 from tempfile import TemporaryDirectory
 
@@ -62,7 +63,7 @@ def test_parent_path():
 		assert paths.parent_path(dir1) == tmpdir
 		assert paths.parent_path(dir2) == dir1
 		assert paths.parent_path(dir3) == dir2
-		assert str(paths.parent_path("spam/spam/spam")) == "spam/spam"
+		assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
 @pytest.mark.parametrize(
