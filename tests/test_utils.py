@@ -9,6 +9,7 @@ Test functions in utils.py
 # stdlib
 import decimal
 import pathlib
+import platform
 import re
 import sys
 import types
@@ -191,7 +192,7 @@ no_repr_instance = NoRepr()
 
 
 def get_mem_addr(obj):
-	if sys.platform == "win32":
+	if sys.platform == "win32" and platform.python_implementation() != "PyPy":
 		return f"0x0*{hex(id(no_repr_instance))[2:].upper()}"
 	else:
 		return f"0x0*{hex(id(no_repr_instance))[2:]}"

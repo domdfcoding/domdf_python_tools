@@ -218,7 +218,7 @@ def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	if not cr:
 		try:
-			fd = os.open(os.ctermid(), os.O_RDONLY)
+			fd = os.open(os.ctermid(), os.O_RDONLY)   # type: ignore
 			cr = ioctl_GWINSZ(fd)
 			os.close(fd)
 		except:
