@@ -17,8 +17,7 @@ domdf_python_tools
 	* - Docs
 	  - |docs| |docs_check|
 	* - Tests
-	  - |travis| |actions_windows| |actions_macos|
-	    |coveralls| |codefactor|
+	  - |travis| |actions_windows| |actions_macos| |coveralls| |codefactor|
 	* - PyPI
 	  - |pypi-version| |supported-versions| |supported-implementations| |wheel|
 	* - Anaconda
@@ -43,7 +42,7 @@ domdf_python_tools
 .. |actions_windows| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Windows%20Tests/badge.svg
 	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Windows+Tests%22
 	:alt: Windows Tests Status
-	
+
 .. |actions_macos| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/macOS%20Tests/badge.svg
 	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22macOS+Tests%22
 	:alt: macOS Tests Status
@@ -80,7 +79,7 @@ domdf_python_tools
 	:alt: Conda - Package Version
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 
-.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
+.. |conda-platform| image:: image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
 	:alt: Conda - Platform
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 
