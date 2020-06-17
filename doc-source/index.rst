@@ -33,7 +33,7 @@ domdf_python_tools
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
 	
-.. |docs| image:: [Docs Check](https://github.com/domdfcoding/domdf_python_tools/workflows/Docs%20Check/badge.svg
+.. |docs_check| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Docs%20Check/badge.svg
 	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Docs+Check%22
 	:alt: Docs Check Status
 

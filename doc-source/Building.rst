@@ -2,7 +2,7 @@
 Building from source
 *********************
 
-To build the domdf_python_tools package from source using ``setuptools``, run the following command:
+To build the ``domdf_python_tools`` package from source using ``setuptools``, run the following command:
 
 .. code-block:: bash
 
@@ -51,3 +51,9 @@ Different formats are available for built distributions
     :language: python
     :linenos:
 
+**__pkginfo__.py**
+
+
+.. literalinclude:: ../__pkginfo__.py
+    :language: python
+    :linenos:
