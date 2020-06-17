@@ -50,8 +50,10 @@ import shutil
 import stat
 from typing import IO, Callable, Optional, Union
 
+PathLike = Union[str, pathlib.Path, os.PathLike]
 
-def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
+
+def append(var: str, filename: PathLike):
 	"""
 	Append ``var`` to the file ``filename`` in the current directory.
 
@@ -63,7 +65,6 @@ def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 
 	:param var: The value to append to the file
 	:param filename: The file to append to
-	:type filename: str or pathlib.Path or os.PathLike
 	"""
 
 	with open(os.path.join(os.getcwd(), filename), 'a') as f:
@@ -71,8 +72,8 @@ def append(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 
 
 def copytree(
-		src: Union[str, pathlib.Path, os.PathLike],
-		dst: Union[str, pathlib.Path, os.PathLike],
+		src: PathLike,
+		dst: PathLike,
 		symlinks: bool = False,
 		ignore: Optional[Callable] = None,
 		):
@@ -80,9 +81,7 @@ def copytree(
 	Alternative to :func:`shutil.copytree` to work in some situations where it doesn't.
 
 	:param src: Source file to copy
-	:type src: str or pathlib.Path or os.PathLike
 	:param dst: Destination to copy file to
-	:type dst: str or pathlib.Path or os.PathLike
 	:param symlinks: Whether to represent symbolic links in the source as symbolic
 		links in the destination. If false or omitted, the contents and metadata
 		of the linked files are copied to the new tree. When symlinks is false,
@@ -101,7 +100,6 @@ def copytree(
 		:class:`python:shutil.ignore_patterns` can be used to create such a callable
 		that ignores names based on
 		glob-style patterns.
-	:type ignore: ~typing.Callable, optional
 	"""
 
 	for item in os.listdir(src):
@@ -113,7 +111,7 @@ def copytree(
 			shutil.copy2(s, d)
 
 
-def delete(filename: Union[str, pathlib.Path, os.PathLike]):
+def delete(filename: PathLike):
 	"""
 	Delete the file in the current directory.
 
@@ -124,14 +122,13 @@ def delete(filename: Union[str, pathlib.Path, os.PathLike]):
 	TODO: make this the file in the given directory, by default the current directory
 
 	:param filename: The file to delete
-	:type filename: str or pathlib.Path or os.PathLike
 	"""
 
 	os.remove(os.path.join(os.getcwd(), filename))
 
 
 def maybe_make(
-		directory: Union[str, pathlib.Path, os.PathLike],
+		directory: PathLike,
 		mode=0o777,
 		parents: bool = False,
 		exist_ok: bool = False
@@ -140,7 +137,6 @@ def maybe_make(
 	Create a directory at this given path, but only if the directory does not already exist.
 
 	:param directory: Directory to create
-	:type directory: str or pathlib.Path or os.PathLike
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
 	:type mode:
 	:param parents: If ``False`` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
@@ -161,15 +157,13 @@ def maybe_make(
 		directory.mkdir(mode, parents, exist_ok)
 
 
-def parent_path(path: Union[str, pathlib.Path, os.PathLike]) -> pathlib.Path:
+def parent_path(path: PathLike) -> pathlib.Path:
 	"""
 	Returns the path of the parent directory for the given file or directory
 
 	:param path: Path to find the parent for
-	:type path: str or pathlib.Path or os.PathLike
 
 	:return: The parent directory
-	:rtype: pathlib.Path
 	"""
 
 	if not isinstance(path, pathlib.Path):
@@ -178,7 +172,7 @@ def parent_path(path: Union[str, pathlib.Path, os.PathLike]) -> pathlib.Path:
 	return path.parent
 
 
-def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
+def read(filename: PathLike) -> str:
 	"""
 	Read a file in the current directory (in text mode)
 
@@ -189,7 +183,6 @@ def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
 	TODO: make this the file in the given directory, by default the current directory
 
 	:param filename: The file to read from
-	:type filename: str or pathlib.Path or os.PathLike
 
 	:return: The contents of the file
 	:rtype: str
@@ -202,20 +195,18 @@ def read(filename: Union[str, pathlib.Path, os.PathLike]) -> str:
 
 
 def relpath(
-		path: Union[str, pathlib.Path, os.PathLike],
-		relative_to: Optional[Union[str, pathlib.Path, os.PathLike]] = None
+		path: PathLike,
+		relative_to: Optional[PathLike] = None
 		) -> pathlib.Path:
 	"""
 	Returns the path for the given file or directory relative to the given
 	directory or, if that would require path traversal, returns the absolute path.
 
 	:param path: Path to find the relative path for
-	:type path: str or pathlib.Path or os.PathLike
 	:param relative_to: The directory to find the path relative to.
 		Defaults to the current directory
-	:type relative_to: str or pathlib.Path or os.PathLike, optional
 
-	:rtype: pathlib.Path
+	:return:
 	"""
 
 	if not isinstance(path, pathlib.Path):
@@ -240,7 +231,7 @@ def relpath(
 relpath2 = relpath
 
 
-def write(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
+def write(var: str, filename: PathLike) -> None:
 	"""
 	Write a variable to file in the current directory
 
@@ -248,21 +239,19 @@ def write(var: str, filename: Union[str, pathlib.Path, os.PathLike]):
 
 	:param var: The value to write to the file
 	:param filename: The file to write to
-	:type filename: str or pathlib.Path or os.PathLike
 	"""
 
 	with open(os.path.join(os.getcwd(), filename), 'w') as f:
 		f.write(var)
 
 
-def clean_writer(string: str, fp: IO[str]):
+def clean_writer(string: str, fp: IO) -> None:
 	"""
-	Write string to fp without trailing spaces
+	Write string to ``fp`` without trailing spaces
 
 	:param string:
-	:type string:
+	:type string: str
 	:param fp:
-	:type fp:
 	"""
 
 	buffer = []
@@ -278,13 +267,15 @@ def clean_writer(string: str, fp: IO[str]):
 		fp.write("\n")
 
 
-def make_executable(filename):
+def make_executable(filename: PathLike) -> None:
 	"""
 	Make the given file executable
 
 	:param filename:
-	:type filename: str or pathlib.Path
 	"""
+
+	if not isinstance(filename, pathlib.Path):
+		filename = pathlib.Path(filename)
 
 	st = os.stat(str(filename))
 	os.chmod(str(filename), st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
