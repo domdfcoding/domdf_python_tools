@@ -80,7 +80,7 @@ domdf_python_tools
 	:alt: Conda - Package Version
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 
-.. |conda-platform| image:: image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
+.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
 	:alt: Conda - Platform
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 
