@@ -30,7 +30,7 @@ General utility functions
 import sys
 from typing import Any, Generator, Iterable, List, Sequence, Tuple, Union
 
-pyversion = int(sys.version[0])  # Python Version
+pyversion: int = int(sys.version_info.major)  # Python Version
 
 
 def as_text(value: Any) -> str:
