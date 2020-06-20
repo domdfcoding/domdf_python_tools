@@ -48,9 +48,10 @@ import os
 import pathlib
 import shutil
 import stat
-from typing import IO, Callable, Optional, Union
+from typing import IO, Callable, Optional
 
-PathLike = Union[str, pathlib.Path, os.PathLike]
+# this package
+from domdf_python_tools.typing import PathLike
 
 
 def append(var: str, filename: PathLike):

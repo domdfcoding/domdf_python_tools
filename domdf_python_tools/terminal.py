@@ -33,7 +33,7 @@ Useful functions for terminal-based programs
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
-#  Based on ChemPy (https://github.com/bjodah/chempy)
+#  "Echo" based on ChemPy (https://github.com/bjodah/chempy)
 #  |  Copyright (c) 2015-2018, Björn Dahlgren
 #  |  All rights reserved.
 #  |
@@ -202,6 +202,7 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 
 
 def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:
+
 	# stdlib
 	import fcntl
 	import termios
