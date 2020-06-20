@@ -68,7 +68,6 @@ import shlex
 import struct
 import subprocess
 import sys
-import termios
 import textwrap
 from typing import Optional, Tuple
 
@@ -203,7 +202,9 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 
 
 def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:
+	# stdlib
 	import fcntl
+	import termios
 
 	def ioctl_GWINSZ(fd):
 		try:
