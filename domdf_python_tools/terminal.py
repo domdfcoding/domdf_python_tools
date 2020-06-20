@@ -7,7 +7,7 @@ Useful functions for terminal-based programs
 #
 #  Copyright © 2014-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
-#  get_terminal_size, _get_terminal_size_windows, _get_terminal_size_tput and _get_terminal_size_linux
+#  get_terminal_size, _get_terminal_size_windows, _get_terminal_size_tput and _get_terminal_size_posix
 # 		from https://gist.github.com/jtriley/1108174
 #  		Copyright © 2011 jtriley
 #
@@ -60,7 +60,6 @@ Useful functions for terminal-based programs
 #
 
 # stdlib
-import fcntl
 import inspect
 import os
 import platform
@@ -157,7 +156,7 @@ def get_terminal_size() -> Tuple[int, int]:
 		# needed for window's python in cygwin's xterm!
 
 	if current_os in {"Linux", "Darwin"} or current_os.startswith("CYGWIN"):
-		tuple_xy = _get_terminal_size_linux()
+		tuple_xy = _get_terminal_size_posix()
 
 	if tuple_xy is None:
 		print("default")
@@ -203,7 +202,8 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 		return None
 
 
-def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
+def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:
+	import fcntl
 
 	def ioctl_GWINSZ(fd):
 		try:
