@@ -43,7 +43,7 @@ def as_text(value: Any) -> str:
 	"""
 
 	if value is None:
-		return ""
+		return ''
 
 	return str(value)
 
@@ -77,7 +77,7 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 			print("The following modules are missing.")
 			print(missing_modules)
 			print("Please check the documentation.")
-		print("")
+		print('')
 
 	return missing_modules
 
@@ -110,7 +110,7 @@ def cmp(x, y) -> int:
 	return int((x > y) - (x < y))
 
 
-def list2str(the_list: Iterable[Any], sep: str = ",") -> str:
+def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	"""
 	Convert an iterable, such as a list, to a comma separated string.
 
@@ -203,7 +203,7 @@ def split_len(string: str, n: int) -> List[str]:
 splitLen = split_len
 
 
-def str2tuple(input_string: str, sep: str = ",") -> Tuple[int, ...]:
+def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	"""
 	Convert a comma-separated string of integers into a tuple.
 
@@ -239,9 +239,9 @@ def strtobool(val: Union[str, bool]) -> bool:
 		return bool(val)
 
 	val = val.lower()
-	if val in ('y', 'yes', 't', 'true', 'on', '1'):
+	if val in ('y', "yes", 't', "true", "on", '1'):
 		return True
-	elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+	elif val in ('n', "no", 'f', "false", "off", '0'):
 		return False
 	else:
 		raise ValueError(f"invalid truth value {val!r}")
@@ -251,7 +251,7 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 	"""
 	Adds quotes to the given value, suitable for use in a templating system such as Jinja2.
 
-	floats, integerss, booleans, None, and the strings "True", "False" and "None" are returned as-is.
+	floats, integers, booleans, None, and the strings "True", "False" and "None" are returned as-is.
 
 	:param value: The value to enquote
 	"""

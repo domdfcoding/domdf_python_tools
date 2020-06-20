@@ -166,13 +166,13 @@ class DummyClass:
 
 def test_deindent_string():
 	assert doctools.deindent_string("\t\t\t   ") == ''
-	assert doctools.deindent_string("\t\t\t   Spam") == 'Spam'
-	assert doctools.deindent_string("\t\t\t   Spam   \t\t\t") == 'Spam   \t\t\t'
-	assert doctools.deindent_string("\t\t\t   Spam\n   \t\t\t") == 'Spam\n'
+	assert doctools.deindent_string("\t\t\t   Spam") == "Spam"
+	assert doctools.deindent_string("\t\t\t   Spam   \t\t\t") == "Spam   \t\t\t"
+	assert doctools.deindent_string("\t\t\t   Spam\n   \t\t\t") == "Spam\n"
 	assert doctools.deindent_string("   \t\t\t") == ''
-	assert doctools.deindent_string("   \t\t\tSpam") == 'Spam'
-	assert doctools.deindent_string("   \t\t\tSpam\t\t\t   ") == 'Spam\t\t\t   '
-	assert doctools.deindent_string("   \t\t\tSpam\n\t\t\t   ") == 'Spam\n'
+	assert doctools.deindent_string("   \t\t\tSpam") == "Spam"
+	assert doctools.deindent_string("   \t\t\tSpam\t\t\t   ") == "Spam\t\t\t   "
+	assert doctools.deindent_string("   \t\t\tSpam\n\t\t\t   ") == "Spam\n"
 
 
 def test_decorators():

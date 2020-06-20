@@ -89,10 +89,10 @@ def test_set_timezone():
 		if tz in {
 				"America/Punta_Arenas",
 				"America/Santiago",
-				'Antarctica/Palmer',
-				'Chile/Continental',
-				'Chile/EasterIsland',
-				'Pacific/Easter',
+				"Antarctica/Palmer",
+				"Chile/Continental",
+				"Chile/EasterIsland",
+				"Pacific/Easter",
 				}:
 			continue
 
@@ -144,7 +144,7 @@ def test_parse_month():
 
 		assert dates.parse_month(month_idx) == month
 
-	for value in ["abc", 0, "0", -1, "-1", 13, "13"]:
+	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
 		with pytest.raises(ValueError):
 			dates.parse_month(value)
 
@@ -164,7 +164,7 @@ def test_get_month_number():
 	for month_idx in range(1, 13):
 		assert dates.get_month_number(month_idx) == month_idx
 
-	for value in ["abc", 0, "0", -1, "-1", 13, "13"]:
+	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
 		with pytest.raises(ValueError):
 			dates.get_month_number(value)
 

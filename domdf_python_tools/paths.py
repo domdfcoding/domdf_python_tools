@@ -127,12 +127,7 @@ def delete(filename: PathLike):
 	os.remove(os.path.join(os.getcwd(), filename))
 
 
-def maybe_make(
-		directory: PathLike,
-		mode=0o777,
-		parents: bool = False,
-		exist_ok: bool = False
-		):
+def maybe_make(directory: PathLike, mode=0o777, parents: bool = False, exist_ok: bool = False):
 	"""
 	Create a directory at this given path, but only if the directory does not already exist.
 
@@ -194,10 +189,7 @@ def read(filename: PathLike) -> str:
 		return f.read()
 
 
-def relpath(
-		path: PathLike,
-		relative_to: Optional[PathLike] = None
-		) -> pathlib.Path:
+def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.Path:
 	"""
 	Returns the path for the given file or directory relative to the given
 	directory or, if that would require path traversal, returns the absolute path.
@@ -256,10 +248,10 @@ def clean_writer(string: str, fp: IO) -> None:
 
 	buffer = []
 
-	for line in string.split("\n"):
+	for line in string.split('\n'):
 		buffer.append(line.rstrip())
 
-	while buffer[-1:] == [""]:
+	while buffer[-1:] == ['']:
 		buffer = buffer[:-1]
 
 	for line in buffer:

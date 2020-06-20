@@ -164,8 +164,8 @@ class Unit(float):
 	_in_pt: float = 1
 
 	def __repr__(self):
-		value = _rounders(float(self), '0.000')
-		as_pt = _rounders(self.as_pt(), '0.000')
+		value = _rounders(float(self), "0.000")
+		as_pt = _rounders(self.as_pt(), "0.000")
 		return f"<Unit '{value}\u205F{self.name}': {as_pt}pt>"
 
 	def __mul__(self, other: Union[float, "Unit"]) -> "Unit":

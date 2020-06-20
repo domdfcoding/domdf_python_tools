@@ -34,8 +34,8 @@ def test_pyversion():
 				([123.45], "[123.45]"),
 				({123.45}, "{123.45}"),
 				((123.45, ), "(123.45,)"),
-				(None, ""),
-				(pathlib.Path("."), "."),
+				(None, ''),
+				(pathlib.Path('.'), '.'),
 				(decimal.Decimal("1234"), "1234"),
 				]
 		)
@@ -57,16 +57,16 @@ def test_check_dependencies(capsys):
 	assert stdout[0] == "The following modules are missing."
 	assert stdout[1] == "['madeup_module']"
 	assert stdout[2] == "Please check the documentation."
-	assert stdout[3] == ""
+	assert stdout[3] == ''
 	assert isinstance(missing_deps, list)
 	assert len(missing_deps) == 1
 	assert missing_deps == ["madeup_module"]
 
 	missing_deps = utils.check_dependencies(["pytest"])
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout[0] == "All modules installed"
-	assert stdout[1] == ""
+	assert stdout[1] == ''
 	assert isinstance(missing_deps, list)
 	assert len(missing_deps) == 0
 	assert missing_deps == []
@@ -75,7 +75,7 @@ def test_check_dependencies(capsys):
 def test_chunks():
 	assert isinstance(chunks(list(range(100)), 5), types.GeneratorType)
 	assert list(chunks(list(range(100)), 5))[0] == [0, 1, 2, 3, 4]
-	assert list(chunks(["a", "b", "c"], 1)) == [["a"], ["b"], ["c"]]
+	assert list(chunks(['a', 'b', 'c'], 1)) == [['a'], ['b'], ['c']]
 
 
 # TODO: cmp
@@ -85,9 +85,9 @@ def test_chunks():
 		"value, expects",
 		[
 				([1, 2, 3], "1,2,3"),
-				(["a", "b", "c"], "a,b,c"),
-				(["a", "b", 1, 2], "a,b,1,2"),
-				(["a", 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
+				(['a', 'b', 'c'], "a,b,c"),
+				(['a', 'b', 1, 2], "a,b,1,2"),
+				(['a', 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
 				]
 		)
 def test_list2str(value, expects):
@@ -104,17 +104,17 @@ def test_list2str(value, expects):
 		"value, expects",
 		[
 				([1, 2, 3], "1;2;3"),
-				(["a", "b", "c"], "a;b;c"),
-				(["a", "b", 1, 2], "a;b;1;2"),
-				(["a", 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
+				(['a', 'b', 'c'], "a;b;c"),
+				(['a', 'b', 1, 2], "a;b;1;2"),
+				(['a', 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
 				]
 		)
 def test_list2str_semicolon(value, expects):
-	str_representation = list2str(value, sep=";")
+	str_representation = list2str(value, sep=';')
 	assert isinstance(str_representation, str)
 	assert str_representation == expects
 
-	str_representation = list2string(value, sep=";")
+	str_representation = list2string(value, sep=';')
 	assert isinstance(str_representation, str)
 	assert str_representation == expects
 
@@ -125,42 +125,42 @@ def test_permutations():
 	assert utils.permutations(data, 1) == [(x, ) for x in data]
 
 	assert utils.permutations(data, 2) == [
-			('egg and bacon', 'egg sausage and bacon'),
-			('egg and bacon', 'egg and spam'),
-			('egg and bacon', 'egg bacon and spam'),
-			('egg sausage and bacon', 'egg and spam'),
-			('egg sausage and bacon', 'egg bacon and spam'),
-			('egg and spam', 'egg bacon and spam'),
+			("egg and bacon", "egg sausage and bacon"),
+			("egg and bacon", "egg and spam"),
+			("egg and bacon", "egg bacon and spam"),
+			("egg sausage and bacon", "egg and spam"),
+			("egg sausage and bacon", "egg bacon and spam"),
+			("egg and spam", "egg bacon and spam"),
 			]
 
 	assert utils.permutations(data, 3) == [
-			('egg and bacon', 'egg sausage and bacon', 'egg and spam'),
-			('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam'),
-			('egg and bacon', 'egg and spam', 'egg sausage and bacon'),
-			('egg and bacon', 'egg and spam', 'egg bacon and spam'),
-			('egg and bacon', 'egg bacon and spam', 'egg sausage and bacon'),
-			('egg and bacon', 'egg bacon and spam', 'egg and spam'),
-			('egg sausage and bacon', 'egg and bacon', 'egg and spam'),
-			('egg sausage and bacon', 'egg and bacon', 'egg bacon and spam'),
-			('egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
-			('egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
-			('egg and spam', 'egg and bacon', 'egg bacon and spam'),
-			('egg and spam', 'egg sausage and bacon', 'egg bacon and spam'),
+			("egg and bacon", "egg sausage and bacon", "egg and spam"),
+			("egg and bacon", "egg sausage and bacon", "egg bacon and spam"),
+			("egg and bacon", "egg and spam", "egg sausage and bacon"),
+			("egg and bacon", "egg and spam", "egg bacon and spam"),
+			("egg and bacon", "egg bacon and spam", "egg sausage and bacon"),
+			("egg and bacon", "egg bacon and spam", "egg and spam"),
+			("egg sausage and bacon", "egg and bacon", "egg and spam"),
+			("egg sausage and bacon", "egg and bacon", "egg bacon and spam"),
+			("egg sausage and bacon", "egg and spam", "egg bacon and spam"),
+			("egg sausage and bacon", "egg bacon and spam", "egg and spam"),
+			("egg and spam", "egg and bacon", "egg bacon and spam"),
+			("egg and spam", "egg sausage and bacon", "egg bacon and spam"),
 			]
 
 	assert utils.permutations(data, 4) == [
-			('egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam'),
-			('egg and bacon', 'egg sausage and bacon', 'egg bacon and spam', 'egg and spam'),
-			('egg and bacon', 'egg and spam', 'egg sausage and bacon', 'egg bacon and spam'),
-			('egg and bacon', 'egg and spam', 'egg bacon and spam', 'egg sausage and bacon'),
-			('egg and bacon', 'egg bacon and spam', 'egg sausage and bacon', 'egg and spam'),
-			('egg and bacon', 'egg bacon and spam', 'egg and spam', 'egg sausage and bacon'),
-			('egg sausage and bacon', 'egg and bacon', 'egg and spam', 'egg bacon and spam'),
-			('egg sausage and bacon', 'egg and bacon', 'egg bacon and spam', 'egg and spam'),
-			('egg sausage and bacon', 'egg and spam', 'egg and bacon', 'egg bacon and spam'),
-			('egg sausage and bacon', 'egg bacon and spam', 'egg and bacon', 'egg and spam'),
-			('egg and spam', 'egg and bacon', 'egg sausage and bacon', 'egg bacon and spam'),
-			('egg and spam', 'egg sausage and bacon', 'egg and bacon', 'egg bacon and spam'),
+			("egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"),
+			("egg and bacon", "egg sausage and bacon", "egg bacon and spam", "egg and spam"),
+			("egg and bacon", "egg and spam", "egg sausage and bacon", "egg bacon and spam"),
+			("egg and bacon", "egg and spam", "egg bacon and spam", "egg sausage and bacon"),
+			("egg and bacon", "egg bacon and spam", "egg sausage and bacon", "egg and spam"),
+			("egg and bacon", "egg bacon and spam", "egg and spam", "egg sausage and bacon"),
+			("egg sausage and bacon", "egg and bacon", "egg and spam", "egg bacon and spam"),
+			("egg sausage and bacon", "egg and bacon", "egg bacon and spam", "egg and spam"),
+			("egg sausage and bacon", "egg and spam", "egg and bacon", "egg bacon and spam"),
+			("egg sausage and bacon", "egg bacon and spam", "egg and bacon", "egg and spam"),
+			("egg and spam", "egg and bacon", "egg sausage and bacon", "egg bacon and spam"),
+			("egg and spam", "egg sausage and bacon", "egg and bacon", "egg bacon and spam"),
 			]
 
 	assert utils.permutations(data, 5) == []
@@ -279,8 +279,8 @@ def test_str2tuple(value, expects):
 				]
 		)
 def test_str2tuple_semicolon(value, expects):
-	assert isinstance(str2tuple(value, sep=";"), tuple)
-	assert str2tuple(value, sep=";") == expects
+	assert isinstance(str2tuple(value, sep=';'), tuple)
+	assert str2tuple(value, sep=';') == expects
 
 
 @pytest.mark.parametrize(
@@ -290,15 +290,15 @@ def test_str2tuple_semicolon(value, expects):
 				("True", True),
 				("true", True),
 				("tRUe", True),
-				("y", True),
-				("Y", True),
+				('y', True),
+				('Y', True),
 				("YES", True),
 				("yes", True),
 				("Yes", True),
 				("yEs", True),
 				("ON", True),
 				("on", True),
-				("1", True),
+				('1', True),
 				(1, True),
 				(50, True),
 				(-1, True),
@@ -306,15 +306,15 @@ def test_str2tuple_semicolon(value, expects):
 				("False", False),
 				("false", False),
 				("falSE", False),
-				("n", False),
-				("N", False),
+				('n', False),
+				('N', False),
 				("NO", False),
 				("no", False),
 				("nO", False),
 				("OFF", False),
 				("off", False),
 				("oFF", False),
-				("0", False),
+				('0', False),
 				(0, False),
 				]
 		)
@@ -344,8 +344,8 @@ def test_strtobool_errors(obj, expects):
 				(True, True),
 				("True", "True"),
 				("true", "'true'"),
-				("y", "'y'"),
-				("Y", "'Y'"),
+				('y', "'y'"),
+				('Y', "'Y'"),
 				(1, 1),
 				(0, 0),
 				(50, 50),

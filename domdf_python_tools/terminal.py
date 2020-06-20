@@ -60,6 +60,7 @@ Useful functions for terminal-based programs
 #
 
 # stdlib
+import fcntl
 import inspect
 import os
 import platform
@@ -68,6 +69,7 @@ import shlex
 import struct
 import subprocess
 import sys
+import termios
 import textwrap
 from typing import Optional, Tuple
 
@@ -80,7 +82,7 @@ def clear() -> None:
 	"""
 
 	if os.name == "nt":
-		os.system('cls')
+		os.system("cls")
 	else:
 		print("\033c", end='')
 
@@ -90,7 +92,7 @@ def br() -> None:
 	Prints a line break
 	"""
 
-	print("")
+	print('')
 
 
 def interrupt() -> None:
@@ -148,13 +150,13 @@ def get_terminal_size() -> Tuple[int, int]:
 	current_os = platform.system()
 	tuple_xy = None
 
-	if current_os == 'Windows':
+	if current_os == "Windows":
 		tuple_xy = _get_terminal_size_windows()
 		if tuple_xy is None:
 			tuple_xy = _get_terminal_size_tput()
 		# needed for window's python in cygwin's xterm!
 
-	if current_os in ['Linux', 'Darwin'] or current_os.startswith('CYGWIN'):
+	if current_os in {"Linux", "Darwin"} or current_os.startswith("CYGWIN"):
 		tuple_xy = _get_terminal_size_linux()
 
 	if tuple_xy is None:
@@ -194,8 +196,8 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 	# get terminal width
 	# src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
 	try:
-		cols = int(subprocess.check_call(shlex.split('tput cols')))
-		rows = int(subprocess.check_call(shlex.split('tput lines')))
+		cols = int(subprocess.check_call(shlex.split("tput cols")))
+		rows = int(subprocess.check_call(shlex.split("tput lines")))
 		return cols, rows
 	except:
 		return None
@@ -205,11 +207,7 @@ def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	def ioctl_GWINSZ(fd):
 		try:
-
-			# stdlib
-			import fcntl
-			import termios
-			cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+			cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
 			return cr
 		except:
 			pass
@@ -218,7 +216,7 @@ def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	if not cr:
 		try:
-			fd = os.open(os.ctermid(), os.O_RDONLY)   # type: ignore
+			fd = os.open(os.ctermid(), os.O_RDONLY)  # type: ignore
 			cr = ioctl_GWINSZ(fd)
 			os.close(fd)
 		except:
@@ -226,7 +224,7 @@ def _get_terminal_size_linux() -> Optional[Tuple[int, int]]:
 
 	if not cr:
 		try:
-			cr = (os.environ['LINES'], os.environ['COLUMNS'])
+			cr = (os.environ["LINES"], os.environ["COLUMNS"])
 		except:
 			return None
 
@@ -238,7 +236,7 @@ class Echo:
 	Context manager for echoing variable assignments (in CPython)
 	"""
 
-	def __init__(self, msg: str, indent: str = '  '):
+	def __init__(self, msg: str, indent: str = "  "):
 		self.msg = msg
 		self.indent = indent
 
@@ -259,4 +257,4 @@ class Echo:
 
 if __name__ == "__main__":
 	size_x, size_y = get_terminal_size()
-	print('width =', size_x, 'height =', size_y)
+	print("width =", size_x, "height =", size_y)

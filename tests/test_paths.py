@@ -45,12 +45,13 @@ def test_maybe_make():
 		# Delete the directory and replace with a file
 		test_dir.rmdir()
 		assert test_dir.exists() is False
-		test_dir.write_text("")
+		test_dir.write_text('')
 		assert test_dir.exists()
 		assert test_dir.is_file()
 
 		paths.maybe_make(test_dir)
-		assert test_dir.exists() and test_dir.is_file()
+		assert test_dir.exists()
+		assert test_dir.is_file()
 
 
 def test_parent_path():
@@ -67,7 +68,7 @@ def test_parent_path():
 		assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
-@pytest.mark.skipif(sys.platform == 'win32', reason="Needs special-casing for Windows")
+@pytest.mark.skipif(sys.platform == "win32", reason="Needs special-casing for Windows")
 @pytest.mark.parametrize(
 		"relto, relpath",
 		[
