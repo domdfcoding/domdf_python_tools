@@ -2,7 +2,7 @@
 #
 #  doctools.py
 """
-Utilities for documenting functions, classes and methods
+Utilities for documenting functions, classes and methods.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -36,7 +36,7 @@ F = TypeVar('F', bound=Callable[..., Any])
 
 def deindent_string(string: str) -> str:
 	"""
-	Removes all indentation from the given string
+	Removes all indentation from the given string.
 
 	:param string: The string to deindent
 	:type string: str

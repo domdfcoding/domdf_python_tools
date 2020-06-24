@@ -2,7 +2,7 @@
 #
 #  utils.py
 """
-Tools for working with pagesizes
+Tools for working with pagesizes.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -52,13 +52,12 @@ def convert_from(
 		from_: AnyNumber,
 		) -> Union[float, Tuple[float, ...]]:
 	"""
-	Convert ``value`` to point from the unit specified in ``from_``
+	Convert ``value`` to point from the unit specified in ``from_``.
 
 	:param value:
 	:param from_: The unit to convert from, specified as a number of points
 
 	:return:
-	:rtype:
 	"""
 
 	if isinstance(value, Sequence):
@@ -76,7 +75,16 @@ def _sequence_convert_from(seq: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[
 _measurement_re = re.compile(r"(\d*\.?\d+) *([A-Za-z]*)")
 
 
-def parse_measurement(measurement):
+def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
+	"""
+	Parse the given measurement.
+
+	:param measurement:
+	:type measurement: str
+
+	:return:
+	"""
+
 	# TODO: docstring
 	match = _measurement_re.findall(measurement)[0]
 	print(match)
@@ -115,7 +123,7 @@ def parse_measurement(measurement):
 
 def to_length(s):
 	"""
-	Convert a string to a length
+	Convert a string to a length.
 
 	:param s:
 	:type s:

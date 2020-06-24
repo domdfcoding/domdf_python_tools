@@ -310,14 +310,22 @@ class PageSize(BaseSize):
 
 	__slots__: List[str] = []
 
-	def __new__(cls, width, height, unit=pt):
+	def __new__(cls, width: AnyNumber, height: AnyNumber, unit: AnyNumber = pt):
+		"""
+		Create a new :class:`~domdf_python_tools.pagesizes.classes.PageSize` object.
+
+		:param width:
+		:param height:
+		:param unit:
+		"""
+
 		width, height = convert_from((width, height), unit)
 		return super().__new__(cls, width, height)
 
 	@property
 	def inch(self) -> Size_inch:
 		"""
-		Returns the pagesize in inches
+		Returns the pagesize in inches.
 		"""
 
 		return Size_inch.from_pt(self)
@@ -325,7 +333,7 @@ class PageSize(BaseSize):
 	@property
 	def cm(self) -> Size_cm:
 		"""
-		Returns the pagesize in centimeters
+		Returns the pagesize in centimeters.
 		"""
 
 		return Size_cm.from_pt(self)
@@ -333,7 +341,7 @@ class PageSize(BaseSize):
 	@property
 	def mm(self) -> Size_mm:
 		"""
-		Returns the pagesize in millimeters
+		Returns the pagesize in millimeters.
 		"""
 
 		return Size_mm.from_pt(self)
@@ -341,7 +349,7 @@ class PageSize(BaseSize):
 	@property
 	def um(self) -> Size_um:
 		"""
-		Returns the pagesize in micrometers
+		Returns the pagesize in micrometers.
 		"""
 
 		return Size_um.from_pt(self)
@@ -349,7 +357,7 @@ class PageSize(BaseSize):
 	@property
 	def pc(self) -> Size_pica:
 		"""
-		Returns the pagesize in pica
+		Returns the pagesize in pica.
 		"""
 
 		return Size_pica.from_pt(self)
@@ -359,7 +367,7 @@ class PageSize(BaseSize):
 	@property
 	def dd(self) -> Size_didot:
 		"""
-		Returns the pagesize in didots
+		Returns the pagesize in didots.
 		"""
 
 		return Size_didot.from_pt(self)
@@ -369,7 +377,7 @@ class PageSize(BaseSize):
 	@property
 	def cc(self) -> Size_cicero:
 		"""
-		Returns the pagesize in ciceros
+		Returns the pagesize in ciceros.
 		"""
 
 		return Size_cicero.from_pt(self)
@@ -379,7 +387,7 @@ class PageSize(BaseSize):
 	@property
 	def nd(self) -> Size_new_didot:
 		"""
-		Returns the pagesize in new didots
+		Returns the pagesize in new didots.
 		"""
 
 		return Size_new_didot.from_pt(self)
@@ -389,7 +397,7 @@ class PageSize(BaseSize):
 	@property
 	def nc(self) -> Size_new_cicero:
 		"""
-		Returns the pagesize in new ciceros
+		Returns the pagesize in new ciceros.
 		"""
 
 		return Size_new_cicero.from_pt(self)
@@ -399,7 +407,7 @@ class PageSize(BaseSize):
 	@property
 	def sp(self) -> Size_scaled_point:
 		"""
-		Returns the pagesize in scaled point
+		Returns the pagesize in scaled point.
 		"""
 
 		return Size_scaled_point.from_pt(self)

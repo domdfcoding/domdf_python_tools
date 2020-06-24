@@ -1,13 +1,12 @@
-#  !/usr/bin/env python
+#!/usr/bin/env python
 #
-#  pagesizes.py
+#  __init__.py
 """
-List of common pagesizes and some tools for working with them
+List of common pagesizes and some tools for working with them.
 
 This module defines a few common page sizes in points (1/72 inch).
 
-To be expanded to include things like label sizes, envelope windows
-etc.
+To be expanded to include things like label sizes, envelope windows etc.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
