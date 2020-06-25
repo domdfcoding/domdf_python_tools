@@ -1,2 +1,4 @@
 pydash>=4.7.4
 aenum >=2.2.3
+colorama
+typing_extensions

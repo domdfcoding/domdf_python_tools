@@ -48,11 +48,13 @@ __all__ = ["convert_from", "parse_measurement"]
 
 
 @overload
-def convert_from(value: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]: ...
+def convert_from(value: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]:
+	...
 
 
 @overload
-def convert_from(value: AnyNumber, from_: AnyNumber) -> float: ...
+def convert_from(value: AnyNumber, from_: AnyNumber) -> float:
+	...
 
 
 def convert_from(
