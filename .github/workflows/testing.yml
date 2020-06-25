@@ -1,0 +1,14 @@
+name: "Testing"
+on:
+  - push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: domdfcoding/copy_pypi_2_github@master
+        with:
+          pypi_name: "domdf_python_tools"
+          repository: "domdfcoding/domdf_python_tools"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
