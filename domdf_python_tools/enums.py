@@ -30,7 +30,7 @@ __all__ = ["IntEnum", "StrEnum"]
 
 # class IntEnum(Enum):
 # 	"""
-# 	An Enum that can be converted into an integer
+# 	An Enum that can be converted into an integer.
 # 	"""
 #
 # 	def __int__(self):
@@ -45,7 +45,7 @@ __all__ = ["IntEnum", "StrEnum"]
 
 class StrEnum(str, Enum):
 	"""
-	An Enum that can be converted into a string
+	An Enum that can be converted into a string.
 	"""
 
 	def __str__(self) -> str:

@@ -2,7 +2,7 @@
 #
 #  paths.py
 """
-Functions for paths and files
+Functions for paths and files.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -154,7 +154,7 @@ def maybe_make(directory: PathLike, mode=0o777, parents: bool = False, exist_ok:
 
 def parent_path(path: PathLike) -> pathlib.Path:
 	"""
-	Returns the path of the parent directory for the given file or directory
+	Returns the path of the parent directory for the given file or directory.
 
 	:param path: Path to find the parent for
 
@@ -169,7 +169,7 @@ def parent_path(path: PathLike) -> pathlib.Path:
 
 def read(filename: PathLike) -> str:
 	"""
-	Read a file in the current directory (in text mode)
+	Read a file in the current directory (in text mode).
 
 	.. warning::
 
@@ -225,7 +225,7 @@ relpath2 = relpath
 
 def write(var: str, filename: PathLike) -> None:
 	"""
-	Write a variable to file in the current directory
+	Write a variable to file in the current directory.
 
 	TODO: make this the file in the given directory, by default the current directory
 
@@ -239,7 +239,7 @@ def write(var: str, filename: PathLike) -> None:
 
 def clean_writer(string: str, fp: IO) -> None:
 	"""
-	Write string to ``fp`` without trailing spaces
+	Write string to ``fp`` without trailing spaces.
 
 	:param string:
 	:type string: str
@@ -256,7 +256,7 @@ def clean_writer(string: str, fp: IO) -> None:
 
 	for line in buffer:
 		fp.write(line)
-		fp.write("\n")
+		fp.write('\n')
 
 
 def make_executable(filename: PathLike) -> None:

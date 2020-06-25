@@ -120,7 +120,7 @@ def test_back_attributes(obj, expects, capsys):
 				(Style.BRIGHT, "\033[1m"),
 				]
 		)
-def test_back_attributes(obj, expects, capsys):
+def test_style_attributes(obj, expects, capsys):
 	assert obj == expects
 	assert obj("Hello World") == f"{obj}Hello World\033[22m"
 
@@ -138,9 +138,3 @@ def test_back_attributes(obj, expects, capsys):
 	assert stdout[2] == f"{obj}Coloured Again!"
 	assert stdout[3] == f"\033[22mReset Again!"
 	assert stdout[4] == ''
-
-
-def test_style_attributes():
-	assert Style.DIM == "\033[2m"
-	assert Style.NORMAL == "\033[22m"
-	assert Style.BRIGHT == "\033[1m"
