@@ -62,10 +62,7 @@ from abc import ABC
 from typing import List
 
 # 3rd party
-from colorama import init  # type: ignore
 from typing_extensions import Final
-
-init()
 
 CSI: Final[str] = '\033['
 OSC: Final[str] = '\033]'
@@ -76,20 +73,13 @@ back_stack: List[str] = []
 style_stack: List[str] = []
 
 
-def code_to_chars(code) -> str:
-	return CSI + str(code) + 'm'
+def code_to_chars(code) -> str: ...
 
+def set_title(title: str) -> str: ...
 
-def set_title(title: str) -> str:
-	return OSC + '2;' + title + BEL
+def clear_screen(mode: int = 2) -> str: ...
 
-
-def clear_screen(mode: int = 2) -> str:
-	return CSI + str(mode) + 'J'
-
-
-def clear_line(mode: int = 2) -> str:
-	return CSI + str(mode) + 'K'
+def clear_line(mode: int = 2) -> str: ...
 
 
 class Color(str):
@@ -97,175 +87,96 @@ class Color(str):
 	reset: str
 	stack: List[str]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Color":
-		color = super().__new__(cls, style)  # type: ignore
-		color.style = style
-		color.stack = stack
-		color.reset = reset
+	def __new__(cls, style: str, stack: List[str], reset: str) -> "Color": ...
 
-		return color
+	def __enter__(self) -> None: ...
 
-	def __enter__(self) -> None:
-		print(self.style, end='')
-		self.stack.append(self.style)
+	def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 
-	def __exit__(self, exc_type, exc_val, exc_tb) -> None:
-		if self.style == self.stack[-1]:
-			self.stack.pop()
-			print(self.stack[-1], end='')
-
-	def __call__(self, text) -> str:
-		return f"{self}{text}{self.reset}"
+	def __call__(self, text) -> str: ...
 
 
 class AnsiCodes(ABC):
 	_stack: List[str]
 	_reset: str
 
-	def __init__(self) -> None:
-		# the subclasses declare class attributes which are numbers.
-		# Upon instantiation we define instance attributes, which are the same
-		# as the class attributes but wrapped with the ANSI escape sequence
-		for name in dir(self):
-			if not name.startswith('_'):
-				value = getattr(self, name)
-				setattr(self, name, Color(code_to_chars(value), self._stack, self._reset))
+	def __init__(self) -> None: ...
 
 
 class AnsiCursor:
 
-	def UP(self, n: int = 1) -> str:
-		return f"{CSI}{str(n)}A"
+	def UP(self, n: int = 1) -> str: ...
 
-	def DOWN(self, n: int = 1) -> str:
-		return f"{CSI}{str(n)}B"
+	def DOWN(self, n: int = 1) -> str: ...
 
-	def FORWARD(self, n: int = 1) -> str:
-		return f"{CSI}{str(n)}C"
+	def FORWARD(self, n: int = 1) -> str: ...
 
-	def BACK(self, n: int = 1) -> str:
-		return f"{CSI}{str(n)}D"
+	def BACK(self, n: int = 1) -> str: ...
 
-	def POS(self, x: int = 1, y: int = 1) -> str:
-		return f"{CSI}{str(y)};{str(x)}H"
+	def POS(self, x: int = 1, y: int = 1) -> str: ...
 
 
 class AnsiFore(AnsiCodes):
-	"""
-	ANSI Colour Codes for foreground colour.
-
-	Valid values are:
-	* BLACK
-	* RED
-	* GREEN
-	* YELLOW
-	* BLUE
-	* MAGENTA
-	* CYAN
-	* WHITE
-	* RESET
-	* LIGHTBLACK_EX
-	* LIGHTRED_EX
-	* LIGHTGREEN_EX
-	* LIGHTYELLOW_EX
-	* LIGHTBLUE_EX
-	* LIGHTMAGENTA_EX
-	* LIGHTCYAN_EX
-	* LIGHTWHITE_EX
-	"""
 
 	_stack = fore_stack
 	_reset = "\033[39m"
 
-	BLACK = 30
-	RED = 31
-	GREEN = 32
-	YELLOW = 33
-	BLUE = 34
-	MAGENTA = 35
-	CYAN = 36
-	WHITE = 37
-	RESET = 39
+	BLACK: Color
+	RED: Color
+	GREEN: Color
+	YELLOW: Color
+	BLUE: Color
+	MAGENTA: Color
+	CYAN: Color
+	WHITE: Color
+	RESET: Color
 
 	# These are fairly well supported, but not part of the standard.
-	LIGHTBLACK_EX = 90
-	LIGHTRED_EX = 91
-	LIGHTGREEN_EX = 92
-	LIGHTYELLOW_EX = 93
-	LIGHTBLUE_EX = 94
-	LIGHTMAGENTA_EX = 95
-	LIGHTCYAN_EX = 96
-	LIGHTWHITE_EX = 97
+	LIGHTBLACK_EX: Color
+	LIGHTRED_EX: Color
+	LIGHTGREEN_EX: Color
+	LIGHTYELLOW_EX: Color
+	LIGHTBLUE_EX: Color
+	LIGHTMAGENTA_EX: Color
+	LIGHTCYAN_EX: Color
+	LIGHTWHITE_EX: Color
 
 
 class AnsiBack(AnsiCodes):
-	"""
-	ANSI Colour Codes for background colour.
-
-	Valid values are:
-	* BLACK
-	* RED
-	* GREEN
-	* YELLOW
-	* BLUE
-	* MAGENTA
-	* CYAN
-	* WHITE
-	* RESET
-	* LIGHTBLACK_EX
-	* LIGHTRED_EX
-	* LIGHTGREEN_EX
-	* LIGHTYELLOW_EX
-	* LIGHTBLUE_EX
-	* LIGHTMAGENTA_EX
-	* LIGHTCYAN_EX
-	* LIGHTWHITE_EX
-	"""
 
 	_stack = back_stack
 	_reset = "\033[49m"
 
-	BLACK = 40
-	RED = 41
-	GREEN = 42
-	YELLOW = 43
-	BLUE = 44
-	MAGENTA = 45
-	CYAN = 46
-	WHITE = 47
-	RESET = 49
+	BLACK: Color
+	RED: Color
+	GREEN: Color
+	YELLOW: Color
+	BLUE: Color
+	MAGENTA: Color
+	CYAN: Color
+	WHITE: Color
+	RESET: Color
 
 	# These are fairly well supported, but not part of the standard.
-	LIGHTBLACK_EX = 100
-	LIGHTRED_EX = 101
-	LIGHTGREEN_EX = 102
-	LIGHTYELLOW_EX = 103
-	LIGHTBLUE_EX = 104
-	LIGHTMAGENTA_EX = 105
-	LIGHTCYAN_EX = 106
-	LIGHTWHITE_EX = 107
+	LIGHTBLACK_EX: Color
+	LIGHTRED_EX: Color
+	LIGHTGREEN_EX: Color
+	LIGHTYELLOW_EX: Color
+	LIGHTBLUE_EX: Color
+	LIGHTMAGENTA_EX: Color
+	LIGHTCYAN_EX: Color
+	LIGHTWHITE_EX: Color
 
 
 class AnsiStyle(AnsiCodes):
-	"""
-	ANSI Colour Codes for text style.
-
-	Valid values are:
-	* BRIGHT
-	* DIM
-	* NORMAL
-
-	Additionally, ``AnsiStyle.RESET_ALL`` can be used to reset the
-	foreground and background colours as well as the text style.
-	"""
 
 	_stack = style_stack
 	_reset = "\033[22m"
 
-	BRIGHT = 1
-	DIM = 2
-	NORMAL = 22
-	RESET_ALL = 0
+	BRIGHT: Color
+	DIM: Color
+	NORMAL: Color
+	RESET_ALL: Color
 
 
 Fore = AnsiFore()
@@ -276,5 +187,3 @@ Cursor = AnsiCursor()
 fore_stack.append(Fore.RESET)
 back_stack.append(Back.RESET)
 style_stack.append(Style.NORMAL)
-
-Fore.GREEN("Hello World")
