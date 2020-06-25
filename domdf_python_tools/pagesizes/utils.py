@@ -36,15 +36,23 @@ Tools for working with pagesizes.
 # stdlib
 import re
 from decimal import Decimal
-from typing import Sequence, Tuple, Union
+from typing import Sequence, Tuple, Union, overload
 
 # this package
 from ._types import AnyNumber
-from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, sp, um
+from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, pt, sp, um
 
 # from .units import Unit
 
 __all__ = ["convert_from", "parse_measurement"]
+
+
+@overload
+def convert_from(value: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]: ...
+
+
+@overload
+def convert_from(value: AnyNumber, from_: AnyNumber) -> float: ...
 
 
 def convert_from(
@@ -101,7 +109,7 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 		elif unit in {"um", "μm", "µm"}:
 			return convert_from(val, um)
 		elif unit == "pt":
-			return val
+			return convert_from(val, pt)
 		elif unit == "inch":
 			return convert_from(val, inch)
 		elif unit == "in":
