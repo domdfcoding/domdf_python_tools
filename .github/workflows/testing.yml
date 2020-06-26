@@ -1,8 +1,9 @@
 name: "Testing"
 on:
-  - push
+  - push:
+    branches: ["master"]
   - schedule:
-      - cron: 0 12 * * 2,4,6
+    cron: 0 12 * * 2,4,6
 
 jobs:
   test:
