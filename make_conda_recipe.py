@@ -27,14 +27,14 @@ if isinstance(extras_require, dict):
 	for requires in extras_require.values():
 		all_requirements += requires
 
-all_requirements = set(x.replace(" ", '') for x in set(all_requirements))
+all_requirements = {x.replace(" ", '') for x in set(all_requirements)}
 requirements_block = "\n".join(f"    - {req}" for req in all_requirements if req)
 
 # txt_readme = publish_file(source=StringIO(long_description), writer=rst2txt.Writer())
 # description_block = "\n".join([line.replace('"', '\\"') for line in txt_readme.split("\n")])
 description_block = conda_description.replace('"', '\\"')
 
-with open(recipe_dir / "meta.yaml", "w") as fp:
+with open(recipe_dir / "meta.yaml", 'w') as fp:
 	fp.write(f"""{{% set name = "{pypi_name}" %}}
 {{% set version = "{__version__}" %}}
 
@@ -101,5 +101,5 @@ print(f"Wrote recipe to {recipe_dir / 'meta.yaml'}")
 # else:
 # 	sys.exit(1)
 #
-# with open(recipe_dir / "conda_arch.sh", "w") as fp:
+# with open(recipe_dir / "conda_arch.sh", 'w') as fp:
 # 	fp.write(f'#!/bin/bash\necho "{conda_arch}"')

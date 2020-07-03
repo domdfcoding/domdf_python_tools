@@ -26,6 +26,20 @@ Common aliases for type hinting
 # stdlib
 import os
 import pathlib
-from typing import Union
+from typing import Any, Type, Union
 
 PathLike = Union[str, pathlib.Path, os.PathLike]
+
+
+def check_membership(obj: Any, type_: Type) -> bool:
+	"""
+	Check if the type of ``obj`` is one of the types in a :class:`typing.Union`, Sequence etc.
+
+	:param obj: The object to check the type of
+	:param type_: A :class:`~typing.Type` that has members, such as a List, Union or Sequence.
+
+	:return:
+	:rtype:
+	"""
+
+	return isinstance(obj, type_.__args__)  # type: ignore

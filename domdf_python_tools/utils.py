@@ -28,7 +28,7 @@ General utility functions
 
 # stdlib
 import sys
-from typing import Any, Generator, IO, Iterable, List, Sequence, Tuple, Union
+from typing import Any, Generator, Iterable, List, Sequence, Tuple, Union
 
 __all__ = [
 		"pyversion",
@@ -281,24 +281,3 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 	else:
 		return f"'{value}'"
 
-
-def clean_writer(string: str, fp: IO):
-	"""
-	Write ``string`` to ``fp`` without trailing spaces.
-
-	:param string:
-	:type string: str
-	:param fp:
-	"""
-
-	buffer = []
-
-	for line in string.split("\n"):
-		buffer.append(line.rstrip())
-
-	while buffer[-1:] == [""]:
-		buffer = buffer[:-1]
-
-	for line in buffer:
-		fp.write(line)
-		fp.write("\n")

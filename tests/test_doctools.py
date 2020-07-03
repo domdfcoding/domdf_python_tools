@@ -186,12 +186,12 @@ def test_decorators():
 	assert SpamCafe.set_opening_hours.__doc__.startswith("\nI will not buy this record, it is scratched.")
 	assert doctools.deindent_string(SpamCafe.set_opening_hours.__doc__
 									).endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
-	# Deindented both strings to be sure of equivalence
+	# Dedented both strings to be sure of equivalence
 	assert SpamCafe.ceil.__doc__.startswith(
 			"\nI don't know why the cafe has a ceil function, but we'd better document it properly."
 			)
 	assert doctools.deindent_string(SpamCafe.ceil.__doc__).endswith(doctools.deindent_string(math.ceil.__doc__))
-	# Deindented both strings to be sure of equivalence
+	# Dedented both strings to be sure of equivalence
 
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
@@ -200,7 +200,7 @@ def test_decorators():
 			)
 	assert doctools.deindent_string(partially_documented_function.__doc__
 									).endswith(doctools.deindent_string(documented_function.__doc__))
-	# Deindented both strings to be sure of equivalence
+	# Dedented both strings to be sure of equivalence
 	assert DummyClass.function_in_class_with_same_args.__doc__ == documented_function.__doc__
 
 
@@ -225,11 +225,17 @@ def test_append_doctring_from_another():
 	def funC():
 		"""World"""
 
+	def funD():
+		pass
+
 	assert funB.__doc__ == "Hello"
 	assert funC.__doc__ == "World"
 
 	doctools.append_doctring_from_another(funB, funC)
 	assert funB.__doc__ == "Hello\nWorld"
+
+	doctools.append_doctring_from_another(funD, funB)
+	assert funD.__doc__ == "Hello\nWorld"
 
 
 def test_still_callable():
@@ -270,3 +276,47 @@ Please note our opening hours may vary due to COVID-19"""
 	assert documented_function(1, 2, 3, 4) == 24
 	assert undocumented_function(1, 2, 3, 4) == 24
 	assert partially_documented_function(1, 2, 3, 4) is None
+
+
+def test_make_sphinx_links():
+
+	original = """
+		This is a docstring that contains references to ``str``, ``int``, and ``float``
+		but lacks proper references to them when rendered in Sphinx.
+
+		:return: pi
+		:rtype: float
+		"""
+
+	sphinx = """
+		This is a docstring that contains references to :class:`~python:str`, :class:`~python:int`, and :class:`~python:float`
+		but lacks proper references to them when rendered in Sphinx.
+
+		:return: pi
+		:rtype: float
+		"""
+
+	assert doctools.make_sphinx_links(original) == sphinx
+
+
+def test_sphinxify_docstring():
+
+	@doctools.sphinxify_docstring()
+	def demo_function():
+		"""
+		This is a docstring that contains references to ``str``, ``int``, and ``float``
+		but lacks proper references to them when rendered in Sphinx.
+
+		:return: pi
+		:rtype: float
+		"""
+
+		return math.pi
+
+	assert demo_function.__doc__ == """
+		This is a docstring that contains references to :class:`~python:str`, :class:`~python:int`, and :class:`~python:float`
+		but lacks proper references to them when rendered in Sphinx.
+
+		:return: pi
+		:rtype: float
+		"""

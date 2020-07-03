@@ -17,15 +17,14 @@ from tempfile import TemporaryDirectory
 import pytest  # type: ignore
 
 # this package
+from domdf_python_tools.paths import clean_writer
+
 from domdf_python_tools import paths
 
 # TODO: delete, write, read and append might want deprecating in favour of pathlib
 
 
 def test_maybe_make():
-	# TODO: test making parents
-
-	# TODO: test with strings as well as pathlib
 	with TemporaryDirectory() as tmpdir:
 
 		test_dir = pathlib.Path(tmpdir) / "maybe_make"
@@ -54,6 +53,53 @@ def test_maybe_make():
 		assert test_dir.is_file()
 
 
+def test_maybe_make_string():
+	with TemporaryDirectory() as tmpdir:
+
+		test_dir = pathlib.Path(tmpdir) / "maybe_make"
+
+		assert test_dir.exists() is False
+
+		# Maybe make the directory
+		paths.maybe_make(str(test_dir))
+
+		assert test_dir.exists()
+
+		# Maybe make the directory
+		paths.maybe_make(str(test_dir))
+
+		assert test_dir.exists()
+
+		# Delete the directory and replace with a file
+		test_dir.rmdir()
+		assert test_dir.exists() is False
+		test_dir.write_text('')
+		assert test_dir.exists()
+		assert test_dir.is_file()
+
+		paths.maybe_make(str(test_dir))
+		assert test_dir.exists()
+		assert test_dir.is_file()
+
+
+def test_maybe_make_parents():
+	with TemporaryDirectory() as tmpdir:
+
+		test_dir = pathlib.Path(tmpdir) / "maybe_make" / "child1" / "child2"
+
+		assert test_dir.exists() is False
+
+		# Without parents=True should raise an error
+
+		with pytest.raises(FileNotFoundError):
+			paths.maybe_make(test_dir)
+
+		# Maybe make the directory
+		paths.maybe_make(test_dir, parents=True)
+
+		assert test_dir.exists()
+
+
 def test_parent_path():
 	with TemporaryDirectory() as tmpdir:
 		tmpdir = pathlib.Path(tmpdir)
@@ -76,6 +122,7 @@ def test_parent_path():
 				("/home/username/Documents", "letter.doc"),
 				(pathlib.Path("/home/username/Documents/games/chess.py"), "/home/username/Documents/letter.doc"),
 				(pathlib.Path("/home/username/Documents"), "letter.doc"),
+				(None, pathlib.Path("/home/username/Documents/letter.doc")),
 				]
 		)
 def test_relpath(relto, relpath):
@@ -122,3 +169,43 @@ class TestCurrentDirOperations:
 				]:
 			with contextlib.suppress(FileNotFoundError):
 				pathlib.Path(file).unlink()
+
+
+def test_clean_writer():
+	with TemporaryDirectory() as tmpdir:
+		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
+		with tempfile.open("w") as fp:
+			clean_writer("""Top line
+    
+Line with whitespace   
+Line with tabs				   
+No newline at end of file""", fp)
+
+		assert tempfile.read_text() == """Top line
+
+Line with whitespace
+Line with tabs
+No newline at end of file
+"""
+		# Again with lots of newlines
+		with tempfile.open("w") as fp:
+			clean_writer("""Top line
+    
+Line with whitespace   
+Line with tabs				   
+Too many newlines
+
+
+
+
+
+
+
+""", fp)
+
+		assert tempfile.read_text() == """Top line
+
+Line with whitespace
+Line with tabs
+Too many newlines
+"""

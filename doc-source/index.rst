@@ -9,7 +9,7 @@ domdf_python_tools
 .. end short_desc
 
 
-.. start shields 
+.. start shields
 
 .. list-table::
 	:stub-columns: 1
@@ -31,7 +31,7 @@ domdf_python_tools
 .. |docs| image:: https://img.shields.io/readthedocs/domdf_python_tools/latest?logo=read-the-docs
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
-	
+
 .. |docs_check| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Docs%20Check/badge.svg
 	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Docs+Check%22
 	:alt: Docs Check Status
@@ -77,16 +77,16 @@ domdf_python_tools
 	:alt: PyPI - Wheel
 
 .. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools?logo=anaconda
-	:alt: Conda - Package Version
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
+	:alt: Conda - Package Version
 
 .. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
-	:alt: Conda - Platform
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
+	:alt: Conda - Platform
 
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/domdf_python_tools
-	:alt: License
 	:target: https://github.com/domdfcoding/domdf_python_tools/blob/master/LICENSE
+	:alt: License
 
 .. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/domdf_python_tools
 	:alt: GitHub top language
@@ -118,7 +118,7 @@ Installation
 
 		.. prompt:: bash
 
-			pip install domdf_python_tools
+			python3 -m pip install domdf_python_tools --user
 
 	.. tab:: from Anaconda
 
@@ -139,7 +139,7 @@ Installation
 
 		.. prompt:: bash
 
-			pip install git+https://github.com/domdfcoding/domdf_python_tools@master
+			python3 -m pip install git+https://github.com/domdfcoding/domdf_python_tools@master --user
 
 .. end installation
 
