@@ -73,7 +73,7 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	Check whether one or more dependencies are available to be imported.
 
 	:param dependencies: The list of dependencies to check the availability of.
-	:param prt: Whether the status should be printed to the terminal. Default ``True``.
+	:param prt: Whether the status should be printed to the terminal. Default :py:obj:`True`.
 	:type prt: bool, optional
 
 	:return: A list of any missing modules
@@ -163,7 +163,7 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	import itertools
 
 	if n == 0:
-		raise ValueError("`n` cannot be 0")
+		raise ValueError("'n' cannot be 0")
 
 	perms = []
 	for i in itertools.permutations(data, n):
@@ -242,7 +242,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 
 def strtobool(val: Union[str, bool]) -> bool:
 	"""
-	Convert a string representation of truth to ``True`` or ``False``.
+	Convert a string representation of truth to :py:obj:`True` or :py:obj:`False`.
 
 	If val is an integer then its boolean representation is returned. If val is a boolean it is returned as-is.
 

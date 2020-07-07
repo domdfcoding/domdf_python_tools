@@ -145,7 +145,7 @@ def test_parse_month():
 		assert dates.parse_month(month_idx) == month
 
 	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
-		with pytest.raises(ValueError):
+		with pytest.raises(ValueError, match="Unrecognised month value"):
 			dates.parse_month(value)
 
 
@@ -164,8 +164,12 @@ def test_get_month_number():
 	for month_idx in range(1, 13):
 		assert dates.get_month_number(month_idx) == month_idx
 
-	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
-		with pytest.raises(ValueError):
+	for value in [0, -1, 13]:
+		with pytest.raises(ValueError, match="The given month is not recognised."):
+			dates.get_month_number(value)
+
+	for value in ["abc", '0', "-1" "13"]:
+		with pytest.raises(ValueError, match="Unrecognised month value"):
 			dates.get_month_number(value)
 
 

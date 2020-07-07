@@ -169,7 +169,7 @@ def test_permutations():
 	assert utils.permutations(data, 30) == []
 	assert utils.permutations(data, 100) == []
 
-	with pytest.raises(ValueError):
+	with pytest.raises(ValueError, match="'n' cannot be 0"):
 		utils.permutations(data, 0)
 
 

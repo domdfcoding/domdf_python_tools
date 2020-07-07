@@ -2,7 +2,7 @@
 #
 #  dates.py
 """
-Utilities for working with dates and times
+Utilities for working with dates and times.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -133,7 +133,7 @@ try:
 			output_tz: Optional[datetime.tzinfo] = None,
 			) -> datetime.datetime:
 		"""
-		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object
+		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object.
 
 		If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
 		and the local timezone is inferred and set for the object.
@@ -178,7 +178,7 @@ try:
 
 	def parse_month(month: Union[str, int]) -> str:
 		"""
-		Converts an integer or shorthand month into the full month name
+		Converts an integer or shorthand month into the full month name.
 
 		:param month: The month number or shorthand name
 		:type month: str or int
@@ -203,8 +203,8 @@ try:
 
 	def get_month_number(month: Union[str, int]) -> int:
 		"""
-		Returns the number of the given month. If ``month`` is already a
-		number between 1 and 12 it will be returned immediately.
+		Returns the number of the given month.
+		If ``month`` is already a number between 1 and 12 it will be returned immediately.
 
 		:param month: The month to convert to a number
 		:type month: str or int
@@ -224,18 +224,18 @@ try:
 
 	def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool:
 		"""
-		Returns ``True`` if the day number is valid for the given month.
-		Note that this will return ``True`` for the 29th Feb. If you don't
-		want this behaviour set ``leap_year`` to ``False``.
+		Returns :py:obj:`True` if the day number is valid for the given month.
+		Note that this will return :py:obj:`True` for the 29th Feb. If you don't
+		want this behaviour set ``leap_year`` to :py:obj:`False`.
 
-		:param month: The month to test
+		:param month: The month to test.
 		:type month: str, int
-		:param day: The day number to test
+		:param day: The day number to test.
 		:type day: int
-		:param leap_year: Whether to return ``True`` for 29th Feb. Default ``True``
+		:param leap_year: Whether to return :py:obj:`True` for 29th Feb. Default :py:obj:`True`.
 		:type leap_year: bool, optional
 
-		:return: ``True`` if the date is valid
+		:return: :py:obj:`True` if the date is valid.
 		:rtype: bool
 		"""
 

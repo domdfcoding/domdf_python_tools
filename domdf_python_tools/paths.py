@@ -134,12 +134,12 @@ def maybe_make(directory: PathLike, mode=0o777, parents: bool = False, exist_ok:
 	:param directory: Directory to create
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
 	:type mode:
-	:param parents: If ``False`` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
-		If ``True``, any missing parents of this path are created as needed; they are created with the
+	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
+		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 	:type parents: bool, optional
-	:param exist_ok: If ``False`` (the default), a :class:`~python:FileExistsError` is raised if the
-		target directory already exists. If ``True``, :class:`~python:FileExistsError` exceptions
+	:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
+		target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
 		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 		component is not an existing non-directory file.
 	:type exist_ok: bool, optional
@@ -261,9 +261,9 @@ def clean_writer(string: str, fp: IO) -> None:
 
 def make_executable(filename: PathLike) -> None:
 	"""
-	Make the given file executable
+	Make the given file executable.
 
-	:param filename:
+	:param filename: Filename of the file to make executable
 	"""
 
 	if not isinstance(filename, pathlib.Path):

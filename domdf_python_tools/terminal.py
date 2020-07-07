@@ -74,9 +74,9 @@ from typing import Optional, Tuple
 
 def clear() -> None:
 	"""
-	Clears the display
+	Clears the display.
 
-	Works for Windows and UNIX, but does not clear Python Interpreter or PyCharm Console
+	Works for Windows and UNIX, but does not clear Python Interpreter or PyCharm Console.
 	"""
 
 	if os.name == "nt":
@@ -95,10 +95,10 @@ def br() -> None:
 
 def interrupt() -> None:
 	"""
-	Print what to do to abort the script; dynamic depending on OS.
+	Print the key combination needed to abort the script; dynamic depending on OS.
 
 	Useful when you have a long-running script that you might want to
-	interrupt part way through
+	interrupt part way through.
 	"""
 
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
@@ -111,10 +111,10 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bo
 
 	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
 
-	All non-keyword arguments are converted to strings like ``str()`` does and written to the stream,
+	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
 	separated by `sep` and followed by `end`.
 
-	If no objects are given, ``overtype()`` will just write "\\r".
+	If no objects are given, :func:`~domdf_python_tools.terminal.overtype` will just write "\\r".
 
 	TODO: This does not currently work in the PyCharm console, at least on Windows
 
@@ -136,9 +136,9 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bo
 
 def get_terminal_size() -> Tuple[int, int]:
 	"""
-	Get width and height of console
+	Get width and height of console.
 
-	Works on Linux, macOS, Windows, and Cygwin
+	Works on Linux, macOS, Windows, and Cygwin.
 
 	Based on http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
 
@@ -235,7 +235,7 @@ def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:
 
 class Echo:
 	"""
-	Context manager for echoing variable assignments (in CPython)
+	Context manager for echoing variable assignments (in CPython).
 	"""
 
 	def __init__(self, msg: str, indent: str = "  "):

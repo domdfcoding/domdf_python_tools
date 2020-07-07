@@ -67,8 +67,8 @@ from typing_extensions import Final
 
 init()
 
-CSI: Final[str] = '\033['
-OSC: Final[str] = '\033]'
+CSI: Final[str] = "\033["
+OSC: Final[str] = "\033]"
 BEL: Final[str] = '\a'
 
 fore_stack: List[str] = []
@@ -135,18 +135,65 @@ class AnsiCodes(ABC):
 class AnsiCursor:
 
 	def UP(self, n: int = 1) -> str:
+		"""
+
+		:param n:
+		:type n: int
+
+		:return:
+		:rtype: str
+		"""
+
 		return f"{CSI}{str(n)}A"
 
 	def DOWN(self, n: int = 1) -> str:
+		"""
+
+		:param n:
+		:type n: int
+
+		:return:
+		:rtype: str
+		"""
+
 		return f"{CSI}{str(n)}B"
 
 	def FORWARD(self, n: int = 1) -> str:
+		"""
+
+		:param n:
+		:type n: int
+
+		:return:
+		:rtype: str
+		"""
+
 		return f"{CSI}{str(n)}C"
 
 	def BACK(self, n: int = 1) -> str:
+		"""
+
+		:param n:
+		:type n: int
+
+		:return:
+		:rtype: str
+		"""
+
 		return f"{CSI}{str(n)}D"
 
 	def POS(self, x: int = 1, y: int = 1) -> str:
+		"""
+
+		:param x:
+		:type x: int
+		:param y:
+		:type y: int
+
+		:return:
+		:rtype: str
+		"""
+
 		return f"{CSI}{str(y)};{str(x)}H"
 
 

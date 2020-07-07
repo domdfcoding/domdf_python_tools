@@ -144,7 +144,7 @@ def documented_function(a: float, b: float, c: float, d: float) -> float:
 
 
 @doctools.is_documented_by(documented_function)
-def undocumented_function(a: float, b: float, c: float, d: float) -> float:
+def undocumented_function(a: float, b: float, c: float, d: int) -> float:
 	return d * c * b * a
 
 
@@ -195,6 +195,8 @@ def test_decorators():
 
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
+	assert undocumented_function.__name__ == "undocumented_function"
+	assert undocumented_function.__annotations__ == {'a': float, 'b': float, 'c': float, 'd': int, 'return': float}
 	assert partially_documented_function.__doc__.startswith(
 			"\nThis function works like ``documented_function`` except it returns the result telepathically."
 			)
@@ -202,6 +204,7 @@ def test_decorators():
 									).endswith(doctools.deindent_string(documented_function.__doc__))
 	# Dedented both strings to be sure of equivalence
 	assert DummyClass.function_in_class_with_same_args.__doc__ == documented_function.__doc__
+	assert DummyClass.function_in_class_with_same_args.__name__ == "function_in_class_with_same_args"
 
 
 def test_document_object_from_another():

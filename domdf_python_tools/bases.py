@@ -2,7 +2,7 @@
 #
 #  bases.py
 """
-Useful base classes
+Useful base classes.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -35,7 +35,7 @@ import pydash  # type: ignore
 
 class Dictable(Iterable):
 	"""
-	The basic structure of a class that can be converted into a dictionary
+	The basic structure of a class that can be converted into a dictionary.
 	"""
 
 	@abstractmethod
@@ -72,19 +72,18 @@ class Dictable(Iterable):
 		return NotImplemented
 
 
-def namedlist(name="NamedList") -> Callable:
+def namedlist(name: str = "NamedList") -> Callable:
 	"""
-	A factory function to return a custom list subclass with a name
+	A factory function to return a custom list subclass with a name.
 
-	:param name:
-	:type name:
+	:param name: The name of the list.
+
 	:return:
-	:rtype:
 	"""
 
 	class NamedList(UserList):
 		"""
-		A list with a name
+		A list with a name.
 		"""
 
 		def __repr__(self) -> str:
