@@ -7,7 +7,7 @@ Test functions in pagesizes.py
 """
 
 # 3rd party
-import pytest  # type: ignore
+import pytest
 
 # this package
 from domdf_python_tools.pagesizes import A4, BaseSize, inch, mm, parse_measurement, sizes

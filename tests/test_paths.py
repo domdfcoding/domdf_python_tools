@@ -14,7 +14,7 @@ import sys
 from tempfile import TemporaryDirectory
 
 # 3rd party
-import pytest  # type: ignore
+import pytest
 
 # this package
 from domdf_python_tools.paths import clean_writer

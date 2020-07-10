@@ -3,7 +3,7 @@
 import sys
 
 # 3rd party
-import pytest  # type: ignore
+import pytest
 from colorama.ansitowin32 import AnsiToWin32  # type: ignore
 
 # this package

@@ -63,7 +63,7 @@ domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools?logo=python&logoColor=white
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Supported Python Versions
 

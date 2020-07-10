@@ -10,7 +10,7 @@ Test functions in dates.py
 import datetime
 
 # 3rd party
-import pytest  # type: ignore
+import pytest
 import pytz
 
 # this package
