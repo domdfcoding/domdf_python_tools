@@ -6,4 +6,3 @@
 
 .. automodule:: domdf_python_tools.terminal_colours
 	:members:
-

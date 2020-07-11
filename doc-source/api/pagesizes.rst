@@ -40,4 +40,3 @@
 .. automodule:: domdf_python_tools.pagesizes.utils
 	:members:
 	:undoc-members:
-

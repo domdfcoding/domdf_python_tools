@@ -15,4 +15,3 @@
 .. automodule:: domdf_python_tools.dates
 	:members:
 	:undoc-members:
-

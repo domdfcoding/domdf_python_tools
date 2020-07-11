@@ -7,4 +7,3 @@
 .. automodule:: domdf_python_tools.terminal
 	:members:
 	:undoc-members:
-
