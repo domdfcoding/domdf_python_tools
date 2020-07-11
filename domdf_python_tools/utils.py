@@ -280,4 +280,3 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 		return value
 	else:
 		return f"'{value}'"
-

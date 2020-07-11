@@ -17,9 +17,8 @@ from tempfile import TemporaryDirectory
 import pytest
 
 # this package
-from domdf_python_tools.paths import clean_writer
-
 from domdf_python_tools import paths
+from domdf_python_tools.paths import clean_writer
 
 # TODO: delete, write, read and append might want deprecating in favour of pathlib
 
@@ -175,11 +174,14 @@ def test_clean_writer():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
 		with tempfile.open("w") as fp:
-			clean_writer("""Top line
+			clean_writer(
+					"""Top line
     
 Line with whitespace   
 Line with tabs				   
-No newline at end of file""", fp)
+No newline at end of file""",
+					fp
+					)
 
 		assert tempfile.read_text() == """Top line
 
@@ -189,7 +191,8 @@ No newline at end of file
 """
 		# Again with lots of newlines
 		with tempfile.open("w") as fp:
-			clean_writer("""Top line
+			clean_writer(
+					"""Top line
     
 Line with whitespace   
 Line with tabs				   
@@ -201,7 +204,9 @@ Too many newlines
 
 
 
-""", fp)
+""",
+					fp
+					)
 
 		assert tempfile.read_text() == """Top line
 
