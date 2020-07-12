@@ -173,15 +173,17 @@ class TestCurrentDirOperations:
 def test_clean_writer():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
+
+		test_string = "\n".join([
+					"Top line",
+					"    ",
+					"Line with whitespace   ",
+					"Line with tabs				   ",
+					"No newline at end of file",
+					])
+
 		with tempfile.open("w") as fp:
-			clean_writer(
-					"""Top line
-    
-Line with whitespace   
-Line with tabs				   
-No newline at end of file""",
-					fp
-					)
+			clean_writer(test_string, fp)
 
 		assert tempfile.read_text() == """Top line
 
@@ -190,23 +192,16 @@ Line with tabs
 No newline at end of file
 """
 		# Again with lots of newlines
+		test_string = "\n".join([
+					"Top line",
+					"    ",
+					"Line with whitespace   ",
+					"Line with tabs				   ",
+					"Too many newlines\n\n\n\n\n\n\n",
+					])
+
 		with tempfile.open("w") as fp:
-			clean_writer(
-					"""Top line
-    
-Line with whitespace   
-Line with tabs				   
-Too many newlines
-
-
-
-
-
-
-
-""",
-					fp
-					)
+			clean_writer(test_string, fp)
 
 		assert tempfile.read_text() == """Top line
 
