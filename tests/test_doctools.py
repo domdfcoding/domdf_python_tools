@@ -184,11 +184,12 @@ def test_decorators():
 
 	# set_opening_hours and ceil should have extra text at the beginning
 	assert SpamCafe.set_opening_hours.__doc__.startswith("\nI will not buy this record, it is scratched.")
-	assert doctools.deindent_string(SpamCafe.set_opening_hours.__doc__
-									).endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
+	assert doctools.deindent_string(SpamCafe.set_opening_hours.__doc__, ).endswith(
+			doctools.deindent_string(Cafe.set_opening_hours.__doc__)
+			)
 	# Dedented both strings to be sure of equivalence
 	assert SpamCafe.ceil.__doc__.startswith(
-			"\nI don't know why the cafe has a ceil function, but we'd better document it properly."
+			"\nI don't know why the cafe has a ceil function, but we'd better document it properly.",
 			)
 	assert doctools.deindent_string(SpamCafe.ceil.__doc__).endswith(doctools.deindent_string(math.ceil.__doc__))
 	# Dedented both strings to be sure of equivalence
@@ -198,10 +199,11 @@ def test_decorators():
 	assert undocumented_function.__name__ == "undocumented_function"
 	assert undocumented_function.__annotations__ == {'a': float, 'b': float, 'c': float, 'd': int, 'return': float}
 	assert partially_documented_function.__doc__.startswith(
-			"\nThis function works like ``documented_function`` except it returns the result telepathically."
+			"\nThis function works like ``documented_function`` except it returns the result telepathically.",
 			)
-	assert doctools.deindent_string(partially_documented_function.__doc__
-									).endswith(doctools.deindent_string(documented_function.__doc__))
+	assert doctools.deindent_string(partially_documented_function.__doc__, ).endswith(
+			doctools.deindent_string(documented_function.__doc__)
+			)
 	# Dedented both strings to be sure of equivalence
 	assert DummyClass.function_in_class_with_same_args.__doc__ == documented_function.__doc__
 	assert DummyClass.function_in_class_with_same_args.__name__ == "function_in_class_with_same_args"
@@ -265,7 +267,7 @@ def test_still_callable():
 			"Lobster Thermidor au Crevette with a Mornay "
 			"sauce served in a Provencale manner with "
 			"shallots and aubergines garnished with truffle "
-			"pate, brandy and with a fried egg on top and spam."
+			"pate, brandy and with a fried egg on top and spam.",
 			]
 	assert spam_cafe.opening_hours == """Open Monday-Saturday 7am - 6pm
 Please note our opening hours may vary due to COVID-19"""

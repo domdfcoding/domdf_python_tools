@@ -47,7 +47,7 @@ def test_utc_offset():
 def test_converting_timezone():
 	# No matter what timezone we convert to the timestamp should be the same
 	for tz in pytz.all_timezones:
-		assert test_date.astimezone(dates.get_timezone(tz, test_date)
+		assert test_date.astimezone(dates.get_timezone(tz, test_date),
 									).timestamp() == test_date.timestamp() == 845173200.0
 
 		if dates.get_utc_offset(tz, test_date):  # otherwise the timezone stayed as UTC

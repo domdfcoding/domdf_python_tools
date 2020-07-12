@@ -30,17 +30,18 @@ repos:
     -   id: pyupgrade
         args: [--py36-plus]
 
--   repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.0.1
-    hooks:
-    -   id: add-trailing-comma
+#-   repo: https://github.com/asottile/add-trailing-comma
+#    rev: v2.0.1
+#    hooks:
+#    -   id: add-trailing-comma
 
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.2
-    hooks:
-    -   id: flake8
+#-   repo: https://gitlab.com/pycqa/flake8
+#    rev: 3.8.2
+#    hooks:
+#    -   id: flake8
 
--   repo: https://github.com/pycqa/bandit
-    rev: 1.6.2
+-   repo: https://github.com/pre-commit/mirrors-yapf
+    rev: v0.30.0
     hooks:
-    -   id: bandit
+    -   id: yapf
+        args: [exclude *.pyi]

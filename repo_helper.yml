@@ -73,3 +73,6 @@ extras_require:
 
 keywords:
   - utilities
+
+yapf_exclude:
+  - "*.pyi"

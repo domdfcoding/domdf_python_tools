@@ -255,5 +255,5 @@ except ImportError:
 	# stdlib
 	import warnings
 	warnings.warn(
-			"'domdf_python_tools.dates' requires pytz (https://pypi.org/project/pytz/), but it is not installed."
+			"'domdf_python_tools.dates' requires pytz (https://pypi.org/project/pytz/), but it is not installed.",
 			)

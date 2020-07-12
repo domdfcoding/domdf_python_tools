@@ -122,7 +122,7 @@ def test_parent_path():
 				(pathlib.Path("/home/username/Documents/games/chess.py"), "/home/username/Documents/letter.doc"),
 				(pathlib.Path("/home/username/Documents"), "letter.doc"),
 				(None, pathlib.Path("/home/username/Documents/letter.doc")),
-				]
+				],
 		)
 def test_relpath(relto, relpath):
 	path = "/home/username/Documents/letter.doc"
@@ -175,12 +175,12 @@ def test_clean_writer():
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
 
 		test_string = "\n".join([
-					"Top line",
-					"    ",
-					"Line with whitespace   ",
-					"Line with tabs				   ",
-					"No newline at end of file",
-					])
+				"Top line",
+				"    ",
+				"Line with whitespace   ",
+				"Line with tabs				   ",
+				"No newline at end of file",
+				])
 
 		with tempfile.open("w") as fp:
 			clean_writer(test_string, fp)
@@ -193,12 +193,12 @@ No newline at end of file
 """
 		# Again with lots of newlines
 		test_string = "\n".join([
-					"Top line",
-					"    ",
-					"Line with whitespace   ",
-					"Line with tabs				   ",
-					"Too many newlines\n\n\n\n\n\n\n",
-					])
+				"Top line",
+				"    ",
+				"Line with whitespace   ",
+				"Line with tabs				   ",
+				"Too many newlines\n\n\n\n\n\n\n",
+				])
 
 		with tempfile.open("w") as fp:
 			clean_writer(test_string, fp)

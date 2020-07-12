@@ -88,7 +88,7 @@ def test_chunks():
 				(['a', 'b', 'c'], "a,b,c"),
 				(['a', 'b', 1, 2], "a,b,1,2"),
 				(['a', 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
-				]
+				],
 		)
 def test_list2str(value, expects):
 	str_representation = list2str(value)
@@ -107,7 +107,7 @@ def test_list2str(value, expects):
 				(['a', 'b', 'c'], "a;b;c"),
 				(['a', 'b', 1, 2], "a;b;1;2"),
 				(['a', 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
-				]
+				],
 		)
 def test_list2str_semicolon(value, expects):
 	str_representation = list2str(value, sep=';')
@@ -207,7 +207,7 @@ def get_mem_addr(obj):
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
 				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
-				]
+				],
 		)
 def test_printr(obj, expects, capsys):
 	utils.printr(obj)
@@ -226,7 +226,7 @@ def test_printr(obj, expects, capsys):
 				(12.34, "<class 'float'>"),
 				(CustomRepr(), "<class 'tests.test_utils.CustomRepr'>"),
 				(no_repr_instance, "<class 'tests.test_utils.NoRepr'>"),
-				]
+				],
 		)
 def test_printt(obj, expects, capsys):
 	utils.printt(obj)
@@ -245,7 +245,7 @@ def test_printt(obj, expects, capsys):
 				(12.34, "12.34"),
 				(CustomRepr(), "This is my custom __repr__!"),
 				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
-				]
+				],
 		)
 def test_stderr_writer(obj, expects, capsys):
 	utils.stderr_writer(obj)
@@ -264,7 +264,7 @@ def test_split_len():
 		[
 				("1,2,3", (1, 2, 3)),  # tests without spaces
 				("1, 2, 3", (1, 2, 3)),  # tests with spaces
-				]
+				],
 		)
 def test_str2tuple(value, expects):
 	assert isinstance(str2tuple(value), tuple)
@@ -276,7 +276,7 @@ def test_str2tuple(value, expects):
 		[
 				("1;2;3", (1, 2, 3)),  # tests without semicolon
 				("1; 2; 3", (1, 2, 3)),  # tests with semicolon
-				]
+				],
 		)
 def test_str2tuple_semicolon(value, expects):
 	assert isinstance(str2tuple(value, sep=';'), tuple)
@@ -316,7 +316,7 @@ def test_str2tuple_semicolon(value, expects):
 				("oFF", False),
 				('0', False),
 				(0, False),
-				]
+				],
 		)
 def test_strtobool(obj, expects):
 	assert utils.strtobool(obj) == expects
@@ -331,7 +331,7 @@ def test_strtobool(obj, expects):
 				(None, AttributeError),
 				(1.0, AttributeError),
 				(0.0, AttributeError),
-				]
+				],
 		)
 def test_strtobool_errors(obj, expects):
 	with pytest.raises(expects):
@@ -357,7 +357,7 @@ def test_strtobool_errors(obj, expects):
 				("False", "False"),
 				("false", "'false'"),
 				("Hello World", "'Hello World'"),
-				]
+				],
 		)
 def test_enquote_value(obj, expects):
 	assert utils.enquote_value(obj) == expects

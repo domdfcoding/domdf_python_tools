@@ -91,7 +91,7 @@ def test_fore_attributes(obj, expects, capsys):
 				(Back.LIGHTMAGENTA_EX, "\033[105m"),
 				(Back.LIGHTCYAN_EX, "\033[106m"),
 				(Back.LIGHTWHITE_EX, "\033[107m"),
-				]
+				],
 		)
 def test_back_attributes(obj, expects, capsys):
 	assert obj == expects
@@ -114,11 +114,12 @@ def test_back_attributes(obj, expects, capsys):
 
 
 @pytest.mark.parametrize(
-		"obj, expects", [
+		"obj, expects",
+		[
 				(Style.DIM, "\033[2m"),
 				(Style.NORMAL, "\033[22m"),
 				(Style.BRIGHT, "\033[1m"),
-				]
+				],
 		)
 def test_style_attributes(obj, expects, capsys):
 	assert obj == expects

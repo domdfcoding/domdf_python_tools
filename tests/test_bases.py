@@ -8,7 +8,7 @@ Test functions in bases.py
 
 # stdlib
 import copy
-import pickle
+import pickle  # nosec: B101
 from collections import UserList
 
 # 3rd party
@@ -84,7 +84,7 @@ class TestDictable:
 		assert copy.copy(alice) == copy.copy(alice)
 
 	def test_pickle(self, alice):
-		assert pickle.loads(pickle.dumps(alice)) == alice
+		assert pickle.loads(pickle.dumps(alice)) == alice  # nosec: B101
 
 	def test_vars(self, alice):
 		assert vars(alice) == dict(alice)
