@@ -25,7 +25,7 @@ domdf_python_tools
 	* - Activity
 	  - |commits-latest| |commits-since| |maintained|
 	* - Other
-	  - |license| |language| |requires|
+	  - |license| |language| |requires| |pre_commit|
 
 .. |docs| image:: https://img.shields.io/readthedocs/domdf_python_tools/latest?logo=read-the-docs
 	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
@@ -100,6 +100,10 @@ domdf_python_tools
 
 .. |maintained| image:: https://img.shields.io/maintenance/yes/2020
 	:alt: Maintenance
+
+.. |pre_commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
+	:target: https://github.com/pre-commit/pre-commit
+	:alt: pre-commit
 
 .. end shields
 
