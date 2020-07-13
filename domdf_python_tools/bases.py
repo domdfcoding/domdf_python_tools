@@ -63,7 +63,7 @@ class Dictable(Iterable):
 	@property
 	@abstractmethod
 	def __dict__(self):
-		return dict()
+		return dict()  # pragma: no cover (abc)
 
 	def __eq__(self, other) -> bool:
 		if isinstance(other, self.__class__):

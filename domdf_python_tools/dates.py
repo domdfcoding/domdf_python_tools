@@ -63,7 +63,7 @@ try:
 		if isinstance(tz, str):
 			timezone = get_timezone(tz, date)
 		else:
-			timezone = tz
+			timezone = tz  # pragma: no cover (hard to test)
 
 		return date.replace(tzinfo=pytz.utc).astimezone(timezone).utcoffset()
 
@@ -81,7 +81,7 @@ try:
 		"""
 
 		if date is None:
-			date = datetime.datetime.utcnow()
+			date = datetime.datetime.utcnow()  # pragma: no cover (hard to test)
 
 		d = date.replace(tzinfo=None)
 
@@ -94,7 +94,7 @@ try:
 		:rtype: :class:`python:datetime.tzinfo`
 		"""
 
-		return datetime.datetime.now().astimezone().tzinfo
+		return datetime.datetime.now().astimezone().tzinfo  # pragma: no cover (hard to test)
 
 	#
 	# def datetime_to_utc_timestamp(datetime, current_tzinfo=None):
