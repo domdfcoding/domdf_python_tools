@@ -1,6 +1,4 @@
 # This file is managed by `repo_helper`. Don't edit it directly
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
 ---
 
 repos:
@@ -37,6 +35,7 @@ repos:
    rev: v0.30.0
    hooks:
     - id: yapf
+      exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
       args: [exclude *.pyi]
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
