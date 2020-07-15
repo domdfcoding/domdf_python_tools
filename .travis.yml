@@ -15,7 +15,7 @@ install:
 
   - pip install pip  --upgrade
   - pip install tox tox-travis
-  - pip install coveralls
+  - pip install coveralls coverage_pyver_pragma
 
 script:
   - tox
@@ -27,7 +27,7 @@ stages:
   - test
   - deploy_pypi
   - deploy_conda
-  - deploy_releases
+
 
 jobs:
   include:

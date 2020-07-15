@@ -19,8 +19,6 @@ __all__ = [
 		"__version__",
 		"modname",
 		"pypi_name",
-		"py_modules",
-		"entry_points",
 		"__license__",
 		"__author__",
 		"short_desc",
@@ -29,13 +27,11 @@ __all__ = [
 		"github_username",
 		"web",
 		"github_url",
-		"project_urls",
 		"repo_root",
-		"long_description",
 		"install_requires",
 		"extras_require",
-		"classifiers",
-		"keywords",
+		"project_urls",
+
 		"import_name",
 		]
 
@@ -44,58 +40,30 @@ __copyright__ = """
 """
 
 __version__ = "0.3.8"
-
 modname = "domdf_python_tools"
 pypi_name = "domdf_python_tools"
 import_name = "domdf_python_tools"
-py_modules = []
-entry_points = {
-		"console_scripts": [],
-		}
-
 __license__ = "GNU Lesser General Public License v3 or later (LGPLv3+)"
-
 short_desc = "Helpful functions for Python 🐍 🛠️"
-
 __author__ = author = "Dominic Davis-Foster"
 author_email = "dominic@davis-foster.co.uk"
 github_username = "domdfcoding"
-web = github_url = f"https://github.com/domdfcoding/domdf_python_tools"
-project_urls = {
-		"Documentation": f"https://domdf_python_tools.readthedocs.io",
-		"Issue Tracker": f"{github_url}/issues",
-		"Source Code": github_url,
-		}
-
+web = github_url = "https://github.com/domdfcoding/domdf_python_tools"
 repo_root = pathlib.Path(__file__).parent
+install_requires = (repo_root / "requirements.txt").read_text(encoding="utf-8").split('\n')
+extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 
-# Get info from files; set: long_description
-long_description = (repo_root / "README.rst").read_text(encoding="utf-8").replace("0.3.8", __version__) + '\n'
+
+
 conda_description = """Helpful functions for Python 🐍 🛠️
 
 
 Before installing please ensure you have added the following channels: domdfcoding, conda-forge"""
 __all__.append("conda_description")
 
-install_requires = (repo_root / "requirements.txt").read_text(encoding="utf-8").split('\n')
-extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
 
-classifiers = [
-		'Development Status :: 4 - Beta',
-		'Intended Audience :: Developers',
-		'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
-		'Operating System :: OS Independent',
-		'Programming Language :: Python',
-		'Programming Language :: Python :: 3 :: Only',
-		'Programming Language :: Python :: 3.6',
-		'Programming Language :: Python :: 3.7',
-		'Programming Language :: Python :: 3.8',
-		'Programming Language :: Python :: 3.9',
-		'Programming Language :: Python :: Implementation :: CPython',
-		'Programming Language :: Python :: Implementation :: PyPy',
-		'Topic :: Software Development :: Libraries :: Python Modules',
-		'Typing :: Typed',
-
-		]
-
-keywords = "utilities"
+project_urls = {
+		"Documentation": "https://domdf_python_tools.readthedocs.io",
+		"Issue Tracker": f"{github_url}/issues",
+		"Source Code": github_url,
+		}
