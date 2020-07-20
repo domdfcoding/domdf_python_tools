@@ -19,7 +19,7 @@ Functions for paths and files.
 # 		Copytight © 2008 Ned Batchelder
 # 		Licensed under CC-BY-SA
 #
-#  Parts of the docstrings based on the Python 3.8.2 Documentation
+#  Parts of the docstrings and the PathPlus class based on the Python 3.8.2 Documentation
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
 #  Copyright © 2000 BeOpen.com . All rights reserved.
@@ -47,13 +47,13 @@ import os
 import pathlib
 import shutil
 import stat
-from typing import IO, Callable, Optional
+from typing import Any, IO, Callable, Optional
 
 # this package
 from domdf_python_tools.typing import PathLike
 
 
-def append(var: str, filename: PathLike):
+def append(var: str, filename: PathLike, **kwargs) -> int:
 	"""
 	Append ``var`` to the file ``filename`` in the current directory.
 
@@ -67,8 +67,8 @@ def append(var: str, filename: PathLike):
 	:param filename: The file to append to
 	"""
 
-	with open(os.path.join(os.getcwd(), filename), 'a') as f:
-		f.write(var)
+	with open(os.path.join(os.getcwd(), filename), 'a', **kwargs) as f:
+		return f.write(var)
 
 
 def copytree(
@@ -106,12 +106,12 @@ def copytree(
 		s = os.path.join(src, item)
 		d = os.path.join(dst, item)
 		if os.path.isdir(s):
-			shutil.copytree(s, d, symlinks, ignore)
+			return shutil.copytree(s, d, symlinks, ignore)
 		else:
-			shutil.copy2(s, d)
+			return shutil.copy2(s, d)
 
 
-def delete(filename: PathLike):
+def delete(filename: PathLike, **kwargs):
 	"""
 	Delete the file in the current directory.
 
@@ -124,12 +124,12 @@ def delete(filename: PathLike):
 	:param filename: The file to delete
 	"""
 
-	os.remove(os.path.join(os.getcwd(), filename))
+	os.remove(os.path.join(os.getcwd(), filename), **kwargs)
 
 
-def maybe_make(directory: PathLike, mode=0o777, parents: bool = False, exist_ok: bool = False):
+def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, exist_ok: bool = False):
 	"""
-	Create a directory at this given path, but only if the directory does not already exist.
+	Create a directory at the given path, but only if the directory does not already exist.
 
 	:param directory: Directory to create
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
@@ -167,7 +167,7 @@ def parent_path(path: PathLike) -> pathlib.Path:
 	return path.parent
 
 
-def read(filename: PathLike) -> str:
+def read(filename: PathLike, **kwargs) -> str:
 	"""
 	Read a file in the current directory (in text mode).
 
@@ -185,7 +185,7 @@ def read(filename: PathLike) -> str:
 
 	# TODO: docstring
 
-	with open(os.path.join(os.getcwd(), filename)) as f:
+	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:
 		return f.read()
 
 
@@ -223,7 +223,7 @@ def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.P
 relpath2 = relpath
 
 
-def write(var: str, filename: PathLike) -> None:
+def write(var: str, filename: PathLike, **kwargs) -> None:
 	"""
 	Write a variable to file in the current directory.
 
@@ -233,7 +233,7 @@ def write(var: str, filename: PathLike) -> None:
 	:param filename: The file to write to
 	"""
 
-	with open(os.path.join(os.getcwd(), filename), 'w') as f:
+	with open(os.path.join(os.getcwd(), filename), 'w', **kwargs) as f:
 		f.write(var)
 
 
@@ -271,3 +271,167 @@ def make_executable(filename: PathLike) -> None:
 
 	st = os.stat(str(filename))
 	os.chmod(str(filename), st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+
+class PathPlus(pathlib.Path):
+	"""
+	Subclass of :mod:`pathlib.Path` with additional methods and a default encoding of UTF-8.
+
+	Path represents a filesystem path but unlike PurePath, also offers
+	methods to do system calls on path objects. Depending on your system,
+	instantiating a Path will return either a PosixPath or a WindowsPath
+	object. You can also instantiate a PosixPath or WindowsPath directly,
+	but cannot instantiate a WindowsPath on a POSIX system or vice versa.
+	"""
+
+	def __new__(cls, *args, **kwargs):
+		if cls is PathPlus:
+			cls = WindowsPathPlus if os.name == 'nt' else PosixPathPlus
+		self = cls._from_parts(args, init=False)
+		if not self._flavour.is_supported:
+			raise NotImplementedError(f"cannot instantiate {cls.__name__!r} on your system")
+		self._init()
+		return self
+
+	def make_executable(self):
+		"""
+		Make the file executable.
+		"""
+
+		make_executable(self)
+
+	def write_clean(
+			self,
+			string: str,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			):
+		"""
+		Open the file in text mode, write to it without trailing spaces, and close the file.
+
+		:param string:
+		:type string: str
+		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param errors:
+		"""
+
+		with self.open("w", encoding=encoding, errors=errors) as fp:
+			clean_writer(string, fp)
+
+	def maybe_make(
+			self,
+			mode: int = 0o777,
+			parents: bool = False,
+			exist_ok: bool = False,
+			):
+		"""
+		Create a directory at this path, but only if the directory does not already exist.
+
+		:param mode: Combined with the process’ umask value to determine the file mode and access flags
+		:type mode:
+		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
+			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
+			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
+		:type parents: bool, optional
+		:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
+			target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
+			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
+			component is not an existing non-directory file.
+		:type exist_ok: bool, optional
+		"""
+
+		maybe_make(self, mode=mode, parents=parents, exist_ok=exist_ok)
+
+	def append_text(
+			self,
+			string: str,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			):
+		"""
+		Open the file in text mode, append the given string to it, and close the file.
+
+		:param string:
+		:type string: str
+		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param errors:
+		"""
+
+		with self.open("a", encoding=encoding, errors=errors) as fp:
+			fp.write(string)
+
+	def write_text(
+			self,
+			data: str,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			) -> int:
+		"""
+		Open the file in text mode, write to it, and close the file.
+
+		:param data:
+		:type data: str
+		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param errors:
+		"""
+
+		return super().write_text(data, encoding=encoding, errors=errors)
+
+	def read_text(
+			self,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			) -> str:
+		"""
+		Open the file in text mode, read it, and close the file.
+
+		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param errors:
+
+		:return: The content of the file.
+		"""
+
+		return super().read_text(encoding=encoding, errors=errors)
+
+	def open(
+			self,
+			mode: str = "r",
+			buffering: int = -1,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			newline: Optional[str] = None,
+			) -> IO[Any]:
+
+		"""
+		Open the file pointed by this path and return a file object, as
+		the built-in open() function does.
+		"""
+
+		if 'b' in mode:
+			encoding = None
+		return super().open(mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline)
+
+
+class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
+	"""Path subclass for non-Windows systems.
+
+	On a POSIX system, instantiating a PathPlus object should return an instance of this class.
+	"""
+	__slots__ = ()
+
+
+class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
+	"""Path subclass for Windows systems.
+
+	On a Windows system, instantiating a PathPlus object should return an instance of this class.
+	"""
+	__slots__ = ()
+
+	def owner(self):  # pragma: no cover
+		raise NotImplementedError("Path.owner() is unsupported on this system")
+
+	def group(self):  # pragma: no cover
+		raise NotImplementedError("Path.group() is unsupported on this system")
+
+	def is_mount(self):  # pragma: no cover
+		raise NotImplementedError("Path.is_mount() is unsupported on this system")

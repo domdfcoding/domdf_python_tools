@@ -18,7 +18,8 @@ import pytest
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import clean_writer
+from domdf_python_tools.paths import clean_writer, PathPlus
+
 
 # TODO: delete, write, read and append might want deprecating in favour of pathlib
 
@@ -43,11 +44,40 @@ def test_maybe_make():
 		# Delete the directory and replace with a file
 		test_dir.rmdir()
 		assert test_dir.exists() is False
-		test_dir.write_text('')
+		test_dir.touch()
 		assert test_dir.exists()
 		assert test_dir.is_file()
 
 		paths.maybe_make(test_dir)
+		assert test_dir.exists()
+		assert test_dir.is_file()
+
+
+def test_maybe_make_pathplus():
+	with TemporaryDirectory() as tmpdir:
+
+		test_dir = PathPlus(tmpdir) / "maybe_make"
+
+		assert test_dir.exists() is False
+
+		# Maybe make the directory
+		test_dir.maybe_make()
+
+		assert test_dir.exists()
+
+		# Maybe make the directory
+		test_dir.maybe_make()
+
+		assert test_dir.exists()
+
+		# Delete the directory and replace with a file
+		test_dir.rmdir()
+		assert test_dir.exists() is False
+		test_dir.touch()
+		assert test_dir.exists()
+		assert test_dir.is_file()
+
+		test_dir.maybe_make()
 		assert test_dir.exists()
 		assert test_dir.is_file()
 
@@ -72,7 +102,7 @@ def test_maybe_make_string():
 		# Delete the directory and replace with a file
 		test_dir.rmdir()
 		assert test_dir.exists() is False
-		test_dir.write_text('')
+		test_dir.touch()
 		assert test_dir.exists()
 		assert test_dir.is_file()
 
@@ -95,6 +125,24 @@ def test_maybe_make_parents():
 
 		# Maybe make the directory
 		paths.maybe_make(test_dir, parents=True)
+
+		assert test_dir.exists()
+
+
+def test_maybe_make_parents_pathplus():
+	with TemporaryDirectory() as tmpdir:
+
+		test_dir = PathPlus(tmpdir) / "maybe_make" / "child1" / "child2"
+
+		assert test_dir.exists() is False
+
+		# Without parents=True should raise an error
+
+		with pytest.raises(FileNotFoundError):
+			test_dir.maybe_make()
+
+		# Maybe make the directory
+		test_dir.maybe_make(parents=True)
 
 		assert test_dir.exists()
 
@@ -136,6 +184,13 @@ class TestCurrentDirOperations:
 		file = pathlib.Path("paths_append_test_file.txt")
 		file.write_text("initial content\n")
 		paths.append("appended content", str(file))
+		assert file.read_text() == "initial content\nappended content"
+		file.unlink()
+
+	def test_append_pathplus(self):
+		file = PathPlus("paths_append_test_file.txt")
+		file.write_text("initial content\n")
+		file.append_text("appended content")
 		assert file.read_text() == "initial content\nappended content"
 		file.unlink()
 
@@ -209,3 +264,79 @@ Line with whitespace
 Line with tabs
 Too many newlines
 """
+
+
+def test_pathplus_write_clean():
+	with TemporaryDirectory() as tmpdir:
+		tempfile = PathPlus(tmpdir) / "tmpfile.txt"
+
+		test_string = "\n".join([
+				"Top line",
+				"    ",
+				"Line with whitespace   ",
+				"Line with tabs				   ",
+				"No newline at end of file",
+				])
+
+		with tempfile.open("w") as fp:
+			tempfile.write_clean(test_string)
+
+		assert tempfile.read_text() == """Top line
+
+Line with whitespace
+Line with tabs
+No newline at end of file
+"""
+		# Again with lots of newlines
+		test_string = "\n".join([
+				"Top line",
+				"    ",
+				"Line with whitespace   ",
+				"Line with tabs				   ",
+				"Too many newlines\n\n\n\n\n\n\n",
+				])
+
+		with tempfile.open("w") as fp:
+			tempfile.write_clean(test_string)
+
+		assert tempfile.read_text() == """Top line
+
+Line with whitespace
+Line with tabs
+Too many newlines
+"""
+
+
+def test_make_executable():
+	with TemporaryDirectory() as tmpdir:
+		tempfile = pathlib.Path(tmpdir) / "tmpfile.sh"
+		tempfile.touch()
+
+		paths.make_executable(tempfile)
+
+		assert os.access(tempfile, os.X_OK)
+
+	with TemporaryDirectory() as tmpdir:
+		tempfile = pathlib.Path(tmpdir) / "tmpfile.sh"
+		tempfile.touch()
+
+		paths.make_executable(str(tempfile))
+
+		assert os.access(str(tempfile), os.X_OK)
+
+	with TemporaryDirectory() as tmpdir:
+		tempfile = PathPlus(tmpdir) / "tmpfile.sh"
+		tempfile.touch()
+
+		tempfile.make_executable()
+
+		assert os.access(tempfile, os.X_OK)
+
+
+def test_instantiate_wrong_platform():
+	if os.name == 'nt':
+		with pytest.raises(NotImplementedError, match="cannot instantiate .* on your system"):
+			paths.PosixPathPlus()
+	else:
+		with pytest.raises(NotImplementedError, match="cannot instantiate .* on your system"):
+			paths.WindowsPathPlus()
