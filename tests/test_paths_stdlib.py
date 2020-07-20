@@ -1,24 +1,30 @@
-import collections.abc
+# stdlib
+import collections
+import errno
 import io
 import os
-import errno
 import pathlib
 import pickle
 import socket
 import stat
+import sys
 import tempfile
 import unittest
+from test import support  # type: ignore
+from test.support import TESTFN  # type: ignore
 from unittest import mock
 
-from test import support
-from test.support import TESTFN
+# 3rd party
+import pytest
 
+# this package
 from domdf_python_tools.paths import PathPlus, PosixPathPlus, WindowsPathPlus
+
 
 try:
 	import grp, pwd
 except ImportError:
-	grp = pwd = None
+	grp = pwd = None  # type: ignore
 
 
 class _BaseFlavourTest(object):
@@ -37,45 +43,45 @@ class _BaseFlavourTest(object):
 		check = self._check_parse_parts
 		sep = self.flavour.sep
 		# Unanchored parts
-		check([],                   ('', '', []))
-		check(['a'],                ('', '', ['a']))
-		check(['a/'],               ('', '', ['a']))
-		check(['a', 'b'],           ('', '', ['a', 'b']))
+		check([], ('', '', []))
+		check(['a'], ('', '', ['a']))
+		check(['a/'], ('', '', ['a']))
+		check(['a', 'b'], ('', '', ['a', 'b']))
 		# Expansion
-		check(['a/b'],              ('', '', ['a', 'b']))
-		check(['a/b/'],             ('', '', ['a', 'b']))
-		check(['a', 'b/c', 'd'],    ('', '', ['a', 'b', 'c', 'd']))
+		check(['a/b'], ('', '', ['a', 'b']))
+		check(['a/b/'], ('', '', ['a', 'b']))
+		check(['a', 'b/c', 'd'], ('', '', ['a', 'b', 'c', 'd']))
 		# Collapsing and stripping excess slashes
-		check(['a', 'b//c', 'd'],   ('', '', ['a', 'b', 'c', 'd']))
-		check(['a', 'b/c/', 'd'],   ('', '', ['a', 'b', 'c', 'd']))
+		check(['a', 'b//c', 'd'], ('', '', ['a', 'b', 'c', 'd']))
+		check(['a', 'b/c/', 'd'], ('', '', ['a', 'b', 'c', 'd']))
 		# Eliminating standalone dots
-		check(['.'],                ('', '', []))
-		check(['.', '.', 'b'],      ('', '', ['b']))
-		check(['a', '.', 'b'],      ('', '', ['a', 'b']))
-		check(['a', '.', '.'],      ('', '', ['a']))
+		check(['.'], ('', '', []))
+		check(['.', '.', 'b'], ('', '', ['b']))
+		check(['a', '.', 'b'], ('', '', ['a', 'b']))
+		check(['a', '.', '.'], ('', '', ['a']))
 		# The first part is anchored
-		check(['/a/b'],             ('', sep, [sep, 'a', 'b']))
-		check(['/a', 'b'],          ('', sep, [sep, 'a', 'b']))
-		check(['/a/', 'b'],         ('', sep, [sep, 'a', 'b']))
+		check(['/a/b'], ('', sep, [sep, 'a', 'b']))
+		check(['/a', 'b'], ('', sep, [sep, 'a', 'b']))
+		check(['/a/', 'b'], ('', sep, [sep, 'a', 'b']))
 		# Ignoring parts before an anchored part
-		check(['a', '/b', 'c'],     ('', sep, [sep, 'b', 'c']))
-		check(['a', '/b', '/c'],    ('', sep, [sep, 'c']))
+		check(['a', '/b', 'c'], ('', sep, [sep, 'b', 'c']))
+		check(['a', '/b', '/c'], ('', sep, [sep, 'c']))
 
 
 class PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
-	flavour = pathlib._posix_flavour
+	flavour = pathlib._posix_flavour  # type: ignore
 
 	def test_parse_parts(self):
 		check = self._check_parse_parts
 		# Collapsing of excess leading slashes, except for the double-slash
 		# special case.
-		check(['//a', 'b'],             ('', '//', ['//', 'a', 'b']))
-		check(['///a', 'b'],            ('', '/', ['/', 'a', 'b']))
-		check(['////a', 'b'],           ('', '/', ['/', 'a', 'b']))
+		check(['//a', 'b'], ('', '//', ['//', 'a', 'b']))
+		check(['///a', 'b'], ('', '/', ['/', 'a', 'b']))
+		check(['////a', 'b'], ('', '/', ['/', 'a', 'b']))
 		# Paths which look like NT paths aren't treated specially
-		check(['c:a'],                  ('', '', ['c:a']))
-		check(['c:\\a'],                ('', '', ['c:\\a']))
-		check(['\\a'],                  ('', '', ['\\a']))
+		check(['c:a'], ('', '', ['c:a']))
+		check(['c:\\a'], ('', '', ['c:\\a']))
+		check(['\\a'], ('', '', ['\\a']))
 
 	def test_splitroot(self):
 		f = self.flavour.splitroot
@@ -99,41 +105,41 @@ class PosixFlavourTest(_BaseFlavourTest, unittest.TestCase):
 
 
 class NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
-	flavour = pathlib._windows_flavour
+	flavour = pathlib._windows_flavour  # type: ignore
 
 	def test_parse_parts(self):
 		check = self._check_parse_parts
 		# First part is anchored
-		check(['c:'],                   ('c:', '', ['c:']))
-		check(['c:/'],                  ('c:', '\\', ['c:\\']))
-		check(['/'],                    ('', '\\', ['\\']))
-		check(['c:a'],                  ('c:', '', ['c:', 'a']))
-		check(['c:/a'],                 ('c:', '\\', ['c:\\', 'a']))
-		check(['/a'],                   ('', '\\', ['\\', 'a']))
+		check(['c:'], ('c:', '', ['c:']))
+		check(['c:/'], ('c:', '\\', ['c:\\']))
+		check(['/'], ('', '\\', ['\\']))
+		check(['c:a'], ('c:', '', ['c:', 'a']))
+		check(['c:/a'], ('c:', '\\', ['c:\\', 'a']))
+		check(['/a'], ('', '\\', ['\\', 'a']))
 		# UNC paths
-		check(['//a/b'],                ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
-		check(['//a/b/'],               ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
-		check(['//a/b/c'],              ('\\\\a\\b', '\\', ['\\\\a\\b\\', 'c']))
+		check(['//a/b'], ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
+		check(['//a/b/'], ('\\\\a\\b', '\\', ['\\\\a\\b\\']))
+		check(['//a/b/c'], ('\\\\a\\b', '\\', ['\\\\a\\b\\', 'c']))
 		# Second part is anchored, so that the first part is ignored
-		check(['a', 'Z:b', 'c'],        ('Z:', '', ['Z:', 'b', 'c']))
-		check(['a', 'Z:/b', 'c'],       ('Z:', '\\', ['Z:\\', 'b', 'c']))
+		check(['a', 'Z:b', 'c'], ('Z:', '', ['Z:', 'b', 'c']))
+		check(['a', 'Z:/b', 'c'], ('Z:', '\\', ['Z:\\', 'b', 'c']))
 		# UNC paths
-		check(['a', '//b/c', 'd'],      ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
+		check(['a', '//b/c', 'd'], ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
 		# Collapsing and stripping excess slashes
 		check(['a', 'Z://b//c/', 'd/'], ('Z:', '\\', ['Z:\\', 'b', 'c', 'd']))
 		# UNC paths
-		check(['a', '//b/c//', 'd'],    ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
+		check(['a', '//b/c//', 'd'], ('\\\\b\\c', '\\', ['\\\\b\\c\\', 'd']))
 		# Extended paths
-		check(['//?/c:/'],              ('\\\\?\\c:', '\\', ['\\\\?\\c:\\']))
-		check(['//?/c:/a'],             ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'a']))
-		check(['//?/c:/a', '/b'],       ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'b']))
+		check(['//?/c:/'], ('\\\\?\\c:', '\\', ['\\\\?\\c:\\']))
+		check(['//?/c:/a'], ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'a']))
+		check(['//?/c:/a', '/b'], ('\\\\?\\c:', '\\', ['\\\\?\\c:\\', 'b']))
 		# Extended UNC paths (format is "\\?\UNC\server\share")
-		check(['//?/UNC/b/c'],          ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\']))
-		check(['//?/UNC/b/c/d'],        ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\', 'd']))
+		check(['//?/UNC/b/c'], ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\']))
+		check(['//?/UNC/b/c/d'], ('\\\\?\\UNC\\b\\c', '\\', ['\\\\?\\UNC\\b\\c\\', 'd']))
 		# Second part has a root but not drive
-		check(['a', '/b', 'c'],         ('', '\\', ['\\', 'b', 'c']))
-		check(['Z:/a', '/b', 'c'],      ('Z:', '\\', ['Z:\\', 'b', 'c']))
-		check(['//?/Z:/a', '/b', 'c'],  ('\\\\?\\Z:', '\\', ['\\\\?\\Z:\\', 'b', 'c']))
+		check(['a', '/b', 'c'], ('', '\\', ['\\', 'b', 'c']))
+		check(['Z:/a', '/b', 'c'], ('Z:', '\\', ['Z:\\', 'b', 'c']))
+		check(['//?/Z:/a', '/b', 'c'], ('\\\\?\\Z:', '\\', ['\\\\?\\Z:\\', 'b', 'c']))
 
 	def test_splitroot(self):
 		f = self.flavour.splitroot
@@ -160,7 +166,6 @@ class NTFlavourTest(_BaseFlavourTest, unittest.TestCase):
 		self.assertEqual(f('\\\\a'), ('', '\\', 'a'))
 
 
-
 #
 # Tests for the concrete classes
 #
@@ -170,10 +175,23 @@ BASE = os.path.realpath(TESTFN)
 join = lambda *x: os.path.join(BASE, *x)
 rel_join = lambda *x: os.path.join(TESTFN, *x)
 
-only_nt = unittest.skipIf(os.name != 'nt',
-						  'test requires a Windows-compatible system')
-only_posix = unittest.skipIf(os.name == 'nt',
-							 'test requires a POSIX-compatible system')
+
+def symlink_skip_reason():
+	if not pathlib.supports_symlinks:
+		return "no system support for symlinks"
+	try:
+		os.symlink(__file__, BASE)
+	except OSError as e:
+		return str(e)
+	else:
+		support.unlink(BASE)
+	return None
+
+
+symlink_skip_reason = symlink_skip_reason()
+only_nt = unittest.skipIf(os.name != 'nt', 'test requires a Windows-compatible system')
+only_posix = unittest.skipIf(os.name == 'nt', 'test requires a POSIX-compatible system')
+with_symlinks = unittest.skipIf(symlink_skip_reason, symlink_skip_reason)  # type: ignore
 
 
 class PathTest(unittest.TestCase):
@@ -200,7 +218,7 @@ class PathTest(unittest.TestCase):
 		with open(join('dirC', 'dirD', 'fileD'), 'wb') as f:
 			f.write(b"this is file D\n")
 		os.chmod(join('dirE'), 0)
-		if support.can_symlink():
+		if not symlink_skip_reason:
 			# Relative symlinks
 			os.symlink('fileA', join('linkA'))
 			os.symlink('non-existing', join('brokenLink'))
@@ -208,8 +226,6 @@ class PathTest(unittest.TestCase):
 			self.dirlink(os.path.join('..', 'dirB'), join('dirA', 'linkC'))
 			# This one goes upwards, creating a loop
 			self.dirlink(os.path.join('..', 'dirB'), join('dirB', 'linkD'))
-			# Broken symlink (pointing to itself).
-			os.symlink('brokenLinkLoop', join('brokenLinkLoop'))
 
 	if os.name == 'nt':
 		# Workaround for http://bugs.python.org/issue13772
@@ -220,9 +236,9 @@ class PathTest(unittest.TestCase):
 			os.symlink(src, dest)
 
 	def assertSame(self, path_a, path_b):
-		self.assertTrue(os.path.samefile(str(path_a), str(path_b)),
-						"%r and %r don't point to the same file" %
-						(path_a, path_b))
+		self.assertTrue(
+				os.path.samefile(str(path_a), str(path_b)),
+				f"{path_a!r} and {path_b!r} don't point to the same file")
 
 	def assertFileNotFound(self, func, *args, **kwargs):
 		with self.assertRaises(FileNotFoundError) as cm:
@@ -233,40 +249,40 @@ class PathTest(unittest.TestCase):
 		self.assertEqual(os.path.normcase(path_a), os.path.normcase(path_b))
 
 	def _test_cwd(self, p):
-		q = self.cls(os.getcwd())
+		q = PathPlus(os.getcwd())
 		self.assertEqual(p, q)
 		self.assertEqualNormCase(str(p), str(q))
 		self.assertIs(type(p), type(q))
 		self.assertTrue(p.is_absolute())
 
 	def test_cwd(self):
-		p = self.cls.cwd()
+		p = PathPlus.cwd()
 		self._test_cwd(p)
 
 	def _test_home(self, p):
-		q = self.cls(os.path.expanduser('~'))
+		q = PathPlus(os.path.expanduser('~'))
 		self.assertEqual(p, q)
 		self.assertEqualNormCase(str(p), str(q))
 		self.assertIs(type(p), type(q))
 		self.assertTrue(p.is_absolute())
 
 	def test_home(self):
-		p = self.cls.home()
+		p = PathPlus.home()
 		self._test_home(p)
 
 	def test_samefile(self):
 		fileA_path = os.path.join(BASE, 'fileA')
 		fileB_path = os.path.join(BASE, 'dirB', 'fileB')
-		p = self.cls(fileA_path)
-		pp = self.cls(fileA_path)
-		q = self.cls(fileB_path)
+		p = PathPlus(fileA_path)
+		pp = PathPlus(fileA_path)
+		q = PathPlus(fileB_path)
 		self.assertTrue(p.samefile(fileA_path))
 		self.assertTrue(p.samefile(pp))
 		self.assertFalse(p.samefile(fileB_path))
 		self.assertFalse(p.samefile(q))
 		# Test the non-existent file case
 		non_existent = os.path.join(BASE, 'foo')
-		r = self.cls(non_existent)
+		r = PathPlus(non_existent)
 		self.assertRaises(FileNotFoundError, p.samefile, r)
 		self.assertRaises(FileNotFoundError, p.samefile, non_existent)
 		self.assertRaises(FileNotFoundError, r.samefile, p)
@@ -276,11 +292,11 @@ class PathTest(unittest.TestCase):
 
 	def test_empty_path(self):
 		# The empty path points to '.'
-		p = self.cls('')
+		p = PathPlus('')
 		self.assertEqual(p.stat(), os.stat('.'))
 
 	def test_expanduser_common(self):
-		P = self.cls
+		P = PathPlus
 		p = P('~')
 		self.assertEqual(p.expanduser(), P(os.path.expanduser('~')))
 		p = P('foo')
@@ -293,13 +309,13 @@ class PathTest(unittest.TestCase):
 		self.assertEqual(p.expanduser(), p)
 
 	def test_exists(self):
-		P = self.cls
+		P = PathPlus
 		p = P(BASE)
 		self.assertIs(True, p.exists())
 		self.assertIs(True, (p / 'dirA').exists())
 		self.assertIs(True, (p / 'fileA').exists())
 		self.assertIs(False, (p / 'fileA' / 'bah').exists())
-		if support.can_symlink():
+		if not symlink_skip_reason:
 			self.assertIs(True, (p / 'linkA').exists())
 			self.assertIs(True, (p / 'linkB').exists())
 			self.assertIs(True, (p / 'linkB' / 'fileB').exists())
@@ -308,7 +324,7 @@ class PathTest(unittest.TestCase):
 		self.assertIs(False, P('/xyzzy').exists())
 
 	def test_open_common(self):
-		p = self.cls(BASE)
+		p = PathPlus(BASE)
 		with (p / 'fileA').open('r') as f:
 			self.assertIsInstance(f, io.TextIOBase)
 			self.assertEqual(f.read(), "this is file A\n")
@@ -320,7 +336,7 @@ class PathTest(unittest.TestCase):
 			self.assertEqual(f.read().strip(), b"this is file A")
 
 	def test_read_write_bytes(self):
-		p = self.cls(BASE)
+		p = PathPlus(BASE)
 		(p / 'fileA').write_bytes(b'abcdefg')
 		self.assertEqual((p / 'fileA').read_bytes(), b'abcdefg')
 		# check that trying to write str does not truncate the file
@@ -342,11 +358,11 @@ class PathTest(unittest.TestCase):
 		it = p.iterdir()
 		paths = set(it)
 		expected = ['dirA', 'dirB', 'dirC', 'dirE', 'fileA']
-		if support.can_symlink():
-			expected += ['linkA', 'linkB', 'brokenLink', 'brokenLinkLoop']
+		if not symlink_skip_reason:
+			expected += ['linkA', 'linkB', 'brokenLink']
 		self.assertEqual(paths, {P(BASE, q) for q in expected})
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_iterdir_symlink(self):
 		# __iter__ on a symlink to a directory
 		P = PathPlus
@@ -362,8 +378,7 @@ class PathTest(unittest.TestCase):
 			next(p.iterdir())
 		# ENOENT or EINVAL under Windows, ENOTDIR otherwise
 		# (see issue #12802)
-		self.assertIn(cm.exception.errno, (errno.ENOTDIR,
-										   errno.ENOENT, errno.EINVAL))
+		self.assertIn(cm.exception.errno, (errno.ENOTDIR, errno.ENOENT, errno.EINVAL))
 
 	def test_glob_common(self):
 		def _check(glob, expected):
@@ -376,16 +391,15 @@ class PathTest(unittest.TestCase):
 		_check(it, ["fileA"])
 		_check(p.glob("fileB"), [])
 		_check(p.glob("dir*/file*"), ["dirB/fileB", "dirC/fileC"])
-		if not support.can_symlink():
+		if symlink_skip_reason:
 			_check(p.glob("*A"), ['dirA', 'fileA'])
 		else:
 			_check(p.glob("*A"), ['dirA', 'fileA', 'linkA'])
-		if not support.can_symlink():
+		if symlink_skip_reason:
 			_check(p.glob("*B/*"), ['dirB/fileB'])
 		else:
-			_check(p.glob("*B/*"), ['dirB/fileB', 'dirB/linkD',
-									'linkB/fileB', 'linkB/linkD'])
-		if not support.can_symlink():
+			_check(p.glob("*B/*"), ['dirB/fileB', 'dirB/linkD', 'linkB/fileB', 'linkB/linkD'])
+		if symlink_skip_reason:
 			_check(p.glob("*/fileB"), ['dirB/fileB'])
 		else:
 			_check(p.glob("*/fileB"), ['dirB/fileB', 'linkB/fileB'])
@@ -401,33 +415,32 @@ class PathTest(unittest.TestCase):
 		_check(it, ["fileA"])
 		_check(p.rglob("fileB"), ["dirB/fileB"])
 		_check(p.rglob("*/fileA"), [])
-		if not support.can_symlink():
+		if symlink_skip_reason:
 			_check(p.rglob("*/fileB"), ["dirB/fileB"])
 		else:
 			_check(p.rglob("*/fileB"), ["dirB/fileB", "dirB/linkD/fileB",
 										"linkB/fileB", "dirA/linkC/fileB"])
-		_check(p.rglob("file*"), ["fileA", "dirB/fileB",
-								  "dirC/fileC", "dirC/dirD/fileD"])
+		_check(p.rglob("file*"), ["fileA", "dirB/fileB", "dirC/fileC", "dirC/dirD/fileD"])
 		p = P(BASE, "dirC")
 		_check(p.rglob("file*"), ["dirC/fileC", "dirC/dirD/fileD"])
 		_check(p.rglob("*/*"), ["dirC/dirD/fileD"])
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_rglob_symlink_loop(self):
 		# Don't get fooled by symlink loops (Issue #26012)
 		P = PathPlus
 		p = P(BASE)
 		given = set(p.rglob('*'))
-		expect = {'brokenLink',
-				  'dirA', 'dirA/linkC',
-				  'dirB', 'dirB/fileB', 'dirB/linkD',
-				  'dirC', 'dirC/dirD', 'dirC/dirD/fileD', 'dirC/fileC',
-				  'dirE',
-				  'fileA',
-				  'linkA',
-				  'linkB',
-				  'brokenLinkLoop',
-				  }
+		expect = {
+				'brokenLink',
+				'dirA', 'dirA/linkC',
+				'dirB', 'dirB/fileB', 'dirB/linkD',
+				'dirC', 'dirC/dirD', 'dirC/dirD/fileD', 'dirC/fileC',
+				'dirE',
+				'fileA',
+				'linkA',
+				'linkB',
+				}
 		self.assertEqual(given, {p / x for x in expect})
 
 	def test_glob_dotdot(self):
@@ -445,7 +458,7 @@ class PathTest(unittest.TestCase):
 	# this can be used to check both relative and absolute resolutions
 	_check_resolve_relative = _check_resolve_absolute = _check_resolve
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_resolve_common(self):
 		P = PathPlus
 		p = P(BASE, 'foo')
@@ -453,15 +466,12 @@ class PathTest(unittest.TestCase):
 			p.resolve(strict=True)
 		self.assertEqual(cm.exception.errno, errno.ENOENT)
 		# Non-strict
-		self.assertEqualNormCase(str(p.resolve(strict=False)),
-								 os.path.join(BASE, 'foo'))
+		self.assertEqual(str(p.resolve(strict=False)), os.path.join(BASE, 'foo'))
 		p = P(BASE, 'foo', 'in', 'spam')
-		self.assertEqualNormCase(str(p.resolve(strict=False)),
-								 os.path.join(BASE, 'foo', 'in', 'spam'))
+		self.assertEqual(str(p.resolve(strict=False)), os.path.join(BASE, 'foo', 'in', 'spam'))
 		p = P(BASE, '..', 'foo', 'in', 'spam')
-		self.assertEqualNormCase(str(p.resolve(strict=False)),
-								 os.path.abspath(os.path.join('foo', 'in', 'spam')))
-		# These are all relative symlinks.
+		self.assertEqual(str(p.resolve(strict=False)), os.path.abspath(os.path.join('foo', 'in', 'spam')))
+		# These are all relative symlinks
 		p = P(BASE, 'dirB', 'fileB')
 		self._check_resolve_relative(p, p)
 		p = P(BASE, 'linkA')
@@ -472,14 +482,12 @@ class PathTest(unittest.TestCase):
 		self._check_resolve_relative(p, P(BASE, 'dirB', 'fileB'))
 		# Non-strict
 		p = P(BASE, 'dirA', 'linkC', 'fileB', 'foo', 'in', 'spam')
-		self._check_resolve_relative(p, P(BASE, 'dirB', 'fileB', 'foo', 'in',
-										  'spam'), False)
+		self._check_resolve_relative(p, P(BASE, 'dirB', 'fileB', 'foo', 'in', 'spam'), False)
 		p = P(BASE, 'dirA', 'linkC', '..', 'foo', 'in', 'spam')
 		if os.name == 'nt':
 			# In Windows, if linkY points to dirB, 'dirA\linkY\..'
 			# resolves to 'dirA' without resolving linkY first.
-			self._check_resolve_relative(p, P(BASE, 'dirA', 'foo', 'in',
-											  'spam'), False)
+			self._check_resolve_relative(p, P(BASE, 'dirA', 'foo', 'in', 'spam'), False)
 		else:
 			# In Posix, if linkY points to dirB, 'dirA/linkY/..'
 			# resolves to 'dirB/..' first before resolving to parent of dirB.
@@ -493,8 +501,7 @@ class PathTest(unittest.TestCase):
 		self._check_resolve_absolute(p, P(BASE, 'dirB', 'fileB'))
 		# Non-strict
 		p = P(BASE, 'dirA', 'linkX', 'linkY', 'foo', 'in', 'spam')
-		self._check_resolve_relative(p, P(BASE, 'dirB', 'foo', 'in', 'spam'),
-									 False)
+		self._check_resolve_relative(p, P(BASE, 'dirB', 'foo', 'in', 'spam'), False)
 		p = P(BASE, 'dirA', 'linkX', 'linkY', '..', 'foo', 'in', 'spam')
 		if os.name == 'nt':
 			# In Windows, if linkY points to dirB, 'dirA\linkY\..'
@@ -505,7 +512,7 @@ class PathTest(unittest.TestCase):
 			# resolves to 'dirB/..' first before resolving to parent of dirB.
 			self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), False)
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_resolve_dot(self):
 		# See https://bitbucket.org/pitrou/pathlib/issue/9/pathresolve-fails-on-complex-symlinks
 		p = PathPlus(BASE)
@@ -557,7 +564,7 @@ class PathTest(unittest.TestCase):
 		self.addCleanup(p.chmod, st.st_mode)
 		self.assertNotEqual(p.stat(), st)
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_lstat(self):
 		p = PathPlus(BASE) / 'linkA'
 		st = p.stat()
@@ -575,8 +582,7 @@ class PathTest(unittest.TestCase):
 		try:
 			name = pwd.getpwuid(uid).pw_name
 		except KeyError:
-			self.skipTest(
-					"user %d doesn't have an entry in the system database" % uid)
+			self.skipTest(f"user {uid:d} doesn't have an entry in the system database")
 		self.assertEqual(name, p.owner())
 
 	@unittest.skipUnless(grp, "the grp module is needed for this test")
@@ -586,8 +592,7 @@ class PathTest(unittest.TestCase):
 		try:
 			name = grp.getgrgid(gid).gr_name
 		except KeyError:
-			self.skipTest(
-					"group %d doesn't have an entry in the system database" % gid)
+			self.skipTest(f"group {gid:d} doesn't have an entry in the system database")
 		self.assertEqual(name, p.group())
 
 	def test_unlink(self):
@@ -799,7 +804,7 @@ class PathTest(unittest.TestCase):
 				self.assertNotIn(str(p12), concurrently_created)
 			self.assertTrue(p.exists())
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_symlink_to(self):
 		P = PathPlus(BASE)
 		target = P / 'fileA'
@@ -829,7 +834,7 @@ class PathTest(unittest.TestCase):
 		self.assertFalse((P / 'fileA').is_dir())
 		self.assertFalse((P / 'non-existing').is_dir())
 		self.assertFalse((P / 'fileA' / 'bah').is_dir())
-		if support.can_symlink():
+		if not symlink_skip_reason:
 			self.assertFalse((P / 'linkA').is_dir())
 			self.assertTrue((P / 'linkB').is_dir())
 			self.assertFalse((P / 'brokenLink').is_dir())
@@ -840,13 +845,14 @@ class PathTest(unittest.TestCase):
 		self.assertFalse((P / 'dirA').is_file())
 		self.assertFalse((P / 'non-existing').is_file())
 		self.assertFalse((P / 'fileA' / 'bah').is_file())
-		if support.can_symlink():
+		if not symlink_skip_reason:
 			self.assertTrue((P / 'linkA').is_file())
 			self.assertFalse((P / 'linkB').is_file())
 			self.assertFalse((P / 'brokenLink').is_file())
 
+	@pytest.mark.skipif(sys.version_info < (3, 7), reason="requires python3.7 or higher")
 	@only_posix
-	def test_is_mount(self):
+	def test_is_mount(self):  # pragma: no cover (<py37)
 		P = PathPlus(BASE)
 		R = PathPlus('/')  # TODO: Work out windows
 		self.assertFalse((P / 'fileA').is_mount())
@@ -863,7 +869,7 @@ class PathTest(unittest.TestCase):
 		self.assertFalse((P / 'dirA').is_symlink())
 		self.assertFalse((P / 'non-existing').is_symlink())
 		self.assertFalse((P / 'fileA' / 'bah').is_symlink())
-		if support.can_symlink():
+		if not symlink_skip_reason:
 			self.assertTrue((P / 'linkA').is_symlink())
 			self.assertTrue((P / 'linkB').is_symlink())
 			self.assertTrue((P / 'brokenLink').is_symlink())
@@ -988,22 +994,22 @@ class PathTest(unittest.TestCase):
 		finally:
 			os.chdir(old_path)
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_complex_symlinks_absolute(self):
 		self._check_complex_symlinks(BASE)
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_complex_symlinks_relative(self):
 		self._check_complex_symlinks('.')
 
-	@support.skip_unless_symlink
+	@with_symlinks
 	def test_complex_symlinks_relative_dot_dot(self):
 		self._check_complex_symlinks(os.path.join('dirA', '..'))
 
 	def test_concrete_class(self):
 		p = PathPlus('a')
 		self.assertIs(type(p),
-			WindowsPathPlus if os.name == 'nt' else PosixPathPlus)
+					  WindowsPathPlus if os.name == 'nt' else PosixPathPlus)
 
 	def test_unsupported_flavour(self):
 		if os.name == 'nt':
