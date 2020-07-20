@@ -1,4 +1,4 @@
-# This file is managed by `repo_helper`. Don't edit it directly
+# This file is managed by 'repo_helper'. Don't edit it directly.
 ---
 
 repos:
@@ -31,12 +31,18 @@ repos:
     - id: pyupgrade
       args: [--py36-plus]
 
+ - repo: https://github.com/timothycrosley/isort
+   rev: 5.1.4
+   hooks:
+    - id: isort
+      exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
+
  - repo: https://github.com/pre-commit/mirrors-yapf
    rev: v0.30.0
    hooks:
     - id: yapf
       exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
-      args: [exclude *.pyi]
+      args: ["--in-place", "--exclude *.pyi"]
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
    rev: v1.1.7
