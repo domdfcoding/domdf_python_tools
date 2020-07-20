@@ -62,6 +62,7 @@ def test_check_membership_false(obj, type_):
 
 
 class MyPathLike(os.PathLike):
+
 	def __init__(self, directory, filename):
 		self.directory = str(directory)
 		self.filename = str(filename)
@@ -100,8 +101,7 @@ def test_pathlike_true(obj):
 
 
 @pytest.mark.parametrize(
-		"obj",
-		[
+		"obj", [
 				1234,
 				12.34,
 				[1, 2, 3, 4, 5],

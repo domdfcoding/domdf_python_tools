@@ -377,6 +377,7 @@ def test_enquote_value(obj, expects):
 # 	with pytest.raises(expects):
 # 		utils.enquote_value(obj)
 
+
 def test_cmp():
 	assert isinstance(utils.cmp(5, 20), int)
 	assert utils.cmp(5, 20) < 0
