@@ -1031,5 +1031,5 @@ class PathTest(unittest.TestCase):
 			list(p.glob(''))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
 	unittest.main()

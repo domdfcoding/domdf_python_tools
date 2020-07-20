@@ -97,8 +97,8 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 
 	# TODO: docstring
 	match = _measurement_re.findall(measurement)[0]
-	print(match)
-	print(len(match))
+	# print(match)
+	# print(len(match))
 	if len(match) < 2:
 		raise ValueError("Unable to parse measurement")
 	else:

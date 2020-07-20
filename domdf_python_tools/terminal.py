@@ -134,7 +134,7 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bo
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
 
 
-def get_terminal_size() -> Tuple[int, int]:
+def get_terminal_size() -> Tuple[int, int]:  # pragma: no cover
 	"""
 	Get width and height of console.
 
@@ -164,7 +164,7 @@ def get_terminal_size() -> Tuple[int, int]:
 	return tuple_xy
 
 
-def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:
+def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:  # pragma: no cover
 	try:
 
 		# stdlib
@@ -190,7 +190,7 @@ def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:
 	return None
 
 
-def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
+def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:  # pragma: no cover
 	# get terminal width
 	# src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
 	try:
@@ -201,7 +201,7 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:
 		return None
 
 
-def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:
+def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
 
 	# stdlib
 	import fcntl
@@ -257,6 +257,6 @@ class Echo:
 		print(textwrap.indent(pprint.pformat(new_locals), self.indent))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
 	size_x, size_y = get_terminal_size()
 	print("width =", size_x, "height =", size_y)

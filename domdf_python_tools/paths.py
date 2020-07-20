@@ -401,7 +401,6 @@ class PathPlus(pathlib.Path):
 			errors: Optional[str] = None,
 			newline: Optional[str] = None,
 			) -> IO[Any]:
-
 		"""
 		Open the file pointed by this path and return a file object, as
 		the built-in open() function does.
