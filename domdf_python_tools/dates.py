@@ -87,173 +87,185 @@ try:
 
 		return pytz.timezone(tz).localize(d).tzinfo
 
-	def current_tzinfo() -> Optional[datetime.tzinfo]:
-		"""
-		Returns a tzinfo object for the current timezone
-
-		:rtype: :class:`python:datetime.tzinfo`
-		"""
-
-		return datetime.datetime.now().astimezone().tzinfo  # pragma: no cover (hard to test)
-
-	#
-	# def datetime_to_utc_timestamp(datetime, current_tzinfo=None):
-	# 	"""
-	# 	Convert a :class:`datetime.datetime` object to seconds since UNIX epoch, in UTC time
-	#
-	# 	:param datetime:
-	# 	:type datetime: :class:`datetime.datetime`
-	# 	:param current_tzinfo: A tzinfo object representing the current timezone.
-	# 		If None it will be inferred.
-	# 	:type current_tzinfo: :class:`~python:datetime.tzinfo`
-	#
-	# 	:return: Timestamp in UTC timezone
-	# 	:rtype: float
-	# 	"""
-	#
-	# 	return datetime.astimezone(current_tzinfo).timestamp()
-	#
-
-	def set_timezone(obj: datetime.datetime, tzinfo: datetime.tzinfo) -> datetime.datetime:
-		"""
-		Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
-		This will not convert the time (i.e. the hours will stay the same).
-		Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
-
-		:param obj:
-		:param tzinfo:
-
-		:return:
-		"""
-
-		return obj.replace(tzinfo=tzinfo)
-
-	def utc_timestamp_to_datetime(
-			utc_timestamp: Union[float, int],
-			output_tz: Optional[datetime.tzinfo] = None,
-			) -> datetime.datetime:
-		"""
-		Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object.
-
-		If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
-		and the local timezone is inferred and set for the object.
-
-		If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.tzinfo` subclass,
-		and the timestamp is converted to ``output_tz``’s time zone.
-
-
-		:param utc_timestamp: The timestamp to convert to a datetime object
-		:type utc_timestamp: float, int
-		:param output_tz: The timezone to output the datetime object for.
-			If None it will be inferred.
-		:type output_tz: datetime.tzinfo, optional
-
-		:return: The timestamp as a datetime object.
-		:rtype: datetime.datetime
-
-		:raises: :class:`~python:OverflowError` if the timestamp is out of the range
-			of values supported by the platform C localtime() or gmtime() functions,
-			and OSError on localtime() or gmtime() failure. It’s common for this to
-			be restricted to years in 1970 through 2038.
-		"""
-
-		new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
-		return new_datetime.astimezone(output_tz)
-
-	# List of months and their 3-character shortcodes.
-	months = OrderedDict(
-			Jan="January",
-			Feb="February",
-			Mar="March",
-			Apr="April",
-			May="May",
-			Jun="June",
-			Jul="July",
-			Aug="August",
-			Sep="September",
-			Oct="October",
-			Nov="November",
-			Dec="December",
-			)
-
-	def parse_month(month: Union[str, int]) -> str:
-		"""
-		Converts an integer or shorthand month into the full month name.
-
-		:param month: The month number or shorthand name
-		:type month: str or int
-
-		:return: The full name of the month
-		:rtype: str
-		"""
-
-		try:
-			month = int(month)
-		except ValueError:
-			try:
-				return months[month.capitalize()[:3]]  # type: ignore
-			except KeyError:
-				raise ValueError("Unrecognised month value")
-
-		# Only get here if first try succeeded
-		if 0 < month <= 12:
-			return list(months.values())[month - 1]
-		else:
-			raise ValueError("Unrecognised month value")
-
-	def get_month_number(month: Union[str, int]) -> int:
-		"""
-		Returns the number of the given month.
-		If ``month`` is already a number between 1 and 12 it will be returned immediately.
-
-		:param month: The month to convert to a number
-		:type month: str or int
-
-		:return: The number of the month
-		:rtype: int
-		"""
-
-		if isinstance(month, int):
-			if 0 < month <= 12:
-				return month
-			else:
-				raise ValueError("The given month is not recognised.")
-		else:
-			month = parse_month(month)
-			return list(months.values()).index(month) + 1
-
-	def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool:
-		"""
-		Returns :py:obj:`True` if the day number is valid for the given month.
-		Note that this will return :py:obj:`True` for the 29th Feb. If you don't
-		want this behaviour set ``leap_year`` to :py:obj:`False`.
-
-		:param month: The month to test.
-		:type month: str, int
-		:param day: The day number to test.
-		:type day: int
-		:param leap_year: Whether to return :py:obj:`True` for 29th Feb. Default :py:obj:`True`.
-		:type leap_year: bool, optional
-
-		:return: :py:obj:`True` if the date is valid.
-		:rtype: bool
-		"""
-
-		# Ensure day is an integer
-		day = int(day)
-		month = get_month_number(month)
-		year = 2020 if leap_year else 2019
-
-		try:
-			datetime.date(year, month, day)
-			return True
-		except ValueError:
-			return False
-
-except ImportError:
+except ImportError as e:
 
 	# stdlib
 	import warnings
+
 	warnings.warn(
-			"'domdf_python_tools.dates' requires pytz (https://pypi.org/project/pytz/), but it is not installed.",
+			f"""\
+Some functions in 'domdf_python_tools.dates' require pytz (https://pypi.org/project/pytz/), but it could not be imported.
+The error was {e}.
+""",
 			)
+
+
+def current_tzinfo() -> Optional[datetime.tzinfo]:
+	"""
+	Returns a tzinfo object for the current timezone
+
+	:rtype: :class:`python:datetime.tzinfo`
+	"""
+
+	return datetime.datetime.now().astimezone().tzinfo  # pragma: no cover (hard to test)
+
+
+#
+# def datetime_to_utc_timestamp(datetime, current_tzinfo=None):
+# 	"""
+# 	Convert a :class:`datetime.datetime` object to seconds since UNIX epoch, in UTC time
+#
+# 	:param datetime:
+# 	:type datetime: :class:`datetime.datetime`
+# 	:param current_tzinfo: A tzinfo object representing the current timezone.
+# 		If None it will be inferred.
+# 	:type current_tzinfo: :class:`~python:datetime.tzinfo`
+#
+# 	:return: Timestamp in UTC timezone
+# 	:rtype: float
+# 	"""
+#
+# 	return datetime.astimezone(current_tzinfo).timestamp()
+#
+
+
+def set_timezone(obj: datetime.datetime, tzinfo: datetime.tzinfo) -> datetime.datetime:
+	"""
+	Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
+	This will not convert the time (i.e. the hours will stay the same).
+	Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
+
+	:param obj:
+	:param tzinfo:
+
+	:return:
+	"""
+
+	return obj.replace(tzinfo=tzinfo)
+
+
+def utc_timestamp_to_datetime(
+		utc_timestamp: Union[float, int],
+		output_tz: Optional[datetime.tzinfo] = None,
+		) -> datetime.datetime:
+	"""
+	Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object.
+
+	If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
+	and the local timezone is inferred and set for the object.
+
+	If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.tzinfo` subclass,
+	and the timestamp is converted to ``output_tz``’s time zone.
+
+
+	:param utc_timestamp: The timestamp to convert to a datetime object
+	:type utc_timestamp: float, int
+	:param output_tz: The timezone to output the datetime object for.
+		If None it will be inferred.
+	:type output_tz: datetime.tzinfo, optional
+
+	:return: The timestamp as a datetime object.
+	:rtype: datetime.datetime
+
+	:raises: :class:`~python:OverflowError` if the timestamp is out of the range
+		of values supported by the platform C localtime() or gmtime() functions,
+		and OSError on localtime() or gmtime() failure. It’s common for this to
+		be restricted to years in 1970 through 2038.
+	"""
+
+	new_datetime = datetime.datetime.fromtimestamp(utc_timestamp, output_tz)
+	return new_datetime.astimezone(output_tz)
+
+
+# List of months and their 3-character shortcodes.
+months = OrderedDict(
+		Jan="January",
+		Feb="February",
+		Mar="March",
+		Apr="April",
+		May="May",
+		Jun="June",
+		Jul="July",
+		Aug="August",
+		Sep="September",
+		Oct="October",
+		Nov="November",
+		Dec="December",
+		)
+
+
+def parse_month(month: Union[str, int]) -> str:
+	"""
+	Converts an integer or shorthand month into the full month name.
+
+	:param month: The month number or shorthand name
+	:type month: str or int
+
+	:return: The full name of the month
+	:rtype: str
+	"""
+
+	try:
+		month = int(month)
+	except ValueError:
+		try:
+			return months[month.capitalize()[:3]]  # type: ignore
+		except KeyError:
+			raise ValueError("Unrecognised month value")
+
+	# Only get here if first try succeeded
+	if 0 < month <= 12:
+		return list(months.values())[month - 1]
+	else:
+		raise ValueError("Unrecognised month value")
+
+
+def get_month_number(month: Union[str, int]) -> int:
+	"""
+	Returns the number of the given month.
+	If ``month`` is already a number between 1 and 12 it will be returned immediately.
+
+	:param month: The month to convert to a number
+	:type month: str or int
+
+	:return: The number of the month
+	:rtype: int
+	"""
+
+	if isinstance(month, int):
+		if 0 < month <= 12:
+			return month
+		else:
+			raise ValueError("The given month is not recognised.")
+	else:
+		month = parse_month(month)
+		return list(months.values()).index(month) + 1
+
+
+def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool:
+	"""
+	Returns :py:obj:`True` if the day number is valid for the given month.
+	Note that this will return :py:obj:`True` for the 29th Feb. If you don't
+	want this behaviour set ``leap_year`` to :py:obj:`False`.
+
+	:param month: The month to test.
+	:type month: str, int
+	:param day: The day number to test.
+	:type day: int
+	:param leap_year: Whether to return :py:obj:`True` for 29th Feb. Default :py:obj:`True`.
+	:type leap_year: bool, optional
+
+	:return: :py:obj:`True` if the date is valid.
+	:rtype: bool
+	"""
+
+	# Ensure day is an integer
+	day = int(day)
+	month = get_month_number(month)
+	year = 2020 if leap_year else 2019
+
+	try:
+		datetime.date(year, month, day)
+		return True
+	except ValueError:
+		return False
