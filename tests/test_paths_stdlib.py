@@ -20,9 +20,10 @@ import pytest
 # this package
 from domdf_python_tools.paths import PathPlus, PosixPathPlus, WindowsPathPlus
 
-
 try:
-	import grp, pwd
+	# stdlib
+	import grp
+	import pwd
 except ImportError:
 	grp = pwd = None  # type: ignore
 
@@ -198,6 +199,7 @@ class PathTest(unittest.TestCase):
 	cls = PathPlus
 
 	def setUp(self):
+
 		def cleanup():
 			os.chmod(join('dirE'), 0o777)
 			support.rmtree(BASE)
@@ -232,13 +234,15 @@ class PathTest(unittest.TestCase):
 		def dirlink(self, src, dest):
 			os.symlink(src, dest, target_is_directory=True)
 	else:
+
 		def dirlink(self, src, dest):
 			os.symlink(src, dest)
 
 	def assertSame(self, path_a, path_b):
 		self.assertTrue(
 				os.path.samefile(str(path_a), str(path_b)),
-				f"{path_a!r} and {path_b!r} don't point to the same file")
+				f"{path_a!r} and {path_b!r} don't point to the same file"
+				)
 
 	def assertFileNotFound(self, func, *args, **kwargs):
 		with self.assertRaises(FileNotFoundError) as cm:
@@ -346,8 +350,7 @@ class PathTest(unittest.TestCase):
 	def test_read_write_text(self):
 		p = PathPlus(BASE)
 		(p / 'fileA').write_text('äbcdefg', encoding='latin-1')
-		self.assertEqual((p / 'fileA').read_text(
-				encoding='utf-8', errors='ignore'), 'bcdefg')
+		self.assertEqual((p / 'fileA').read_text(encoding='utf-8', errors='ignore'), 'bcdefg')
 		# check that trying to write bytes does not truncate the file
 		self.assertRaises(TypeError, (p / 'fileA').write_text, b'somebytes')
 		self.assertEqual((p / 'fileA').read_text(encoding='latin-1'), 'äbcdefg')
@@ -381,6 +384,7 @@ class PathTest(unittest.TestCase):
 		self.assertIn(cm.exception.errno, (errno.ENOTDIR, errno.ENOENT, errno.EINVAL))
 
 	def test_glob_common(self):
+
 		def _check(glob, expected):
 			self.assertEqual(set(glob), {P(BASE, q) for q in expected})
 
@@ -405,6 +409,7 @@ class PathTest(unittest.TestCase):
 			_check(p.glob("*/fileB"), ['dirB/fileB', 'linkB/fileB'])
 
 	def test_rglob_common(self):
+
 		def _check(glob, expected):
 			self.assertEqual(set(glob), {P(BASE, q) for q in expected})
 
@@ -418,8 +423,7 @@ class PathTest(unittest.TestCase):
 		if symlink_skip_reason:
 			_check(p.rglob("*/fileB"), ["dirB/fileB"])
 		else:
-			_check(p.rglob("*/fileB"), ["dirB/fileB", "dirB/linkD/fileB",
-										"linkB/fileB", "dirA/linkC/fileB"])
+			_check(p.rglob("*/fileB"), ["dirB/fileB", "dirB/linkD/fileB", "linkB/fileB", "dirA/linkC/fileB"])
 		_check(p.rglob("file*"), ["fileA", "dirB/fileB", "dirC/fileC", "dirC/dirD/fileD"])
 		p = P(BASE, "dirC")
 		_check(p.rglob("file*"), ["dirC/fileC", "dirC/dirD/fileD"])
@@ -433,9 +437,15 @@ class PathTest(unittest.TestCase):
 		given = set(p.rglob('*'))
 		expect = {
 				'brokenLink',
-				'dirA', 'dirA/linkC',
-				'dirB', 'dirB/fileB', 'dirB/linkD',
-				'dirC', 'dirC/dirD', 'dirC/dirD/fileD', 'dirC/fileC',
+				'dirA',
+				'dirA/linkC',
+				'dirB',
+				'dirB/fileB',
+				'dirB/linkD',
+				'dirC',
+				'dirC/dirD',
+				'dirC/dirD/fileD',
+				'dirC/fileC',
 				'dirE',
 				'fileA',
 				'linkA',
@@ -907,8 +917,7 @@ class PathTest(unittest.TestCase):
 		try:
 			sock.bind(str(P))
 		except OSError as e:
-			if (isinstance(e, PermissionError) or
-					"AF_UNIX path too long" in str(e)):
+			if isinstance(e, PermissionError) or "AF_UNIX path too long" in str(e):
 				self.skipTest("cannot bind Unix socket: " + str(e))
 		self.assertTrue(P.is_socket())
 		self.assertFalse(P.is_fifo())
@@ -1008,8 +1017,7 @@ class PathTest(unittest.TestCase):
 
 	def test_concrete_class(self):
 		p = PathPlus('a')
-		self.assertIs(type(p),
-					  WindowsPathPlus if os.name == 'nt' else PosixPathPlus)
+		self.assertIs(type(p), WindowsPathPlus if os.name == 'nt' else PosixPathPlus)
 
 	def test_unsupported_flavour(self):
 		if os.name == 'nt':

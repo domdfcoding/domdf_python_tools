@@ -20,7 +20,6 @@ import pytest
 from domdf_python_tools import paths
 from domdf_python_tools.paths import clean_writer, PathPlus
 
-
 # TODO: delete, write, read and append might want deprecating in favour of pathlib
 
 
