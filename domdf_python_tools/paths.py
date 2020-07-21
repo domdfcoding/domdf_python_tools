@@ -282,6 +282,8 @@ class PathPlus(pathlib.Path):
 	instantiating a Path will return either a PosixPath or a WindowsPath
 	object. You can also instantiate a PosixPath or WindowsPath directly,
 	but cannot instantiate a WindowsPath on a POSIX system or vice versa.
+
+	.. versionadded:: 0.3.8
 	"""
 
 	def __new__(cls, *args, **kwargs):
@@ -296,6 +298,8 @@ class PathPlus(pathlib.Path):
 	def make_executable(self):
 		"""
 		Make the file executable.
+
+		.. versionadded:: 0.3.8
 		"""
 
 		make_executable(self)
@@ -313,6 +317,8 @@ class PathPlus(pathlib.Path):
 		:type string: str
 		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
 		:param errors:
+
+		.. versionadded:: 0.3.8
 		"""
 
 		with self.open("w", encoding=encoding, errors=errors) as fp:
@@ -338,6 +344,8 @@ class PathPlus(pathlib.Path):
 			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 			component is not an existing non-directory file.
 		:type exist_ok: bool, optional
+
+		.. versionadded:: 0.3.8
 		"""
 
 		maybe_make(self, mode=mode, parents=parents, exist_ok=exist_ok)
@@ -355,6 +363,8 @@ class PathPlus(pathlib.Path):
 		:type string: str
 		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
 		:param errors:
+
+		.. versionadded:: 0.3.8
 		"""
 
 		with self.open("a", encoding=encoding, errors=errors) as fp:
@@ -373,6 +383,8 @@ class PathPlus(pathlib.Path):
 		:type data: str
 		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
 		:param errors:
+
+		.. versionadded:: 0.3.8
 		"""
 
 		return super().write_text(data, encoding=encoding, errors=errors)
@@ -389,6 +401,8 @@ class PathPlus(pathlib.Path):
 		:param errors:
 
 		:return: The content of the file.
+
+		.. versionadded:: 0.3.8
 		"""
 
 		return super().read_text(encoding=encoding, errors=errors)
@@ -404,6 +418,19 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file pointed by this path and return a file object, as
 		the built-in open() function does.
+
+		:param mode: The mode to open the file in. Default ``"r"`` (read only.
+		:type mode: str
+		:param buffering:
+		:type buffering: int
+		:param encoding:
+		:type encoding: str
+		:param errors:
+		:param newline:
+
+		:return:
+
+		.. versionadded:: 0.3.8
 		"""
 
 		if 'b' in mode:
@@ -415,6 +442,8 @@ class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 	"""Path subclass for non-Windows systems.
 
 	On a POSIX system, instantiating a PathPlus object should return an instance of this class.
+
+	.. versionadded:: 0.3.8
 	"""
 	__slots__ = ()
 
@@ -423,6 +452,8 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 	"""Path subclass for Windows systems.
 
 	On a Windows system, instantiating a PathPlus object should return an instance of this class.
+
+	.. versionadded:: 0.3.8
 	"""
 	__slots__ = ()
 

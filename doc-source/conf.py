@@ -53,7 +53,7 @@ extensions = [
 		]
 
 sphinxemoji_style = 'twemoji'
-todo_include_todos = bool(os.environ.get("SHOW_TODOS", False))
+todo_include_todos = bool(os.environ.get("SHOW_TODOS", 0))
 gitstamp_fmt = "%d %b %Y"
 
 templates_path = ['_templates']

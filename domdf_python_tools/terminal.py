@@ -76,7 +76,7 @@ def clear() -> None:
 	"""
 	Clears the display.
 
-	Works for Windows and UNIX, but does not clear Python Interpreter or PyCharm Console.
+	Works for Windows and POSIX, but does not clear the Python Interpreter or PyCharm's Console.
 	"""
 
 	if os.name == "nt":
@@ -106,7 +106,7 @@ def interrupt() -> None:
 
 def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bool = False) -> None:
 	"""
-	Print ``objects`` to the text stream ``file``, starting with "\\r", separated by ``sep``
+	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
 	and followed by ``end``.
 
 	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
@@ -114,9 +114,9 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bo
 	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
 	separated by `sep` and followed by `end`.
 
-	If no objects are given, :func:`~domdf_python_tools.terminal.overtype` will just write "\\r".
+	If no objects are given, :func:`~domdf_python_tools.terminal.overtype` will just write ``"\\r"``.
 
-	TODO: This does not currently work in the PyCharm console, at least on Windows
+	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
 	:param objects: A list of strings or string-like objects to write to the terminal.
 	:param sep: String to separate the objects with, by default " "
