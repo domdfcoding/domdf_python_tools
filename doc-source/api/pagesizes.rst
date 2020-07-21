@@ -2,10 +2,9 @@
 :mod:`domdf_python_tools.pagesizes`
 =========================================
 
-.. contents:: Table of Contents
-
 .. automodule:: domdf_python_tools.pagesizes
 	:members:
+	:autosummary:
 	:undoc-members:
 
 
@@ -14,6 +13,7 @@
 
 .. automodule:: domdf_python_tools.pagesizes.classes
 	:members:
+	:autosummary:
 	:undoc-members:
 
 
@@ -22,6 +22,7 @@
 
 .. automodule:: domdf_python_tools.pagesizes.sizes
 	:members:
+	:autosummary:
 	:undoc-members:
 
 
@@ -30,8 +31,8 @@
 
 .. automodule:: domdf_python_tools.pagesizes.units
 	:members:
+	:autosummary:
 	:undoc-members:
-
 
 
 :mod:`domdf_python_tools.pagesizes.utils`
@@ -39,4 +40,5 @@
 
 .. automodule:: domdf_python_tools.pagesizes.utils
 	:members:
+	:autosummary:
 	:undoc-members:

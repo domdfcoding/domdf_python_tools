@@ -92,12 +92,23 @@ def clear_line(mode: int = 2) -> str:
 	return CSI + str(mode) + 'K'
 
 
-class Color(str):
+class Colour(str):
+	"""
+	An ANSI escape sequence representing a colour.
+
+	:param style: Escape sequence representing the style.
+	:type style: str
+	:param stack: The stack to place the escape sequence on.
+	:type stack: str
+	:param reset: The escape requence the reset the style.
+	:type reset: str
+	"""
+
 	style: str
 	reset: str
 	stack: List[str]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Color":
+	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour":
 		color = super().__new__(cls, style)  # type: ignore
 		color.style = style
 		color.stack = stack
@@ -119,17 +130,25 @@ class Color(str):
 
 
 class AnsiCodes(ABC):
+	"""
+	Abstract base class for ANSI Codes.
+	"""
+
 	_stack: List[str]
 	_reset: str
 
 	def __init__(self) -> None:
-		# the subclasses declare class attributes which are numbers.
-		# Upon instantiation we define instance attributes, which are the same
-		# as the class attributes but wrapped with the ANSI escape sequence
+		"""
+		The subclasses declare class attributes which are numbers.
+
+		Upon instantiation we define instance attributes, which are the same
+		as the class attributes but wrapped with the ANSI escape sequence.
+		"""
+
 		for name in dir(self):
 			if not name.startswith('_'):
 				value = getattr(self, name)
-				setattr(self, name, Color(code_to_chars(value), self._stack, self._reset))
+				setattr(self, name, Colour(code_to_chars(value), self._stack, self._reset))
 
 
 class AnsiCursor:
@@ -202,6 +221,7 @@ class AnsiFore(AnsiCodes):
 	ANSI Colour Codes for foreground colour.
 
 	Valid values are:
+
 	* BLACK
 	* RED
 	* GREEN
@@ -250,6 +270,7 @@ class AnsiBack(AnsiCodes):
 	ANSI Colour Codes for background colour.
 
 	Valid values are:
+
 	* BLACK
 	* RED
 	* GREEN
@@ -298,6 +319,7 @@ class AnsiStyle(AnsiCodes):
 	ANSI Colour Codes for text style.
 
 	Valid values are:
+
 	* BRIGHT
 	* DIM
 	* NORMAL
@@ -323,5 +345,3 @@ Cursor = AnsiCursor()
 fore_stack.append(Fore.RESET)
 back_stack.append(Back.RESET)
 style_stack.append(Style.NORMAL)
-
-Fore.GREEN("Hello World")

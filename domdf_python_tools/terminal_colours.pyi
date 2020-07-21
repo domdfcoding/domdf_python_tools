@@ -79,12 +79,12 @@ def clear_screen(mode: int = 2) -> str: ...
 def clear_line(mode: int = 2) -> str: ...
 
 
-class Color(str):
+class Colour(str):
 	style: str
 	reset: str
 	stack: List[str]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Color": ...
+	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour": ...
 	def __enter__(self) -> None: ...
 	def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 	def __call__(self, text) -> str: ...
@@ -111,25 +111,25 @@ class AnsiFore(AnsiCodes):
 	_stack = fore_stack
 	_reset = "\033[39m"
 
-	BLACK: Color
-	RED: Color
-	GREEN: Color
-	YELLOW: Color
-	BLUE: Color
-	MAGENTA: Color
-	CYAN: Color
-	WHITE: Color
-	RESET: Color
+	BLACK: Colour
+	RED: Colour
+	GREEN: Colour
+	YELLOW: Colour
+	BLUE: Colour
+	MAGENTA: Colour
+	CYAN: Colour
+	WHITE: Colour
+	RESET: Colour
 
 	# These are fairly well supported, but not part of the standard.
-	LIGHTBLACK_EX: Color
-	LIGHTRED_EX: Color
-	LIGHTGREEN_EX: Color
-	LIGHTYELLOW_EX: Color
-	LIGHTBLUE_EX: Color
-	LIGHTMAGENTA_EX: Color
-	LIGHTCYAN_EX: Color
-	LIGHTWHITE_EX: Color
+	LIGHTBLACK_EX: Colour
+	LIGHTRED_EX: Colour
+	LIGHTGREEN_EX: Colour
+	LIGHTYELLOW_EX: Colour
+	LIGHTBLUE_EX: Colour
+	LIGHTMAGENTA_EX: Colour
+	LIGHTCYAN_EX: Colour
+	LIGHTWHITE_EX: Colour
 
 
 class AnsiBack(AnsiCodes):
@@ -137,25 +137,25 @@ class AnsiBack(AnsiCodes):
 	_stack = back_stack
 	_reset = "\033[49m"
 
-	BLACK: Color
-	RED: Color
-	GREEN: Color
-	YELLOW: Color
-	BLUE: Color
-	MAGENTA: Color
-	CYAN: Color
-	WHITE: Color
-	RESET: Color
+	BLACK: Colour
+	RED: Colour
+	GREEN: Colour
+	YELLOW: Colour
+	BLUE: Colour
+	MAGENTA: Colour
+	CYAN: Colour
+	WHITE: Colour
+	RESET: Colour
 
 	# These are fairly well supported, but not part of the standard.
-	LIGHTBLACK_EX: Color
-	LIGHTRED_EX: Color
-	LIGHTGREEN_EX: Color
-	LIGHTYELLOW_EX: Color
-	LIGHTBLUE_EX: Color
-	LIGHTMAGENTA_EX: Color
-	LIGHTCYAN_EX: Color
-	LIGHTWHITE_EX: Color
+	LIGHTBLACK_EX: Colour
+	LIGHTRED_EX: Colour
+	LIGHTGREEN_EX: Colour
+	LIGHTYELLOW_EX: Colour
+	LIGHTBLUE_EX: Colour
+	LIGHTMAGENTA_EX: Colour
+	LIGHTCYAN_EX: Colour
+	LIGHTWHITE_EX: Colour
 
 
 class AnsiStyle(AnsiCodes):
@@ -163,10 +163,10 @@ class AnsiStyle(AnsiCodes):
 	_stack = style_stack
 	_reset = "\033[22m"
 
-	BRIGHT: Color
-	DIM: Color
-	NORMAL: Color
-	RESET_ALL: Color
+	BRIGHT: Colour
+	DIM: Colour
+	NORMAL: Colour
+	RESET_ALL: Colour
 
 
 Fore = AnsiFore()

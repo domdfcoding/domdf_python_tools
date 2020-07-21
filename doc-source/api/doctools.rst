@@ -2,8 +2,7 @@
 :mod:`domdf_python_tools.doctools`
 **************************************
 
-.. contents:: Table of Contents
-
 .. automodule:: domdf_python_tools.doctools
+	:autosummary:
 	:members:
 	:undoc-members:
