@@ -182,7 +182,7 @@ def symlink_skip_reason():
 		return "no system support for symlinks"
 	try:
 		os.symlink(__file__, BASE)
-	except OSError as e:
+	except (OSError, NotImplementedError) as e:  # NotImplementedError is raised by PyPy
 		return str(e)
 	else:
 		support.unlink(BASE)
