@@ -96,6 +96,8 @@ class Colour(str):
 	"""
 	An ANSI escape sequence representing a colour.
 
+	The colour can be used as a context manager, a string, or a function.
+
 	:param style: Escape sequence representing the style.
 	:type style: str
 	:param stack: The stack to place the escape sequence on.
@@ -220,6 +222,8 @@ class AnsiFore(AnsiCodes):
 	"""
 	ANSI Colour Codes for foreground colour.
 
+	The colours can be used as a context manager, a string, or a function.
+
 	Valid values are:
 
 	* BLACK
@@ -268,6 +272,8 @@ class AnsiFore(AnsiCodes):
 class AnsiBack(AnsiCodes):
 	"""
 	ANSI Colour Codes for background colour.
+
+	The colours can be used as a context manager, a string, or a function.
 
 	Valid values are:
 
