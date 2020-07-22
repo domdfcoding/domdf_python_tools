@@ -61,7 +61,7 @@ def append(var: str, filename: PathLike, **kwargs) -> int:
 
 		This is currently untested
 
-	TODO: make this the file in the given directory, by default the current directory
+	.. TODO:: make this the file in the given directory, by default the current directory
 
 	:param var: The value to append to the file
 	:param filename: The file to append to
@@ -119,7 +119,7 @@ def delete(filename: PathLike, **kwargs):
 
 		This is currently untested
 
-	TODO: make this the file in the given directory, by default the current directory
+	.. TODO:: make this the file in the given directory, by default the current directory
 
 	:param filename: The file to delete
 	"""
@@ -175,15 +175,13 @@ def read(filename: PathLike, **kwargs) -> str:
 
 		This is currently untested
 
-	TODO: make this the file in the given directory, by default the current directory
+	.. TODO:: make this the file in the given directory, by default the current directory
 
 	:param filename: The file to read from
 
 	:return: The contents of the file
 	:rtype: str
 	"""
-
-	# TODO: docstring
 
 	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:
 		return f.read()
@@ -227,7 +225,7 @@ def write(var: str, filename: PathLike, **kwargs) -> None:
 	"""
 	Write a variable to file in the current directory.
 
-	TODO: make this the file in the given directory, by default the current directory
+	.. TODO:: make this the file in the given directory, by default the current directory
 
 	:param var: The value to write to the file
 	:param filename: The file to write to
