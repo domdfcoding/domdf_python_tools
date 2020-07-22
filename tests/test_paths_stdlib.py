@@ -1,3 +1,12 @@
+#  Adapted from https://github.com/python/cpython/blob/master/Lib/test/test_pathlib.py
+#
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com . All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#
+
 # stdlib
 import collections.abc
 import errno
@@ -190,8 +199,8 @@ def symlink_skip_reason():
 
 
 symlink_skip_reason = symlink_skip_reason()
-only_nt = unittest.skipIf(os.name != 'nt', 'test requires a Windows-compatible system')
-only_posix = unittest.skipIf(os.name == 'nt', 'test requires a POSIX-compatible system')
+only_nt = pytest.mark.skipif(condition=os.name != 'nt', reason='test requires a Windows-compatible system')
+only_posix = pytest.mark.skipif(condition=os.name == 'nt', reason='test requires a POSIX-compatible system')
 with_symlinks = unittest.skipIf(symlink_skip_reason, symlink_skip_reason)  # type: ignore
 
 
@@ -271,8 +280,16 @@ class PathTest(unittest.TestCase):
 		self.assertTrue(p.is_absolute())
 
 	def test_home(self):
-		p = PathPlus.home()
-		self._test_home(p)
+		with support.EnvironmentVarGuard() as env:
+			self._test_home(PathPlus.home())
+
+			env.clear()
+			env['USERPROFILE'] = os.path.join(BASE, 'userprofile')
+			self._test_home(PathPlus.home())
+
+			# bpo-38883: ignore `HOME` when set on windows
+			env['HOME'] = os.path.join(BASE, 'home')
+			self._test_home(PathPlus.home())
 
 	def test_samefile(self):
 		fileA_path = os.path.join(BASE, 'fileA')
@@ -453,6 +470,23 @@ class PathTest(unittest.TestCase):
 				}
 		self.assertEqual(given, {p / x for x in expect})
 
+	def test_glob_many_open_files(self):
+		depth = 30
+		P = PathPlus
+		base = P(BASE) / 'deep'
+		p = P(base, *(['d'] * depth))
+		p.mkdir(parents=True)
+		pattern = '/'.join(['*'] * depth)
+		iters = [base.glob(pattern) for j in range(100)]
+		for it in iters:
+			self.assertEqual(next(it), p)
+		iters = [base.rglob('d') for j in range(100)]
+		p = base
+		for i in range(depth):
+			p = p / 'd'
+			for it in iters:
+				self.assertEqual(next(it), p)
+
 	def test_glob_dotdot(self):
 		# ".." is not special in globs.
 		P = PathPlus
@@ -460,6 +494,44 @@ class PathTest(unittest.TestCase):
 		self.assertEqual(set(p.glob("..")), {P(BASE, "..")})
 		self.assertEqual(set(p.glob("dirA/../file*")), {P(BASE, "dirA/../fileA")})
 		self.assertEqual(set(p.glob("../xyzzy")), set())
+
+	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@with_symlinks
+	def test_glob_permissions(self):  # pragma: no cover (<py39)
+		# See bpo-38894
+		P = PathPlus
+		base = P(BASE) / 'permissions'
+		base.mkdir()
+
+		file1 = base / "file1"
+		file1.touch()
+		file2 = base / "file2"
+		file2.touch()
+
+		subdir = base / "subdir"
+
+		file3 = base / "file3"
+		file3.symlink_to(subdir / "other")
+
+		# Patching is needed to avoid relying on the filesystem
+		# to return the order of the files as the error will not
+		# happen if the symlink is the last item.
+
+		with mock.patch("os.scandir") as scandir:
+			scandir.return_value = sorted(os.scandir(base))
+			self.assertEqual(len(set(base.glob("*"))), 3)
+
+		subdir.mkdir()
+
+		with mock.patch("os.scandir") as scandir:
+			scandir.return_value = sorted(os.scandir(base))
+			self.assertEqual(len(set(base.glob("*"))), 4)
+
+		subdir.chmod(000)
+
+		with mock.patch("os.scandir") as scandir:
+			scandir.return_value = sorted(os.scandir(base))
+			self.assertEqual(len(set(base.glob("*"))), 4)
 
 	def _check_resolve(self, p, expected, strict=True):
 		q = p.resolve(strict)
@@ -476,12 +548,12 @@ class PathTest(unittest.TestCase):
 			p.resolve(strict=True)
 		self.assertEqual(cm.exception.errno, errno.ENOENT)
 		# Non-strict
-		self.assertEqual(str(p.resolve(strict=False)), os.path.join(BASE, 'foo'))
+		self.assertEqualNormCase(str(p.resolve(strict=False)), os.path.join(BASE, 'foo'))
 		p = P(BASE, 'foo', 'in', 'spam')
-		self.assertEqual(str(p.resolve(strict=False)), os.path.join(BASE, 'foo', 'in', 'spam'))
+		self.assertEqualNormCase(str(p.resolve(strict=False)), os.path.join(BASE, 'foo', 'in', 'spam'))
 		p = P(BASE, '..', 'foo', 'in', 'spam')
-		self.assertEqual(str(p.resolve(strict=False)), os.path.abspath(os.path.join('foo', 'in', 'spam')))
-		# These are all relative symlinks
+		self.assertEqualNormCase(str(p.resolve(strict=False)), os.path.abspath(os.path.join('foo', 'in', 'spam')))
+		# These are all relative symlinks.
 		p = P(BASE, 'dirB', 'fileB')
 		self._check_resolve_relative(p, p)
 		p = P(BASE, 'linkA')
@@ -543,13 +615,26 @@ class PathTest(unittest.TestCase):
 		next(it2)
 		with p:
 			pass
-		# I/O operation on closed path
-		self.assertRaises(ValueError, next, it)
-		self.assertRaises(ValueError, next, it2)
-		self.assertRaises(ValueError, p.open)
-		self.assertRaises(ValueError, p.resolve)
-		self.assertRaises(ValueError, p.absolute)
-		self.assertRaises(ValueError, p.__enter__)
+
+		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
+			# I/O operation on closed path
+			self.assertRaises(ValueError, next, it)
+			self.assertRaises(ValueError, next, it2)
+			self.assertRaises(ValueError, p.open)
+			self.assertRaises(ValueError, p.resolve)
+			self.assertRaises(ValueError, p.absolute)
+			self.assertRaises(ValueError, p.__enter__)
+
+		else:  # pragma: no cover (<py39)
+			# Using a path as a context manager is a no-op, thus the following
+			# operations should still succeed after the context manage exits.
+			next(it)
+			next(it2)
+			p.exists()
+			p.resolve()
+			p.absolute()
+			with p:
+				pass
 
 	def test_chmod(self):
 		p = PathPlus(BASE) / 'fileA'
@@ -611,6 +696,12 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
+	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	def test_unlink_missing_ok(self):  # pragma: no cover (<py37)
+		p = PathPlus(BASE) / 'fileAAA'
+		self.assertFileNotFound(p.unlink)
+		p.unlink(missing_ok=True)
+
 	def test_rmdir(self):
 		p = PathPlus(BASE) / 'dirA'
 		for q in p.iterdir():
@@ -619,18 +710,63 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
+	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@unittest.skipUnless(hasattr(os, "link"), "os.link() is not present")
+	def test_link_to(self):  # pragma: no cover (<py37)
+		P = PathPlus(BASE)
+		p = P / 'fileA'
+		size = p.stat().st_size
+		# linking to another path.
+		q = P / 'dirA' / 'fileAA'
+		try:
+			p.link_to(q)
+		except PermissionError as e:
+			self.skipTest('os.link(): %s' % e)
+		self.assertEqual(q.stat().st_size, size)
+		self.assertEqual(os.path.samefile(p, q), True)
+		self.assertTrue(p.stat)
+		# Linking to a str of a relative path.
+		r = rel_join('fileAAA')
+		q.link_to(r)
+		self.assertEqual(os.stat(r).st_size, size)
+		self.assertTrue(q.stat)
+
+	@unittest.skipIf(hasattr(os, "link"), "os.link() is present")
+	def test_link_to_not_implemented(self):
+		P = PathPlus(BASE)
+		p = P / 'fileA'
+		# linking to another path.
+		q = P / 'dirA' / 'fileAA'
+		with self.assertRaises(NotImplementedError):
+			p.link_to(q)
+
 	def test_rename(self):
 		P = PathPlus(BASE)
 		p = P / 'fileA'
 		size = p.stat().st_size
 		# Renaming to another path.
 		q = P / 'dirA' / 'fileAA'
-		p.rename(q)
+
+		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
+			p.replace(q)
+
+		else:  # pragma: no cover (<py39)
+			renamed_p = p.replace(q)
+			self.assertEqual(renamed_p, q)
+
 		self.assertEqual(q.stat().st_size, size)
 		self.assertFileNotFound(p.stat)
+
 		# Renaming to a str of a relative path.
 		r = rel_join('fileAAA')
-		q.rename(r)
+
+		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
+			q.replace(r)
+
+		else:  # pragma: no cover (<py39)
+			renamed_q = q.replace(r)
+			self.assertEqual(renamed_q, PathPlus(r))
+
 		self.assertEqual(os.stat(r).st_size, size)
 		self.assertFileNotFound(q.stat)
 
@@ -640,14 +776,39 @@ class PathTest(unittest.TestCase):
 		size = p.stat().st_size
 		# Replacing a non-existing path.
 		q = P / 'dirA' / 'fileAA'
-		p.replace(q)
+
+		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
+			p.replace(q)
+
+		else:  # pragma: no cover (<py39)
+			replaced_p = p.replace(q)
+			self.assertEqual(replaced_p, q)
+
 		self.assertEqual(q.stat().st_size, size)
 		self.assertFileNotFound(p.stat)
+
 		# Replacing another (existing) path.
 		r = rel_join('dirB', 'fileB')
-		q.replace(r)
+
+		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
+			q.replace(r)
+
+		else:  # pragma: no cover (<py39)
+			replaced_q = q.replace(r)
+			self.assertEqual(replaced_q, PathPlus(r))
+
 		self.assertEqual(os.stat(r).st_size, size)
 		self.assertFileNotFound(q.stat)
+
+	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@with_symlinks
+	def test_readlink(self):  # pragma: no cover (<py39)
+		P = PathPlus(BASE)
+		self.assertEqual((P / 'linkA').readlink(), PathPlus('fileA'))
+		self.assertEqual((P / 'brokenLink').readlink(), PathPlus('non-existing'))
+		self.assertEqual((P / 'linkB').readlink(), PathPlus('dirB'))
+		with self.assertRaises(OSError):
+			(P / 'fileA').readlink()
 
 	def test_touch_common(self):
 		P = PathPlus(BASE)
@@ -847,7 +1008,7 @@ class PathTest(unittest.TestCase):
 		if not symlink_skip_reason:
 			self.assertFalse((P / 'linkA').is_dir())
 			self.assertTrue((P / 'linkB').is_dir())
-			self.assertFalse((P / 'brokenLink').is_dir())
+			self.assertFalse((P / 'brokenLink').is_dir(), False)
 
 	def test_is_file(self):
 		P = PathPlus(BASE)
@@ -953,15 +1114,6 @@ class PathTest(unittest.TestCase):
 			pp = pickle.loads(dumped)
 			self.assertEqual(pp.stat(), p.stat())
 
-	def test_parts_interning(self):
-		P = PathPlus
-		p = P('/usr/bin/foo')
-		q = P('/usr/local/bin')
-		# 'usr'
-		self.assertIs(p.parts[1], q.parts[1])
-		# 'bin'
-		self.assertIs(p.parts[2], q.parts[3])
-
 	def _check_complex_symlinks(self, link0_target):
 		# Test solving a non-looping chain of symlinks (issue #19887).
 		P = PathPlus(BASE)
@@ -1029,6 +1181,218 @@ class PathTest(unittest.TestCase):
 		p = PathPlus()
 		with self.assertRaisesRegex(ValueError, 'Unacceptable pattern'):
 			list(p.glob(''))
+
+
+@only_posix
+class PosixPathTest(PathTest, unittest.TestCase):  # pragma: no cover (!Linux !Darwin)
+
+	def _check_symlink_loop(self, *args, strict=True):
+		path = PathPlus(*args)
+		with self.assertRaises(RuntimeError):
+			print(path.resolve(strict))
+
+	def test_open_mode(self):
+		old_mask = os.umask(0)
+		self.addCleanup(os.umask, old_mask)
+		p = PathPlus(BASE)
+		with (p / 'new_file').open('wb'):
+			pass
+		st = os.stat(join('new_file'))
+		self.assertEqual(stat.S_IMODE(st.st_mode), 0o666)
+		os.umask(0o022)
+		with (p / 'other_new_file').open('wb'):
+			pass
+		st = os.stat(join('other_new_file'))
+		self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
+
+	def test_touch_mode(self):
+		old_mask = os.umask(0)
+		self.addCleanup(os.umask, old_mask)
+		p = PathPlus(BASE)
+		(p / 'new_file').touch()
+		st = os.stat(join('new_file'))
+		self.assertEqual(stat.S_IMODE(st.st_mode), 0o666)
+		os.umask(0o022)
+		(p / 'other_new_file').touch()
+		st = os.stat(join('other_new_file'))
+		self.assertEqual(stat.S_IMODE(st.st_mode), 0o644)
+		(p / 'masked_new_file').touch(mode=0o750)
+		st = os.stat(join('masked_new_file'))
+		self.assertEqual(stat.S_IMODE(st.st_mode), 0o750)
+
+	@with_symlinks
+	def test_resolve_loop(self):
+		# Loops with relative symlinks.
+		os.symlink('linkX/inside', join('linkX'))
+		self._check_symlink_loop(BASE, 'linkX')
+		os.symlink('linkY', join('linkY'))
+		self._check_symlink_loop(BASE, 'linkY')
+		os.symlink('linkZ/../linkZ', join('linkZ'))
+		self._check_symlink_loop(BASE, 'linkZ')
+		# Non-strict
+		self._check_symlink_loop(BASE, 'linkZ', 'foo', strict=False)
+		# Loops with absolute symlinks.
+		os.symlink(join('linkU/inside'), join('linkU'))
+		self._check_symlink_loop(BASE, 'linkU')
+		os.symlink(join('linkV'), join('linkV'))
+		self._check_symlink_loop(BASE, 'linkV')
+		os.symlink(join('linkW/../linkW'), join('linkW'))
+		self._check_symlink_loop(BASE, 'linkW')
+		# Non-strict
+		self._check_symlink_loop(BASE, 'linkW', 'foo', strict=False)
+
+	def test_glob(self):
+		P = PathPlus
+		p = P(BASE)
+		given = set(p.glob("FILEa"))
+		expect = set() if not support.fs_is_case_insensitive(BASE) else given
+		self.assertEqual(given, expect)
+		self.assertEqual(set(p.glob("FILEa*")), set())
+
+	def test_rglob(self):
+		P = PathPlus
+		p = P(BASE, "dirC")
+		given = set(p.rglob("FILEd"))
+		expect = set() if not support.fs_is_case_insensitive(BASE) else given
+		self.assertEqual(given, expect)
+		self.assertEqual(set(p.rglob("FILEd*")), set())
+
+	@unittest.skipUnless(hasattr(pwd, 'getpwall'), 'pwd module does not expose getpwall()')
+	def test_expanduser(self):
+		P = PathPlus
+		support.import_module('pwd')
+		# stdlib
+		import pwd
+		pwdent = pwd.getpwuid(os.getuid())
+		username = pwdent.pw_name
+		userhome = pwdent.pw_dir.rstrip('/') or '/'
+		# Find arbitrary different user (if exists).
+		for pwdent in pwd.getpwall():
+			othername = pwdent.pw_name
+			otherhome = pwdent.pw_dir.rstrip('/')
+			if othername != username and otherhome:
+				break
+		else:
+			othername = username
+			otherhome = userhome
+
+		p1 = P('~/Documents')
+		p2 = P('~' + username + '/Documents')
+		p3 = P('~' + othername + '/Documents')
+		p4 = P('../~' + username + '/Documents')
+		p5 = P('/~' + username + '/Documents')
+		p6 = P('')
+		p7 = P('~fakeuser/Documents')
+
+		with support.EnvironmentVarGuard() as env:
+			env.pop('HOME', None)
+
+			self.assertEqual(p1.expanduser(), P(userhome) / 'Documents')
+			self.assertEqual(p2.expanduser(), P(userhome) / 'Documents')
+			self.assertEqual(p3.expanduser(), P(otherhome) / 'Documents')
+			self.assertEqual(p4.expanduser(), p4)
+			self.assertEqual(p5.expanduser(), p5)
+			self.assertEqual(p6.expanduser(), p6)
+			self.assertRaises(RuntimeError, p7.expanduser)
+
+			env['HOME'] = '/tmp'
+			self.assertEqual(p1.expanduser(), P('/tmp/Documents'))
+			self.assertEqual(p2.expanduser(), P(userhome) / 'Documents')
+			self.assertEqual(p3.expanduser(), P(otherhome) / 'Documents')
+			self.assertEqual(p4.expanduser(), p4)
+			self.assertEqual(p5.expanduser(), p5)
+			self.assertEqual(p6.expanduser(), p6)
+			self.assertRaises(RuntimeError, p7.expanduser)
+
+	@unittest.skipIf(sys.platform != "darwin", "Bad file descriptor in /dev/fd affects only macOS")
+	def test_handling_bad_descriptor(self):
+		try:
+			file_descriptors = list(pathlib.Path('/dev/fd').rglob("*"))[3:]
+			if not file_descriptors:
+				self.skipTest("no file descriptors - issue was not reproduced")
+			# Checking all file descriptors because there is no guarantee
+			# which one will fail.
+			for f in file_descriptors:
+				f.exists()
+				f.is_dir()
+				f.is_file()
+				f.is_symlink()
+				f.is_block_device()
+				f.is_char_device()
+				f.is_fifo()
+				f.is_socket()
+		except OSError as e:
+			if e.errno == errno.EBADF:
+				self.fail("Bad file descriptor not handled.")
+			raise
+
+
+@only_nt
+class WindowsPathTest(PathTest, unittest.TestCase):  # pragma: no cover (!Windows)
+
+	def test_glob(self):
+		P = PathPlus
+		p = P(BASE)
+		self.assertEqual(set(p.glob("FILEa")), {P(BASE, "fileA")})
+		self.assertEqual(set(p.glob("F*a")), {P(BASE, "fileA")})
+		self.assertEqual(set(map(str, p.glob("FILEa"))), {f"{p}\\FILEa"})
+		self.assertEqual(set(map(str, p.glob("F*a"))), {f"{p}\\fileA"})
+
+	def test_rglob(self):
+		P = PathPlus
+		p = P(BASE, "dirC")
+		self.assertEqual(set(p.rglob("FILEd")), {P(BASE, "dirC/dirD/fileD")})
+		self.assertEqual(set(map(str, p.rglob("FILEd"))), {f"{p}\\dirD\\FILEd"})
+
+	def test_expanduser(self):
+		P = PathPlus
+		with support.EnvironmentVarGuard() as env:
+			env.pop('HOME', None)
+			env.pop('USERPROFILE', None)
+			env.pop('HOMEPATH', None)
+			env.pop('HOMEDRIVE', None)
+			env['USERNAME'] = 'alice'
+
+			# test that the path returns unchanged
+			p1 = P('~/My Documents')
+			p2 = P('~alice/My Documents')
+			p3 = P('~bob/My Documents')
+			p4 = P('/~/My Documents')
+			p5 = P('d:~/My Documents')
+			p6 = P('')
+			self.assertRaises(RuntimeError, p1.expanduser)
+			self.assertRaises(RuntimeError, p2.expanduser)
+			self.assertRaises(RuntimeError, p3.expanduser)
+			self.assertEqual(p4.expanduser(), p4)
+			self.assertEqual(p5.expanduser(), p5)
+			self.assertEqual(p6.expanduser(), p6)
+
+			def check():
+				env.pop('USERNAME', None)
+				self.assertEqual(p1.expanduser(), P('C:/Users/alice/My Documents'))
+				self.assertRaises(KeyError, p2.expanduser)
+				env['USERNAME'] = 'alice'
+				self.assertEqual(p2.expanduser(), P('C:/Users/alice/My Documents'))
+				self.assertEqual(p3.expanduser(), P('C:/Users/bob/My Documents'))
+				self.assertEqual(p4.expanduser(), p4)
+				self.assertEqual(p5.expanduser(), p5)
+				self.assertEqual(p6.expanduser(), p6)
+
+			env['HOMEPATH'] = 'C:\\Users\\alice'
+			check()
+
+			env['HOMEDRIVE'] = 'C:\\'
+			env['HOMEPATH'] = 'Users\\alice'
+			check()
+
+			env.pop('HOMEDRIVE', None)
+			env.pop('HOMEPATH', None)
+			env['USERPROFILE'] = 'C:\\Users\\alice'
+			check()
+
+			# bpo-38883: ignore `HOME` when set on windows
+			env['HOME'] = 'C:\\Users\\eve'
+			check()
 
 
 if __name__ == "__main__":  # pragma: no cover
