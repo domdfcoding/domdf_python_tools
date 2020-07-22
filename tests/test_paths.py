@@ -307,7 +307,7 @@ Too many newlines
 """
 
 
-@pytest.mark.xfail(reason="Unsupported on PyPy3 <7.2", condition=(platform.python_implementation == "PyPy"))
+@pytest.mark.xfail(reason="Unsupported on PyPy3 <7.2", condition=(platform.python_implementation() == "PyPy"))
 def test_make_executable():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.sh"

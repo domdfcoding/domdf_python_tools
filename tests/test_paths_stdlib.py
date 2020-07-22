@@ -14,6 +14,7 @@ import io
 import os
 import pathlib
 import pickle
+import platform
 import socket
 import stat
 import sys
@@ -540,6 +541,10 @@ class PathTest(unittest.TestCase):
 	# This can be used to check both relative and absolute resolutions.
 	_check_resolve_relative = _check_resolve_absolute = _check_resolve
 
+	@pytest.mark.xfail(
+			reason="Not working properly on PyPy3 on Travis",
+			condition=(platform.python_implementation() == "PyPy")
+			)
 	@with_symlinks
 	def test_resolve_common(self):
 		P = PathPlus
@@ -594,6 +599,10 @@ class PathTest(unittest.TestCase):
 			# resolves to 'dirB/..' first before resolving to parent of dirB.
 			self._check_resolve_relative(p, P(BASE, 'foo', 'in', 'spam'), False)
 
+	@pytest.mark.xfail(
+			reason="Not working properly on PyPy3 on Travis",
+			condition=(platform.python_implementation() == "PyPy")
+			)
 	@with_symlinks
 	def test_resolve_dot(self):
 		# See https://bitbucket.org/pitrou/pathlib/issue/9/pathresolve-fails-on-complex-symlinks
