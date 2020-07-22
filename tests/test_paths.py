@@ -10,6 +10,7 @@ Test functions in paths.py
 import contextlib
 import os
 import pathlib
+import platform
 import sys
 from tempfile import TemporaryDirectory
 
@@ -18,7 +19,7 @@ import pytest
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import clean_writer, PathPlus
+from domdf_python_tools.paths import PathPlus, clean_writer
 
 # TODO: delete, write, read and append might want deprecating in favour of pathlib
 
@@ -306,6 +307,7 @@ Too many newlines
 """
 
 
+@pytest.mark.xfail(reason="Unsupported on PyPy3 <7.2", condition=(platform.python_implementation == "PyPy"))
 def test_make_executable():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.sh"
