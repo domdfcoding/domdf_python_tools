@@ -47,7 +47,7 @@ import os
 import pathlib
 import shutil
 import stat
-from typing import Any, IO, Callable, Optional
+from typing import IO, Any, Callable, Optional
 
 # this package
 from domdf_python_tools.typing import PathLike

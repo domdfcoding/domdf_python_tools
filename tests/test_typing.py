@@ -9,14 +9,13 @@ Test functions in typing.py
 # stdlib
 import os
 import pathlib
-
-# 3rd party
 from typing import Dict, List, Sequence, Set, Tuple, Union
 
+# 3rd party
 import pytest
 
 # this package
-from domdf_python_tools.typing import check_membership, PathLike
+from domdf_python_tools.typing import PathLike, check_membership
 
 
 @pytest.mark.parametrize(
