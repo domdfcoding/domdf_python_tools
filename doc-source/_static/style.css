@@ -1,12 +1,13 @@
 /* This file is managed by 'repo_helper'. Don't edit it directly. */
 
-/* Body width */
-.wy-nav-content {max-width: 1200px !important;}
+.wy-nav-content {
+	max-width: 1200px !important;
+}
 
-/* Spacing between list items */
-li p:last-child { margin-bottom: 12px !important;}
+li p:last-child {
+	margin-bottom: 12px !important;
+}
 
-/* Smooth scrolling between sections */
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
