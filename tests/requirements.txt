@@ -1,7 +1,8 @@
-coverage >=5.1
-coverage_pyver_pragma >=0.0.1
-pytest >=6.0.0rc1
-pytest-cov >=2.8.1
-pytest-randomly >=3.3.1
-pytest-rerunfailures >=9.0
-pytz >=2019.1
+coverage>=5.1
+coverage_pyver_pragma>=0.0.1
+faker
+pytest>=6.0.0rc1
+pytest-cov>=2.8.1
+pytest-randomly>=3.3.1
+pytest-rerunfailures>=9.0
+pytz>=2019.1
