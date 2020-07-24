@@ -87,7 +87,7 @@ try:
 
 		return pytz.timezone(tz).localize(d).tzinfo
 
-except ImportError as e:
+except ImportError as e:  # pragma: no cover
 
 	# stdlib
 	import warnings

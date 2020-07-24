@@ -79,9 +79,9 @@ def clear() -> None:
 	Works for Windows and POSIX, but does not clear the Python Interpreter or PyCharm's Console.
 	"""
 
-	if os.name == "nt":
+	if os.name == "nt":  # pragma: no cover (!Windows)
 		os.system("cls")
-	else:
+	else:  # pragma: no cover (!Linux)
 		print("\033c", end='')
 
 
@@ -104,7 +104,7 @@ def interrupt() -> None:
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
 
 
-def overtype(*objects, sep: str = ' ', end: str = '', file=sys.stdout, flush: bool = False) -> None:
+def overtype(*objects, sep: str = ' ', end: str = '', file=None, flush: bool = False) -> None:
 	"""
 	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
 	and followed by ``end``.
@@ -236,20 +236,21 @@ def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
 class Echo:
 	"""
 	Context manager for echoing variable assignments (in CPython).
+
+	:param indent: The indentation of the dictionary of variable assignments.
+	:type indent: str, optional
 	"""
 
-	def __init__(self, msg: str, indent: str = "  "):
-		self.msg = msg
+	def __init__(self, indent: str = "  "):
 		self.indent = indent
 
 		frame = inspect.currentframe()
-		if frame is None:
+		if frame is None:  # pragma: no cover
 			raise ValueError("Unable to obtain the frame of the caller.")
 		else:
 			self.parent_frame = inspect.currentframe().f_back  # type: ignore  # TODO
 
 	def __enter__(self):
-		print(self.msg)
 		self.locals_on_entry = self.parent_frame.f_locals.copy()
 
 	def __exit__(self, exc_t, exc_v, tb):
