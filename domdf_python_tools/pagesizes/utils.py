@@ -40,7 +40,7 @@ from typing import Sequence, Tuple, Union, overload
 
 # this package
 from ._types import AnyNumber
-from .units import cc, cm, dd, inch, mm, nc, nd, pc, pica, pt, sp, um
+from .units import Unit, cm, inch, mm, pc, pica, pt, um
 
 # from .units import Unit
 
@@ -49,12 +49,12 @@ __all__ = ["convert_from", "parse_measurement"]
 
 @overload
 def convert_from(value: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]:
-	...
+	...  # pragma: no cover
 
 
 @overload
 def convert_from(value: AnyNumber, from_: AnyNumber) -> float:
-	...
+	...  # pragma: no cover
 
 
 def convert_from(
@@ -77,7 +77,10 @@ def convert_from(
 
 
 def _sequence_convert_from(seq: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[float, ...]:
-	from_ = float(from_)
+	if isinstance(from_, Unit):
+		from_ = from_._in_pt
+	else:
+		from_ = float(from_)
 
 	return tuple(float(x) * from_ for x in seq)
 
@@ -118,16 +121,6 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 			return convert_from(val, inch)
 		elif unit == "pc":
 			return convert_from(val, pc)
-		elif unit == "dd":
-			return convert_from(val, dd)
-		elif unit == "cc":
-			return convert_from(val, cc)
-		elif unit == "nd":
-			return convert_from(val, nd)
-		elif unit == "nc":
-			return convert_from(val, nc)
-		elif unit == "sp":
-			return convert_from(val, sp)
 		raise ValueError("Unknown unit")
 
 

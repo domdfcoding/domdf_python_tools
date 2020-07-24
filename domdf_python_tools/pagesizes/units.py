@@ -31,6 +31,7 @@
 #
 
 # stdlib
+import math
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Union
 
@@ -42,16 +43,6 @@ __all__ = [
 		"um",
 		"pc",
 		"pica",
-		"dd",
-		"didot",
-		"cc",
-		"cicero",
-		"nd",
-		"new_didot",
-		"nc",
-		"new_cicero",
-		"sp",
-		"scaled_point",
 		"Unit",
 		]
 
@@ -157,7 +148,7 @@ class Unit(float):
 	>>> (3*mm) % 2.5
 	<Unit '0.500 mm': 1.417pt>
 
-	Diving by a unit, or modulo division of two units, is not officially supported.
+	Dividing by a unit, or modulo division of two units, is not officially supported.
 	"""
 
 	name: str = "pt"
@@ -166,11 +157,16 @@ class Unit(float):
 	def __repr__(self):
 		value = _rounders(float(self), "0.000")
 		as_pt = _rounders(self.as_pt(), "0.000")
+		return f"<Unit '{value} {self.name}': {as_pt}pt>"
+
+	def __str__(self):
+		value = _rounders(float(self), "0.000")
+		as_pt = _rounders(self.as_pt(), "0.000")
 		return f"<Unit '{value}\u205F{self.name}': {as_pt}pt>"
 
 	def __mul__(self, other: Union[float, "Unit"]) -> "Unit":
 		if isinstance(other, Unit):
-			return NotImplemented
+			raise NotImplementedError("Multiplying a unit by another unit is not allowed.")
 
 		return self.__class__(super().__mul__(other))
 
@@ -178,29 +174,48 @@ class Unit(float):
 
 	def __truediv__(self, other: Union[float, "Unit"]) -> "Unit":
 		if isinstance(other, Unit):
-			return NotImplemented
+			raise NotImplementedError("Dividing a unit by another unit is not allowed.")
 
 		return self.__class__(super().__truediv__(other))
 
-	__div__ = __truediv__
+	def __floordiv__(self, other: Union[float, "Unit"]) -> "Unit":
+		if isinstance(other, Unit):
+			raise NotImplementedError("Dividing a unit by another unit is not allowed.")
+
+		return self.__class__(super().__floordiv__(other))
+
+	def __eq__(self, other: Union[float, "Unit"]) -> bool:
+		if isinstance(other, Unit):
+			if self._in_pt != 1:
+				self_value = self.as_pt()
+			else:
+				self_value = self
+
+			if other._in_pt != 1:
+				other_value = other.as_pt()
+			else:
+				other_value = other
+
+			return math.isclose(float(self_value), float(other_value), abs_tol=1e-8)
+		else:
+			return super().__eq__(other)
 
 	def __mod__(self, other: Union[float, "Unit"]) -> "Unit":
 		if isinstance(other, Unit):
-			return NotImplemented
+			raise NotImplementedError("Modulo division of a unit by another unit is not allowed.")
 
 		return self.__class__(super().__mod__(other))
 
 	def __pow__(self, power, modulo=None):
-		return NotImplemented
+		raise NotImplementedError("Powers are not supported for units.")
 
 	def __rtruediv__(self, other):
-		return NotImplemented
+		raise NotImplementedError("Dividing by a unit is not allowed.")
 
 	__rdiv__ = __rtruediv__
 
 	def __add__(self, other: Union[float, "Unit"]) -> "Unit":
 		if isinstance(other, Unit):
-			print(float(self.as_pt()) + float(other.as_pt()))
 			return self.__class__.from_pt(float(self.as_pt()) + float(other.as_pt()))
 		else:
 			return self.__class__(super().__add__(other))
@@ -214,13 +229,13 @@ class Unit(float):
 			return self.__class__(super().__sub__(other))
 
 	def __rsub__(self, other: Union[float, "Unit"]) -> "Unit":
-		if isinstance(other, Unit):
+		if isinstance(other, Unit):  # pragma: no cover (sub should be called instead)
 			return self.__class__.from_pt(float(other.as_pt()) - float(self.as_pt()))
 		else:
 			return self.__class__(super().__rsub__(other))
 
 	def as_pt(self) -> "Unit":
-		return Unit(float(self) * self._in_pt)
+		return Unit(float(_rounders(float(self) * self._in_pt, "0.000000")))
 
 	@classmethod
 	def from_pt(cls, value: float) -> "Unit":
@@ -236,7 +251,7 @@ class Unitpt(Unit):
 
 
 class UnitInch(Unit):
-	name = "in"
+	name = "inch"
 	_in_pt = 72.0
 
 
@@ -252,37 +267,12 @@ class Unitmm(Unit):
 
 class Unitum(Unit):
 	name = "µm"
-	_in_pt = 0.283464566929
+	_in_pt = 0.00283464566929
 
 
 class Unitpc(Unit):
 	name = "pc"
 	_in_pt = 12.0
-
-
-class Unitdd(Unit):
-	name = "dd"
-	_in_pt = 1.07
-
-
-class Unitcc(Unit):
-	name = "cc"
-	_in_pt = 12.84
-
-
-class Unitnd(Unit):
-	name = "nd"
-	_in_pt = 1.067
-
-
-class Unitnc(Unit):
-	name = "nc"
-	_in_pt = 12.804
-
-
-class Unitsp(Unit):
-	name = "sp"
-	_in_pt = 1 / 65536
 
 
 # Units
@@ -292,8 +282,3 @@ cm = Unitcm(1)
 mm = Unitmm(1)
 um = Unitum(1)
 pc = pica = Unitpc(1)
-dd = didot = Unitdd(1)
-cc = cicero = Unitcc(1)
-nd = new_didot = Unitnd(1)
-nc = new_cicero = Unitnc(1)
-sp = scaled_point = Unitsp(1)

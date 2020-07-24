@@ -36,7 +36,7 @@ from typing import List, Tuple
 
 # this package
 from ._types import AnyNumber
-from .units import Unit, _rounders, cicero, cm, didot, inch, mm, new_cicero, new_didot, pica, pt, scaled_point, um
+from .units import Unit, _rounders, cm, inch, mm, pica, pt, um
 from .utils import convert_from
 
 __all__ = [
@@ -46,11 +46,6 @@ __all__ = [
 		"Size_cm",
 		"Size_um",
 		"Size_pica",
-		"Size_didot",
-		"Size_cicero",
-		"Size_new_didot",
-		"Size_new_cicero",
-		"Size_scaled_point",
 		"PageSize",
 		]
 
@@ -225,76 +220,6 @@ class Size_pica(BaseSize):
 	_unit = pica
 
 
-class Size_didot(BaseSize):
-	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in didots / French Points.
-
-	:param width: The page width
-	:type width: int, float, Decimal or Unit
-	:param height: The page height
-	:type height: int, float, Decimal or Unit
-	"""
-
-	_unit = didot
-
-
-class Size_cicero(BaseSize):
-	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in ciceros.
-
-	:param width: The page width
-	:type width: int, float, Decimal or Unit
-	:param height: The page height
-	:type height: int, float, Decimal or Unit
-	"""
-
-	_unit = cicero
-
-
-class Size_new_didot(BaseSize):
-	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in new didots.
-
-	:param width: The page width
-	:type width: int, float, Decimal or Unit
-	:param height: The page height
-	:type height: int, float, Decimal or Unit
-	"""
-
-	_unit = new_didot
-
-
-class Size_new_cicero(BaseSize):
-	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in ciceros.
-
-	:param width: The page width
-	:type width: int, float, Decimal or Unit
-	:param height: The page height
-	:type height: int, float, Decimal or Unit
-	"""
-
-	_unit = new_cicero
-
-
-class Size_scaled_point(BaseSize):
-	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in scaled points.
-
-	:param width: The page width
-	:type width: int, float, Decimal or Unit
-	:param height: The page height
-	:type height: int, float, Decimal or Unit
-	"""
-
-	_unit = scaled_point
-
-
 class PageSize(BaseSize):
 	"""
 	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
@@ -321,6 +246,14 @@ class PageSize(BaseSize):
 
 		width, height = convert_from((width, height), unit)  # type: ignore
 		return super().__new__(cls, width, height)
+
+	@property
+	def pt(self) -> "PageSize":
+		"""
+		Returns the pagesize in pt.
+		"""
+
+		return self
 
 	@property
 	def inch(self) -> Size_inch:
@@ -354,6 +287,8 @@ class PageSize(BaseSize):
 
 		return Size_um.from_pt(self)
 
+	µm = um
+
 	@property
 	def pc(self) -> Size_pica:
 		"""
@@ -363,53 +298,3 @@ class PageSize(BaseSize):
 		return Size_pica.from_pt(self)
 
 	pica = pc
-
-	@property
-	def dd(self) -> Size_didot:
-		"""
-		Returns the pagesize in didots.
-		"""
-
-		return Size_didot.from_pt(self)
-
-	didot = dd
-
-	@property
-	def cc(self) -> Size_cicero:
-		"""
-		Returns the pagesize in ciceros.
-		"""
-
-		return Size_cicero.from_pt(self)
-
-	cicero = cc
-
-	@property
-	def nd(self) -> Size_new_didot:
-		"""
-		Returns the pagesize in new didots.
-		"""
-
-		return Size_new_didot.from_pt(self)
-
-	new_didot = nd
-
-	@property
-	def nc(self) -> Size_new_cicero:
-		"""
-		Returns the pagesize in new ciceros.
-		"""
-
-		return Size_new_cicero.from_pt(self)
-
-	new_cicero = nc
-
-	@property
-	def sp(self) -> Size_scaled_point:
-		"""
-		Returns the pagesize in scaled point.
-		"""
-
-		return Size_scaled_point.from_pt(self)
-
-	scaled_point = sp
