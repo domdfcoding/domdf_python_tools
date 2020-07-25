@@ -5,15 +5,6 @@ conda_channels:
 
 python_deploy_version: 3.6
 
-# Additional lines for .gitignore
-#additional_ignore:
-#  -
-
-# Paths to additional requirements.txt files, relative to repo root
-#additional_requirements_files:
-#  -
-
-# Versions to run tests for
 python_versions:
   - '3.6'
   - '3.7'
@@ -21,31 +12,11 @@ python_versions:
   - "pypy3"
   - "3.9-dev"
 
-# Additional python requirements for travis
-#travis_additional_requirements:
-#  -
-
 # travis secure password for PyPI
 travis_pypi_secure: "GQVX7JKDfUWcHQzjmZ8yadF4eIM/AUaXu/Zl8U2hwhB6NavbzUayvMXalT+pfgZ6NaWFMPZOETlxv5d+hf98Io/5HIV4i1KB98ze90KXpUU2Icz7IdxWDWGhc36Vkhb7hU0HUfXLu8WxcxQCJB3t7uIB9SO36dh/cMayW5YvBy3HhluaTvgLax4nOJYjN/FJCgs9kTCBYrjJzheS0pgj37bXZCrB06H0bsxgnbaAiL8FiG6tgJLABDLfqPhtJgVRhtdYeuqGv31/OV0vkj1zG6bExp9ENQ4/5L7FijLRznW+DnsRJt6BdTBtxNxK+v1ZccTdVJzTzhoUH/TbXdI+qtBeatTYz880du7TujKoxfFxGZ9+bSaYURaClMHn7/Ndj7ioj5f51jLf8+BCEk3cWEfUL7yeKF6RBWLww6cFKQ9yDNOiXgrsndz6Oh535LV28rKXS1qeGBppMAv09RmR/YfHu+XMp5yWa+vDwjmrQDH7qEkA3wYYMfMRnwi9+LrOHtS7IqFkgbAXZPmh3C0X1UEqD4cuARcyD9FRU2PAXM1tBprxEFi1L/sv4O8KRP+I3jXXsBHTmzbWWVqXiySGOlX6R9vOma35WS3mkllS/Oz7IyhUtONrwpaLHnuBLKMgi+RnsoEYgLx6KgSXVSQ0JUZq8cP2yewC8nx626w675w="
 
-# additional lines for MANIFEST.in
-#manifest_additional:
-#  -
-
-# additional requirements for tox
-#tox_requirements:
-#  -
-
-# additional build requirements for tox
-#tox_build_requirements:
-#  -
-
 # directory that contains tests
 tests_dir: "tests"
-
-# Additional arguments for setup.py
-#additional_setup_args:
-#  foo: bar
 
 copyright_years: "2019-2020"
 author: "Dominic Davis-Foster"
@@ -57,7 +28,6 @@ short_desc: 'Helpful functions for Python 🐍 🛠️'
 
 classifiers:
   - 'Development Status :: 4 - Beta'
-#  - "Development Status :: 4 - Beta"
 #  - "Development Status :: 5 - Production/Stable"
 #  - "Development Status :: 6 - Mature"
 #  - "Development Status :: 7 - Inactive"
