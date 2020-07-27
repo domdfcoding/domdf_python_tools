@@ -1,5 +1,5 @@
 autodocsumm
-default_values>=0.0.4
+default_values>=0.0.6
 extras_require
 pytz>=2019.1
 sphinx>=3.0.3
