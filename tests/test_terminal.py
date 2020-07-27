@@ -1,6 +1,7 @@
 # stdlib
 import json
 import os
+import re
 import sys
 
 # 3rd party
@@ -146,11 +147,10 @@ def test_echo(capsys):
 		employer = fake.company()
 		telephone = fake.phone_number()
 		alive = fake.pybool()
-		other = fake.pydict()
+		z_other = fake.pydict()
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	print(stdout)
 
 	assert stdout[0] == "  {{'address': '{}',".format(address.replace("\n", "\\n"))
 	assert stdout[1] == f"   'alive': {alive},"
@@ -158,10 +158,10 @@ def test_echo(capsys):
 	assert stdout[3] == f"   'iban': '{iban}',"
 	assert stdout[4] == f"   'ip_address': '{ip_address}',"
 	assert stdout[5] == f"   'name': '{name}',"
-	assert stdout[6].startswith("   'other': {")
-	assert stdout[6].endswith(",")
-	for line in range(7, 13, 1):
-		assert stdout[line].startswith("             '")
-		assert stdout[line].endswith(",")
-	assert stdout[-2] == f"   'telephone': '{telephone}'}}"
+	assert stdout[6] == f"   'telephone': '{telephone}',"
+	assert stdout[7].startswith("   'z_other': {")
+	assert stdout[7].endswith(",")
+	for line in range(8, 13, 1):
+		assert re.match(r"^\s*'.*':.*[,}]$", stdout[line])
+	assert stdout[-2].endswith("}")
 	assert stdout[-1] == ''
