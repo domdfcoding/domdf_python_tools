@@ -5,20 +5,18 @@ import sys
 
 # 3rd party
 import pytest
-from faker import Faker
+from faker import Faker  # type: ignore
+from faker.providers import bank, company, internet, phone_number, python  # type: ignore
+
+# this package
+from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
 
 fake = Faker()
-# 3rd party
-from faker.providers import bank, company, internet, phone_number, python
-
 fake.add_provider(internet)
 fake.add_provider(bank)
 fake.add_provider(company)
 fake.add_provider(phone_number)
 fake.add_provider(python)
-
-# this package
-from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
 
 
 def test_br(capsys):

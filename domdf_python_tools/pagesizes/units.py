@@ -184,7 +184,7 @@ class Unit(float):
 
 		return self.__class__(super().__floordiv__(other))
 
-	def __eq__(self, other: Union[float, "Unit"]) -> bool:
+	def __eq__(self, other: object) -> bool:
 		if isinstance(other, Unit):
 			if self._in_pt != 1:
 				self_value = self.as_pt()
