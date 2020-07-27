@@ -137,11 +137,13 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, ex
 	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
+	:no-default parents:
 	:type parents: bool, optional
 	:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
 		target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
 		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 		component is not an existing non-directory file.
+	:no-default exist_ok:
 	:type exist_ok: bool, optional
 	"""
 
@@ -194,7 +196,8 @@ def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.P
 
 	:param path: Path to find the relative path for
 	:param relative_to: The directory to find the path relative to.
-		Defaults to the current directory
+		Defaults to the current directory.
+	:no-default relative_to:
 
 	:return:
 	"""
@@ -312,8 +315,7 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, write to it without trailing spaces, and close the file.
 
 		:param string:
-		:type string: str
-		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param encoding: The encoding to write to the file using.
 		:param errors:
 
 		.. versionadded:: 0.3.8
@@ -336,11 +338,13 @@ class PathPlus(pathlib.Path):
 		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
 			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
+		:no-default parents:
 		:type parents: bool, optional
 		:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
 			target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
 			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 			component is not an existing non-directory file.
+		:no-default exist_ok:
 		:type exist_ok: bool, optional
 
 		.. versionadded:: 0.3.8
@@ -359,7 +363,7 @@ class PathPlus(pathlib.Path):
 
 		:param string:
 		:type string: str
-		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param encoding: The encoding to write to the file using.
 		:param errors:
 
 		.. versionadded:: 0.3.8
@@ -379,7 +383,7 @@ class PathPlus(pathlib.Path):
 
 		:param data:
 		:type data: str
-		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param encoding: The encoding to write to the file using.
 		:param errors:
 
 		.. versionadded:: 0.3.8
@@ -395,7 +399,7 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file in text mode, read it, and close the file.
 
-		:param encoding: The encoding to write to the file using. Default ``"UTF-8"``.
+		:param encoding: The encoding to write to the file using.
 		:param errors:
 
 		:return: The content of the file.
@@ -417,7 +421,8 @@ class PathPlus(pathlib.Path):
 		Open the file pointed by this path and return a file object, as
 		the built-in open() function does.
 
-		:param mode: The mode to open the file in. Default ``"r"`` (read only.
+		:param mode: The mode to open the file in.
+		:default mode: ``"r"`` (read only)
 		:type mode: str
 		:param buffering:
 		:type buffering: int

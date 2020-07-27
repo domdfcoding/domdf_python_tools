@@ -252,7 +252,7 @@ def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool
 	:type month: str, int
 	:param day: The day number to test.
 	:type day: int
-	:param leap_year: Whether to return :py:obj:`True` for 29th Feb. Default :py:obj:`True`.
+	:param leap_year: Whether to return :py:obj:`True` for 29th Feb.
 	:type leap_year: bool, optional
 
 	:return: :py:obj:`True` if the date is valid.

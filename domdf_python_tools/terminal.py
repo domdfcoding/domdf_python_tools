@@ -119,11 +119,12 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=None, flush: bool = F
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
 	:param objects: A list of strings or string-like objects to write to the terminal.
-	:param sep: String to separate the objects with, by default " "
+	:param sep: String to separate the objects with.
 	:type sep: str
-	:param end: String to end with, by default nothing
+	:param end: String to end with.
 	:type end: str
-	:param file: An object with a ``write(string)`` method; default ``sys.stdout``
+	:param file: An object with a ``write(string)`` method.
+	:default file: ``sys.stdout``
 	:type file:
 	:param flush: If true, the stream is forcibly flushed.
 	:type flush: bool
