@@ -78,7 +78,12 @@ def copytree(
 		ignore: Optional[Callable] = None,
 		):
 	"""
-	Alternative to :func:`shutil.copytree` to work in some situations where it doesn't.
+	Alternative to :func:`shutil.copytree` to support copying to a directory that already exists.
+
+	Based on https://stackoverflow.com/a/12514470/3092681 by https://stackoverflow.com/users/23252/atzz
+
+	In Python 3.8 and above :func:`shutil.copytree` takes a ``dirs_exist_ok`` argument,
+	which has the same result.
 
 	:param src: Source file to copy
 	:param dst: Destination to copy file to
