@@ -131,6 +131,11 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, ex
 	"""
 	Create a directory at the given path, but only if the directory does not already exist.
 
+	.. note::
+
+		This will fail silently if a file with the same name already exists.
+		This appears to be due to the behaviour of :func:`os.mkdir`.
+
 	:param directory: Directory to create
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
 	:type mode:
@@ -332,6 +337,11 @@ class PathPlus(pathlib.Path):
 			):
 		"""
 		Create a directory at this path, but only if the directory does not already exist.
+
+		.. note::
+
+			This will fail silently if a file with the same name already exists.
+			This appears to be due to the behaviour of :func:`os.mkdir`.
 
 		:param mode: Combined with the process’ umask value to determine the file mode and access flags
 		:type mode:

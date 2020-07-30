@@ -101,7 +101,7 @@ def test_maybe_make_string():
 
 		# Delete the directory and replace with a file
 		test_dir.rmdir()
-		assert test_dir.exists() is False
+		assert not test_dir.exists()
 		test_dir.touch()
 		assert test_dir.exists()
 		assert test_dir.is_file()
