@@ -1,6 +1,6 @@
 autodocsumm
 default_values>=0.0.6
-domdf_sphinx_theme>=0.0.10
+domdf_sphinx_theme>=0.0.11
 extras_require
 pytz>=2019.1
 sphinx>=3.0.3
