@@ -44,9 +44,9 @@ modname = "domdf_python_tools"
 pypi_name = "domdf_python_tools"
 import_name = "domdf_python_tools"
 __license__ = "GNU Lesser General Public License v3 or later (LGPLv3+)"
-short_desc = "Helpful functions for Python 🐍 🛠️"
-__author__ = author = "Dominic Davis-Foster"
-author_email = "dominic@davis-foster.co.uk"
+short_desc = 'Helpful functions for Python\u2002🐍\u2002🛠️'
+__author__ = author = 'Dominic Davis-Foster'
+author_email = 'dominic@davis-foster.co.uk'
 github_username = "domdfcoding"
 web = github_url = "https://github.com/domdfcoding/domdf_python_tools"
 repo_root = pathlib.Path(__file__).parent
