@@ -46,11 +46,11 @@ class TestMul:
 	@pytest.mark.parametrize("obj", units_ints_zero2thousand)
 	def test_pow_errors(self, obj):
 		with pytest.raises(NotImplementedError, match="Powers are not supported for units."):
-			Unit(17)**obj
+			Unit(17)**obj  # pylint: disable=expression-not-assigned
 
 		if isinstance(obj, Unit):
 			with pytest.raises(NotImplementedError, match="Powers are not supported for units."):
-				obj**Unit(17)
+				obj**Unit(17)  # pylint: disable=expression-not-assigned
 
 
 class TestDiv:
@@ -82,9 +82,9 @@ class TestDiv:
 	@pytest.mark.parametrize("obj", units_zero2thousand)
 	def test_modulo_errors(self, obj):
 		with pytest.raises(NotImplementedError, match="Modulo division of a unit by another unit is not allowed."):
-			Unit(17) % obj
+			Unit(17) % obj  # pylint: disable=expression-not-assigned
 		with pytest.raises(NotImplementedError, match="Modulo division of a unit by another unit is not allowed."):
-			obj % Unit(17)
+			obj % Unit(17)  # pylint: disable=expression-not-assigned
 
 	@pytest.mark.parametrize("obj", one2thousand)
 	def test_modulo(self, obj: int):

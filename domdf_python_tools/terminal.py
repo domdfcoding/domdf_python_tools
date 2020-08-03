@@ -185,7 +185,7 @@ def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:  # pragma: no cov
 			size_y = bottom - top + 1
 
 			return size_x, size_y
-	except:
+	except Exception:
 		pass
 
 	return None
@@ -198,7 +198,7 @@ def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:  # pragma: no cover
 		cols = int(subprocess.check_call(shlex.split("tput cols")))
 		rows = int(subprocess.check_call(shlex.split("tput lines")))
 		return cols, rows
-	except:
+	except Exception:
 		return None
 
 
@@ -212,7 +212,7 @@ def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
 		try:
 			cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
 			return cr
-		except:
+		except Exception:
 			pass
 
 	cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
@@ -222,13 +222,13 @@ def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
 			fd = os.open(os.ctermid(), os.O_RDONLY)  # type: ignore
 			cr = ioctl_GWINSZ(fd)
 			os.close(fd)
-		except:
+		except Exception:
 			pass
 
 	if not cr:
 		try:
 			cr = (os.environ["LINES"], os.environ["COLUMNS"])
-		except:
+		except Exception:
 			return None
 
 	return int(cr[1]), int(cr[0])

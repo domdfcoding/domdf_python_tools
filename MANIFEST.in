@@ -1,6 +1,6 @@
 include __pkginfo__.py
 include LICENSE
 include requirements.txt
-recursive-exclude **/__pycache__ *
+prune **/__pycache__
 recursive-include domdf_python_tools *.pyi
 include domdf_python_tools/py.typed
