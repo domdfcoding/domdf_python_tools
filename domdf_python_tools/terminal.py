@@ -80,7 +80,7 @@ def clear() -> None:
 	"""
 
 	if os.name == "nt":  # pragma: no cover (!Windows)
-		os.system("cls")
+		os.system("cls")  # nosec: B607,B605
 	else:  # pragma: no cover (!Linux)
 		print("\033c", end='')
 

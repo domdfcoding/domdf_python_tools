@@ -21,8 +21,6 @@ import pytest
 from domdf_python_tools import paths
 from domdf_python_tools.paths import PathPlus, clean_writer
 
-# TODO: delete, write, read and append might want deprecating in favour of pathlib
-
 
 def test_maybe_make():
 	with TemporaryDirectory() as tmpdir:

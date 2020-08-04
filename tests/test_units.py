@@ -31,7 +31,7 @@ class TestMul:
 	@pytest.mark.parametrize("obj", units_zero2thousand)
 	def test_mul_errors(self, obj):
 		with pytest.raises(NotImplementedError, match="Multiplying a unit by another unit is not allowed."):
-			Unit(17) * obj
+			Unit(17) * obj  # pylint: disable=expression-not-assigned
 
 	@pytest.mark.parametrize("obj", zero2thousand)
 	def test_mul(self, obj: int):
@@ -41,7 +41,7 @@ class TestMul:
 	@pytest.mark.parametrize("obj", units_zero2thousand)
 	def test_rmul_errors(self, obj):
 		with pytest.raises(NotImplementedError, match="Multiplying a unit by another unit is not allowed."):
-			obj * Unit(17)
+			obj * Unit(17)  # pylint: disable=expression-not-assigned
 
 	@pytest.mark.parametrize("obj", units_ints_zero2thousand)
 	def test_pow_errors(self, obj):

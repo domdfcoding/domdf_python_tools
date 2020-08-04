@@ -49,14 +49,15 @@ def test_check_membership_true(obj, type_):
 				("abc", List[int]),
 				(1234, Sequence[bytes]),
 				(12.34, Set[str]),
-				(1234, Tuple[str, float, bytes]),  # todo: Position
-				(12.34, Tuple[int, bytes, str]),  # todo: Position
-				("abc", Tuple[int, float, bytes]),  # todo: Position
-				(1234, Dict[bytes, float]),  # todo: Position
-				(12.34, Dict[int, str]),  # todo: Position
+				(1234, Tuple[str, float, bytes]),
+				(12.34, Tuple[int, bytes, str]),
+				("abc", Tuple[int, float, bytes]),
+				(1234, Dict[bytes, float]),
+				(12.34, Dict[int, str]),
 				]
 		)
 def test_check_membership_false(obj, type_):
+	# todo: Positions for Tuple and Dict
 	assert not check_membership(obj, type_)
 
 
