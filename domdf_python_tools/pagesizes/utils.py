@@ -35,12 +35,11 @@ Tools for working with pagesizes.
 
 # stdlib
 import re
-from decimal import Decimal
 from typing import Sequence, Tuple, Union, overload
 
 # this package
 from ._types import AnyNumber
-from .units import Unit, cm, inch, mm, pc, pica, pt, um
+from .units import Unit, cm, inch, mm, pc, pt, um
 
 # from .units import Unit
 
@@ -85,7 +84,7 @@ def _sequence_convert_from(seq: Sequence[AnyNumber], from_: AnyNumber) -> Tuple[
 	return tuple(float(x) * from_ for x in seq)
 
 
-_measurement_re = re.compile(r"(\d*\.?\d+) *([A-Za-z]*)")
+_measurement_re = re.compile(r"(\d*\.?\d+) *([A-Za-zμµ\"']*)")
 
 
 def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
@@ -99,56 +98,31 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 	"""
 
 	# TODO: docstring
-	match = _measurement_re.findall(measurement)[0]
-	# print(match)
-	# print(len(match))
-	if len(match) < 2:
+	all_matches = _measurement_re.findall(measurement)
+
+	if len(all_matches) > 1:
+		raise ValueError("Too many measurements")
+	elif len(all_matches) == 0:
 		raise ValueError("Unable to parse measurement")
-	else:
-		val = Decimal(str(match[0]))
-		unit = match[1]
-		if unit == "mm":
-			return convert_from(val, mm)
-		elif unit == "cm":
-			return convert_from(val, cm)
-		elif unit in {"um", "μm", "µm"}:
-			return convert_from(val, um)
-		elif unit == "pt":
-			return convert_from(val, pt)
-		elif unit == "inch":
-			return convert_from(val, inch)
-		elif unit == "in":
-			return convert_from(val, inch)
-		elif unit == "pc":
-			return convert_from(val, pc)
-		raise ValueError("Unknown unit")
 
+	val, unit = all_matches[0]
 
-def to_length(s):
-	"""
-	Convert a string to a length.
+	if "" in {val, unit}:
+		raise ValueError("Unable to parse measurement")
 
-	:param s:
-	:type s:
-	:return:
-	:rtype:
+	val = float(val)
 
-	# TODO: combine with parse_measurement
-	"""
+	if unit == "mm":
+		return val * mm
+	elif unit == "cm":
+		return val * cm
+	elif unit in {"um", "μm", "µm"}:  # second is mu, third is micro
+		return val * um
+	elif unit == "pt":
+		return val * pt
+	elif unit in {"inch", "in", '"'}:
+		return val * inch
+	elif unit in ("pc", "pica"):
+		return val * pc
 
-	try:
-		if s[-2:] == "cm":
-			return float(s[:-2]) * cm
-		if s[-2:] == "in":
-			return float(s[:-2]) * inch
-		if s[-2:] == "pt":
-			return float(s[:-2])
-		if s[-1:] == 'i':
-			return float(s[:-1]) * inch
-		if s[-2:] == "mm":
-			return float(s[:-2]) * mm
-		if s[-4:] == "pica":
-			return float(s[:-4]) * pica
-		return float(s)
-	except:
-		raise ValueError(f"Can't convert_to '{s}' to length")
+	raise ValueError("Unknown unit")

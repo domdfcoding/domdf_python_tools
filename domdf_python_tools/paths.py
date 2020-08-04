@@ -60,7 +60,7 @@ def copytree(
 		dst: PathLike,
 		symlinks: bool = False,
 		ignore: Optional[Callable] = None,
-		):
+		) -> PathLike:
 	"""
 	Alternative to :func:`shutil.copytree` to support copying to a directory that already exists.
 
@@ -95,9 +95,11 @@ def copytree(
 		s = os.path.join(src, item)
 		d = os.path.join(dst, item)
 		if os.path.isdir(s):
-			return shutil.copytree(s, d, symlinks, ignore)
+			shutil.copytree(s, d, symlinks, ignore)
 		else:
-			return shutil.copy2(s, d)
+			shutil.copy2(s, d)
+
+	return dst
 
 
 def delete(filename: PathLike, **kwargs):

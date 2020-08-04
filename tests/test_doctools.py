@@ -154,7 +154,7 @@ def partially_documented_function(a: float, b: float, c: float, d: float) -> Non
 	This function works like ``documented_function`` except it returns the result telepathically.
 	"""
 
-	d * c * b * a  # pylint: disable=expression-not-assigned
+	d * c * b * a  # pylint: disable=pointless-statement
 
 
 class DummyClass:

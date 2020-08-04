@@ -35,9 +35,9 @@ from domdf_python_tools.pagesizes import (
 		parse_measurement,
 		pc,
 		pt,
-		sizes,
 		um
 		)
+from domdf_python_tools.pagesizes.utils import _measurement_re
 
 
 @pytest.mark.parametrize(
@@ -117,14 +117,6 @@ def test_convert_size(unit):
 
 
 #
-# def test_parse_measurement():
-# 	assert parse_measurement("12mm") == (12 * mm).as_pt()
-# 	assert parse_measurement("12 mm") == (12 * mm).as_pt()
-# 	assert parse_measurement("12.34 mm") == (12.34 * mm).as_pt()
-# 	assert parse_measurement("5inch") == (5 * inch).as_pt()
-# 	assert parse_measurement("5in") == (5 * inch).as_pt()
-#
-#
 # @pytest.mark.parametrize(
 # 		"size, expected",
 # 		[
@@ -147,20 +139,46 @@ def test_convert_size(unit):
 #
 # # TODO: tests for Unit
 #
-def test_convert_from():
-	assert convert_from(1, pt) == 1
-	assert convert_from(1, inch) == 72
-	assert convert_from(1, cm) == 28.3464566929
-	assert convert_from(1, mm) == 2.83464566929
-	assert convert_from(1, um) == 0.00283464566929
-	assert convert_from(1, pc) == 12
 
-	assert convert_from(5, pt) == 1 * 5
-	assert convert_from(5, inch) == 72 * 5
-	assert convert_from(5, cm) == 28.3464566929 * 5
-	assert convert_from(5, mm) == 2.83464566929 * 5
-	assert convert_from(5, um) == 0.00283464566929 * 5
-	assert convert_from(5, pc) == 12 * 5
+
+@pytest.mark.parametrize(
+		"value, unit, expects",
+		[
+				(1, pt, 1),
+				(1, inch, 72),
+				(1, cm, 28.3464566929),
+				(1, mm, 2.83464566929),
+				(1, um, 0.00283464566929),
+				(1, pc, 12),
+				(5, pt, 1 * 5),
+				(5, inch, 72 * 5),
+				(5, cm, 28.3464566929 * 5),
+				(5, mm, 2.83464566929 * 5),
+				(5, um, 0.00283464566929 * 5),
+				(5, pc, 12 * 5),
+				([1], pt, (1, )),
+				([1], inch, (72, )),
+				([1], cm, (28.3464566929, )),
+				([1], mm, (2.83464566929, )),
+				([1], um, (0.00283464566929, )),
+				([1], pc, (12, )),
+				([5], pt, (1 * 5, )),
+				([5], inch, (72 * 5, )),
+				([5], cm, (28.3464566929 * 5, )),
+				([5], mm, (2.83464566929 * 5, )),
+				([5], um, (0.00283464566929 * 5, )),
+				([5], pc, (12 * 5, )),
+				([1, 5], pt, (1, 1 * 5)),
+				([1, 5], inch, (72, 72 * 5)),
+				([1, 5], cm, (28.3464566929, 28.3464566929 * 5)),
+				([1, 5], mm, (2.83464566929, 2.83464566929 * 5)),
+				([1, 5], um, (0.00283464566929, 0.00283464566929 * 5)),
+				([1, 5], pc, (12, 12 * 5)),
+				pytest.param(2, 5, 10, id="not isinstance(from_, Unit)"),
+				]
+		)
+def test_convert_from(value, unit, expects):
+	assert convert_from(value, unit) == expects
 
 
 @pytest.mark.parametrize(
@@ -172,3 +190,76 @@ def test_convert_from():
 def test_from_size(size, expected, class_):
 	print(class_.from_size(size))
 	assert class_.from_size(size) == expected
+
+
+@pytest.mark.parametrize(
+		"string, expects",
+		[
+				("12.34mm", [("12.34", "mm")]),
+				("12.34 mm", [("12.34", "mm")]),
+				(".34 mm", [(".34", "mm")]),
+				("12.34in", [("12.34", "in")]),
+				("12.34 in", [("12.34", "in")]),
+				(".34 in", [(".34", "in")]),
+				("12.34\"", [("12.34", "\"")]),
+				("12.34 \"", [("12.34", "\"")]),
+				(".34 \"", [(".34", "\"")]),
+				("12.34mm .34\"", [("12.34", "mm"), (".34", "\"")]),
+				("12", [("12", '')]),
+				('', []),
+				('10μm', [('10', 'μm')]),
+				]
+		)
+def test_measurement_re(string, expects):
+	assert _measurement_re.findall(string) == expects
+
+
+def test_parse_measurement_errors():
+	with pytest.raises(ValueError, match="Too many measurements"):
+		parse_measurement("12.34mm .34\"")
+	with pytest.raises(ValueError, match="Unable to parse measurement"):
+		parse_measurement("")
+	with pytest.raises(ValueError, match="Unable to parse measurement"):
+		parse_measurement("bananas")
+	with pytest.raises(ValueError, match="Unable to parse measurement"):
+		parse_measurement('')
+	with pytest.raises(ValueError, match="Unable to parse measurement"):
+		parse_measurement("12")
+	with pytest.raises(ValueError, match="Unable to parse measurement"):
+		parse_measurement("mm")
+	with pytest.raises(ValueError, match="Unknown unit"):
+		parse_measurement("12'")
+
+
+@pytest.mark.parametrize(
+		"string, expects",
+		[
+				("12mm", mm(12)),
+				("12 mm", mm(12)),
+				("12.34 mm", mm(12.34)),
+				("12 um", um(12)),
+				("12um", um(12)),
+				("12 μm", um(12)),
+				("12μm", um(12)),
+				("12 µm", um(12)),
+				("12µm", um(12)),
+				("12 in", inch(12)),
+				("12 inch", inch(12)),
+				("12\"", inch(12)),
+				("12 cm", cm(12)),
+				("12cm", cm(12)),
+				("12 pc", pc(12)),
+				("12pc", pc(12)),
+				("12 pica", pc(12)),
+				("12pica", pc(12)),
+				("12 pt", pt(12)),
+				("12pt", pt(12)),
+				("12mm", 12 * mm),
+				("12 mm", 12 * mm),
+				("12.34 mm", 12.34 * mm),
+				("5inch", 5 * inch),
+				("5in", 5 * inch),
+				]
+		)
+def test_parse_measurement(string, expects):
+	assert parse_measurement(string) == expects

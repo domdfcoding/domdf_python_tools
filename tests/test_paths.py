@@ -11,6 +11,7 @@ import contextlib
 import os
 import pathlib
 import platform
+import shutil
 import sys
 from tempfile import TemporaryDirectory
 
@@ -19,7 +20,7 @@ import pytest
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import PathPlus, clean_writer
+from domdf_python_tools.paths import PathPlus, clean_writer, copytree
 
 
 def test_maybe_make():
@@ -339,3 +340,145 @@ def test_instantiate_wrong_platform():
 	else:
 		with pytest.raises(NotImplementedError, match="cannot instantiate .* on your system"):
 			paths.WindowsPathPlus()
+
+
+def test_copytree():
+	with TemporaryDirectory() as tmpdir:
+		tmpdir_p = pathlib.Path(tmpdir)
+
+		srcdir = tmpdir_p / "src"
+		srcdir.mkdir()
+
+		(srcdir / "root.txt").touch()
+		(srcdir / "a").mkdir()
+		(srcdir / "a" / "a.txt").touch()
+		(srcdir / "b").mkdir()
+		(srcdir / "b" / "b.txt").touch()
+		(srcdir / "c").mkdir()
+		(srcdir / "c" / "c.txt").touch()
+
+		assert (srcdir / "root.txt").exists()
+		assert (srcdir / "root.txt").is_file()
+		assert (srcdir / "a").exists()
+		assert (srcdir / "a").is_dir()
+		assert (srcdir / "a" / "a.txt").exists()
+		assert (srcdir / "a" / "a.txt").is_file()
+		assert (srcdir / "b").exists()
+		assert (srcdir / "b").is_dir()
+		assert (srcdir / "b" / "b.txt").exists()
+		assert (srcdir / "b" / "b.txt").is_file()
+		assert (srcdir / "c").exists()
+		assert (srcdir / "c").is_dir()
+		assert (srcdir / "c" / "c.txt").exists()
+		assert (srcdir / "c" / "c.txt").is_file()
+
+		destdir = tmpdir_p / "dest"
+
+		copytree(srcdir, destdir)
+
+		assert os.listdir(srcdir) == os.listdir(destdir)
+
+		assert (destdir / "root.txt").exists()
+		assert (destdir / "root.txt").is_file()
+		assert (destdir / "a").exists()
+		assert (destdir / "a").is_dir()
+		assert (destdir / "a" / "a.txt").exists()
+		assert (destdir / "a" / "a.txt").is_file()
+		assert (destdir / "b").exists()
+		assert (destdir / "b").is_dir()
+		assert (destdir / "b" / "b.txt").exists()
+		assert (destdir / "b" / "b.txt").is_file()
+		assert (destdir / "c").exists()
+		assert (destdir / "c").is_dir()
+		assert (destdir / "c" / "c.txt").exists()
+		assert (destdir / "c" / "c.txt").is_file()
+
+
+def test_copytree_exists():
+	with TemporaryDirectory() as tmpdir:
+		tmpdir_p = pathlib.Path(tmpdir)
+
+		srcdir = tmpdir_p / "src"
+		srcdir.mkdir()
+
+		(srcdir / "root.txt").touch()
+		(srcdir / "a").mkdir()
+		(srcdir / "a" / "a.txt").touch()
+		(srcdir / "b").mkdir()
+		(srcdir / "b" / "b.txt").touch()
+		(srcdir / "c").mkdir()
+		(srcdir / "c" / "c.txt").touch()
+
+		assert (srcdir / "root.txt").exists()
+		assert (srcdir / "root.txt").is_file()
+		assert (srcdir / "a").exists()
+		assert (srcdir / "a").is_dir()
+		assert (srcdir / "a" / "a.txt").exists()
+		assert (srcdir / "a" / "a.txt").is_file()
+		assert (srcdir / "b").exists()
+		assert (srcdir / "b").is_dir()
+		assert (srcdir / "b" / "b.txt").exists()
+		assert (srcdir / "b" / "b.txt").is_file()
+		assert (srcdir / "c").exists()
+		assert (srcdir / "c").is_dir()
+		assert (srcdir / "c" / "c.txt").exists()
+		assert (srcdir / "c" / "c.txt").is_file()
+
+		destdir = tmpdir_p / "dest"
+		destdir.mkdir()
+
+		copytree(srcdir, destdir)
+
+		assert os.listdir(srcdir) == os.listdir(destdir)
+
+		assert (destdir / "root.txt").exists()
+		assert (destdir / "root.txt").is_file()
+		assert (destdir / "a").exists()
+		assert (destdir / "a").is_dir()
+		assert (destdir / "a" / "a.txt").exists()
+		assert (destdir / "a" / "a.txt").is_file()
+		assert (destdir / "b").exists()
+		assert (destdir / "b").is_dir()
+		assert (destdir / "b" / "b.txt").exists()
+		assert (destdir / "b" / "b.txt").is_file()
+		assert (destdir / "c").exists()
+		assert (destdir / "c").is_dir()
+		assert (destdir / "c" / "c.txt").exists()
+		assert (destdir / "c" / "c.txt").is_file()
+
+
+def test_copytree_exists_stdlib():
+	with TemporaryDirectory() as tmpdir:
+		tmpdir_p = pathlib.Path(tmpdir)
+
+		srcdir = tmpdir_p / "src"
+		srcdir.mkdir()
+
+		(srcdir / "root.txt").touch()
+		(srcdir / "a").mkdir()
+		(srcdir / "a" / "a.txt").touch()
+		(srcdir / "b").mkdir()
+		(srcdir / "b" / "b.txt").touch()
+		(srcdir / "c").mkdir()
+		(srcdir / "c" / "c.txt").touch()
+
+		assert (srcdir / "root.txt").exists()
+		assert (srcdir / "root.txt").is_file()
+		assert (srcdir / "a").exists()
+		assert (srcdir / "a").is_dir()
+		assert (srcdir / "a" / "a.txt").exists()
+		assert (srcdir / "a" / "a.txt").is_file()
+		assert (srcdir / "b").exists()
+		assert (srcdir / "b").is_dir()
+		assert (srcdir / "b" / "b.txt").exists()
+		assert (srcdir / "b" / "b.txt").is_file()
+		assert (srcdir / "c").exists()
+		assert (srcdir / "c").is_dir()
+		assert (srcdir / "c" / "c.txt").exists()
+		assert (srcdir / "c" / "c.txt").is_file()
+
+		destdir = tmpdir_p / "dest"
+		destdir.mkdir()
+
+		with pytest.raises(FileExistsError, match=r".*[\\/]dest"):
+			shutil.copytree(srcdir, destdir)
