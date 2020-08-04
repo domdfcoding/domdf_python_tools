@@ -28,14 +28,15 @@ from domdf_python_tools.typing import PathLike, check_membership
 				("abc", List[str]),
 				(1234, Sequence[int]),
 				(12.34, Set[float]),
-				(1234, Tuple[int, float, str]),  # todo: Position
-				(12.34, Tuple[int, float, str]),  # todo: Position
-				("abc", Tuple[int, float, str]),  # todo: Position
-				(1234, Dict[int, float]),  # todo: Position
-				(12.34, Dict[int, float]),  # todo: Position
+				(1234, Tuple[int, float, str]),
+				(12.34, Tuple[int, float, str]),
+				("abc", Tuple[int, float, str]),
+				(1234, Dict[int, float]),
+				(12.34, Dict[int, float]),
 				]
 		)
 def test_check_membership_true(obj, type_):
+	# todo: Positions for Tuple and Dict
 	assert check_membership(obj, type_)
 
 
