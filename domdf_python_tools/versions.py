@@ -52,8 +52,7 @@ class Version(Tuple[int, int, int]):
 		Return the representation of the version.
 		"""
 
-		types = self.__annotations__
-		field_names = list(types.keys())
+		field_names = self.__annotations__.keys()
 		repr_fmt = '(' + ', '.join(f"{name}=%r" for name in field_names) + ')'
 		return self.__class__.__name__ + repr_fmt % self
 
