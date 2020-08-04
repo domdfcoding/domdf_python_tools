@@ -447,6 +447,10 @@ def test_copytree_exists():
 		assert (destdir / "c" / "c.txt").is_file()
 
 
+@pytest.mark.xfail(
+		condition=(sys.version_info < (3, 6, 9) and platform.python_implementation() == "PyPy"),
+		reason="Fails with unrelated error on PyPy 7.1.1 / 3.6.1",
+		)
 def test_copytree_exists_stdlib():
 	with TemporaryDirectory() as tmpdir:
 		tmpdir_p = pathlib.Path(tmpdir)
