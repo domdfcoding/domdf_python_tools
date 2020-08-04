@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # cython: language_level=3
-# -*- coding: utf-8 -*-
 #
 #  utils.py
 """
@@ -8,6 +7,18 @@ General utility functions
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#
+#  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
+#  		Copyright © 2015 TehTechGuy
+# 		Licensed under CC-BY-SA
+#
+#  as_text from https://stackoverflow.com/a/40935194
+# 		Copyright © 2016 User3759685
+# 		Available under the MIT License
+#
+#  chunks from https://stackoverflow.com/a/312464/3092681
+# 		Copytight © 2008 Ned Batchelder
+# 		Licensed under CC-BY-SA
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by

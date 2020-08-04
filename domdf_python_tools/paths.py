@@ -7,18 +7,6 @@ Functions for paths and files.
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
-#  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
-#  		Copyright © 2015 TehTechGuy
-# 		Licensed under CC-BY-SA
-#
-#  as_text from https://stackoverflow.com/a/40935194
-# 		Copyright © 2016 User3759685
-# 		Available under the MIT License
-#
-#  chunks from https://stackoverflow.com/a/312464/3092681
-# 		Copytight © 2008 Ned Batchelder
-# 		Licensed under CC-BY-SA
-#
 #  Parts of the docstrings and the PathPlus class based on the Python 3.8.2 Documentation
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
@@ -56,10 +44,6 @@ from domdf_python_tools.typing import PathLike
 def append(var: str, filename: PathLike, **kwargs) -> int:
 	"""
 	Append ``var`` to the file ``filename`` in the current directory.
-
-	.. warning::
-
-		This is currently untested
 
 	.. TODO:: make this the file in the given directory, by default the current directory
 
@@ -120,10 +104,6 @@ def delete(filename: PathLike, **kwargs):
 	"""
 	Delete the file in the current directory.
 
-	.. warning::
-
-		This is currently untested
-
 	.. TODO:: make this the file in the given directory, by default the current directory
 
 	:param filename: The file to delete
@@ -182,10 +162,6 @@ def parent_path(path: PathLike) -> pathlib.Path:
 def read(filename: PathLike, **kwargs) -> str:
 	"""
 	Read a file in the current directory (in text mode).
-
-	.. warning::
-
-		This is currently untested
 
 	.. TODO:: make this the file in the given directory, by default the current directory
 
