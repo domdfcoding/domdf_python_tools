@@ -25,7 +25,7 @@ def test_iter_string(string, expects):
 
 
 @pytest.mark.parametrize(
-		"float, expects",
+		"float_, expects",
 		[
 				(1, (1, )),
 				(1.0, (1, 0)),
@@ -39,8 +39,8 @@ def test_iter_string(string, expects):
 				("15", (15, )),
 				]
 		)
-def test_iter_float(float, expects):
-	assert tuple(_iter_float(float)) == expects
+def test_iter_float(float_, expects):
+	assert tuple(_iter_float(float_)) == expects
 
 
 @pytest.mark.parametrize(
@@ -486,7 +486,7 @@ def test_int(version, expects):
 				]
 		)
 def test_pickle(obj):
-	assert pickle.loads(pickle.dumps(obj)) == obj
+	assert pickle.loads(pickle.dumps(obj)) == obj  # nosec: B301
 
 
 @pytest.mark.parametrize(

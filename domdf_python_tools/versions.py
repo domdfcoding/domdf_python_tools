@@ -62,7 +62,7 @@ class Version(Tuple[int, int, int]):
 		Return version as a string.
 		"""
 
-		return "v" + ".".join(str(x) for x in self)
+		return "v" + ".".join(str(x) for x in self)  # pylint: disable=not-an-iterable
 
 	def __float__(self) -> float:
 		"""
