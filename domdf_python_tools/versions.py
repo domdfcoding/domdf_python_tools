@@ -221,7 +221,7 @@ def _iter_float(version_float: float) -> Generator[int, None, None]:
 	return _iter_string(str(version_float))
 
 
-def _prep_for_eq(other: Union[str, float, Version], ) -> Union[Tuple[int, ...], NotImplemented]:
+def _prep_for_eq(other: Union[str, float, Version], ) -> Tuple[int, ...]:
 	"""
 	Prepare 'other' for use in ``__eq__``, ``__le__``, ``__ge__``, ``__gt__``, and ``__lt__``.
 	"""
