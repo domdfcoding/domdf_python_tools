@@ -4,7 +4,7 @@
 """
 Common pagesizes in point/pt
 
-TODO: list of the page sizes
+.. TODO:: list of the page sizes
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>

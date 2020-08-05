@@ -11,8 +11,12 @@ Functions for paths and files.
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
 #  Copyright © 2000 BeOpen.com . All rights reserved.
-#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
-#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
+#
+#  copytree based on https://stackoverflow.com/a/12514470/3092681
+#      Copyright © 2012 atzz
+#      Licensed under CC-BY-SA
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
