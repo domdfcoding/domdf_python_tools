@@ -11,7 +11,7 @@ import pytest
 from domdf_python_tools.versions import Version, _iter_float, _iter_string, _prep_for_eq
 
 pytestmark = pytest.mark.skipif(
-		condition=sys.version_info <= (3, 6, 1) and platform.python_implementation() == "PyPy",
+		condition=sys.version_info[:3] <= (3, 6, 1) and platform.python_implementation() == "PyPy",
 		reason="Strange bug in PyPy 7.1.1/3.6.1 on Travis when subclassing from Tuple[int, int, int]"
 		)
 
