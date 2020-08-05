@@ -35,8 +35,13 @@ class Version(Tuple[int, int, int]):
 	"""
 
 	major: int
+	"The major version number."
+
 	minor: int
+	"The minor version number."
+
 	patch: int
+	"The patch number."
 
 	def __new__(cls, major=0, minor=0, patch=0) -> "Version":
 		t: "Version" = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
@@ -85,57 +90,147 @@ class Version(Tuple[int, int, int]):
 		return tuple(self)
 
 	def __eq__(self, other) -> bool:
-		other = _prep_for_eq(other)
-		shortest = min(len(self), (len(other)))
+		"""
+		Returns whether this version is equal to the other version.
 
-		return self[:shortest] == other[:shortest]
+		:type other: str, float, Version
+		"""
+
+		other = _prep_for_eq(other)
+
+		if other is NotImplemented:
+			return NotImplemented
+		else:
+			shortest = min(len(self), (len(other)))
+			return self[:shortest] == other[:shortest]
 
 	def __gt__(self, other) -> bool:
+		"""
+		Returns whether this version is greater than the other version.
+
+		:type other: str, float, Version
+		"""
+
 		other = _prep_for_eq(other)
-		return tuple(self) > other
+
+		if other is NotImplemented:
+			return NotImplemented
+		else:
+			return tuple(self) > other
 
 	def __lt__(self, other) -> bool:
+		"""
+		Returns whether this version is less than the other version.
+
+		:type other: str, float, Version
+		"""
+
 		other = _prep_for_eq(other)
-		return tuple(self) < other
+
+		if other is NotImplemented:
+			return NotImplemented
+		else:
+			return tuple(self) < other
 
 	def __ge__(self, other) -> bool:
+		"""
+		Returns whether this version is greater than or equal to the other version.
+
+		:type other: str, float, Version
+		"""
+
 		other = _prep_for_eq(other)
 
-		return tuple(self)[:len(other)] >= other
+		if other is NotImplemented:
+			return NotImplemented
+		else:
+			return tuple(self)[:len(other)] >= other
 
 	def __le__(self, other) -> bool:
+		"""
+		Returns whether this version is less than or equal to the other version.
+
+		:type other: str, float, Version
+		"""
+
 		other = _prep_for_eq(other)
-		return tuple(self)[:len(other)] <= other
+
+		if other is NotImplemented:
+			return NotImplemented
+		else:
+			return tuple(self)[:len(other)] <= other
 
 	@classmethod
 	def from_str(cls, version_string: str) -> "Version":
+		"""
+		Create a :class:`~.Version` from a :class:`str`.
+
+		:param version_string: The version number.
+
+		:return: The created Version
+		"""
+
 		return cls(*_iter_string(version_string))
 
 	@classmethod
 	def from_tuple(cls, version_tuple: Tuple[Union[str, int], Union[str, int], Union[str, int]]) -> "Version":
+		"""
+		Create a :class:`~.Version` from a :class:`tuple`.
+
+		:param version_tuple: The version number.
+
+		:return: The created Version
+		"""
+
 		return cls(*(int(x) for x in version_tuple))
 
 	@classmethod
 	def from_float(cls, version_float: float) -> "Version":
+		"""
+		Create a :class:`~.Version` from a :class:`float`.
+
+		:param version_float: The version number.
+
+		:return: The created Version
+		"""
+
 		return cls.from_str(str(version_float))
 
 
 def _iter_string(version_string: str) -> Generator[int, None, None]:
+	"""
+	Iterate over the version elements from a string.
+
+	:param version_string: The version as a string.
+
+	:return: Iterable elements of the version.
+	"""
+
 	return (int(x) for x in version_string.split("."))
 
 
 def _iter_float(version_float: float) -> Generator[int, None, None]:
+	"""
+	Iterate over the version elements from a float.
+
+	:param version_float: The version as a float.
+
+	:return: Iterable elements of the version.
+	"""
+
 	return _iter_string(str(version_float))
 
 
-def _prep_for_eq(other) -> Tuple[int, ...]:
-	if isinstance(other, str):
-		other = tuple(_iter_string(other))
-	elif isinstance(other, (Version, Sequence)):
-		other = tuple((int(x) for x in other))
-	elif isinstance(other, (int, float)):
-		other = tuple(_iter_float(other))
-	else:  # pragma: no cover
-		raise NotImplementedError
+def _prep_for_eq(other: Union[str, float, Version], ) -> Union[Tuple[int, ...], NotImplemented]:
+	"""
+	Prepare 'other' for use in ``__eq__``, ``__le__``, ``__ge__``, ``__gt__``, and ``__lt__``.
+	"""
 
-	return other
+	if isinstance(other, str):
+		return tuple(_iter_string(other))
+	elif isinstance(other, (Version, Sequence)):
+		return tuple((int(x) for x in other))
+	elif isinstance(other, (int, float)):
+		return tuple(_iter_float(other))
+	else:  # pragma: no cover
+		return NotImplemented

@@ -6,3 +6,4 @@
 	:members:
 	:autosummary:
 	:undoc-members:
+	:special-members:
