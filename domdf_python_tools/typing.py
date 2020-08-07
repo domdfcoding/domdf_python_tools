@@ -31,7 +31,7 @@ from typing import Any, Type, Union
 PathLike = Union[str, pathlib.Path, os.PathLike]
 
 
-def check_membership(obj: Any, type_: Type) -> bool:
+def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 	"""
 	Check if the type of ``obj`` is one of the types in a :class:`typing.Union`, Sequence etc.
 

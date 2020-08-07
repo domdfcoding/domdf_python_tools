@@ -67,9 +67,8 @@ import pprint
 import shlex
 import struct
 import subprocess
-import sys
 import textwrap
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 
 
 def clear() -> None:
@@ -208,12 +207,14 @@ def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
 	import fcntl
 	import termios
 
-	def ioctl_GWINSZ(fd):
+	def ioctl_GWINSZ(fd: int) -> Optional[Tuple[Any, ...]]:
 		try:
-			cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, "1234"))
+			cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, b"1234"))
 			return cr
 		except Exception:
 			pass
+
+		return None
 
 	cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
 
@@ -252,10 +253,15 @@ class Echo:
 			self.parent_frame = inspect.currentframe().f_back  # type: ignore  # TODO
 
 	def __enter__(self):
-		self.locals_on_entry = self.parent_frame.f_locals.copy()
+		self.locals_on_entry = self.parent_frame.f_locals.copy()  # type: ignore
 
 	def __exit__(self, exc_t, exc_v, tb):
-		new_locals = {k: v for k, v in self.parent_frame.f_locals.items() if k not in self.locals_on_entry}
+		new_locals = {
+				k: v
+				for k, v in self.parent_frame.f_locals.items()   # type: ignore
+				if k not in self.locals_on_entry
+				}
+
 		print(textwrap.indent(pprint.pformat(new_locals), self.indent))
 
 

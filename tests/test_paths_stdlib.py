@@ -8,20 +8,17 @@
 #
 
 # stdlib
-import collections.abc
 import errno
-import io
 import os
 import pathlib
 import pickle
-import platform
 import socket
 import stat
 import sys
-import tempfile
 import unittest
 from test import support  # type: ignore
 from test.support import TESTFN  # type: ignore
+from typing import Set
 from unittest import mock
 
 # 3rd party
@@ -44,7 +41,7 @@ rel_join = lambda *x: os.path.join(TESTFN, *x)
 
 
 def symlink_skip_reason():
-	if not pathlib.supports_symlinks:
+	if not pathlib.supports_symlinks:  # type: ignore
 		return "no system support for symlinks"
 	try:
 		os.symlink(__file__, BASE)
@@ -243,7 +240,7 @@ class PathTest(unittest.TestCase):
 	def test_unlink_missing_ok(self):  # pragma: no cover (<py37)
 		p = PathPlus(BASE) / 'fileAAA'
 		self.assertFileNotFound(p.unlink)
-		p.unlink(missing_ok=True)
+		p.unlink(missing_ok=True)  # type: ignore
 
 	def test_rmdir(self):
 		p = PathPlus(BASE) / 'dirA'
@@ -262,7 +259,7 @@ class PathTest(unittest.TestCase):
 		# linking to another path.
 		q = P / 'dirA' / 'fileAA'
 		try:
-			p.link_to(q)
+			p.link_to(q)  # type: ignore
 		except PermissionError as e:
 			self.skipTest('os.link(): %s' % e)
 		self.assertEqual(q.stat().st_size, size)
@@ -270,7 +267,7 @@ class PathTest(unittest.TestCase):
 		self.assertTrue(p.stat)
 		# Linking to a str of a relative path.
 		r = rel_join('fileAAA')
-		q.link_to(r)
+		q.link_to(r)  # type: ignore
 		self.assertEqual(os.stat(r).st_size, size)
 		self.assertTrue(q.stat)
 
@@ -281,7 +278,7 @@ class PathTest(unittest.TestCase):
 		# linking to another path.
 		q = P / 'dirA' / 'fileAA'
 		with self.assertRaises(NotImplementedError):
-			p.link_to(q)
+			p.link_to(q)  # type: ignore
 
 	def test_rename(self):
 		P = PathPlus(BASE)
@@ -347,11 +344,11 @@ class PathTest(unittest.TestCase):
 	@with_symlinks
 	def test_readlink(self):  # pragma: no cover (<py39)
 		P = PathPlus(BASE)
-		self.assertEqual((P / 'linkA').readlink(), PathPlus('fileA'))
-		self.assertEqual((P / 'brokenLink').readlink(), PathPlus('non-existing'))
-		self.assertEqual((P / 'linkB').readlink(), PathPlus('dirB'))
+		self.assertEqual((P / 'linkA').readlink(), PathPlus('fileA'))  # type: ignore
+		self.assertEqual((P / 'brokenLink').readlink(), PathPlus('non-existing'))  # type: ignore
+		self.assertEqual((P / 'linkB').readlink(), PathPlus('dirB'))  # type: ignore
 		with self.assertRaises(OSError):
-			(P / 'fileA').readlink()
+			(P / 'fileA').readlink()  # type: ignore
 
 	def test_touch_common(self):
 		P = PathPlus(BASE)
@@ -507,7 +504,7 @@ class PathTest(unittest.TestCase):
 				os.mkdir(path, mode)  # Our real call.
 
 			pattern = [bool(pattern_num & (1 << n)) for n in range(5)]
-			concurrently_created = set()
+			concurrently_created: Set = set()
 			p12 = p / 'dir1' / 'dir2'
 			try:
 				with mock.patch("pathlib._normal_accessor.mkdir", my_mkdir):
@@ -569,13 +566,13 @@ class PathTest(unittest.TestCase):
 	def test_is_mount(self):  # pragma: no cover (<py37)
 		P = PathPlus(BASE)
 		R = PathPlus('/')  # TODO: Work out Windows.
-		self.assertFalse((P / 'fileA').is_mount())
-		self.assertFalse((P / 'dirA').is_mount())
-		self.assertFalse((P / 'non-existing').is_mount())
-		self.assertFalse((P / 'fileA' / 'bah').is_mount())
-		self.assertTrue(R.is_mount())
+		self.assertFalse((P / 'fileA').is_mount())  # type: ignore
+		self.assertFalse((P / 'dirA').is_mount())  # type: ignore
+		self.assertFalse((P / 'non-existing').is_mount())  # type: ignore
+		self.assertFalse((P / 'fileA' / 'bah').is_mount())  # type: ignore
+		self.assertTrue(R.is_mount())  # type: ignore
 		if support.can_symlink():
-			self.assertFalse((P / 'linkA').is_mount())
+			self.assertFalse((P / 'linkA').is_mount())  # type: ignore
 
 	def test_is_symlink(self):
 		P = PathPlus(BASE)

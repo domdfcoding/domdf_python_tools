@@ -34,7 +34,7 @@ from typing import Any, Callable, Optional, Sequence, Type, TypeVar, Union
 F = TypeVar('F', bound=Callable[..., Any])
 
 
-def deindent_string(string: str) -> str:
+def deindent_string(string: Optional[str]) -> str:
 	"""
 	Removes all indentation from the given string.
 
@@ -44,6 +44,10 @@ def deindent_string(string: str) -> str:
 	:return: The string without indentation
 	:rtype: str
 	"""
+
+	if not string:
+		# Short circuit if empty string or None
+		return ''
 
 	split_string = string.split("\n")
 	deindented_string = [line.lstrip("\t ") for line in split_string]

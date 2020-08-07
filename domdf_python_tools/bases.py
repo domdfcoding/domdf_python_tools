@@ -52,7 +52,7 @@ class Dictable(Iterable):
 		return self.__dict__
 
 	def __setstate__(self, state):
-		self.__init__(**state)
+		self.__init__(**state)  # type: ignore
 
 	def __copy__(self):
 		return self.__class__(**self.__dict__)

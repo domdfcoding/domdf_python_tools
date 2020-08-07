@@ -147,8 +147,8 @@ def test_maybe_make_parents_pathplus():
 
 
 def test_parent_path():
-	with TemporaryDirectory() as tmpdir:
-		tmpdir = pathlib.Path(tmpdir)
+	with TemporaryDirectory() as tmpdir_:
+		tmpdir = pathlib.Path(tmpdir_)
 
 		dir1 = tmpdir / "dir1"
 		dir2 = dir1 / "dir2"

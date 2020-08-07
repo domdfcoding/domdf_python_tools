@@ -13,7 +13,7 @@ sys.path.append(".")
 sys.path.append("tests")
 
 # 3rd party
-import discover_demo_module
+import discover_demo_module  # type: ignore
 
 
 def test_discover():
