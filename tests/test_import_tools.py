@@ -1,0 +1,89 @@
+# stdlib
+import inspect
+import sys
+from contextlib import contextmanager
+
+# 3rd party
+import pytest
+
+# this package
+from domdf_python_tools.import_tools import discover
+
+sys.path.append(".")
+sys.path.append("tests")
+
+# 3rd partys
+import discover_demo_module
+
+
+def test_discover():
+	# Alphabetical order regardless of order in the module.
+	assert discover(discover_demo_module) == [
+			discover_demo_module.submodule_a.bar,
+			discover_demo_module.submodule_a.foo,
+			discover_demo_module.submodule_b.Alice,
+			discover_demo_module.submodule_b.Bob,
+			]
+
+
+def test_discover_function_only():
+	# Alphabetical order regardless of order in the module.
+	assert discover(discover_demo_module, match_func=inspect.isfunction) == [
+			discover_demo_module.submodule_a.bar,
+			discover_demo_module.submodule_a.foo,
+			]
+
+
+def test_discover_class_only():
+	# Alphabetical order regardless of order in the module.
+	assert discover(discover_demo_module, match_func=inspect.isclass) == [
+			discover_demo_module.submodule_b.Alice,
+			discover_demo_module.submodule_b.Bob,
+			]
+
+
+def test_discover_hasattr():
+
+	def match_func(obj):
+		return hasattr(obj, "foo")
+
+	assert discover(discover_demo_module, match_func=match_func) == []
+
+
+class HasPath:
+
+	__path__ = "foo"
+
+
+@contextmanager
+def does_not_raise():
+	yield
+
+
+if sys.version_info <= (3, 7):
+	haspath_error = does_not_raise()
+else:
+	haspath_error = pytest.raises(ValueError, match="^path must be None or list of paths to look for modules in$")
+
+
+def raises_attribute_error(obj, **kwargs):
+	return pytest.param(
+			obj,
+			pytest.raises(AttributeError, match=f"^'{type(obj).__name__}' object has no attribute '__path__'$"),
+			**kwargs,
+			)
+
+
+@pytest.mark.parametrize("obj, expects", [
+		raises_attribute_error("abc", id="string"),
+		raises_attribute_error(123, id="int"),
+		raises_attribute_error(12.34, id="float"),
+		raises_attribute_error([1, 2, 3], id="list"),
+		raises_attribute_error((1, 2, 3), id="tuple"),
+		raises_attribute_error({1, 2, 3}, id="set"),
+		raises_attribute_error({"a": 1, "b": 2, "c": 3}, id="dictionary"),
+		pytest.param(HasPath, haspath_error, id="HasPath"),
+		])
+def test_discover_errors(obj, expects):
+	with expects:
+		discover(obj)

@@ -99,7 +99,7 @@ class Version(Tuple[int, int, int]):
 		other = _prep_for_eq(other)
 
 		if other is NotImplemented:
-			return NotImplemented
+			return NotImplemented  # pragma: no cover
 		else:
 			shortest = min(len(self), (len(other)))
 			return self[:shortest] == other[:shortest]
@@ -114,7 +114,7 @@ class Version(Tuple[int, int, int]):
 		other = _prep_for_eq(other)
 
 		if other is NotImplemented:
-			return NotImplemented
+			return NotImplemented  # pragma: no cover
 		else:
 			return tuple(self) > other
 
@@ -128,7 +128,7 @@ class Version(Tuple[int, int, int]):
 		other = _prep_for_eq(other)
 
 		if other is NotImplemented:
-			return NotImplemented
+			return NotImplemented  # pragma: no cover
 		else:
 			return tuple(self) < other
 
@@ -142,7 +142,7 @@ class Version(Tuple[int, int, int]):
 		other = _prep_for_eq(other)
 
 		if other is NotImplemented:
-			return NotImplemented
+			return NotImplemented  # pragma: no cover
 		else:
 			return tuple(self)[:len(other)] >= other
 
@@ -156,7 +156,7 @@ class Version(Tuple[int, int, int]):
 		other = _prep_for_eq(other)
 
 		if other is NotImplemented:
-			return NotImplemented
+			return NotImplemented  # pragma: no cover
 		else:
 			return tuple(self)[:len(other)] <= other
 
