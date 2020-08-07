@@ -19,7 +19,6 @@ from domdf_python_tools import dates
 test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
 today = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
 
-
 # TODO: travis matrix to test without pytz installed
 # TODO: test get_timezone
 
@@ -180,15 +179,18 @@ def test_get_month_number_from_no(month_idx):
 		assert dates.get_month_number(month_idx) == month_idx
 
 
-@pytest.mark.parametrize("value, match", [
-		(0, "The given month is not recognised."),
-		(-1, "The given month is not recognised."),
-		(13, "The given month is not recognised."),
-		("abc", "Unrecognised month value"),
-		('0', "Unrecognised month value"),
-		("-1", "Unrecognised month value"),
-		("13", "Unrecognised month value"),
-		])
+@pytest.mark.parametrize(
+		"value, match",
+		[
+				(0, "The given month is not recognised."),
+				(-1, "The given month is not recognised."),
+				(13, "The given month is not recognised."),
+				("abc", "Unrecognised month value"),
+				('0', "Unrecognised month value"),
+				("-1", "Unrecognised month value"),
+				("13", "Unrecognised month value"),
+				]
+		)
 def test_get_month_number_errors(value, match):
 	with pytest.raises(ValueError, match=match):
 		dates.get_month_number(value)

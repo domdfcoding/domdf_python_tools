@@ -258,7 +258,8 @@ class Echo:
 	def __exit__(self, exc_t, exc_v, tb):
 		new_locals = {
 				k: v
-				for k, v in self.parent_frame.f_locals.items()   # type: ignore
+				for k,
+				v in self.parent_frame.f_locals.items()  # type: ignore
 				if k not in self.locals_on_entry
 				}
 
