@@ -12,7 +12,7 @@ from domdf_python_tools.import_tools import discover
 sys.path.append(".")
 sys.path.append("tests")
 
-# 3rd partys
+# 3rd party
 import discover_demo_module
 
 
@@ -28,18 +28,22 @@ def test_discover():
 
 def test_discover_function_only():
 	# Alphabetical order regardless of order in the module.
-	assert discover(discover_demo_module, match_func=inspect.isfunction) == [
-			discover_demo_module.submodule_a.bar,
-			discover_demo_module.submodule_a.foo,
-			]
+	assert discover(
+			discover_demo_module, match_func=inspect.isfunction
+			) == [
+					discover_demo_module.submodule_a.bar,
+					discover_demo_module.submodule_a.foo,
+					]
 
 
 def test_discover_class_only():
 	# Alphabetical order regardless of order in the module.
-	assert discover(discover_demo_module, match_func=inspect.isclass) == [
-			discover_demo_module.submodule_b.Alice,
-			discover_demo_module.submodule_b.Bob,
-			]
+	assert discover(
+			discover_demo_module, match_func=inspect.isclass
+			) == [
+					discover_demo_module.submodule_b.Alice,
+					discover_demo_module.submodule_b.Bob,
+					]
 
 
 def test_discover_hasattr():
@@ -74,16 +78,19 @@ def raises_attribute_error(obj, **kwargs):
 			)
 
 
-@pytest.mark.parametrize("obj, expects", [
-		raises_attribute_error("abc", id="string"),
-		raises_attribute_error(123, id="int"),
-		raises_attribute_error(12.34, id="float"),
-		raises_attribute_error([1, 2, 3], id="list"),
-		raises_attribute_error((1, 2, 3), id="tuple"),
-		raises_attribute_error({1, 2, 3}, id="set"),
-		raises_attribute_error({"a": 1, "b": 2, "c": 3}, id="dictionary"),
-		pytest.param(HasPath, haspath_error, id="HasPath"),
-		])
+@pytest.mark.parametrize(
+		"obj, expects",
+		[
+				raises_attribute_error("abc", id="string"),
+				raises_attribute_error(123, id="int"),
+				raises_attribute_error(12.34, id="float"),
+				raises_attribute_error([1, 2, 3], id="list"),
+				raises_attribute_error((1, 2, 3), id="tuple"),
+				raises_attribute_error({1, 2, 3}, id="set"),
+				raises_attribute_error({"a": 1, "b": 2, "c": 3}, id="dictionary"),
+				pytest.param(HasPath, haspath_error, id="HasPath"),
+				]
+		)
 def test_discover_errors(obj, expects):
 	with expects:
 		discover(obj)

@@ -68,12 +68,12 @@ def discover(
 	matched_classes = list()
 
 	for _, module_name, _ in pkgutil.walk_packages(
-			# https://github.com/python/mypy/issues/1422
-			# Stalled PRs: https://github.com/python/mypy/pull/3527
-			#              https://github.com/python/mypy/pull/5212
-			package.__path__,  # type: ignore
-			prefix=package.__name__ + '.',
-			):
+		# https://github.com/python/mypy/issues/1422
+		# Stalled PRs: https://github.com/python/mypy/pull/3527
+		#              https://github.com/python/mypy/pull/5212
+		package.__path__,  # type: ignore
+		prefix=package.__name__ + '.',
+		):
 		module = __import__(module_name, fromlist=['__trash'], level=0)
 
 		# Check all the functions in that module
