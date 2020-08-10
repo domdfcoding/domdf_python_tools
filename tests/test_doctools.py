@@ -9,9 +9,10 @@ Test functions in doctools.py
 # stdlib
 import math
 
-# this package
+# 3rd party
 import pytest
 
+# this package
 from domdf_python_tools import doctools
 
 # TODO: test sphinxification of docstrings
@@ -166,21 +167,24 @@ class DummyClass:
 		return
 
 
-@pytest.mark.parametrize("docstring, expects", [
-		("\t\t\t   ", ''),
-		("\t\t\t   Spam", "Spam"),
-		("\t\t\t   Spam   \t\t\t", "Spam   \t\t\t"),
-		("\t\t\t   Spam\n   \t\t\t", "Spam\n"),
-		("   \t\t\t", ''),
-		("   \t\t\tSpam", "Spam"),
-		("   \t\t\tSpam\t\t\t   ", "Spam\t\t\t   "),
-		("   \t\t\tSpam\n\t\t\t   ", "Spam\n"),
-		('', ''),
-		(None, ''),
-		(False, ''),
-		(0, ''),
-		([], ''),
-		])
+@pytest.mark.parametrize(
+		"docstring, expects",
+		[
+				("\t\t\t   ", ''),
+				("\t\t\t   Spam", "Spam"),
+				("\t\t\t   Spam   \t\t\t", "Spam   \t\t\t"),
+				("\t\t\t   Spam\n   \t\t\t", "Spam\n"),
+				("   \t\t\t", ''),
+				("   \t\t\tSpam", "Spam"),
+				("   \t\t\tSpam\t\t\t   ", "Spam\t\t\t   "),
+				("   \t\t\tSpam\n\t\t\t   ", "Spam\n"),
+				('', ''),
+				(None, ''),
+				(False, ''),
+				(0, ''),
+				([], ''),
+				]
+		)
 def test_deindent_string(docstring, expects):
 	assert doctools.deindent_string(docstring) == expects
 
