@@ -10,6 +10,8 @@ Test functions in doctools.py
 import math
 
 # this package
+import pytest
+
 from domdf_python_tools import doctools
 
 # TODO: test sphinxification of docstrings
@@ -164,15 +166,23 @@ class DummyClass:
 		return
 
 
-def test_deindent_string():
-	assert doctools.deindent_string("\t\t\t   ") == ''
-	assert doctools.deindent_string("\t\t\t   Spam") == "Spam"
-	assert doctools.deindent_string("\t\t\t   Spam   \t\t\t") == "Spam   \t\t\t"
-	assert doctools.deindent_string("\t\t\t   Spam\n   \t\t\t") == "Spam\n"
-	assert doctools.deindent_string("   \t\t\t") == ''
-	assert doctools.deindent_string("   \t\t\tSpam") == "Spam"
-	assert doctools.deindent_string("   \t\t\tSpam\t\t\t   ") == "Spam\t\t\t   "
-	assert doctools.deindent_string("   \t\t\tSpam\n\t\t\t   ") == "Spam\n"
+@pytest.mark.parametrize("docstring, expects", [
+		("\t\t\t   ", ''),
+		("\t\t\t   Spam", "Spam"),
+		("\t\t\t   Spam   \t\t\t", "Spam   \t\t\t"),
+		("\t\t\t   Spam\n   \t\t\t", "Spam\n"),
+		("   \t\t\t", ''),
+		("   \t\t\tSpam", "Spam"),
+		("   \t\t\tSpam\t\t\t   ", "Spam\t\t\t   "),
+		("   \t\t\tSpam\n\t\t\t   ", "Spam\n"),
+		('', ''),
+		(None, ''),
+		(False, ''),
+		(0, ''),
+		([], ''),
+		])
+def test_deindent_string(docstring, expects):
+	assert doctools.deindent_string(docstring) == expects
 
 
 def test_decorators():

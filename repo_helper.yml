@@ -46,3 +46,6 @@ keywords:
 
 yapf_exclude:
   - "*.pyi"
+
+manifest_additional:
+  - "include domdf_python_tools/google-10000-english-no-swears.txt"

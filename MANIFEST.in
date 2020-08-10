@@ -2,5 +2,6 @@ include __pkginfo__.py
 include LICENSE
 include requirements.txt
 prune **/__pycache__
+include domdf_python_tools/google-10000-english-no-swears.txt
 recursive-include domdf_python_tools *.pyi
 include domdf_python_tools/py.typed
