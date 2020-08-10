@@ -39,10 +39,8 @@ def deindent_string(string: Optional[str]) -> str:
 	Removes all indentation from the given string.
 
 	:param string: The string to deindent
-	:type string: str
 
 	:return: The string without indentation
-	:rtype: str
 	"""
 
 	if not string:
@@ -106,12 +104,9 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 	`intersphinx_mapping` dict of your conf.py for sphinx.
 
 	:param input_string: The string to process
-	:type input_string: str
 	:param builtins_list: A list of builtins to make links for
-	:type builtins_list: list of str
 
 	:return: processed string with links
-	:rtype: str
 	"""
 
 	if builtins_list is None:
@@ -164,8 +159,8 @@ def sphinxify_docstring() -> Callable:
 
 	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
 
-	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
-	`intersphinx_mapping` dict of your conf.py for sphinx.
+	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
+	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
 	"""
 
 	def wrapper(target: F) -> F:

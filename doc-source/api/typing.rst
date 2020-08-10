@@ -1,9 +1,8 @@
 ***********************************
-:mod:`domdf_python_tools.terminal`
+:mod:`domdf_python_tools.typing`
 ***********************************
 
-.. automodule:: domdf_python_tools.terminal
+.. automodule:: domdf_python_tools.typing
 	:members:
 	:autosummary:
 	:undoc-members:
-	:special-members:

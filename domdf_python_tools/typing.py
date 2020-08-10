@@ -28,6 +28,7 @@ import os
 import pathlib
 from typing import Any, Type, Union
 
+#: Type hint for objects that represent filesystem paths.
 PathLike = Union[str, pathlib.Path, os.PathLike]
 
 

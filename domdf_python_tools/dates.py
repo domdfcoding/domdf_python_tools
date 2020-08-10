@@ -202,7 +202,6 @@ def parse_month(month: Union[str, int]) -> str:
 	:type month: str or int
 
 	:return: The full name of the month
-	:rtype: str
 	"""
 
 	try:

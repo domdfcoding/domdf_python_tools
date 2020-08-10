@@ -174,7 +174,6 @@ def read(filename: PathLike, **kwargs) -> str:
 	:param filename: The file to read from
 
 	:return: The contents of the file
-	:rtype: str
 	"""
 
 	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:

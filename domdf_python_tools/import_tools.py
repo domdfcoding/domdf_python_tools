@@ -56,13 +56,13 @@ def discover(
 		match_func: Optional[Callable[[Any], bool]] = None,
 		) -> List[Type[Any]]:
 	"""
-	Returns a set of objects in the directory matched by match_func
+	Returns a list of objects in the directory matched by match_func
 
 	:param package: A Python package
 	:param match_func: Function taking an object and returning true if the object is to be included in the output.
+	:default match_func: :py:obj:`None`, which includes all objects.
 
-	:return:
-	:rtype:
+	:return: List of matching objects.
 	"""
 
 	matched_classes = list()

@@ -162,7 +162,6 @@ class AnsiCursor:
 		:type n: int
 
 		:return:
-		:rtype: str
 		"""
 
 		return f"{CSI}{str(n)}A"
@@ -174,7 +173,6 @@ class AnsiCursor:
 		:type n: int
 
 		:return:
-		:rtype: str
 		"""
 
 		return f"{CSI}{str(n)}B"
@@ -186,7 +184,6 @@ class AnsiCursor:
 		:type n: int
 
 		:return:
-		:rtype: str
 		"""
 
 		return f"{CSI}{str(n)}C"
@@ -198,7 +195,6 @@ class AnsiCursor:
 		:type n: int
 
 		:return:
-		:rtype: str
 		"""
 
 		return f"{CSI}{str(n)}D"
@@ -212,7 +208,6 @@ class AnsiCursor:
 		:type y: int
 
 		:return:
-		:rtype: str
 		"""
 
 		return f"{CSI}{str(y)};{str(x)}H"

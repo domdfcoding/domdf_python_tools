@@ -37,6 +37,7 @@ General utility functions
 #
 
 # stdlib
+import itertools
 import sys
 from typing import Any, Generator, Iterable, List, Sequence, Tuple, Union
 
@@ -68,8 +69,6 @@ def as_text(value: Any) -> str:
 	Convert the given value to a string. ``None`` is converted to ``''``.
 
 	:param value: Value to convert to a string
-
-	:rtype: str
 	"""
 
 	if value is None:
@@ -131,8 +130,6 @@ def cmp(x, y) -> int:
 	Compare the two objects x and y and return an integer according to the outcome.
 
 	The return value is negative if x < y, zero if x == y and strictly positive if x > y.
-
-	:rtype: int
 	"""
 
 	return int((x > y) - (x < y))
@@ -142,13 +139,10 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	"""
 	Convert an iterable, such as a list, to a comma separated string.
 
-	:param the_list: The iterable to convert to a string
-	:type the_list: ~collections.abc.Iterable
-	:param sep: Separator to use for the string. Default `,`
-	:type sep: str
+	:param the_list: The iterable to convert to a string.
+	:param sep: Separator to use for the string.
 
 	:return: Comma separated string
-	:rtype: str
 	"""
 
 	return sep.join([str(x) for x in the_list])
@@ -164,13 +158,8 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	If ``n`` is equal to or greater than the length of the data an empty list of returned.
 
 	:param data:
-	:type data: ~collections.abc.Iterable
 	:param n:
-	:type n: int
 	"""
-
-	# stdlib
-	import itertools
 
 	if n == 0:
 		raise ValueError("'n' cannot be 0")
@@ -267,9 +256,9 @@ def strtobool(val: Union[str, bool]) -> bool:
 		return bool(val)
 
 	val = val.lower()
-	if val in ('y', "yes", 't', "true", "on", '1'):
+	if val in {'y', "yes", 't', "true", "on", '1'}:
 		return True
-	elif val in ('n', "no", 'f', "false", "off", '0'):
+	elif val in {'n', "no", 'f', "false", "off", '0'}:
 		return False
 	else:
 		raise ValueError(f"invalid truth value {val!r}")
@@ -288,5 +277,7 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 		return value
 	elif isinstance(value, (int, float)):
 		return value
+	elif isinstance(value, str):
+		return repr(value)
 	else:
 		return f"'{value}'"
