@@ -6,4 +6,4 @@
 	:members:
 	:autosummary:
 	:special-members:
-	:exclude-members: __weakref__
+	:exclude-members: __dir__, __weakref__

@@ -7,3 +7,4 @@
 	:autosummary:
 	:undoc-members:
 	:special-members:
+	:exclude-members: __dir__

@@ -7,4 +7,4 @@
 	:members:
 	:inherited-members:
 	:special-members:
-	:exclude-members: __dict__, __subclasshook__, __init_subclass__, __init__, __weakref__
+	:exclude-members: __dir__, __dict__, __subclasshook__, __init_subclass__, __init__, __weakref__
