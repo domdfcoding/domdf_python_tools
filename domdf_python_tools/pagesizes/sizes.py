@@ -4,7 +4,9 @@
 """
 Common pagesizes in point/pt
 
-.. TODO:: list of the page sizes
+.. TODO:: finish the list of the page sizes
+
+.. |iso216| replace:: `ISO 216 <https://en.wikipedia.org/wiki/ISO_216>`__
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -26,7 +28,7 @@ Common pagesizes in point/pt
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #  GNU Lesser General Public License for more details.
 #
 #  You should have received a copy of the GNU Lesser General Public License
@@ -148,19 +150,20 @@ from .classes import Size_inch, Size_mm
 
 # ISO 216 standard paper sizes; see eg https://en.wikipedia.org/wiki/ISO_216
 # also http://www.printernational.org/iso-paper-sizes.php
-_4A0 = Size_mm(1682, 2378).to_pt()
-_2A0 = Size_mm(1189, 1682).to_pt()
-A0 = Size_mm(841, 1189).to_pt()
-A1 = Size_mm(594, 841).to_pt()
-A2 = Size_mm(420, 594).to_pt()
-A3 = Size_mm(297, 420).to_pt()
-A4 = Size_mm(210, 297).to_pt()
-A5 = Size_mm(148, 210).to_pt()
-A6 = Size_mm(105, 148).to_pt()
-A7 = Size_mm(74, 105).to_pt()
-A8 = Size_mm(52, 74).to_pt()
-A9 = Size_mm(37, 52).to_pt()
-A10 = Size_mm(26, 37).to_pt()
+
+_4A0 = Size_mm(1682, 2378).to_pt()  #: |iso216| 4A0 Paper
+_2A0 = Size_mm(1189, 1682).to_pt()  #: |iso216| 2A0 Paper
+A0 = Size_mm(841, 1189).to_pt()  #: |iso216| A0 Paper
+A1 = Size_mm(594, 841).to_pt()  #: |iso216| A1 Paper
+A2 = Size_mm(420, 594).to_pt()  #: |iso216| A2 Paper
+A3 = Size_mm(297, 420).to_pt()  #: |iso216| A3 Paper
+A4 = Size_mm(210, 297).to_pt()  #: |iso216| A3 Paper
+A5 = Size_mm(148, 210).to_pt()  #: |iso216| A5 Paper
+A6 = Size_mm(105, 148).to_pt()  #: |iso216| A6 Paper
+A7 = Size_mm(74, 105).to_pt()  #: |iso216| A7 Paper
+A8 = Size_mm(52, 74).to_pt()  #: |iso216| A8 Paper
+A9 = Size_mm(37, 52).to_pt()  #: |iso216| A0 Paper
+A10 = Size_mm(26, 37).to_pt()  #: |iso216| A10 Paper
 
 # _W, _H = (21 * cm, 29.7 * cm)
 # A6 = (_W * .5, _H * .5)
@@ -171,17 +174,17 @@ A10 = Size_mm(26, 37).to_pt()
 # A1 = (_H * 2, _W * 4)
 # A0 = (_W * 4, _H * 4)
 
-B0 = Size_mm(1000, 1414)
-B1 = Size_mm(707, 1000)
-B2 = Size_mm(500, 707)
-B3 = Size_mm(353, 500)
-B4 = Size_mm(250, 353)
-B5 = Size_mm(176, 250)
-B6 = Size_mm(125, 176)
-B7 = Size_mm(88, 125)
-B8 = Size_mm(62, 88)
-B9 = Size_mm(44, 62)
-B10 = Size_mm(31, 44)
+B0 = Size_mm(1000, 1414)  #: |iso216| B0 Paper
+B1 = Size_mm(707, 1000)  #: |iso216| B1 Paper
+B2 = Size_mm(500, 707)  #: |iso216| B2 Paper
+B3 = Size_mm(353, 500)  #: |iso216| B3 Paper
+B4 = Size_mm(250, 353)  #: |iso216| B4 Paper
+B5 = Size_mm(176, 250)  #: |iso216| B5 Paper
+B6 = Size_mm(125, 176)  #: |iso216| B6 Paper
+B7 = Size_mm(88, 125)  #: |iso216| B7 Paper
+B8 = Size_mm(62, 88)  #: |iso216| B8 Paper
+B9 = Size_mm(44, 62)  #: |iso216| B9 Paper
+B10 = Size_mm(31, 44)  #: |iso216| B10 Paper
 
 # _BW, _BH = (25 * cm, 35.3 * cm)
 # B6 = (_BW * .5, _BH * .5)
@@ -192,32 +195,32 @@ B10 = Size_mm(31, 44)
 # B1 = (_BH * 4, _BW * 2)
 # B0 = (_BW * 4, _BH * 4)
 
-C0 = Size_mm(917, 1297)
-C1 = Size_mm(648, 917)
-C2 = Size_mm(458, 648)
-C3 = Size_mm(324, 458)
-C4 = Size_mm(229, 324)
-C5 = Size_mm(162, 229)
-C6 = Size_mm(114, 162)
-C7 = Size_mm(81, 114)
-C8 = Size_mm(57, 81)
-C9 = Size_mm(40, 57)
-C10 = Size_mm(28, 40)
+C0 = Size_mm(917, 1297)  #: |iso216| C0 Paper
+C1 = Size_mm(648, 917)  #: |iso216| C1 Paper
+C2 = Size_mm(458, 648)  #: |iso216| C2 Paper
+C3 = Size_mm(324, 458)  #: |iso216| C3 Paper
+C4 = Size_mm(229, 324)  #: |iso216| C4 Paper
+C5 = Size_mm(162, 229)  #: |iso216| C5 Paper
+C6 = Size_mm(114, 162)  #: |iso216| C6 Paper
+C7 = Size_mm(81, 114)  #: |iso216| C7 Paper
+C8 = Size_mm(57, 81)  #: |iso216| C8 Paper
+C9 = Size_mm(40, 57)  #: |iso216| C9 Paper
+C10 = Size_mm(28, 40)  #: |iso216| C10 Paper
 
-A2EXTRA = Size_mm(445, 619)
-A3EXTRA = Size_mm(322, 445)
-A3SUPER = Size_mm(305, 508)
-SUPERA3 = Size_mm(305, 487)
-A4EXTRA = Size_mm(235, 322)
-A4SUPER = Size_mm(229, 322)
-SUPERA4 = Size_mm(227, 356)
-A4LONG = Size_mm(210, 348)
-A5EXTRA = Size_mm(173, 235)
-SOB5EXTRA = Size_mm(202, 276)
+A2EXTRA = Size_mm(445, 619)  #: A2 Extra Paper
+A3EXTRA = Size_mm(322, 445)  #: A3 Extra Paper
+A3SUPER = Size_mm(305, 508)  #: A3 Super Paper (different to (Super A3)
+SUPERA3 = Size_mm(305, 487)  #: Super A3 Paper (different to A3 Super)
+A4EXTRA = Size_mm(235, 322)  #: A4 Extra Paper
+A4SUPER = Size_mm(229, 322)  #: A4 Super Paper (different to (Super A4)
+SUPERA4 = Size_mm(227, 356)  #: Super A3 Paper (different to A4 Super)
+A4LONG = Size_mm(210, 348)  #: A4 Long Paper
+A5EXTRA = Size_mm(173, 235)  #: A4 Extra Paper
+SOB5EXTRA = Size_mm(202, 276)  #: SO B5 Extra Paper
 
 # American paper sizes
-LETTER = Size_inch(8.5, 11).to_pt()
-LEGAL = Size_inch(8.5, 14).to_pt()
+LETTER = Size_inch(8.5, 11).to_pt()  #: North American "Letter" Paper
+LEGAL = Size_inch(8.5, 14).to_pt()  #: North American "Legal" Paper
 TABLOID = ELEVENSEVENTEEN = Size_inch(11, 17).to_pt()
 
 # From https://en.wikipedia.org/wiki/Paper_size
@@ -271,7 +274,7 @@ KINGS = Size_inch(6.5, 8).to_pt()
 DUKES = Size_inch(5.5, 7).to_pt()
 
 # https://en.wikipedia.org/wiki/ISO/IEC_7810
-ID_1 = Size_mm(85.60, 53.98).to_pt()  # Most banking cards and ID cards
-ID_2 = Size_mm(105, 74).to_pt()  # French and other ID cards; Visas
-ID_3 = Size_mm(125, 88).to_pt()  # US government ID cards
-ID_000 = Size_mm(25, 15).to_pt()  # SIM cards
+ID_1 = Size_mm(85.60, 53.98).to_pt()  #: Most banking cards and ID cards
+ID_2 = Size_mm(105, 74).to_pt()  #: French and other ID cards; Visas
+ID_3 = Size_mm(125, 88).to_pt()  #: US government ID cards
+ID_000 = Size_mm(25, 15).to_pt()  #: SIM cards

@@ -24,7 +24,7 @@ Tools for working with pagesizes.
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #  GNU Lesser General Public License for more details.
 #
 #  You should have received a copy of the GNU Lesser General Public License
@@ -38,7 +38,9 @@ import re
 from typing import Sequence, Tuple, Union, overload
 
 # this package
-from ._types import AnyNumber
+from domdf_python_tools.typing import AnyNumber
+
+# this package
 from .units import Unit, cm, inch, mm, pc, pt, um
 
 # from .units import Unit

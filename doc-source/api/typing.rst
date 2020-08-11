@@ -3,6 +3,4 @@
 ***********************************
 
 .. automodule:: domdf_python_tools.typing
-	:members:
-	:autosummary:
 	:undoc-members:

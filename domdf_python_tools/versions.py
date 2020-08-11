@@ -31,6 +31,13 @@ class Version(Tuple[int, int, int]):
 	"""
 	NamedTuple-like class to represent a version number.
 
+	:param major: The major version number.
+	:type major: :class:`int`
+	:param minor: The minor version number.
+	:type minor: :class:`int`
+	:param patch: The patch version number.
+	:type patch: :class:`int`
+
 	.. versionadded:: 0.4.4
 	"""
 

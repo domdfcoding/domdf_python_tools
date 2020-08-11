@@ -3,6 +3,8 @@
 #  words.py
 """
 Functions for working with (English) words.
+
+..versionadded:: 0.4.5
 """
 # stdlib
 #
@@ -54,6 +56,8 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	:no-default max_length:
 
 	:return: The list of words meeting the above specifiers.
+
+	..versionadded:: 0.4.5
 	"""
 
 	with importlib_resources.path(domdf_python_tools, "google-10000-english-no-swears.txt") as words_file_:
@@ -80,6 +84,8 @@ def get_random_word(min_length: int = 0, max_length: int = -1) -> str:
 	:no-default max_length:
 
 	:return: A random word meeting the above specifiers.
+
+	..versionadded:: 0.4.5
 	"""
 
 	words_list = get_words_list(min_length=min_length, max_length=max_length)

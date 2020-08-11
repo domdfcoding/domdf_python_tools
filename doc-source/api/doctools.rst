@@ -3,6 +3,4 @@
 **************************************
 
 .. automodule:: domdf_python_tools.doctools
-	:autosummary:
-	:members:
 	:undoc-members:

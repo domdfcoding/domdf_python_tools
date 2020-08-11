@@ -49,7 +49,6 @@ try:
 		If ``date`` is ``None`` then the current date is used.
 
 		:param tz: ``pytz.timezone`` or a string representing the timezone
-		:type tz:
 		:param date: The date to obtain the UTC offset for
 
 		:return:
@@ -73,9 +72,7 @@ try:
 		If ``date`` is ``None`` then the current date is used.
 
 		:param tz: A string representing a pytz timezone
-		:type tz: str
 		:param date: The date to obtain the timezone for
-		:type date: datetime.datetime, optional
 
 		:return:
 		"""
@@ -94,7 +91,9 @@ except ImportError as e:  # pragma: no cover
 
 	warnings.warn(
 			f"""\
-Some functions in 'domdf_python_tools.dates' require pytz (https://pypi.org/project/pytz/), but it could not be imported.
+Some functions in 'domdf_python_tools.dates' require pytz (https://pypi.org/project/pytz/), \
+but it could not be imported.
+
 The error was {e}.
 """,
 			)
@@ -159,13 +158,10 @@ def utc_timestamp_to_datetime(
 
 
 	:param utc_timestamp: The timestamp to convert to a datetime object
-	:type utc_timestamp: float, int
 	:param output_tz: The timezone to output the datetime object for.
-		If None it will be inferred.
-	:type output_tz: datetime.tzinfo, optional
+		If :py:obj:`None` it will be inferred.
 
 	:return: The timestamp as a datetime object.
-	:rtype: datetime.datetime
 
 	:raises: :class:`~python:OverflowError` if the timestamp is out of the range
 		of values supported by the platform C localtime() or gmtime() functions,
@@ -177,7 +173,7 @@ def utc_timestamp_to_datetime(
 	return new_datetime.astimezone(output_tz)
 
 
-# List of months and their 3-character shortcodes.
+# Mapping of months to their 3-character shortcodes.
 months = OrderedDict(
 		Jan="January",
 		Feb="February",
@@ -199,7 +195,6 @@ def parse_month(month: Union[str, int]) -> str:
 	Converts an integer or shorthand month into the full month name.
 
 	:param month: The month number or shorthand name
-	:type month: str or int
 
 	:return: The full name of the month
 	"""
@@ -225,10 +220,8 @@ def get_month_number(month: Union[str, int]) -> int:
 	If ``month`` is already a number between 1 and 12 it will be returned immediately.
 
 	:param month: The month to convert to a number
-	:type month: str or int
 
 	:return: The number of the month
-	:rtype: int
 	"""
 
 	if isinstance(month, int):
@@ -248,14 +241,10 @@ def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool
 	want this behaviour set ``leap_year`` to :py:obj:`False`.
 
 	:param month: The month to test.
-	:type month: str, int
 	:param day: The day number to test.
-	:type day: int
 	:param leap_year: Whether to return :py:obj:`True` for 29th Feb.
-	:type leap_year: bool, optional
 
 	:return: :py:obj:`True` if the date is valid.
-	:rtype: bool
 	"""
 
 	# Ensure day is an integer

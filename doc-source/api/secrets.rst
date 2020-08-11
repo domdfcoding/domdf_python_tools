@@ -3,7 +3,4 @@
 *********************************
 
 .. automodule:: domdf_python_tools.secrets
-	:members:
-	:autosummary:
 	:special-members:
-	:exclude-members: __dir__, __weakref__

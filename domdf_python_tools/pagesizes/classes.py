@@ -1,6 +1,11 @@
 #  !/usr/bin/env python
 #
 #  classes.py
+"""
+Classes representing pagesizes.
+
+.. |AnyNumber| replace:: :py:data:`~typing.Union` [:class:`int`, :class:`float`, :class:`~decimal.Decimal`, :class:`~domdf_python_tools.pagesizes.Unit`]
+"""
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
@@ -21,7 +26,7 @@
 #
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #  GNU Lesser General Public License for more details.
 #
 #  You should have received a copy of the GNU Lesser General Public License
@@ -35,7 +40,9 @@ from collections import namedtuple
 from typing import List, Tuple
 
 # this package
-from ._types import AnyNumber
+from domdf_python_tools.typing import AnyNumber
+
+# this package
 from .units import Unit, _rounders, cm, inch, mm, pica, pt, um
 from .utils import convert_from
 
@@ -55,9 +62,9 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	Base class namedtuple representing a page size, in point
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	__slots__: List[str] = []
@@ -79,7 +86,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	def from_pt(cls, size: Tuple[float, float]):
 		"""
 		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a
-		page size in point..
+		page size in point.
 
 		:param size: The size, in point, to convert from
 
@@ -156,9 +163,9 @@ class Size_mm(BaseSize):
 	representing a pagesize in millimeters.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	_unit = mm
@@ -170,9 +177,9 @@ class Size_inch(BaseSize):
 	representing a pagesize in inches.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	_unit = inch
@@ -184,9 +191,9 @@ class Size_cm(BaseSize):
 	representing a pagesize in centimeters.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	_unit = cm
@@ -198,9 +205,9 @@ class Size_um(BaseSize):
 	representing a pagesize in micrometers.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	_unit = um
@@ -212,9 +219,9 @@ class Size_pica(BaseSize):
 	representing a pagesize in pica.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 	"""
 
 	_unit = pica
@@ -226,9 +233,9 @@ class PageSize(BaseSize):
 	representing a pagesize in point.
 
 	:param width: The page width
-	:type width: int, float, Decimal or Unit
+	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: int, float, Decimal or Unit
+	:type height: |AnyNumber|
 
 	The pagesize can be converted to other units using the properties below.
 	"""

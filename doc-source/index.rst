@@ -160,6 +160,7 @@ Installation
 	:glob:
 
 	api/*
+	api/*/index
 
 .. toctree::
 	:maxdepth: 3

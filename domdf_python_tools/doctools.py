@@ -97,14 +97,24 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 	r"""
 	Make proper sphinx links out of double-backticked strings in docstring.
 
-	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
+	i.e.
 
+	.. code-block:: rest
 
-	Make sure to have `'python': ('https://docs.python.org/3/', None),` in the
-	`intersphinx_mapping` dict of your conf.py for sphinx.
+		``str``
 
-	:param input_string: The string to process
-	:param builtins_list: A list of builtins to make links for
+	becomes
+
+	.. code-block:: rest
+
+		:class:`~python:str`
+
+	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
+	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
+
+	:param input_string: The string to process.
+	:param builtins_list: A list of builtins to make links for.
+	:default builtins_list: dir(:py:obj:`builtins`)
 
 	:return: processed string with links
 	"""
@@ -157,7 +167,17 @@ def sphinxify_docstring() -> Callable:
 	r"""
 	Decorator to make proper sphinx links out of double-backticked strings in the docstring.
 
-	i.e. \`\`str\`\` becomes \:class\:\`~python:str\`
+	i.e.
+
+	.. code-block:: rest
+
+		``str``
+
+	becomes
+
+	.. code-block:: rest
+
+		:class:`~python:str`
 
 	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
 	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.

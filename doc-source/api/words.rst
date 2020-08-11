@@ -3,5 +3,3 @@
 *********************************
 
 .. automodule:: domdf_python_tools.words
-	:members:
-	:autosummary:
