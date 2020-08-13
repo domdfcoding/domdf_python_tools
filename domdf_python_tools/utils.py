@@ -245,9 +245,11 @@ def strtobool(val: Union[str, bool]) -> bool:
 
 	If val is an integer then its boolean representation is returned. If val is a boolean it is returned as-is.
 
-	True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
-	are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
-	'val' is anything else.
+	:py:obj:`True` values are ``'y'``, ``'yes'``, ``'t'``, ``'true'``, ``'on'``, ``'1'``, and ``1``.
+
+	:py:obj:`False` values are ``'n'``, ``'no'``, ``'f'``, ``'false'``, ``'off'``, ``'0'``, and ``0``.
+
+	:raises: :py:exc:`ValueError` if 'val' is anything else.
 
 	Based on distutils
 	"""
@@ -281,3 +283,52 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 		return repr(value)
 	else:
 		return f"'{value}'"
+
+
+def Len(obj: Any, start: int = 0, step: int = 1) -> range:
+	"""
+	Shorthand for ``range(len(obj))``.
+
+	Returns an object that produces a sequence of integers from start (inclusive)
+	to len(obj) (exclusive) by step.
+
+	:param obj: The object to iterate over the length of.
+	:param start: The start value of the range.
+	:param step: The step of the range.
+
+	.. versionadded:: 0.4.7
+	"""
+
+	return range(start, len(obj), step)
+
+
+def double_chain(iterable: Iterable[Iterable]):
+	"""
+	Flatten a list of lists of lists into a single list.
+
+	Literally just:
+
+	.. code-block:: python
+
+		chain.from_iterable(chain.from_iterable(iterable))
+
+	Converts
+
+	.. code-block:: python
+
+		[[(1, 2), (3, 4)], [(5, 6), (7, 8)]]
+
+	to
+
+	.. code-block:: python
+
+		[1, 2, 3, 4, 5, 6, 7, 8]
+
+
+	:param iterable: The iterable to
+	:return:
+
+	.. versionadded:: 0.4.7
+	"""
+
+	yield from itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))

@@ -19,7 +19,7 @@ import pytest
 
 # this package
 from domdf_python_tools import utils
-from domdf_python_tools.utils import chunks, list2str, list2string, pyversion, str2tuple, tuple2str
+from domdf_python_tools.utils import Len, chunks, double_chain, list2str, list2string, pyversion, str2tuple
 
 
 def test_pyversion():
@@ -389,3 +389,31 @@ def test_cmp():
 
 	assert isinstance(utils.cmp(20, 20), int)
 	assert utils.cmp(20, 20) == 0
+
+
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				([[(1, 2), (3, 4)], [(5, 6), (7, 8)]], [1, 2, 3, 4, 5, 6, 7, 8]),
+				([[(1, 2), (3, 4)], ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
+				([((1, 2), (3, 4)), [(5, 6), (7, 8)]], [1, 2, 3, 4, 5, 6, 7, 8]),
+				([((1, 2), (3, 4)), ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
+				((((1, 2), (3, 4)), ((5, 6), (7, 8))), [1, 2, 3, 4, 5, 6, 7, 8]),
+				((("12", "34"), ("56", "78")), ["1", "2", "3", "4", "5", "6", "7", "8"]),
+				]
+		)
+def test_double_chain(value, expects):
+	assert list(double_chain(value)) == expects
+
+
+def test_len(capsys):
+	assert list(Len("Hello")) == [0, 1, 2, 3, 4]
+	assert list(Len("Hello World")) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+	for val in Len("Hello World"):
+		print(val)
+
+	captured = capsys.readouterr()
+	assert captured.out.splitlines() == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+	assert Len("Hello") == range(5)
