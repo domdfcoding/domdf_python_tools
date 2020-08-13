@@ -356,23 +356,6 @@ class PathTest(unittest.TestCase):
 		self.assertFalse(p.exists())
 		p.touch()
 		self.assertTrue(p.exists())
-		st = p.stat()
-		old_mtime = st.st_mtime
-		old_mtime_ns = st.st_mtime_ns
-		# Rewind the mtime sufficiently far in the past to work around
-		# filesystem-specific timestamp granularity.
-		os.utime(str(p), (old_mtime - 10, old_mtime - 10))
-		# The file mtime should be refreshed by calling touch() again.
-		p.touch()
-		st = p.stat()
-		self.assertGreaterEqual(st.st_mtime_ns, old_mtime_ns)
-		self.assertGreaterEqual(st.st_mtime, old_mtime)
-		# Now with exist_ok=False.
-		p = P / 'newfileB'
-		self.assertFalse(p.exists())
-		p.touch(mode=0o700, exist_ok=False)
-		self.assertTrue(p.exists())
-		self.assertRaises(OSError, p.touch, exist_ok=False)
 
 	def test_touch_nochange(self):
 		P = PathPlus(BASE)
