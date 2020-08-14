@@ -27,7 +27,7 @@ Useful base classes.
 from abc import abstractmethod
 from collections import UserList
 from pprint import pformat
-from typing import Any, Callable, Dict, Iterable, Tuple
+from typing import Any, Dict, Iterable, Tuple, Type
 
 # 3rd party
 import pydash  # type: ignore
@@ -72,26 +72,30 @@ class Dictable(Iterable):
 		return NotImplemented
 
 
-def namedlist(name: str = "NamedList") -> Callable:
+class NamedList(UserList):
+	"""
+	A list with a name.
+
+	The name of the list is taken from the name of the subclass.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{super().__repr__()}"
+
+	def __str__(self) -> str:
+		return f"{self.__class__.__name__}{pformat(list(self))}"
+
+
+def namedlist(name: str = "NamedList") -> Type[NamedList]:
 	"""
 	A factory function to return a custom list subclass with a name.
 
 	:param name: The name of the list.
-
-	:return:
 	"""
 
-	class NamedList(UserList):
-		"""
-		A list with a name.
-		"""
+	class cls(NamedList):
+		pass
 
-		def __repr__(self) -> str:
-			return f"{super().__repr__()}"
+	cls.__name__ = name
 
-		def __str__(self) -> str:
-			return f"{self.__class__.__name__}{pformat(list(self))}"
-
-	NamedList.__name__ = name
-
-	return NamedList
+	return cls
