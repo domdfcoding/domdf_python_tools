@@ -8,18 +8,6 @@ General utility functions
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
-#  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
-#  		Copyright © 2015 TehTechGuy
-# 		Licensed under CC-BY-SA
-#
-#  as_text from https://stackoverflow.com/a/40935194
-# 		Copyright © 2016 User3759685
-# 		Available under the MIT License
-#
-#  chunks from https://stackoverflow.com/a/312464/3092681
-# 		Copytight © 2008 Ned Batchelder
-# 		Licensed under CC-BY-SA
-#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
 #  the Free Software Foundation; either version 3 of the License, or
@@ -34,6 +22,25 @@ General utility functions
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
+#
+#  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
+#  		Copyright © 2015 TehTechGuy
+# 		Licensed under CC-BY-SA
+#
+#  as_text from https://stackoverflow.com/a/40935194
+# 		Copyright © 2016 User3759685
+# 		Available under the MIT License
+#
+#  chunks from https://stackoverflow.com/a/312464/3092681
+# 		Copytight © 2008 Ned Batchelder
+# 		Licensed under CC-BY-SA
+#
+#  strtobool based on the "distutils" module from CPython
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com. All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #
 
 # stdlib
@@ -250,8 +257,6 @@ def strtobool(val: Union[str, bool]) -> bool:
 	:py:obj:`False` values are ``'n'``, ``'no'``, ``'f'``, ``'false'``, ``'off'``, ``'0'``, and ``0``.
 
 	:raises: :py:exc:`ValueError` if 'val' is anything else.
-
-	Based on distutils
 	"""
 
 	if isinstance(val, int):

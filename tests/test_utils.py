@@ -19,6 +19,7 @@ import pytest
 
 # this package
 from domdf_python_tools import utils
+from domdf_python_tools.testing import testing_boolean_values
 from domdf_python_tools.utils import Len, chunks, double_chain, list2str, list2string, pyversion, str2tuple
 
 
@@ -283,43 +284,9 @@ def test_str2tuple_semicolon(value, expects):
 	assert str2tuple(value, sep=';') == expects
 
 
-@pytest.mark.parametrize(
-		"obj, expects",
-		[
-				(True, True),
-				("True", True),
-				("true", True),
-				("tRUe", True),
-				('y', True),
-				('Y', True),
-				("YES", True),
-				("yes", True),
-				("Yes", True),
-				("yEs", True),
-				("ON", True),
-				("on", True),
-				('1', True),
-				(1, True),
-				(50, True),
-				(-1, True),
-				(False, False),
-				("False", False),
-				("false", False),
-				("falSE", False),
-				('n', False),
-				('N', False),
-				("NO", False),
-				("no", False),
-				("nO", False),
-				("OFF", False),
-				("off", False),
-				("oFF", False),
-				('0', False),
-				(0, False),
-				],
-		)
-def test_strtobool(obj, expects):
-	assert utils.strtobool(obj) == expects
+@testing_boolean_values(extra_truthy=[50, -1])
+def test_strtobool(boolean_string, expected_boolean):
+	assert utils.strtobool(boolean_string) == expected_boolean
 
 
 @pytest.mark.parametrize(
