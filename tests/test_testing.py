@@ -1,11 +1,18 @@
 # stdlib
 import random
+import re
 
 # 3rd party
 from _pytest.mark import Mark, MarkDecorator
 
 # this package
-from domdf_python_tools.testing import count, testing_boolean_values, whitespace_perms
+from domdf_python_tools.testing import (
+		count,
+		generate_falsy_values,
+		generate_truthy_values,
+		testing_boolean_values,
+		whitespace_perms,
+		)
 from domdf_python_tools.utils import strtobool
 
 
@@ -36,7 +43,9 @@ def test_whitespace_perms():
 	assert isinstance(whitespace_perms(.1).mark.args[1][0], str)
 
 	assert whitespace_perms(.1).mark.args[1] == ['\n\t\r', '\r\t', '\t \n', '\n\r']
-	# TODO: some test that they're all whitespace
+
+	for string in whitespace_perms().mark.args[1]:
+		assert re.match(r"^\s*$", string)
 
 
 def test_testing_boolean_strings():
@@ -53,3 +62,71 @@ def test_testing_boolean_strings():
 
 	for value, expects in testing_boolean_values().mark.args[1]:
 		assert strtobool(value) is expects
+
+
+def test_generate_truthy():
+	random.seed(1234)
+
+	assert list(generate_truthy_values()) == [
+			True,
+			"True",
+			"true",
+			"tRUe",
+			'y',
+			'Y',
+			"YES",
+			"yes",
+			"Yes",
+			"yEs",
+			"ON",
+			"on",
+			'1',
+			1,
+			]
+
+	assert list(generate_truthy_values(["bar"])) == [
+			True,
+			"True",
+			"true",
+			"tRUe",
+			'y',
+			'Y',
+			"YES",
+			"yes",
+			"Yes",
+			"yEs",
+			"ON",
+			"on",
+			'1',
+			1,
+			"bar",
+			]
+
+	assert list(generate_truthy_values(ratio=.3)) == ['1', 'yes', 'True', True]
+
+
+def test_generate_falsy():
+	random.seed(1234)
+
+	assert list(generate_falsy_values()) == [
+			False,
+			"False",
+			"false",
+			"falSE",
+			'n',
+			'N',
+			"NO",
+			"no",
+			"nO",
+			"OFF",
+			"off",
+			"oFF",
+			'0',
+			0,
+			]
+
+	assert list(generate_falsy_values(["bar"])) == [
+			False, "False", "false", "falSE", 'n', 'N', "NO", "no", "nO", "OFF", "off", "oFF", '0', 0, "bar"
+			]
+
+	assert list(generate_falsy_values(ratio=.3)) == ['0', 'no', 'False', False]

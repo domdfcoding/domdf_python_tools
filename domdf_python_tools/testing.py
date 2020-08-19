@@ -29,7 +29,7 @@ Requires `pytest <https://docs.pytest.org/en/stable/>`_ to be installed.
 import itertools
 import random
 from functools import lru_cache
-from typing import List, Sequence
+from typing import Any, Iterator, List, Sequence
 
 # 3rd party
 import pytest
@@ -39,22 +39,17 @@ from _pytest.mark import MarkDecorator
 from domdf_python_tools.utils import Len
 
 
-def testing_boolean_values(
-		extra_truthy: Sequence = (),
-		extra_falsy: Sequence = (),
-		) -> MarkDecorator:
+def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Iterator[Any]:
 	"""
-	Returns a `pytest.mark.parametrize <https://docs.pytest.org/en/stable/parametrize.html>`_
-	decorator that provides a list of strings, integers and booleans, and the boolean representations of them.
+	Returns an iterator of strings, integers and booleans that should be considered :py:obj:`True`.
 
-	The parametrized arguments are ``boolean_string`` for the input value,
-	and ``expected_boolean`` for the expected output.
+	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
 
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
-	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
+	:param ratio: The ratio of the number of values to select to the total number of values.
 	"""
 
-	truthy = [
+	truthy_values = [
 			True,
 			"True",
 			"true",
@@ -72,7 +67,23 @@ def testing_boolean_values(
 			*extra_truthy,
 			]
 
-	falsy = [
+	if ratio < 1:
+		truthy_values = random.sample(truthy_values, int(len(truthy_values) * ratio))
+
+	yield from truthy_values
+
+
+def generate_falsy_values(extra_falsy: Sequence = (), ratio: float = 1) -> Iterator[Any]:
+	"""
+	Returns an iterator of strings, integers and booleans that should be considered :py:obj:`False`.
+
+	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
+
+	:param extra_falsy: Additional values that should be considered :py:obj:`True`.
+	:param ratio: The ratio of the number of values to select to the total number of values.
+	"""
+
+	falsy_values = [
 			False,
 			"False",
 			"false",
@@ -89,6 +100,34 @@ def testing_boolean_values(
 			0,
 			*extra_falsy,
 			]
+
+	if ratio < 1:
+		falsy_values = random.sample(falsy_values, int(len(falsy_values) * ratio))
+
+	yield from falsy_values
+
+
+def testing_boolean_values(
+		extra_truthy: Sequence = (),
+		extra_falsy: Sequence = (),
+		ratio: float = 1,
+		) -> MarkDecorator:
+	"""
+	Returns a `pytest.mark.parametrize <https://docs.pytest.org/en/stable/parametrize.html>`_
+	decorator that provides a list of strings, integers and booleans, and the boolean representations of them.
+
+	The parametrized arguments are ``boolean_string`` for the input value,
+	and ``expected_boolean`` for the expected output.
+
+	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
+
+	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
+	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
+	:param ratio: The ratio of the number of values to select to the total number of values.
+	"""
+
+	truthy = generate_truthy_values(extra_truthy, ratio)
+	falsy = generate_falsy_values(extra_falsy, ratio)
 
 	boolean_strings = [
 			*itertools.zip_longest(truthy, [], fillvalue=True),
