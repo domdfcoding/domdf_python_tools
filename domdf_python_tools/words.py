@@ -45,6 +45,9 @@ import domdf_python_tools
 from domdf_python_tools.paths import PathPlus
 
 
+__all__ = ["get_words_list", "get_random_word"]
+
+
 @functools.lru_cache()
 def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	"""

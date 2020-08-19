@@ -66,6 +66,8 @@ __all__ = [
 		"str2tuple",
 		"strtobool",
 		"enquote_value",
+		"Len",
+		"double_chain",
 		]
 
 pyversion: int = int(sys.version_info.major)  # Python Version

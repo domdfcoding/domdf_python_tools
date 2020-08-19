@@ -35,6 +35,17 @@ import datetime
 from collections import OrderedDict
 from typing import Optional, Union
 
+__all__ = [
+		"current_tzinfo",
+		"set_timezone",
+		"utc_timestamp_to_datetime",
+		"months",
+		"parse_month",
+		"get_month_number",
+		"check_date",
+		]
+
+
 try:
 
 	# 3rd party
@@ -83,6 +94,10 @@ try:
 		d = date.replace(tzinfo=None)
 
 		return pytz.timezone(tz).localize(d).tzinfo
+
+
+	__all__.extend(["get_utc_offset", "get_timezone"])
+
 
 except ImportError as e:  # pragma: no cover
 

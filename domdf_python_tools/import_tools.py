@@ -50,6 +50,8 @@ import pkgutil
 from types import ModuleType
 from typing import Any, Callable, List, Optional, Type
 
+__all__ = ["discover"]
+
 
 def discover(
 		package: ModuleType,

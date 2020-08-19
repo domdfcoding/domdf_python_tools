@@ -5,6 +5,8 @@
 Handy functions for testing code.
 
 Requires `pytest <https://docs.pytest.org/en/stable/>`_ to be installed.
+
+.. versionadded:: 0.4.9
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -38,6 +40,16 @@ from _pytest.mark import MarkDecorator
 # this package
 from domdf_python_tools.utils import Len
 
+__all__ = [
+		"generate_truthy_values",
+		"generate_falsy_values",
+		"testing_boolean_values",
+		"whitespace",
+		"whitespace_perms_list",
+		"whitespace_perms",
+		"count",
+		]
+
 
 def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Iterator[Any]:
 	"""
@@ -47,6 +59,8 @@ def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Ite
 
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
+
+	.. versionadded:: 0.4.9
 	"""
 
 	truthy_values = [
@@ -81,6 +95,8 @@ def generate_falsy_values(extra_falsy: Sequence = (), ratio: float = 1) -> Itera
 
 	:param extra_falsy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
+
+	.. versionadded:: 0.4.9
 	"""
 
 	falsy_values = [
@@ -124,6 +140,8 @@ def testing_boolean_values(
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
+
+	.. versionadded:: 0.4.9
 	"""
 
 	truthy = generate_truthy_values(extra_truthy, ratio)
@@ -157,6 +175,8 @@ def whitespace_perms(ratio: float = 0.5) -> MarkDecorator:
 	The single parametrized argument is ``char``.
 
 	:param ratio: The ratio of the number of permutations to select to the total number of permutations.
+
+	.. versionadded:: 0.4.9
 	"""
 
 	perms = whitespace_perms_list()
@@ -173,6 +193,8 @@ def count(stop: int, start: int = 0, step: int = 1) -> MarkDecorator:
 	:param stop: The stop value passed to :class:`range`.
 	:param start: The start value passed to :class:`range`.
 	:param step: The step passed to :class:`range`.
+
+	.. versionadded:: 0.4.9
 	"""
 
 	return pytest.mark.parametrize("count", range(start, stop, step))

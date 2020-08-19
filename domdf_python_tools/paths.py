@@ -44,6 +44,22 @@ from typing import IO, Any, Callable, Optional
 # this package
 from domdf_python_tools.typing import PathLike
 
+__all__ = [
+		"append",
+		"copytree",
+		"delete",
+		"maybe_make",
+		"parent_path",
+		"read",
+		"relpath",
+		"write",
+		"clean_writer",
+		"make_executable",
+		"PathPlus",
+		"PosixPathPlus",
+		"WindowsPathPlus",
+		]
+
 
 def append(var: str, filename: PathLike, **kwargs) -> int:
 	"""

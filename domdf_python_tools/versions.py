@@ -26,6 +26,8 @@ NamedTuple-like class to represent a version number.
 # stdlib
 from typing import Generator, Sequence, Tuple, Union
 
+__all__ = ["Version"]
+
 
 class Version(Tuple[int, int, int]):
 	"""

@@ -25,6 +25,8 @@ Functions for working with secrets, such as API tokens.
 #  MA 02110-1301, USA.
 #
 
+__all__ = ["Secret"]
+
 
 class Secret(str):
 	"""

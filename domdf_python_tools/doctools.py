@@ -31,6 +31,18 @@ import builtins
 from textwrap import dedent
 from typing import Any, Callable, Optional, Sequence, Type, TypeVar, Union
 
+__all__ = [
+		"F",
+		"deindent_string",
+		"document_object_from_another",
+		"append_doctring_from_another",
+		"make_sphinx_links",
+		"is_documented_by",
+		"append_docstring_from",
+		"sphinxify_docstring",
+		]
+
+
 F = TypeVar('F', bound=Callable[..., Any])
 
 
