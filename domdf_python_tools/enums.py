@@ -24,39 +24,6 @@ Enum subclasses with some extra features
 #
 
 # 3rd party
-from aenum import Enum, IntEnum  # type: ignore
+from enum_tools import IntEnum, StrEnum
 
 __all__ = ["IntEnum", "StrEnum"]
-
-# class IntEnum(Enum):
-# 	"""
-# 	An Enum that can be converted into an integer.
-# 	"""
-#
-# 	def __int__(self):
-# 		return self.value
-#
-# 	def __eq__(self, other):
-# 		if int(self) == other:
-# 			return True
-# 		else:
-# 			return super().__eq__(other)
-
-
-class StrEnum(str, Enum):
-	"""
-	An Enum that can be converted into a string.
-	"""
-
-	def __str__(self) -> str:
-		return self.value
-
-	#
-	# def __repr__(self):
-	# 	return self.value
-
-	# def __eq__(self, other):
-	# 	if str(self) == other:
-	# 		return True
-	# 	else:
-	# 		return super().__eq__(other)
