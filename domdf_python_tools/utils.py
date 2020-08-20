@@ -44,9 +44,10 @@ General utility functions
 #
 
 # stdlib
+import inspect
 import itertools
 import sys
-from typing import Any, Generator, Iterable, List, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
 __all__ = [
 		"pyversion",
@@ -68,6 +69,7 @@ __all__ = [
 		"enquote_value",
 		"Len",
 		"double_chain",
+		"posargs2kwargs",
 		]
 
 pyversion: int = int(sys.version_info.major)  # Python Version
@@ -339,3 +341,33 @@ def double_chain(iterable: Iterable[Iterable]):
 	"""
 
 	yield from itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))
+
+
+def posargs2kwargs(
+		args: Iterable[Any],
+		posarg_names: Union[Iterable[str], Callable],
+		kwargs: Optional[Dict[str, Any]] = None,
+		) -> Dict[str, Any]:
+	"""
+	Convert the positional args in ``args`` to kwargs, based on the relative order of ``args`` and ``posarg_names``.
+
+	:param args: List of positional arguments provided to a function.
+	:param posarg_names: Either a list of positional argument names for the function, or the function object.
+	:param kwargs: Optional mapping of keyword argument names to values.
+		The arguments will be added to this dictionary if provided.
+	:default kwargs: ``{}``
+
+	:return: Dictionary mapping argument names to values.
+
+	.. versionadded:: 0.4.10
+	"""
+
+	if kwargs is None:
+		kwargs = {}
+
+	if callable(posarg_names):
+		posarg_names = inspect.getfullargspec(posarg_names).args
+
+	kwargs.update(zip(posarg_names, args))
+
+	return kwargs

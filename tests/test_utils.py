@@ -20,7 +20,7 @@ import pytest
 # this package
 from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
-from domdf_python_tools.utils import Len, chunks, double_chain, list2str, list2string, pyversion, str2tuple
+from domdf_python_tools.utils import Len, chunks, double_chain, list2str, posargs2kwargs, pyversion, str2tuple
 
 
 def test_pyversion():
@@ -96,10 +96,6 @@ def test_list2str(value, expects):
 	assert isinstance(str_representation, str)
 	assert str_representation == expects
 
-	str_representation = list2string(value)
-	assert isinstance(str_representation, str)
-	assert str_representation == expects
-
 
 @pytest.mark.parametrize(
 		"value, expects",
@@ -112,10 +108,6 @@ def test_list2str(value, expects):
 		)
 def test_list2str_semicolon(value, expects):
 	str_representation = list2str(value, sep=';')
-	assert isinstance(str_representation, str)
-	assert str_representation == expects
-
-	str_representation = list2string(value, sep=';')
 	assert isinstance(str_representation, str)
 	assert str_representation == expects
 
@@ -384,3 +376,24 @@ def test_len(capsys):
 	assert captured.out.splitlines() == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 	assert Len("Hello") == range(5)
+
+
+def demo_function(arg1, arg2, arg3):
+	pass
+
+
+@pytest.mark.parametrize(
+		"args, posarg_names, kwargs, expects",
+		[
+				((1, 2, 3), ("arg1", "arg2", "arg3"), {}, {"arg1": 1, "arg2": 2, "arg3": 3}),
+				((1, 2, 3), ("arg1", "arg2", "arg3"), None, {"arg1": 1, "arg2": 2, "arg3": 3}),
+				((1, 2, 3), ("arg1", "arg2", "arg3"), {"arg4": 4}, {"arg1": 1, "arg2": 2, "arg3": 3, "arg4": 4}),
+				((1, 2, 3), demo_function, None, {
+						"arg1": 1,
+						"arg2": 2,
+						"arg3": 3,
+						}),
+				]
+		)
+def test_posargs2kwargs(args, posarg_names, kwargs, expects):
+	assert posargs2kwargs(args, posarg_names, kwargs) == expects
