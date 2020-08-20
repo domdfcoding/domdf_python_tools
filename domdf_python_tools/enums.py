@@ -23,7 +23,15 @@ Enum subclasses with some extra features
 #  MA 02110-1301, USA.
 #
 
+# stdlib
+import warnings
+
 # 3rd party
 from enum_tools import IntEnum, StrEnum
 
 __all__ = ["IntEnum", "StrEnum"]
+
+warnings.warn(
+		"Importing enums from domdf_python_tools.enums is deprecated since 0.4.10 "
+		"and the module will be removed in 0.5.0. Import from the enum_tools library instead."
+		)
