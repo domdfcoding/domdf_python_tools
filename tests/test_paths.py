@@ -14,6 +14,7 @@ import platform
 import shutil
 import sys
 from tempfile import TemporaryDirectory
+from textwrap import dedent
 
 # 3rd party
 import pytest
@@ -486,3 +487,116 @@ def test_copytree_exists_stdlib():
 
 		with pytest.raises(FileExistsError, match=r".*[\\/]dest"):
 			shutil.copytree(srcdir, destdir)
+
+
+def test_write_lines():
+	with TemporaryDirectory() as tmpdir:
+		tmpdir_p = PathPlus(tmpdir)
+
+		tmp_file = tmpdir_p / "test.txt"
+
+		contents = [
+				"this",
+				"is",
+				"a",
+				"list",
+				"of",
+				"words",
+				"to",
+				"write",
+				"to",
+				"the",
+				"file",
+				]
+
+		tmp_file.write_lines(contents)
+
+		assert tmp_file.read_text(
+		) == dedent("""\
+		this
+		is
+		a
+		list
+		of
+		words
+		to
+		write
+		to
+		the
+		file
+		""")
+
+
+def test_read_lines(tmpdir):
+	tmpdir_p = PathPlus(tmpdir)
+
+	tmp_file = tmpdir_p / "test.txt"
+
+	contents = dedent("""\
+	this
+	is
+	a
+	list
+	of
+	words
+	to
+	write
+	to
+	the
+	file
+	""")
+
+	tmp_file.write_text(contents)
+
+	assert tmp_file.read_lines() == [
+			"this",
+			"is",
+			"a",
+			"list",
+			"of",
+			"words",
+			"to",
+			"write",
+			"to",
+			"the",
+			"file",
+			'',
+			]
+
+
+def test_dump_json(tmpdir):
+	tmpdir_p = PathPlus(tmpdir)
+
+	tmp_file = tmpdir_p / "test.txt"
+
+	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34})
+
+	assert tmp_file.read_text() == '{"key": "value", "int": 1234, "float": 12.34}'
+
+	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34}, indent=2)
+
+	assert tmp_file.read_text() == dedent("""\
+	{
+	  "key": "value",
+	  "int": 1234,
+	  "float": 12.34
+	}""")
+
+
+def test_load_json(tmpdir):
+	tmpdir_p = PathPlus(tmpdir)
+
+	tmp_file = tmpdir_p / "test.txt"
+
+	tmp_file.write_text('{"key": "value", "int": 1234, "float": 12.34}')
+
+	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}
+
+	tmp_file.write_text(dedent("""\
+	{
+	  "key": "value",
+	  "int": 1234,
+	  "float": 12.34
+	}"""))
+
+	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}

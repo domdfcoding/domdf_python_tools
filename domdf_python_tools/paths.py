@@ -35,11 +35,13 @@ Functions for paths and files.
 #
 
 # stdlib
+import json
 import os
 import pathlib
 import shutil
 import stat
-from typing import IO, Any, Callable, Optional
+import types
+from typing import IO, Any, Callable, Iterable, List, Optional
 
 # this package
 from domdf_python_tools.typing import PathLike
@@ -403,6 +405,26 @@ class PathPlus(pathlib.Path):
 
 		return super().write_text(data, encoding=encoding, errors=errors)
 
+	def write_lines(
+			self,
+			data: Iterable[str],
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			) -> None:
+		"""
+		Open the file in text mode, write the given list of lines to it without trailing spaces,
+		and close the file.
+
+		:param data:
+		:type data: str
+		:param encoding: The encoding to write to the file using.
+		:param errors:
+
+		.. versionadded:: 0.5.0
+		"""
+
+		return self.write_clean("\n".join(data), encoding=encoding, errors=errors)
+
 	def read_text(
 			self,
 			encoding: Optional[str] = "UTF-8",
@@ -420,6 +442,25 @@ class PathPlus(pathlib.Path):
 		"""
 
 		return super().read_text(encoding=encoding, errors=errors)
+
+	def read_lines(
+			self,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			) -> List[str]:
+		"""
+		Open the file in text mode, return a list containing the lines in the file,
+		and close the file.
+
+		:param encoding: The encoding to write to the file using.
+		:param errors:
+
+		:return: The content of the file.
+
+		.. versionadded:: 0.5.0
+		"""
+
+		return self.read_text(encoding=encoding, errors=errors).split("\n")
 
 	def open(
 			self,
@@ -451,6 +492,60 @@ class PathPlus(pathlib.Path):
 		if 'b' in mode:
 			encoding = None
 		return super().open(mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline)
+
+	def dump_json(
+			self,
+			data: Any,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			json_library: types.ModuleType = json,
+			**kwargs,
+			) -> int:
+		"""
+		Dump ``data`` to the file.
+
+		:param data: The object to serialise to JSON.
+		:param encoding: The encoding to write to the file using.
+		:param errors:
+		:param json_library: The JSON serialisation library to use.
+		:param kwargs: Keyword arguments to pass to the JSON serialisation function.
+
+		.. versionadded:: 0.5.0
+		"""
+
+		return self.write_text(
+				json_library.dumps(data, **kwargs),  # type: ignore
+				encoding=encoding,
+				errors=errors,
+				)
+
+	def load_json(
+			self,
+			encoding: Optional[str] = "UTF-8",
+			errors: Optional[str] = None,
+			json_library: types.ModuleType = json,
+			**kwargs,
+			) -> Any:
+		"""
+		Load JSON data from the file.
+
+		:param encoding: The encoding to write to the file using.
+		:param errors:
+		:param json_library: The JSON serialisation library to use.
+		:param kwargs: Keyword arguments to pass to the JSON deserialisation function.
+
+		:return: The deserialised JSON data.
+
+		.. versionadded:: 0.5.0
+		"""
+
+		return json_library.loads(  # type: ignore
+				self.read_text(
+						encoding=encoding,
+						errors=errors,
+						),
+				**kwargs,
+				)
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
