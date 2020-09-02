@@ -264,6 +264,9 @@ def clean_writer(string: str, fp: IO) -> None:
 	while buffer[-1:] == ['']:
 		buffer = buffer[:-1]
 
+	if not buffer:
+		fp.write('\n')
+
 	for line in buffer:
 		fp.write(line)
 		fp.write('\n')

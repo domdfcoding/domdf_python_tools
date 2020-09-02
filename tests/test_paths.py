@@ -261,45 +261,31 @@ Too many newlines
 """
 
 
-def test_pathplus_write_clean():
+@pytest.mark.parametrize(
+		"input_string, output_string",
+		[(["Top line", "    ", "Line with whitespace   ", "Line with tabs				   ", "No newline at end of file"
+			], ["Top line", '', "Line with whitespace", "Line with tabs", "No newline at end of file", ""]),
+			([
+					"Top line",
+					"    ",
+					"Line with whitespace   ",
+					"Line with tabs				   ",
+					"Too many newlines\n\n\n\n\n\n\n"
+					], [
+							"Top line",
+							"",
+							"Line with whitespace",
+							"Line with tabs",
+							"Too many newlines",
+							"",
+							]), ([], ["\n"])]
+		)
+def test_pathplus_write_clean(input_string, output_string):
 	with TemporaryDirectory() as tmpdir:
 		tempfile = PathPlus(tmpdir) / "tmpfile.txt"
 
-		test_string = "\n".join([
-				"Top line",
-				"    ",
-				"Line with whitespace   ",
-				"Line with tabs				   ",
-				"No newline at end of file",
-				])
-
-		with tempfile.open("w") as fp:
-			tempfile.write_clean(test_string)
-
-		assert tempfile.read_text() == """Top line
-
-Line with whitespace
-Line with tabs
-No newline at end of file
-"""
-		# Again with lots of newlines
-		test_string = "\n".join([
-				"Top line",
-				"    ",
-				"Line with whitespace   ",
-				"Line with tabs				   ",
-				"Too many newlines\n\n\n\n\n\n\n",
-				])
-
-		with tempfile.open("w") as fp:
-			tempfile.write_clean(test_string)
-
-		assert tempfile.read_text() == """Top line
-
-Line with whitespace
-Line with tabs
-Too many newlines
-"""
+		tempfile.write_clean("\n".join(input_string))
+		assert tempfile.read_text() == "\n".join(output_string)
 
 
 @pytest.mark.xfail(reason="Unsupported on PyPy3 <7.2", condition=(platform.python_implementation() == "PyPy"))
