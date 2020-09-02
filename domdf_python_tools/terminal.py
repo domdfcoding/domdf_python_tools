@@ -149,9 +149,7 @@ def get_terminal_size() -> Tuple[int, int]:  # pragma: no cover
 
 	Works on Linux, macOS, Windows, and Cygwin.
 
-	Based on http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
-
-	:return: tuple_xy
+	:return: Screen width and screen height.
 	"""
 
 	current_os = platform.system()
@@ -249,7 +247,6 @@ class Echo:
 	Context manager for echoing variable assignments (in CPython).
 
 	:param indent: The indentation of the dictionary of variable assignments.
-	:type indent: str, optional
 	"""
 
 	def __init__(self, indent: str = "  "):
@@ -262,9 +259,17 @@ class Echo:
 			self.parent_frame = inspect.currentframe().f_back  # type: ignore  # TODO
 
 	def __enter__(self):
+		"""
+		Called when entering the context manager.
+		"""
+
 		self.locals_on_entry = self.parent_frame.f_locals.copy()  # type: ignore
 
-	def __exit__(self, exc_t, exc_v, tb):
+	def __exit__(self, *args, **kwargs):
+		"""
+		Called when exiting the context manager.
+		"""
+
 		new_locals = {
 				k: v
 				for k,

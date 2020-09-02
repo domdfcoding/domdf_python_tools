@@ -116,34 +116,12 @@ Installation
 
 .. start installation
 
-.. tabs::
+.. installation:: domdf_python_tools
+	:pypi:
+	:github:
+	:anaconda:
+	:conda-channels: domdfcoding, conda-forge
 
-	.. tab:: from PyPI
-
-		.. prompt:: bash
-
-			python3 -m pip install domdf_python_tools --user
-
-	.. tab:: from Anaconda
-
-		First add the required channels
-
-		.. prompt:: bash
-
-			conda config --add channels http://conda.anaconda.org/domdfcoding
-			conda config --add channels http://conda.anaconda.org/conda-forge
-
-		Then install
-
-		.. prompt:: bash
-
-			conda install domdf_python_tools
-
-	.. tab:: from GitHub
-
-		.. prompt:: bash
-
-			python3 -m pip install git+https://github.com/domdfcoding/domdf_python_tools@master --user
 
 .. end installation
 

@@ -140,7 +140,7 @@ def cmp(x, y) -> int:
 
 	Compare the two objects x and y and return an integer according to the outcome.
 
-	The return value is negative if x < y, zero if x == y and strictly positive if x > y.
+	The return value is negative if ``x < y``, zero if ``x == y`` and strictly positive if ``x > y``.
 	"""
 
 	return int((x > y) - (x < y))
@@ -199,7 +199,7 @@ def printt(obj: Any, *args, **kwargs) -> None:
 	print(type(obj), *args, **kwargs)
 
 
-def stderr_writer(*args, **kwargs):
+def stderr_writer(*args, **kwargs) -> None:
 	"""
 	Write to stderr, flushing stdout beforehand and stderr afterwards.
 	"""
@@ -239,7 +239,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 
 		The input string must represent a comma-separated series of integers.
 
-	TODO: Allow custom types, not just ``int`` (making ``int`` the default)
+	.. TODO:: Allow custom types, not just ``int`` (making ``int`` the default)
 
 	:param input_string: The string to be converted into a tuple
 	:type input_string: str
@@ -277,9 +277,10 @@ def strtobool(val: Union[str, bool]) -> bool:
 
 def enquote_value(value: Any) -> Union[str, bool, float]:
 	"""
-	Adds quotes to the given value, suitable for use in a templating system such as Jinja2.
+	Adds quotes (``'``) to the given value, suitable for use in a templating system such as Jinja2.
 
-	floats, integers, booleans, None, and the strings "True", "False" and "None" are returned as-is.
+	:class:`Floats <float>`, :class:`integers <int>`, :class:`booleans <bool>`, :py:obj:`None`,
+	and the strings ``'True'``, ``'False'`` and ``'None'`` are returned as-is.
 
 	:param value: The value to enquote
 	"""

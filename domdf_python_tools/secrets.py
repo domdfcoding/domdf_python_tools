@@ -4,7 +4,7 @@
 """
 Functions for working with secrets, such as API tokens.
 
-..versionadded:: 0.4.6
+.. versionadded:: 0.4.6
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -44,7 +44,7 @@ class Secret(str):
 			>>> Secret("Barry as FLUFL") == "Barry as FLUFL"
 			True
 
-	..versionadded:: 0.4.6
+	.. versionadded:: 0.4.6
 	"""
 
 	value: str  #: The actual value of the secret.

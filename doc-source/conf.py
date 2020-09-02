@@ -7,9 +7,6 @@ import os
 import re
 import sys
 
-# 3rd party
-from sphinx.locale import _
-
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 
@@ -37,26 +34,27 @@ language = 'en'
 package_root = "domdf_python_tools"
 
 extensions = [
-	'sphinx.ext.intersphinx',
-	'sphinx.ext.autodoc',
-	'sphinx.ext.mathjax',
-	'sphinx.ext.viewcode',
-	'sphinxcontrib.httpdomain',
-	'sphinxcontrib.extras_require',
-	'sphinx.ext.todo',
-	'sphinxemoji.sphinxemoji',
-	'notfound.extension',
-	'sphinx_tabs.tabs',
-	'sphinx-prompt',
-	'sphinx.ext.autosummary',
 	'autodocsumm',
-	'sphinx_copybutton',
-	'sphinxcontrib.default_values',
-	'sphinxcontrib.toctree_plus',
+	'notfound.extension',
 	'seed_intersphinx_mapping',
-	'autodoc_augment_defaults',
+	'sphinx-prompt',
+	'sphinx.ext.autodoc',
 	'sphinx.ext.autosectionlabel',
+	'sphinx.ext.autosummary',
+	'sphinx.ext.intersphinx',
+	'sphinx.ext.mathjax',
+	'sphinx.ext.todo',
+	'sphinx.ext.viewcode',
 	'sphinx_autodoc_typehints',
+	'sphinx_copybutton',
+	'sphinx_tabs.tabs',
+	'sphinx_toolbox',
+	'sphinx_toolbox.autodoc_augment_defaults',
+	'sphinxcontrib.default_values',
+	'sphinxcontrib.extras_require',
+	'sphinxcontrib.httpdomain',
+	'sphinxcontrib.toctree_plus',
+	'sphinxemoji.sphinxemoji',
 	]
 
 sphinxemoji_style = 'twemoji'
@@ -127,31 +125,3 @@ autodoc_default_options = {
 				"__hash__",
 				]),
 		}
-
-
-# Extensions to theme docs
-def setup(app):
-	from sphinx.domains.python import PyField
-	from sphinx.util.docfields import Field
-
-	app.add_object_type(
-			'confval',
-			'confval',
-			objname='configuration value',
-			indextemplate='pair: %s; configuration value',
-			doc_field_types=[
-					PyField(
-							'type',
-							label=_('Type'),
-							has_arg=False,
-							names=('type', ),
-							bodyrolename='class',
-							),
-					Field(
-							'default',
-							label=_('Default'),
-							has_arg=False,
-							names=('default', ),
-							),
-					]
-			)
