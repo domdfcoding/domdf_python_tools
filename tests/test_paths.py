@@ -26,7 +26,6 @@ from domdf_python_tools.paths import PathPlus, clean_writer, copytree
 
 def test_maybe_make():
 	with TemporaryDirectory() as tmpdir:
-
 		test_dir = pathlib.Path(tmpdir) / "maybe_make"
 
 		assert test_dir.exists() is False
@@ -55,7 +54,6 @@ def test_maybe_make():
 
 def test_maybe_make_pathplus():
 	with TemporaryDirectory() as tmpdir:
-
 		test_dir = PathPlus(tmpdir) / "maybe_make"
 
 		assert test_dir.exists() is False
@@ -84,7 +82,6 @@ def test_maybe_make_pathplus():
 
 def test_maybe_make_string():
 	with TemporaryDirectory() as tmpdir:
-
 		test_dir = pathlib.Path(tmpdir) / "maybe_make"
 
 		assert test_dir.exists() is False
@@ -113,7 +110,6 @@ def test_maybe_make_string():
 
 def test_maybe_make_parents():
 	with TemporaryDirectory() as tmpdir:
-
 		test_dir = pathlib.Path(tmpdir) / "maybe_make" / "child1" / "child2"
 
 		assert test_dir.exists() is False
@@ -131,7 +127,6 @@ def test_maybe_make_parents():
 
 def test_maybe_make_parents_pathplus():
 	with TemporaryDirectory() as tmpdir:
-
 		test_dir = PathPlus(tmpdir) / "maybe_make" / "child1" / "child2"
 
 		assert test_dir.exists() is False

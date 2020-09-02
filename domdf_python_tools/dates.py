@@ -45,7 +45,6 @@ __all__ = [
 		"check_date",
 		]
 
-
 try:
 
 	# 3rd party
@@ -95,9 +94,7 @@ try:
 
 		return pytz.timezone(tz).localize(d).tzinfo
 
-
 	__all__.extend(["get_utc_offset", "get_timezone"])
-
 
 except ImportError as e:  # pragma: no cover
 

@@ -42,7 +42,6 @@ __all__ = [
 		"sphinxify_docstring",
 		]
 
-
 F = TypeVar('F', bound=Callable[..., Any])
 
 
