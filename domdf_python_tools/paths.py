@@ -543,10 +543,7 @@ class PathPlus(pathlib.Path):
 		"""
 
 		return json_library.loads(  # type: ignore
-				self.read_text(
-						encoding=encoding,
-						errors=errors,
-						),
+				self.read_text(encoding=encoding, errors=errors),
 				**kwargs,
 				)
 
