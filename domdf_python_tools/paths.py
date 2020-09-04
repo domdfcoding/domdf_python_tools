@@ -40,11 +40,10 @@ import os
 import pathlib
 import shutil
 import stat
-import types
 from typing import IO, Any, Callable, Iterable, List, Optional
 
 # this package
-from domdf_python_tools.typing import PathLike
+from domdf_python_tools.typing import JsonLibrary, PathLike
 
 __all__ = [
 		"append",
@@ -61,6 +60,8 @@ __all__ = [
 		"PosixPathPlus",
 		"WindowsPathPlus",
 		]
+
+newline_default = object()
 
 
 def append(var: str, filename: PathLike, **kwargs) -> int:
@@ -297,6 +298,10 @@ class PathPlus(pathlib.Path):
 	but cannot instantiate a WindowsPath on a POSIX system or vice versa.
 
 	.. versionadded:: 0.3.8
+
+	.. versionchanged:: 0.5.1
+
+		Defaults to Unix line endings (``LF``) on all platforms.
 	"""
 
 	def __new__(cls, *args, **kwargs):
@@ -471,14 +476,14 @@ class PathPlus(pathlib.Path):
 			buffering: int = -1,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			newline: Optional[str] = None,
+			newline: Optional[str] = newline_default,  # type: ignore
 			) -> IO[Any]:
 		"""
 		Open the file pointed by this path and return a file object, as
 		the built-in open() function does.
 
 		:param mode: The mode to open the file in.
-		:default mode: ``"r"`` (read only)
+		:default mode: ``'r'`` (read only)
 		:type mode: str
 		:param buffering:
 		:type buffering: int
@@ -486,14 +491,27 @@ class PathPlus(pathlib.Path):
 		:type encoding: str
 		:param errors:
 		:param newline:
+		:default newline: `universal newlines <https://docs.python.org/3/glossary.html#term-universal-newlines>`__ for reading, Unix line endings (``LF``) for writing.
 
 		:return:
 
 		.. versionadded:: 0.3.8
+
+		.. versionchanged:: 0.5.1
+
+			Defaults to Unix line endings (``LF``) on all platforms.
 		"""
 
 		if 'b' in mode:
 			encoding = None
+			newline = None
+
+		if newline is newline_default:
+			if 'r' in mode:
+				newline = None
+			else:
+				newline = "\n"
+
 		return super().open(mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline)
 
 	def dump_json(
@@ -501,23 +519,24 @@ class PathPlus(pathlib.Path):
 			data: Any,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			json_library: types.ModuleType = json,
+			json_library: JsonLibrary = json,  # type: ignore
 			**kwargs,
 			) -> int:
 		"""
-		Dump ``data`` to the file.
+		Dump ``data`` to the file as JSON.
 
 		:param data: The object to serialise to JSON.
 		:param encoding: The encoding to write to the file using.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
+		:default json_library: :mod:`json`
 		:param kwargs: Keyword arguments to pass to the JSON serialisation function.
 
 		.. versionadded:: 0.5.0
 		"""
 
 		return self.write_text(
-				json_library.dumps(data, **kwargs),  # type: ignore
+				json_library.dumps(data, **kwargs),
 				encoding=encoding,
 				errors=errors,
 				)
@@ -526,7 +545,7 @@ class PathPlus(pathlib.Path):
 			self,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			json_library: types.ModuleType = json,
+			json_library: JsonLibrary = json,  # type: ignore
 			**kwargs,
 			) -> Any:
 		"""
@@ -535,6 +554,7 @@ class PathPlus(pathlib.Path):
 		:param encoding: The encoding to write to the file using.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
+		:default json_library: :mod:`json`
 		:param kwargs: Keyword arguments to pass to the JSON deserialisation function.
 
 		:return: The deserialised JSON data.
@@ -542,7 +562,7 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 0.5.0
 		"""
 
-		return json_library.loads(  # type: ignore
+		return json_library.loads(
 				self.read_text(encoding=encoding, errors=errors),
 				**kwargs,
 				)
