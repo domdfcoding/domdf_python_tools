@@ -78,8 +78,6 @@ def test_chunks():
 	assert list(utils.chunks(['a', 'b', 'c'], 1)) == [['a'], ['b'], ['c']]
 
 
-# TODO: cmp
-
 class TestList2Str:
 
 	@pytest.mark.parametrize(
@@ -95,7 +93,6 @@ class TestList2Str:
 		str_representation = utils.list2str(value)
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
-
 
 	@pytest.mark.parametrize(
 			"value, expects",
