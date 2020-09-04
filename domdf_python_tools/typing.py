@@ -26,11 +26,12 @@ Common aliases for type hinting
 # stdlib
 import os
 import pathlib
-import sys
 from decimal import Decimal
 from json import JSONDecoder, JSONEncoder
-from types import ModuleType
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+
+# 3rd party
+from typing_extensions import Protocol
 
 __all__ = ["PathLike", "AnyNumber", "check_membership", "JsonLibrary"]
 
@@ -61,7 +62,7 @@ def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 	return isinstance(obj, type_.__args__)  # type: ignore
 
 
-class JsonLibrary(ModuleType):
+class JsonLibrary(Protocol):
 	"""
 	Type hint for functions that take a JSON serialisation-deserialisation library as an argument.
 
@@ -99,14 +100,9 @@ class JsonLibrary(ModuleType):
 		:param kwds:
 		"""
 
-	if sys.version_info >= (3, 6):
-		_LoadsString = Union[str, bytes]
-	else:
-		_LoadsString = str
-
 	@staticmethod
 	def loads(
-			s: _LoadsString,
+			s: Union[str, bytes],
 			*,
 			cls: Optional[Type[JSONDecoder]] = ...,
 			object_hook: Optional[Callable[[Dict[Any, Any]], Any]] = ...,
