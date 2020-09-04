@@ -51,6 +51,7 @@ from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Seq
 
 __all__ = [
 		"pyversion",
+		"SPACE_PLACEHOLDER",
 		"as_text",
 		"check_dependencies",
 		"chunks",
@@ -70,9 +71,15 @@ __all__ = [
 		"Len",
 		"double_chain",
 		"posargs2kwargs",
+		"word_join",
+		"convert_indents",
 		]
 
+#: The current major python version.
 pyversion: int = int(sys.version_info.major)  # Python Version
+
+#: The ``␣`` character.
+SPACE_PLACEHOLDER = '␣'
 
 
 def as_text(value: Any) -> str:
@@ -372,3 +379,56 @@ def posargs2kwargs(
 	kwargs.update(zip(posarg_names, args))
 
 	return kwargs
+
+
+def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = False) -> str:
+	"""
+	Join the given list of strings in a natural manner, with 'and' to join the last two elements.
+
+	:param iterable:
+	:param use_repr: Whether to join the ``repr`` of each object.
+	:param oxford: Whether to use an oxford comma when joining the last two elements.
+		Always :py:obj:`False` if there are less than three elements.
+	"""
+
+	if use_repr:
+		words = [repr(w) for w in iterable]
+	else:
+		words = list(iterable)
+
+	if len(words) == 0:
+		return ''
+	elif len(words) == 1:
+		return words[0]
+	elif len(words) == 2:
+		return " and ".join(words)
+	else:
+		if oxford:
+			return ", ".join(words[:-1]) + f", and {words[-1]}"
+		else:
+			return ", ".join(words[:-1]) + f" and {words[-1]}"
+
+
+def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = " ") -> str:
+	"""
+	Convert indentation at the start of lines in ``text`` from tabs to spaces.
+
+	:param text: The text to convert indents in.
+	:param tab_width: The number of spaces per tab.
+	:param from_: The indent to convert from.
+	:param to: The indent to convert to.
+	"""
+
+	output = []
+	tab = to * tab_width
+	from_size = len(from_)
+
+	for line in text.splitlines():
+		indent_count = 0
+		while line.startswith(from_):
+			indent_count += 1
+			print(indent_count)
+			line = line[from_size:]
+		output.append(f"{tab * indent_count}{line}")
+
+	return "\n".join(output)

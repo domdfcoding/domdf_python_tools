@@ -20,7 +20,9 @@ import pytest
 # this package
 from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
-from domdf_python_tools.utils import Len, chunks, double_chain, list2str, posargs2kwargs, pyversion, str2tuple
+from domdf_python_tools.utils import (
+		Len, chunks, convert_indents, double_chain, list2str, posargs2kwargs, pyversion, str2tuple, word_join
+		)
 
 
 def test_pyversion():
@@ -397,3 +399,57 @@ def demo_function(arg1, arg2, arg3):
 		)
 def test_posargs2kwargs(args, posarg_names, kwargs, expects):
 	assert posargs2kwargs(args, posarg_names, kwargs) == expects
+
+
+def test_word_join():
+	assert word_join([]) == ''
+
+	assert word_join(["bob"]) == "bob"
+	assert word_join(["bob", "alice"]) == "bob and alice"
+	assert word_join(["bob", "alice", "fred"]) == "bob, alice and fred"
+
+	assert word_join(["bob"], use_repr=True) == "'bob'"
+	assert word_join(["bob", "alice"], use_repr=True) == "'bob' and 'alice'"
+	assert word_join(["bob", "alice", "fred"], use_repr=True) == "'bob', 'alice' and 'fred'"
+
+	assert word_join(["bob"], use_repr=True, oxford=True) == "'bob'"
+	assert word_join(["bob", "alice"], use_repr=True, oxford=True) == "'bob' and 'alice'"
+	assert word_join(["bob", "alice", "fred"], use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
+
+	assert word_join(()) == ''
+
+	assert word_join(("bob", )) == "bob"
+	assert word_join(("bob", "alice")) == "bob and alice"
+	assert word_join(("bob", "alice", "fred")) == "bob, alice and fred"
+
+	assert word_join(("bob", ), use_repr=True) == "'bob'"
+	assert word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
+	assert word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
+
+	assert word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
+	assert word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
+	assert word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
+
+
+def test_convert_indents():
+
+	# TODO: test 'to'
+
+	assert convert_indents("hello world") == "hello world"
+	assert convert_indents("	hello world") == "    hello world"
+	assert convert_indents("		hello world") == "        hello world"
+	assert convert_indents("	    hello world") == "        hello world"
+
+	assert convert_indents("hello world", tab_width=2) == "hello world"
+	assert convert_indents("	hello world", tab_width=2) == "  hello world"
+	assert convert_indents("		hello world", tab_width=2) == "    hello world"
+	assert convert_indents("	    hello world", tab_width=2) == "      hello world"
+
+	assert convert_indents("hello world", from_="    ") == "hello world"
+	assert convert_indents("    hello world", from_="    ") == "    hello world"
+	assert convert_indents("        hello world", from_="    ") == "        hello world"
+	assert convert_indents("        hello world", from_="    ") == "        hello world"
+
+	assert convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
+	assert convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
+	assert convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
