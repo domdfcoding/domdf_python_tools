@@ -15,6 +15,7 @@ import pytz
 
 # this package
 from domdf_python_tools import dates
+from domdf_python_tools.testing import count
 
 test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
 today = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
@@ -173,10 +174,9 @@ def test_get_month_number_from_name(month_idx, month):
 	assert dates.get_month_number(month) == month_idx
 
 
-@pytest.mark.parametrize("month_idx", range(1, 13))
-def test_get_month_number_from_no(month_idx):
-	for month_idx in range(1, 13):
-		assert dates.get_month_number(month_idx) == month_idx
+@count(13, 1)
+def test_get_month_number_from_no(count):
+	assert dates.get_month_number(count) == count
 
 
 @pytest.mark.parametrize(
