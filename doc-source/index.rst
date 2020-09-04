@@ -28,52 +28,53 @@ domdf_python_tools
 	* - Other
 	  - |license| |language| |requires| |pre_commit|
 
-.. |docs| image:: https://img.shields.io/readthedocs/domdf_python_tools/latest?logo=read-the-docs
-	:target: https://domdf_python_tools.readthedocs.io/en/latest/?badge=latest
-	:alt: Documentation Status
+.. |docs| rtfd-shield::
+	:project: domdf_python_tools
+	:alt: Documentation Build Status
 
-.. |docs_check| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Docs%20Check/badge.svg
-	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Docs+Check%22
+.. |docs_check| actions-shield::
+	:workflow: Docs Check
 	:alt: Docs Check Status
 
-.. |travis| image:: https://img.shields.io/travis/com/domdfcoding/domdf_python_tools/master?logo=travis
-	:target: https://travis-ci.com/domdfcoding/domdf_python_tools
+.. |travis| travis-shield::
+	:travis-site: com
 	:alt: Travis Build Status
 
-.. |actions_windows| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/Windows%20Tests/badge.svg
-	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22Windows+Tests%22
+.. |actions_windows| actions-shield::
+	:workflow: Windows Tests
 	:alt: Windows Tests Status
 
-.. |actions_macos| image:: https://github.com/domdfcoding/domdf_python_tools/workflows/macOS%20Tests/badge.svg
-	:target: https://github.com/domdfcoding/domdf_python_tools/actions?query=workflow%3A%22macOS+Tests%22
+.. |actions_macos| actions-shield::
+	:workflow: macOS Tests
 	:alt: macOS Tests Status
 
-.. |requires| image:: https://requires.io/github/domdfcoding/domdf_python_tools/requirements.svg?branch=master
-	:target: https://requires.io/github/domdfcoding/domdf_python_tools/requirements/?branch=master
+.. |requires| requires-io-shield::
 	:alt: Requirements Status
 
-.. |coveralls| image:: https://img.shields.io/coveralls/github/domdfcoding/domdf_python_tools/master?logo=coveralls
-	:target: https://coveralls.io/github/domdfcoding/domdf_python_tools?branch=master
+.. |coveralls| coveralls-shield::
 	:alt: Coverage
 
-.. |codefactor| image:: https://img.shields.io/codefactor/grade/github/domdfcoding/domdf_python_tools?logo=codefactor
-	:target: https://www.codefactor.io/repository/github/domdfcoding/domdf_python_tools
+.. |codefactor| codefactor-shield::
 	:alt: CodeFactor Grade
 
-.. |pypi-version| image:: https://img.shields.io/pypi/v/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |pypi-version| pypi-shield::
+	:project: domdf_python_tools
+	:version:
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools?logo=python&logoColor=white
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |supported-versions| pypi-shield::
+	:project: domdf_python_tools
+	:py-versions:
 	:alt: PyPI - Supported Python Versions
 
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |supported-implementations| pypi-shield::
+	:project: domdf_python_tools
+	:implementations:
 	:alt: PyPI - Supported Implementations
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |wheel| pypi-shield::
+	:project: domdf_python_tools
+	:wheel:
 	:alt: PyPI - Wheel
 
 .. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools?logo=anaconda
@@ -84,26 +85,26 @@ domdf_python_tools
 	:target: https://anaconda.org/domdfcoding/domdf_python_tools
 	:alt: Conda - Platform
 
-.. |license| image:: https://img.shields.io/github/license/domdfcoding/domdf_python_tools
-	:target: https://github.com/domdfcoding/domdf_python_tools/blob/master/LICENSE
+.. |license| github-shield::
+	:license:
 	:alt: License
 
-.. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/domdf_python_tools
+.. |language| github-shield::
+	:top-language:
 	:alt: GitHub top language
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/domdf_python_tools/v0.5.0
-	:target: https://github.com/domdfcoding/domdf_python_tools/pulse
+.. |commits-since| github-shield::
+	:commits-since: v0.5.0
 	:alt: GitHub commits since tagged version
 
-.. |commits-latest| image:: https://img.shields.io/github/last-commit/domdfcoding/domdf_python_tools
-	:target: https://github.com/domdfcoding/domdf_python_tools/commit/master
+.. |commits-latest| github-shield::
+	:last-commit:
 	:alt: GitHub last commit
 
-.. |maintained| image:: https://img.shields.io/maintenance/yes/2020
+.. |maintained| maintained-shield:: 2020
 	:alt: Maintenance
 
-.. |pre_commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
-	:target: https://github.com/pre-commit/pre-commit
+.. |pre_commit| pre-commit-shield::
 	:alt: pre-commit
 
 .. end shields
@@ -121,7 +122,6 @@ Installation
 	:github:
 	:anaconda:
 	:conda-channels: domdfcoding, conda-forge
-
 
 .. end installation
 
