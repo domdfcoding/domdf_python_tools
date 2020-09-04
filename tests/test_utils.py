@@ -20,13 +20,10 @@ import pytest
 # this package
 from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
-from domdf_python_tools.utils import (
-		Len, chunks, convert_indents, double_chain, list2str, posargs2kwargs, pyversion, str2tuple, word_join
-		)
 
 
 def test_pyversion():
-	assert isinstance(pyversion, int)
+	assert isinstance(utils.pyversion, int)
 
 
 @pytest.mark.parametrize(
@@ -76,42 +73,43 @@ def test_check_dependencies(capsys):
 
 
 def test_chunks():
-	assert isinstance(chunks(list(range(100)), 5), types.GeneratorType)
-	assert list(chunks(list(range(100)), 5))[0] == [0, 1, 2, 3, 4]
-	assert list(chunks(['a', 'b', 'c'], 1)) == [['a'], ['b'], ['c']]
+	assert isinstance(utils.chunks(list(range(100)), 5), types.GeneratorType)
+	assert list(utils.chunks(list(range(100)), 5))[0] == [0, 1, 2, 3, 4]
+	assert list(utils.chunks(['a', 'b', 'c'], 1)) == [['a'], ['b'], ['c']]
 
 
 # TODO: cmp
 
+class TestList2Str:
 
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				([1, 2, 3], "1,2,3"),
-				(['a', 'b', 'c'], "a,b,c"),
-				(['a', 'b', 1, 2], "a,b,1,2"),
-				(['a', 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
-				],
-		)
-def test_list2str(value, expects):
-	str_representation = list2str(value)
-	assert isinstance(str_representation, str)
-	assert str_representation == expects
+	@pytest.mark.parametrize(
+			"value, expects",
+			[
+					([1, 2, 3], "1,2,3"),
+					(['a', 'b', 'c'], "a,b,c"),
+					(['a', 'b', 1, 2], "a,b,1,2"),
+					(['a', 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
+					],
+			)
+	def test_list2str(self, value, expects):
+		str_representation = utils.list2str(value)
+		assert isinstance(str_representation, str)
+		assert str_representation == expects
 
 
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				([1, 2, 3], "1;2;3"),
-				(['a', 'b', 'c'], "a;b;c"),
-				(['a', 'b', 1, 2], "a;b;1;2"),
-				(['a', 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
-				],
-		)
-def test_list2str_semicolon(value, expects):
-	str_representation = list2str(value, sep=';')
-	assert isinstance(str_representation, str)
-	assert str_representation == expects
+	@pytest.mark.parametrize(
+			"value, expects",
+			[
+					([1, 2, 3], "1;2;3"),
+					(['a', 'b', 'c'], "a;b;c"),
+					(['a', 'b', 1, 2], "a;b;1;2"),
+					(['a', 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
+					],
+			)
+	def test_list2str_semicolon(self, value, expects):
+		str_representation = utils.list2str(value, sep=';')
+		assert isinstance(str_representation, str)
+		assert str_representation == expects
 
 
 def test_permutations():
@@ -254,49 +252,51 @@ def test_split_len():
 	assert utils.split_len("Spam Spam Spam Spam Spam Spam Spam Spam ", 5) == ["Spam "] * 8
 
 
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				("1,2,3", (1, 2, 3)),  # tests without spaces
-				("1, 2, 3", (1, 2, 3)),  # tests with spaces
-				],
-		)
-def test_str2tuple(value, expects):
-	assert isinstance(str2tuple(value), tuple)
-	assert str2tuple(value) == expects
+class TestStr2Tuple:
+
+	@pytest.mark.parametrize(
+			"value, expects",
+			[
+					("1,2,3", (1, 2, 3)),  # tests without spaces
+					("1, 2, 3", (1, 2, 3)),  # tests with spaces
+					],
+			)
+	def test_str2tuple(self, value, expects):
+		assert isinstance(utils.str2tuple(value), tuple)
+		assert utils.str2tuple(value) == expects
+
+	@pytest.mark.parametrize(
+			"value, expects",
+			[
+					("1;2;3", (1, 2, 3)),  # tests without semicolon
+					("1; 2; 3", (1, 2, 3)),  # tests with semicolon
+					],
+			)
+	def test_str2tuple_semicolon(self, value, expects):
+		assert isinstance(utils.str2tuple(value, sep=';'), tuple)
+		assert utils.str2tuple(value, sep=';') == expects
 
 
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				("1;2;3", (1, 2, 3)),  # tests without semicolon
-				("1; 2; 3", (1, 2, 3)),  # tests with semicolon
-				],
-		)
-def test_str2tuple_semicolon(value, expects):
-	assert isinstance(str2tuple(value, sep=';'), tuple)
-	assert str2tuple(value, sep=';') == expects
+class TestStrToBool:
 
+	@testing_boolean_values(extra_truthy=[50, -1])
+	def test_strtobool(self, boolean_string, expected_boolean):
+		assert utils.strtobool(boolean_string) == expected_boolean
 
-@testing_boolean_values(extra_truthy=[50, -1])
-def test_strtobool(boolean_string, expected_boolean):
-	assert utils.strtobool(boolean_string) == expected_boolean
-
-
-@pytest.mark.parametrize(
-		"obj, expects",
-		[
-				("truthy", ValueError),
-				("foo", ValueError),
-				("bar", ValueError),
-				(None, AttributeError),
-				(1.0, AttributeError),
-				(0.0, AttributeError),
-				],
-		)
-def test_strtobool_errors(obj, expects):
-	with pytest.raises(expects):
-		utils.strtobool(obj)
+	@pytest.mark.parametrize(
+			"obj, expects",
+			[
+					("truthy", ValueError),
+					("foo", ValueError),
+					("bar", ValueError),
+					(None, AttributeError),
+					(1.0, AttributeError),
+					(0.0, AttributeError),
+					],
+			)
+	def test_strtobool_errors(self, obj, expects):
+		with pytest.raises(expects):
+			utils.strtobool(obj)
 
 
 @pytest.mark.parametrize(
@@ -364,20 +364,20 @@ def test_cmp():
 				]
 		)
 def test_double_chain(value, expects):
-	assert list(double_chain(value)) == expects
+	assert list(utils.double_chain(value)) == expects
 
 
 def test_len(capsys):
-	assert list(Len("Hello")) == [0, 1, 2, 3, 4]
-	assert list(Len("Hello World")) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+	assert list(utils.Len("Hello")) == [0, 1, 2, 3, 4]
+	assert list(utils.Len("Hello World")) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-	for val in Len("Hello World"):
+	for val in utils.Len("Hello World"):
 		print(val)
 
 	captured = capsys.readouterr()
 	assert captured.out.splitlines() == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
-	assert Len("Hello") == range(5)
+	assert utils.Len("Hello") == range(5)
 
 
 def demo_function(arg1, arg2, arg3):
@@ -398,58 +398,58 @@ def demo_function(arg1, arg2, arg3):
 				]
 		)
 def test_posargs2kwargs(args, posarg_names, kwargs, expects):
-	assert posargs2kwargs(args, posarg_names, kwargs) == expects
+	assert utils.posargs2kwargs(args, posarg_names, kwargs) == expects
 
 
 def test_word_join():
-	assert word_join([]) == ''
+	assert utils.word_join([]) == ''
 
-	assert word_join(["bob"]) == "bob"
-	assert word_join(["bob", "alice"]) == "bob and alice"
-	assert word_join(["bob", "alice", "fred"]) == "bob, alice and fred"
+	assert utils.word_join(["bob"]) == "bob"
+	assert utils.word_join(["bob", "alice"]) == "bob and alice"
+	assert utils.word_join(["bob", "alice", "fred"]) == "bob, alice and fred"
 
-	assert word_join(["bob"], use_repr=True) == "'bob'"
-	assert word_join(["bob", "alice"], use_repr=True) == "'bob' and 'alice'"
-	assert word_join(["bob", "alice", "fred"], use_repr=True) == "'bob', 'alice' and 'fred'"
+	assert utils.word_join(["bob"], use_repr=True) == "'bob'"
+	assert utils.word_join(["bob", "alice"], use_repr=True) == "'bob' and 'alice'"
+	assert utils.word_join(["bob", "alice", "fred"], use_repr=True) == "'bob', 'alice' and 'fred'"
 
-	assert word_join(["bob"], use_repr=True, oxford=True) == "'bob'"
-	assert word_join(["bob", "alice"], use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert word_join(["bob", "alice", "fred"], use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
+	assert utils.word_join(["bob"], use_repr=True, oxford=True) == "'bob'"
+	assert utils.word_join(["bob", "alice"], use_repr=True, oxford=True) == "'bob' and 'alice'"
+	assert utils.word_join(["bob", "alice", "fred"], use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
 
-	assert word_join(()) == ''
+	assert utils.word_join(()) == ''
 
-	assert word_join(("bob", )) == "bob"
-	assert word_join(("bob", "alice")) == "bob and alice"
-	assert word_join(("bob", "alice", "fred")) == "bob, alice and fred"
+	assert utils.word_join(("bob", )) == "bob"
+	assert utils.word_join(("bob", "alice")) == "bob and alice"
+	assert utils.word_join(("bob", "alice", "fred")) == "bob, alice and fred"
 
-	assert word_join(("bob", ), use_repr=True) == "'bob'"
-	assert word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
-	assert word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
+	assert utils.word_join(("bob", ), use_repr=True) == "'bob'"
+	assert utils.word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
+	assert utils.word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
 
-	assert word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
-	assert word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
+	assert utils.word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
+	assert utils.word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
+	assert utils.word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
 
 
 def test_convert_indents():
 
 	# TODO: test 'to'
 
-	assert convert_indents("hello world") == "hello world"
-	assert convert_indents("	hello world") == "    hello world"
-	assert convert_indents("		hello world") == "        hello world"
-	assert convert_indents("	    hello world") == "        hello world"
+	assert utils.convert_indents("hello world") == "hello world"
+	assert utils.convert_indents("	hello world") == "    hello world"
+	assert utils.convert_indents("		hello world") == "        hello world"
+	assert utils.convert_indents("	    hello world") == "        hello world"
 
-	assert convert_indents("hello world", tab_width=2) == "hello world"
-	assert convert_indents("	hello world", tab_width=2) == "  hello world"
-	assert convert_indents("		hello world", tab_width=2) == "    hello world"
-	assert convert_indents("	    hello world", tab_width=2) == "      hello world"
+	assert utils.convert_indents("hello world", tab_width=2) == "hello world"
+	assert utils.convert_indents("	hello world", tab_width=2) == "  hello world"
+	assert utils.convert_indents("		hello world", tab_width=2) == "    hello world"
+	assert utils.convert_indents("	    hello world", tab_width=2) == "      hello world"
 
-	assert convert_indents("hello world", from_="    ") == "hello world"
-	assert convert_indents("    hello world", from_="    ") == "    hello world"
-	assert convert_indents("        hello world", from_="    ") == "        hello world"
-	assert convert_indents("        hello world", from_="    ") == "        hello world"
+	assert utils.convert_indents("hello world", from_="    ") == "hello world"
+	assert utils.convert_indents("    hello world", from_="    ") == "    hello world"
+	assert utils.convert_indents("        hello world", from_="    ") == "        hello world"
+	assert utils.convert_indents("        hello world", from_="    ") == "        hello world"
 
-	assert convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
-	assert convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
-	assert convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
+	assert utils.convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
+	assert utils.convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
+	assert utils.convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
