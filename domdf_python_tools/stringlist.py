@@ -25,7 +25,7 @@ A list of strings that represent lines in a multiline string.
 
 # stdlib
 from contextlib import contextmanager
-from typing import cast, Iterable, List, Tuple, Union, overload
+from typing import Iterable, List, Tuple, Union, cast, overload
 
 # 3rd party
 from typing_extensions import Protocol
@@ -191,9 +191,9 @@ class StringList(List[str]):
 
 		elif isinstance(index, slice):
 			for line, index in zip(
-					reversed(line),  # type: ignore
-					reversed(range(index.start, index.stop + 1, index.step or 1)),
-					):
+				reversed(line),  # type: ignore
+				reversed(range(index.start, index.stop + 1, index.step or 1)),
+				):
 				self[index] = line
 
 	@overload
