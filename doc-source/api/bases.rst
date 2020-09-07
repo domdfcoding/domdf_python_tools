@@ -3,6 +3,7 @@
 ==================================
 
 .. automodule:: domdf_python_tools.bases
+	:autosummary-members:
 	:no-members:
 
 Dictable
