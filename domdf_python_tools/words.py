@@ -162,6 +162,8 @@ def alpha_sort(
 	:param reverse:
 
 	:return:
+
+	.. versionadded:: 0.7.0
 	"""
 
 	alphabet_ = list(alphabet)
