@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 
 # this package
-from domdf_python_tools.stringlist import StringList
+from domdf_python_tools.stringlist import Indent, StringList
 
 
 class TestStringList:
@@ -237,6 +237,48 @@ class TestStringList:
 
 		sl = StringList()
 		sl.append("class Foo:")
+		sl.set_indent(Indent(0, "    "))
+		sl.blankline(True)
+
+		with sl.with_indent_size(1):
+			sl.append("def bar(self, listicle: List[Item]):")
+			with sl.with_indent_size(2):
+				sl.append("...")
+			sl.blankline(True)
+			sl.append("def __repr__(self) -> str:")
+			with sl.with_indent_size(2):
+				sl.append('return "Foo()"')
+			sl.blankline(True)
+
+		assert sl.indent_size == 0
+
+		assert sl == [x.expandtabs(4) for x in expected_list]
+		assert str(sl) == expected_string.expandtabs(4)
+		assert sl == expected_string.expandtabs(4)
+
+		sl = StringList()
+		sl.append("class Foo:")
+		sl.set_indent("    ", 0)
+		sl.blankline(True)
+
+		with sl.with_indent_size(1):
+			sl.append("def bar(self, listicle: List[Item]):")
+			with sl.with_indent_size(2):
+				sl.append("...")
+			sl.blankline(True)
+			sl.append("def __repr__(self) -> str:")
+			with sl.with_indent_size(2):
+				sl.append('return "Foo()"')
+			sl.blankline(True)
+
+		assert sl.indent_size == 0
+
+		assert sl == [x.expandtabs(4) for x in expected_list]
+		assert str(sl) == expected_string.expandtabs(4)
+		assert sl == expected_string.expandtabs(4)
+
+		sl = StringList()
+		sl.append("class Foo:")
 		sl.blankline(True)
 
 		with sl.with_indent_size(1):
@@ -263,3 +305,90 @@ class TestStringList:
 		sl.append("    Indented")
 
 		assert sl == ["\tIndented"]
+
+	def test_set_indent_error(self):
+		sl = StringList()
+		with pytest.raises(TypeError, match="'size' argument cannot be used when providing an 'Indent' object."):
+			sl.set_indent(Indent(0, "    "), 5)
+
+
+class TestIndent:
+
+	def test_creation(self):
+		indent = Indent()
+		assert indent.size == 0
+		assert indent.type == "\t"
+
+		indent = Indent(3, "    ")
+		assert indent.size == 3
+		assert indent.type == "    "
+
+	def test_iter(self):
+		indent = Indent(3, "    ")
+		assert tuple(indent) == (3, "    ")
+		assert list(iter(indent)) == [3, "    "]
+
+	def test_size(self):
+		indent = Indent()
+
+		indent.size = 1
+		assert indent.size == 1
+
+		indent.size = "2"  # type: ignore
+		assert indent.size == 2
+
+		indent.size = 3.0  # type: ignore
+		assert indent.size == 3
+
+	def test_type(self):
+		indent = Indent()
+
+		indent.type = "    "
+		assert indent.type == "    "
+
+		indent.type = " "
+		assert indent.type == " "
+
+		indent.type = 1  # type: ignore
+		assert indent.type == "1"
+
+		indent.type = ">>> "
+		assert indent.type == ">>> "
+
+		with pytest.raises(ValueError, match="'type' cannot an empty string."):
+			indent.type = ''
+
+	def test_str(self):
+		assert str(Indent()) == ""
+		assert str(Indent(1)) == "\t"
+		assert str(Indent(5)) == "\t\t\t\t\t"
+		assert str(Indent(type="    ")) == ""
+		assert str(Indent(1, type="    ")) == "    "
+		assert str(Indent(5, type="    ")) == "    " * 5
+		assert str(Indent(type=">>> ")) == ""
+		assert str(Indent(1, type=">>> ")) == ">>> "
+
+	def test_repr(self):
+		assert repr(Indent()) == "Indent(size=0, type='\\t')"
+		assert repr(Indent(1)) == "Indent(size=1, type='\\t')"
+		assert repr(Indent(5)) == "Indent(size=5, type='\\t')"
+		assert repr(Indent(type="    ")) == "Indent(size=0, type='    ')"
+		assert repr(Indent(1, type="    ")) == "Indent(size=1, type='    ')"
+		assert repr(Indent(5, type="    ")) == "Indent(size=5, type='    ')"
+		assert repr(Indent(type=">>> ")) == "Indent(size=0, type='>>> ')"
+		assert repr(Indent(1, type=">>> ")) == "Indent(size=1, type='>>> ')"
+
+	def test_eq(self):
+		assert Indent() == Indent()
+		assert Indent() == (0, "\t")
+		assert Indent() == ''
+
+		assert Indent(1, "    ") == Indent(1, "    ")
+		assert Indent(1, "    ") == (1, "    ")
+		assert Indent(1, "    ") == '    '
+
+		assert Indent(2, "\t") == Indent(2, "\t")
+		assert Indent(2, "\t") == (2, "\t")
+		assert Indent(2, "\t") == '\t\t'
+
+		assert not Indent() == 1

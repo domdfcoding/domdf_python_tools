@@ -25,7 +25,7 @@ A list of strings that represent lines in a multiline string.
 
 # stdlib
 from contextlib import contextmanager
-from typing import Iterable, List, Tuple, Union, cast, overload
+from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 
 # 3rd party
 from typing_extensions import Protocol
@@ -42,7 +42,7 @@ class String(Protocol):
 	"""
 
 	def __str__(self) -> str:
-		...
+		...  # pragma: no cover
 
 
 class Indent:
@@ -54,7 +54,7 @@ class Indent:
 		self.size = int(size)
 		self.type = str(type)
 
-	def __iter__(self) -> Iterable:
+	def __iter__(self) -> Iterator[Union[str, Any]]:
 		"""
 		Returns the size and type of the :class:`~domdf_python_tools.stringlist.Indent`
 		"""
@@ -102,6 +102,16 @@ class Indent:
 
 		return f"{type(self).__name__}(size={self.size}, type={self.type!r})"
 
+	def __eq__(self, other):
+		if isinstance(other, Indent):
+			return other.size == self.size and other.type == self.type
+		elif isinstance(other, str):
+			return str(self) == other
+		elif isinstance(other, tuple):
+			return tuple(self) == other
+		else:
+			return NotImplemented
+
 
 class StringList(List[str]):
 	"""
@@ -132,7 +142,7 @@ class StringList(List[str]):
 		if not str(self.indent).strip(" \t") and self.convert_indents:
 			if self.indent_type == '\t':
 				line = convert_indents(line, tab_width=1, from_='    ', to='\t')
-			else:
+			else:  # pragma: no cover
 				line = convert_indents(line, tab_width=1, from_='\t', to=self.indent_type)
 
 		return f"{self.indent}{line}".rstrip()
@@ -192,7 +202,7 @@ class StringList(List[str]):
 		elif isinstance(index, slice):
 			for line, index in zip(
 				reversed(line),  # type: ignore
-				reversed(range(index.start, index.stop + 1, index.step or 1)),
+				reversed(range(index.start or 0, index.stop + 1, index.step or 1)),
 				):
 				self[index] = line
 
