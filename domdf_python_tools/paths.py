@@ -307,9 +307,11 @@ class PathPlus(pathlib.Path):
 	def __new__(cls, *args, **kwargs):
 		if cls is PathPlus:
 			cls = WindowsPathPlus if os.name == 'nt' else PosixPathPlus
+
 		self = cls._from_parts(args, init=False)  # type: ignore
 		if not self._flavour.is_supported:
 			raise NotImplementedError(f"cannot instantiate {cls.__name__!r} on your system")
+
 		self._init()
 		return self
 
@@ -569,7 +571,8 @@ class PathPlus(pathlib.Path):
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
-	"""Path subclass for non-Windows systems.
+	"""
+	PathPlus subclass for non-Windows systems.
 
 	On a POSIX system, instantiating a PathPlus object should return an instance of this class.
 
@@ -579,7 +582,8 @@ class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 
 
 class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
-	"""Path subclass for Windows systems.
+	"""
+	PathPlus subclass for Windows systems.
 
 	On a Windows system, instantiating a PathPlus object should return an instance of this class.
 
