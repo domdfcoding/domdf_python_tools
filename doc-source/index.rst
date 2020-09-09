@@ -142,7 +142,7 @@ Installation
 
 .. toctree::
 	:maxdepth: 3
-	:caption: Documentation
+	:caption: Contributing
 
 	contributing
 	Source

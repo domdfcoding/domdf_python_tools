@@ -15,7 +15,6 @@ Functions for working with (English) words.
 .. autofunction:: domdf_python_tools.words.get_words_list
 .. autofunction:: domdf_python_tools.words.get_random_word
 .. autofunction:: domdf_python_tools.words.make_font
-.. autofunction:: domdf_python_tools.words.as_font
 
 .. autoclass:: domdf_python_tools.words.Font
 	:special-members:

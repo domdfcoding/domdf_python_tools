@@ -50,7 +50,7 @@ Type hint for numbers.
 
 def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 	"""
-	Check if the type of ``obj`` is one of the types in a :py:data:`typing.Union`, :typing.sequence:`Sequence` etc.
+	Check if the type of ``obj`` is one of the types in a :py:data:`typing.Union`, :class:`typing.Sequence` etc.
 
 	:param obj: The object to check the type of
 	:param type_: A :class:`~typing.Type` that has members, such as a List, Union or Sequence.
