@@ -479,3 +479,9 @@ class TestIndent:
 		sl.sort(reverse=True)
 		assert sl == ["world", "hello", "1234", '', '', '', '', '']
 		assert isinstance(sl, StringList)
+
+	def test_str(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234"
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234", ''])
+		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234\n"
