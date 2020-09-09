@@ -28,7 +28,7 @@ from contextlib import contextmanager
 from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 
 # 3rd party
-from typing_extensions import Protocol
+from typing_extensions import Protocol, runtime_checkable
 
 # this package
 from domdf_python_tools.utils import convert_indents
@@ -36,6 +36,7 @@ from domdf_python_tools.utils import convert_indents
 __all__ = ["String", "Indent", "StringList"]
 
 
+@runtime_checkable
 class String(Protocol):
 	"""
 	Protocol for classes that implement ``__str__``.
@@ -134,12 +135,12 @@ class StringList(List[str]):
 		if isinstance(iterable, str):
 			iterable = iterable.split("\n")
 
-		super().__init__([str(x).strip() for x in iterable])
 		self.indent = Indent()
 		self.convert_indents = convert_indents
+		super().__init__([self._make_line(str(x)) for x in iterable])
 
 	def _make_line(self, line: str) -> str:
-		if not str(self.indent).strip(" \t") and self.convert_indents:
+		if not str(self.indent_type).strip(" \t") and self.convert_indents:
 			if self.indent_type == '\t':
 				line = convert_indents(line, tab_width=1, from_='    ', to='\t')
 			else:  # pragma: no cover
@@ -149,7 +150,7 @@ class StringList(List[str]):
 
 	def append(self, line: String) -> None:
 		"""
-		Append a line to the end of the StringList.
+		Append a line to the end of the :class:`~domdf_python_tools.stringlist.StringList`.
 
 		:param line:
 		"""
@@ -157,9 +158,36 @@ class StringList(List[str]):
 		for inner_line in str(line).split("\n"):
 			super().append(self._make_line(inner_line))
 
+	def extend(self, iterable: Iterable[String]) -> None:
+		"""
+		Extend the :class:`~domdf_python_tools.stringlist.StringList` with lines from ``iterable``.
+
+		:param iterable: An iterable of string-like objects to add to the end of the
+			:class:`~domdf_python_tools.stringlist.StringList`.
+		"""
+
+		for line in iterable:
+			self.append(line)
+
+	def copy(self) -> "StringList":
+		"""
+		Returns a shallow copy of the :class:`~domdf_python_tools.stringlist.StringList`.
+
+		Equivalent to ``a[:]``.
+		"""
+
+		return self.__class__(super().copy())
+
+	def count_blanklines(self) -> int:
+		"""
+		Returns a count of the blank lines in the :class:`~domdf_python_tools.stringlist.StringList`.
+		"""
+
+		return self.count('')
+
 	def insert(self, index: int, line: String) -> None:
 		"""
-		Insert a line into the StringList at the given position.
+		Insert a line into the :class:`~domdf_python_tools.stringlist.StringList` at the given position.
 
 		:param index:
 		:param line:
@@ -240,7 +268,7 @@ class StringList(List[str]):
 		"""
 		Sets the size of the indent to insert at the beginning of new lines.
 
-		:param size:
+		:param size: The indent size to use for new lines.
 		"""
 
 		self.indent.size = int(size)
@@ -249,7 +277,7 @@ class StringList(List[str]):
 		"""
 		Sets the type of the indent to insert at the beginning of new lines.
 
-		:param indent_type:
+		:param indent_type: The type of indent to use for new lines.
 		"""
 
 		self.indent.type = str(indent_type)
@@ -258,8 +286,8 @@ class StringList(List[str]):
 		"""
 		Sets the indent to insert at the beginning of new lines.
 
-		:param indent:
-		:param size:
+		:param indent: The :class:`~.Indent` to use for new lines, or the indent type.
+		:param size: If ``indent`` is an indent type, the indent size to use for new lines.
 		"""
 
 		if isinstance(indent, Indent):
@@ -330,8 +358,8 @@ class StringList(List[str]):
 			>>> with sl.with_indent("    ", 1):
 			...     sl.append("Hello World")
 
-		:param indent:
-		:param size:
+		:param indent: The :class:`~.Indent` to use within the ``with`` block, or the indent type.
+		:param size: If ``indent`` is an indent type, the indent size to use within the ``with`` block.
 		"""
 
 		original_indent: Tuple[int, str] = tuple(self.indent)  # type: ignore
@@ -353,7 +381,7 @@ class StringList(List[str]):
 			>>> with sl.with_indent_size(1):
 			...     sl.append("Hello World")
 
-		:param size:
+		:param size: The indent size to use within the ``with`` block.
 		"""
 
 		original_indent_size = self.indent_size
@@ -375,7 +403,7 @@ class StringList(List[str]):
 			>>> with sl.with_indent_type("    "):
 			...     sl.append("Hello World")
 
-		:param indent_type:
+		:param indent_type: The type of indent to use within the ``with`` block.
 		"""
 
 		original_indent_type = self.indent_type

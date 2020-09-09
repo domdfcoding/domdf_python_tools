@@ -91,6 +91,32 @@ class TestStringList:
 		sl.blankline(ensure_single=True)
 		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
 
+		sl.blankline(ensure_single=True)
+		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+
+		sl.append("\t")
+		sl.blankline(ensure_single=True)
+		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+
+		sl.append("    ")
+		sl.blankline(ensure_single=True)
+
+		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+
+		sl.append("    ")
+		sl.blankline(ensure_single=True)
+		sl.blankline()
+		assert sl == ["", '', "hello", "world", '', '', '', "1234", '', '']
+
+	def test_slicing(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl[:-3] == ["", '', "hello", "world", '']
+		assert sl[-3:] == ['', '', "1234"]
+
+	def test_start_of_line_indents(self):
+		assert StringList("Hello\n    World") == ["Hello", "    World"]
+		assert StringList("Hello\n    World", convert_indents=True) == ["Hello", "\tWorld"]
+
 	def test_indent_size(self):
 		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
 
@@ -392,3 +418,64 @@ class TestIndent:
 		assert Indent(2, "\t") == '\t\t'
 
 		assert not Indent() == 1
+
+	def test_extend(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.extend(["\nfoo\nbar\n    baz"])
+
+		assert sl == ["", '', "hello", "world", '', '', '', "1234", '', "foo", "bar", "    baz"]
+
+	def test_clear(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.clear()
+
+		assert sl == []
+
+	def test_copy(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl2 = sl.copy()
+
+		assert sl == sl2
+		assert sl2 == ["", '', "hello", "world", '', '', '', "1234"]
+		assert isinstance(sl2, StringList)
+
+	def test_count(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl.count("hello") == 1
+
+	def test_count_blanklines(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl.count_blanklines() == 5
+
+	def test_index(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl.index("hello") == 2
+
+	def test_pop(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl.pop(2) == "hello"
+		assert sl == ["", '', "world", '', '', '', "1234"]
+		assert isinstance(sl, StringList)
+
+	def test_remove(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.remove("hello")
+		assert sl == ["", '', "world", '', '', '', "1234"]
+		assert isinstance(sl, StringList)
+
+	def test_reverse(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.reverse()
+		assert sl == ["1234", '', '', '', "world", "hello", '', '']
+		assert isinstance(sl, StringList)
+
+	def test_sort(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.sort()
+		assert sl == ['', '', '', '', '', "1234", "hello", "world"]
+		assert isinstance(sl, StringList)
+
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl.sort(reverse=True)
+		assert sl == ["world", "hello", "1234", '', '', '', '', '']
+		assert isinstance(sl, StringList)
