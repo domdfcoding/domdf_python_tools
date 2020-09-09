@@ -39,7 +39,7 @@ __copyright__ = """
 2019-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 """
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 modname = "domdf_python_tools"
 pypi_name = "domdf_python_tools"
 import_name = "domdf_python_tools"
