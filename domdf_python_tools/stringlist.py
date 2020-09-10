@@ -181,6 +181,8 @@ class StringList(List[str]):
 	def count_blanklines(self) -> int:
 		"""
 		Returns a count of the blank lines in the :class:`~domdf_python_tools.stringlist.StringList`.
+
+		.. versionadded:: 0.7.1
 		"""
 
 		return self.count('')

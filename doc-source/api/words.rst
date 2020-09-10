@@ -51,3 +51,7 @@ Functions for working with (English) words.
 
 .. autodata:: domdf_python_tools.words.DOUBLESTRUCK_LETTERS
 	:annotation:
+
+.. autofunction:: domdf_python_tools.words.as_text
+
+.. autofunction:: domdf_python_tools.words.word_join

@@ -3,6 +3,11 @@
 #  paths.py
 """
 Functions for paths and files.
+
+.. versionchanged:: 0.8.0
+
+	``relpath2`` is deprecated and will be removed in 1.0.0.
+	Use :func:`domdf_python_tools.paths.relpath` instead.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -43,6 +48,7 @@ import stat
 from typing import IO, Any, Callable, Iterable, List, Optional
 
 # this package
+from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.typing import JsonLibrary, PathLike
 
 __all__ = [
@@ -253,24 +259,16 @@ def clean_writer(string: str, fp: IO) -> None:
 	Write string to ``fp`` without trailing spaces.
 
 	:param string:
-	:type string: str
 	:param fp:
 	"""
 
-	buffer = []
+	buffer = StringList(string)
+	buffer.blankline(ensure_single=True)
 
-	for line in string.split('\n'):
-		buffer.append(line.rstrip())
+	if len(buffer) == 1 and buffer.count_blanklines() == 1:
+		buffer.blankline()
 
-	while buffer[-1:] == ['']:
-		buffer = buffer[:-1]
-
-	if not buffer:
-		fp.write('\n')
-
-	for line in buffer:
-		fp.write(line)
-		fp.write('\n')
+	fp.write(str(buffer))
 
 
 def make_executable(filename: PathLike) -> None:

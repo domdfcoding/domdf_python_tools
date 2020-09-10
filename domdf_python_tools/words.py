@@ -46,10 +46,8 @@ from typing_extensions import Protocol
 
 # this package
 import domdf_python_tools
-from domdf_python_tools.paths import PathPlus
 
 __all__ = [
-		"ascii_digits",
 		"greek_uppercase",
 		"greek_lowercase",
 		"get_words_list",
@@ -68,6 +66,8 @@ __all__ = [
 		"MONOSPACE_LETTERS",
 		"DOUBLESTRUCK_LETTERS",
 		"alpha_sort",
+		"as_text",
+		"word_join",
 		]
 
 ascii_digits = "0123456789"
@@ -106,6 +106,8 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 
 	.. versionadded:: 0.4.5
 	"""
+
+	from domdf_python_tools.paths import PathPlus
 
 	with importlib_resources.path(domdf_python_tools, "google-10000-english-no-swears.txt") as words_file_:
 		words_file = PathPlus(words_file_)
@@ -478,3 +480,48 @@ This font includes numbers.
 
 .. versionadded:: 0.7.0
 """
+
+
+def as_text(value: Any) -> str:
+	"""
+	Convert the given value to a string. ``None`` is converted to ``''``.
+
+	:param value: The value to convert to a string.
+
+	.. versionchanged:: 0.8.0
+
+		Moved from :mod:`domdf_python_tools.utils`.
+	"""
+
+	if value is None:
+		return ''
+
+	return str(value)
+
+
+def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = False) -> str:
+	"""
+	Join the given list of strings in a natural manner, with 'and' to join the last two elements.
+
+	:param iterable:
+	:param use_repr: Whether to join the ``repr`` of each object.
+	:param oxford: Whether to use an oxford comma when joining the last two elements.
+		Always :py:obj:`False` if there are fewer than three elements.
+	"""
+
+	if use_repr:
+		words = [repr(w) for w in iterable]
+	else:
+		words = list(iterable)
+
+	if len(words) == 0:
+		return ''
+	elif len(words) == 1:
+		return words[0]
+	elif len(words) == 2:
+		return " and ".join(words)
+	else:
+		if oxford:
+			return ", ".join(words[:-1]) + f", and {words[-1]}"
+		else:
+			return ", ".join(words[:-1]) + f" and {words[-1]}"

@@ -4,6 +4,11 @@
 #  utils.py
 """
 General utility functions
+
+.. versionchanged:: 0.8.0
+
+	``tuple2str`` and ``list2string`` are deprecated and will be removed in 1.0.0.
+	Use :func:`domdf_python_tools.utils.list2str` instead.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -48,16 +53,18 @@ import inspect
 import itertools
 import sys
 from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
+from domdf_python_tools import __version__
+import deprecation  # type: ignore
+import domdf_python_tools.words
+
 
 __all__ = [
 		"pyversion",
 		"SPACE_PLACEHOLDER",
-		"as_text",
 		"check_dependencies",
 		"chunks",
 		"cmp",
 		"list2str",
-		"tuple2str",
 		"permutations",
 		"printr",
 		"printt",
@@ -71,7 +78,6 @@ __all__ = [
 		"Len",
 		"double_chain",
 		"posargs2kwargs",
-		"word_join",
 		"convert_indents",
 		]
 
@@ -82,26 +88,12 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 SPACE_PLACEHOLDER = '␣'
 
 
-def as_text(value: Any) -> str:
-	"""
-	Convert the given value to a string. ``None`` is converted to ``''``.
-
-	:param value: Value to convert to a string
-	"""
-
-	if value is None:
-		return ''
-
-	return str(value)
-
-
 def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
 	"""
 	Check whether one or more dependencies are available to be imported.
 
 	:param dependencies: The list of dependencies to check the availability of.
 	:param prt: Whether the status should be printed to the terminal. Default :py:obj:`True`.
-	:type prt: bool, optional
 
 	:return: A list of any missing modules
 	"""
@@ -134,7 +126,6 @@ def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
 
 	:param l: The objects to yield chunks from
 	:param n: The size of the chunks
-	:type n: int
 	"""
 
 	for i in range(0, len(l), n):
@@ -166,6 +157,7 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	return sep.join([str(x) for x in the_list])
 
 
+# Will be removed in 1.0.0
 tuple2str = list2string = list2str
 
 
@@ -225,9 +217,7 @@ def split_len(string: str, n: int) -> List[str]:
 	Split a string every ``n`` characters.
 
 	:param string: The string to split
-	:type string: str
 	:param n: The number of characters to split after
-	:type n: int
 
 	:return: The split string
 	"""
@@ -249,9 +239,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	.. TODO:: Allow custom types, not just ``int`` (making ``int`` the default)
 
 	:param input_string: The string to be converted into a tuple
-	:type input_string: str
 	:param sep: The separator in the string. Default `,`
-	:type sep: str
 	"""
 
 	return tuple(int(x) for x in input_string.split(sep))
@@ -284,7 +272,7 @@ def strtobool(val: Union[str, bool]) -> bool:
 
 def enquote_value(value: Any) -> Union[str, bool, float]:
 	"""
-	Adds quotes (``'``) to the given value, suitable for use in a templating system such as Jinja2.
+	Adds single quotes (``'``) to the given value, suitable for use in a templating system such as Jinja2.
 
 	:class:`Floats <float>`, :class:`integers <int>`, :class:`booleans <bool>`, :py:obj:`None`,
 	and the strings ``'True'``, ``'False'`` and ``'None'`` are returned as-is.
@@ -342,7 +330,7 @@ def double_chain(iterable: Iterable[Iterable]):
 		[1, 2, 3, 4, 5, 6, 7, 8]
 
 
-	:param iterable: The iterable to
+	:param iterable: The iterable to chain.
 	:return:
 
 	.. versionadded:: 0.4.7
@@ -381,41 +369,13 @@ def posargs2kwargs(
 	return kwargs
 
 
-def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = False) -> str:
-	"""
-	Join the given list of strings in a natural manner, with 'and' to join the last two elements.
-
-	:param iterable:
-	:param use_repr: Whether to join the ``repr`` of each object.
-	:param oxford: Whether to use an oxford comma when joining the last two elements.
-		Always :py:obj:`False` if there are less than three elements.
-	"""
-
-	if use_repr:
-		words = [repr(w) for w in iterable]
-	else:
-		words = list(iterable)
-
-	if len(words) == 0:
-		return ''
-	elif len(words) == 1:
-		return words[0]
-	elif len(words) == 2:
-		return " and ".join(words)
-	else:
-		if oxford:
-			return ", ".join(words[:-1]) + f", and {words[-1]}"
-		else:
-			return ", ".join(words[:-1]) + f" and {words[-1]}"
-
-
 def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = " ") -> str:
-	"""
+	r"""
 	Convert indentation at the start of lines in ``text`` from tabs to spaces.
 
 	:param text: The text to convert indents in.
 	:param tab_width: The number of spaces per tab.
-	:param from_: The indent to convert from.
+	:param from\_: The indent to convert from.
 	:param to: The indent to convert to.
 	"""
 
@@ -425,10 +385,24 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = 
 
 	for line in text.splitlines():
 		indent_count = 0
+
 		while line.startswith(from_):
 			indent_count += 1
-			print(indent_count)
 			line = line[from_size:]
+
 		output.append(f"{tab * indent_count}{line}")
 
 	return "\n".join(output)
+
+
+as_text = deprecation.deprecated(
+		deprecated_in="0.8.0", removed_in="1.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.words' instead.",
+		)(domdf_python_tools.words.as_text)
+
+word_join = deprecation.deprecated(
+		deprecated_in="0.8.0", removed_in="1.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.words' instead.",
+		)(domdf_python_tools.words.word_join)

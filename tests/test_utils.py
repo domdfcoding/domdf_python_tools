@@ -26,23 +26,6 @@ def test_pyversion():
 	assert isinstance(utils.pyversion, int)
 
 
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				(12345, "12345"),
-				(123.45, "123.45"),
-				([123.45], "[123.45]"),
-				({123.45}, "{123.45}"),
-				((123.45, ), "(123.45,)"),
-				(None, ''),
-				(pathlib.Path('.'), '.'),
-				(decimal.Decimal("1234"), "1234"),
-				]
-		)
-def test_as_text(value, expects):
-	assert utils.as_text(value) == expects
-
-
 def test_check_dependencies(capsys):
 	deps = ["pytest", "domdf_python_tools", "madeup_module"]
 
