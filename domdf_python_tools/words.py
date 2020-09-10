@@ -107,6 +107,7 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	.. versionadded:: 0.4.5
 	"""
 
+	# this package
 	from domdf_python_tools.paths import PathPlus
 
 	with importlib_resources.path(domdf_python_tools, "google-10000-english-no-swears.txt") as words_file_:

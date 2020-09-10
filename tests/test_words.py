@@ -8,10 +8,10 @@ import string
 import pytest
 
 # this package
+from domdf_python_tools import words
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, alpha_sort, get_random_word, get_words_list
-from domdf_python_tools import words
 
 
 @pytest.mark.parametrize(
@@ -99,7 +99,7 @@ def test_alpha_sort():
 				(123.45, "123.45"),
 				([123.45], "[123.45]"),
 				({123.45}, "{123.45}"),
-				((123.45,), "(123.45,)"),
+				((123.45, ), "(123.45,)"),
 				(None, ''),
 				(pathlib.Path('.'), '.'),
 				(PathPlus('.'), '.'),
@@ -128,14 +128,14 @@ def test_word_join():
 
 	assert words.word_join(()) == ''
 
-	assert words.word_join(("bob",)) == "bob"
+	assert words.word_join(("bob", )) == "bob"
 	assert words.word_join(("bob", "alice")) == "bob and alice"
 	assert words.word_join(("bob", "alice", "fred")) == "bob, alice and fred"
 
-	assert words.word_join(("bob",), use_repr=True) == "'bob'"
+	assert words.word_join(("bob", ), use_repr=True) == "'bob'"
 	assert words.word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
 	assert words.word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
 
-	assert words.word_join(("bob",), use_repr=True, oxford=True) == "'bob'"
+	assert words.word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
 	assert words.word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
 	assert words.word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"

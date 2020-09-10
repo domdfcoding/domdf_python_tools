@@ -53,10 +53,13 @@ import inspect
 import itertools
 import sys
 from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
-from domdf_python_tools import __version__
-import deprecation  # type: ignore
-import domdf_python_tools.words
 
+# 3rd party
+import deprecation  # type: ignore
+
+# this package
+import domdf_python_tools.words
+from domdf_python_tools import __version__
 
 __all__ = [
 		"pyversion",
@@ -396,13 +399,19 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = 
 
 
 as_text = deprecation.deprecated(
-		deprecated_in="0.8.0", removed_in="1.0.0",
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
 		current_version=__version__,
 		details="Import from 'domdf_python_tools.words' instead.",
-		)(domdf_python_tools.words.as_text)
+		)(
+				domdf_python_tools.words.as_text
+				)
 
 word_join = deprecation.deprecated(
-		deprecated_in="0.8.0", removed_in="1.0.0",
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
 		current_version=__version__,
 		details="Import from 'domdf_python_tools.words' instead.",
-		)(domdf_python_tools.words.word_join)
+		)(
+				domdf_python_tools.words.word_join
+				)
