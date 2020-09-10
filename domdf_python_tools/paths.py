@@ -264,10 +264,6 @@ def clean_writer(string: str, fp: IO) -> None:
 
 	buffer = StringList(string)
 	buffer.blankline(ensure_single=True)
-
-	if len(buffer) == 1 and buffer.count_blanklines() == 1:
-		buffer.blankline()
-
 	fp.write(str(buffer))
 
 

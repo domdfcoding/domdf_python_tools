@@ -278,7 +278,7 @@ Too many newlines
 							"Line with tabs",
 							"Too many newlines",
 							"",
-							]), ([], ["\n"])]
+							]), ([], [''])]
 		)
 def test_pathplus_write_clean(input_string, output_string):
 	with TemporaryDirectory() as tmpdir:
