@@ -94,7 +94,7 @@ domdf_python_tools
 	:alt: GitHub top language
 
 .. |commits-since| github-shield::
-	:commits-since: v0.7.1
+	:commits-since: v0.7.2
 	:alt: GitHub commits since tagged version
 
 .. |commits-latest| github-shield::
