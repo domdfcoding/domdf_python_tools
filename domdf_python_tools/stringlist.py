@@ -28,7 +28,8 @@ from contextlib import contextmanager
 from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 
 # this package
-from domdf_python_tools.utils import String, convert_indents
+from domdf_python_tools.typing import String
+from domdf_python_tools.utils import convert_indents
 
 # Will be removed in 1.0
 String = String

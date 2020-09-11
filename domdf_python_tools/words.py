@@ -143,11 +143,6 @@ def get_random_word(min_length: int = 0, max_length: int = -1) -> str:
 	return random.choice(words_list)
 
 
-# class SupportsLessThan(Protocol):
-#
-# 	def __lt__(self, other: Any) -> bool:
-# 		...  # pragma: no cover
-
 # _default_unicode_sort_order: str = "".join(sorted(chr(i) for i in range(sys.maxunicode + 1)))
 
 

@@ -62,6 +62,7 @@ from typing_extensions import Protocol, runtime_checkable
 # this package
 import domdf_python_tools.words
 from domdf_python_tools import __version__
+from domdf_python_tools.typing import HasHead, String
 
 if TYPE_CHECKING:
 	# 3rd party
@@ -91,8 +92,6 @@ __all__ = [
 		"convert_indents",
 		"etc",
 		"head",
-		"HasHead",
-		"String",
 		]
 
 #: The current major python version.
@@ -100,16 +99,6 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 
 #: The ``␣`` character.
 SPACE_PLACEHOLDER = '␣'
-
-
-@runtime_checkable
-class String(Protocol):
-	"""
-	Protocol for classes that implement ``__str__``.
-	"""
-
-	def __str__(self) -> str:
-		...  # pragma: no cover
 
 
 def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
@@ -436,21 +425,6 @@ word_join = deprecation.deprecated(
 		)(
 				domdf_python_tools.words.word_join
 				)
-
-
-@runtime_checkable
-class HasHead(Protocol):
-	"""
-	:class:`typing.Protocol` for classes that have a ``head``.
-
-	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
-	"""
-
-	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
-		...  # pragma: no cover
-
-	def to_string(self, *args, **kwargs) -> Optional[str]:
-		...  # pragma: no cover
 
 
 class _Etcetera(str):

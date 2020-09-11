@@ -15,6 +15,8 @@ Common aliases for type hinting
 	:data:`~.MethodWrapperType`, The type of *bound* methods of some built-in data types and base classes.
 	:data:`~.MethodDescriptorType`, The type of methods of some built-in data types.
 	:data:`~.ClassMethodDescriptorType`, The type of *unbound* class methods of some built-in data types.
+	:data:`~.String`, :class:`~typing.Protocol` for classes that implement ``__str__``.
+	:data:`~.HasHead`, :class:`typing.Protocol` for classes that have a ``head``.
 
 """
 #
@@ -41,7 +43,7 @@ import os
 import pathlib
 from decimal import Decimal
 from json import JSONDecoder, JSONEncoder
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union, runtime_checkable
 
 # 3rd party
 from typing_extensions import Protocol
@@ -55,6 +57,8 @@ __all__ = [
 		"MethodWrapperType",
 		"MethodDescriptorType",
 		"ClassMethodDescriptorType",
+		"HasHead",
+		"String",
 		]
 
 #: Type hint for objects that represent filesystem paths.
@@ -172,3 +176,34 @@ WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
 MethodDescriptorType = type(str.join)
 ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
+
+
+@runtime_checkable
+class String(Protocol):
+	"""
+	:class:`~typing.Protocol` for classes that implement ``__str__``.
+	"""
+
+	def __str__(self) -> str:
+		...  # pragma: no cover
+
+
+@runtime_checkable
+class HasHead(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that have a ``head``.
+
+	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
+	"""
+
+	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
+		...  # pragma: no cover
+
+	def to_string(self, *args, **kwargs) -> Optional[str]:
+		...  # pragma: no cover
+
+
+# class SupportsLessThan(Protocol):
+#
+# 	def __lt__(self, other: Any) -> bool:
+# 		...  # pragma: no cover
