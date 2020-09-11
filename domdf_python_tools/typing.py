@@ -3,6 +3,19 @@
 #  typing.py
 """
 Common aliases for type hinting
+
+**Data:**
+
+.. csv-table::
+	:widths: 5, 20
+
+	:data:`~.PathLike`, Type hint for objects that represent filesystem paths.
+	:data:`~.AnyNumber`, Type hint for numbers.
+	:data:`~.WrapperDescriptorType`, The type of methods of some built-in data types and base classes.
+	:data:`~.MethodWrapperType`, The type of *bound* methods of some built-in data types and base classes.
+	:data:`~.MethodDescriptorType`, The type of methods of some built-in data types.
+	:data:`~.ClassMethodDescriptorType`, The type of *unbound* class methods of some built-in data types.
+
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -33,7 +46,16 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 # 3rd party
 from typing_extensions import Protocol
 
-__all__ = ["PathLike", "AnyNumber", "check_membership", "JsonLibrary"]
+__all__ = [
+		"PathLike",
+		"AnyNumber",
+		"check_membership",
+		"JsonLibrary",
+		"WrapperDescriptorType",
+		"MethodWrapperType",
+		"MethodDescriptorType",
+		"ClassMethodDescriptorType",
+		]
 
 #: Type hint for objects that represent filesystem paths.
 PathLike = Union[str, pathlib.Path, os.PathLike]
@@ -124,3 +146,29 @@ class JsonLibrary(Protocol):
 		:param object_pairs_hook:
 		:param kwds:
 		"""
+
+
+#  Backported from https://github.com/python/cpython/blob/master/Lib/types.py
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com . All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#
+
+# if domdf_python_tools.DOCUMENTING:
+# 	WrapperDescriptorType = ''
+# 	"""
+# 	The type of methods of some built-in data types and base classes such as
+# 	:meth:`object.__init__` or :meth:`object.__lt__`.
+# 	"""
+#
+# 	MethodWrapperType = ''
+# 	MethodDescriptorType = ''
+# 	ClassMethodDescriptorType = ''
+
+# else:
+WrapperDescriptorType = type(object.__init__)
+MethodWrapperType = type(object().__str__)
+MethodDescriptorType = type(str.join)
+ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
