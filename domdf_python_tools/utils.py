@@ -67,7 +67,6 @@ from domdf_python_tools.typing import HasHead, String
 if TYPE_CHECKING:
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
-	from pandas._typing import FrameOrSeries  # type: ignore
 
 __all__ = [
 		"pyversion",

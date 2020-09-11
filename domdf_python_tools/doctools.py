@@ -28,6 +28,7 @@ Utilities for documenting functions, classes and methods.
 
 # stdlib
 import builtins
+import platform
 from textwrap import dedent
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
@@ -47,6 +48,7 @@ __all__ = [
 		]
 
 F = TypeVar('F', bound=Callable[..., Any])
+PYPY = platform.python_implementation() == "PyPy"
 
 
 def deindent_string(string: Optional[str]) -> str:
@@ -311,15 +313,22 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 
 	for attr_name in new_docstrings:
 
-		if hasattr(obj, attr_name):
-			attribute = getattr(obj, attr_name)
+		if not hasattr(obj, attr_name):
+			continue
 
-			if not isinstance(attribute, (WrapperDescriptorType, MethodDescriptorType, MethodWrapperType)):
+		attribute = getattr(obj, attr_name)
 
-				doc: Optional[str] = getattr(obj, attr_name).__doc__
+		if not PYPY and isinstance(attribute, (WrapperDescriptorType, MethodDescriptorType, MethodWrapperType)):
+			continue
 
-				if doc in {None, getattr(base, attr_name).__doc__}:
-					getattr(obj, attr_name).__doc__ = new_docstrings[attr_name]
+		base_docstring: Optional[str] = None
+		if hasattr(base, attr_name):
+			base_docstring = getattr(base, attr_name).__doc__
+
+		doc: Optional[str] = getattr(obj, attr_name).__doc__
+
+		if doc in {None, base_docstring}:
+			getattr(obj, attr_name).__doc__ = new_docstrings[attr_name]
 
 
 def prettify_docstrings(obj: Type) -> Type:

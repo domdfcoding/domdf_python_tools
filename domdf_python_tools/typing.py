@@ -43,10 +43,14 @@ import os
 import pathlib
 from decimal import Decimal
 from json import JSONDecoder, JSONEncoder
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union, runtime_checkable
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 # 3rd party
-from typing_extensions import Protocol
+from typing_extensions import Protocol, runtime_checkable
+
+if TYPE_CHECKING:
+	# 3rd party
+	from pandas._typing import FrameOrSeries  # type: ignore
 
 __all__ = [
 		"PathLike",
