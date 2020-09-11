@@ -27,23 +27,13 @@ A list of strings that represent lines in a multiline string.
 from contextlib import contextmanager
 from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 
-# 3rd party
-from typing_extensions import Protocol, runtime_checkable
-
 # this package
-from domdf_python_tools.utils import convert_indents
+from domdf_python_tools.utils import String, convert_indents
 
-__all__ = ["String", "Indent", "StringList"]
+# Will be removed in 1.0
+String = String
 
-
-@runtime_checkable
-class String(Protocol):
-	"""
-	Protocol for classes that implement ``__str__``.
-	"""
-
-	def __str__(self) -> str:
-		...  # pragma: no cover
+__all__ = ["Indent", "StringList"]
 
 
 class Indent:

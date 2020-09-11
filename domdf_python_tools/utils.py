@@ -92,6 +92,7 @@ __all__ = [
 		"etc",
 		"head",
 		"HasHead",
+		"String",
 		]
 
 #: The current major python version.
