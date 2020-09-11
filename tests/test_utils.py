@@ -13,6 +13,7 @@ import platform
 import re
 import sys
 import types
+from collections import namedtuple
 
 # 3rd party
 import pytest
@@ -20,6 +21,7 @@ import pytest
 # this package
 from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
+from domdf_python_tools.utils import HasHead, head
 
 
 def test_pyversion():
@@ -433,3 +435,74 @@ def test_convert_indents():
 	assert utils.convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
 	assert utils.convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
 	assert utils.convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
+
+
+class TestHead:
+
+	def test_protocol(self):
+		assert not isinstance(str, HasHead)
+		assert not isinstance(int, HasHead)
+		assert not isinstance(float, HasHead)
+		assert not isinstance(tuple, HasHead)
+		assert not isinstance(list, HasHead)
+
+	def test_protocol_pandas(self):
+		pandas = pytest.importorskip("pandas")
+
+		assert isinstance(pandas.DataFrame, HasHead)
+		assert isinstance(pandas.Series, HasHead)
+
+	def test_namedtuple(self):
+		foo = namedtuple("foo", "a, b, c, d, e, f, g, h, i, j, k, l, m")
+		assert head(
+				foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+				) == "foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, ...)"
+		assert head(
+				foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13
+				) == "foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, k=11, l=12, m=13)"
+
+	def test_tuple(self):
+		assert head((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...)"
+		assert head((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+					13) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"
+
+	def test_list(self):
+		assert head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]"
+		assert head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+					13) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
+
+	def test_data_frame(self):
+		pandas = pytest.importorskip("pandas")
+
+		df = pandas.DataFrame(
+				data=[["Bob", 20, "Apprentice"], ["Alice", 23, "Secretary"], ["Mario", 39, "Plumber"]],
+				columns=["Name", "Age", "Occupation"],
+				)
+		assert head(
+				df
+				) == """    Name  Age  Occupation
+0    Bob   20  Apprentice
+1  Alice   23   Secretary
+2  Mario   39     Plumber\
+"""
+		assert head(df, 1) == "  Name  Age  Occupation\n0  Bob   20  Apprentice"
+
+	def test_series(self):
+		pandas = pytest.importorskip("pandas")
+
+		df = pandas.DataFrame(
+				data=[["Bob", 20, "Apprentice"], ["Alice", 23, "Secretary"], ["Mario", 39, "Plumber"]],
+				columns=["Name", "Age", "Occupation"],
+				)
+		ser = df.iloc[0]
+		assert head(ser) == """\
+Name                 Bob
+Age                   20
+Occupation    Apprentice\
+"""
+		assert head(ser, 1) == "Name    Bob"
+
+	def test_str(self):
+		assert head("Hello World") == "Hello Worl..."
+		assert head("Hello World", 11) == "Hello World"
+		assert head("Hello World", 5) == "Hello..."

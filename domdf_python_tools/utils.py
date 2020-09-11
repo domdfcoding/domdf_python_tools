@@ -52,14 +52,21 @@ General utility functions
 import inspect
 import itertools
 import sys
-from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
+from pprint import pformat
+from typing import TYPE_CHECKING, Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
 import deprecation  # type: ignore
+from typing_extensions import Protocol, runtime_checkable
 
 # this package
 import domdf_python_tools.words
 from domdf_python_tools import __version__
+
+if TYPE_CHECKING:
+	# 3rd party
+	from pandas import DataFrame, Series  # type: ignore
+	from pandas._typing import FrameOrSeries  # type: ignore
 
 __all__ = [
 		"pyversion",
@@ -82,6 +89,9 @@ __all__ = [
 		"double_chain",
 		"posargs2kwargs",
 		"convert_indents",
+		"etc",
+		"head",
+		"HasHead",
 		]
 
 #: The current major python version.
@@ -89,6 +99,16 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 
 #: The ``␣`` character.
 SPACE_PLACEHOLDER = '␣'
+
+
+@runtime_checkable
+class String(Protocol):
+	"""
+	Protocol for classes that implement ``__str__``.
+	"""
+
+	def __str__(self) -> str:
+		...  # pragma: no cover
 
 
 def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
@@ -415,3 +435,70 @@ word_join = deprecation.deprecated(
 		)(
 				domdf_python_tools.words.word_join
 				)
+
+
+@runtime_checkable
+class HasHead(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that have a ``head``.
+
+	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
+	"""
+
+	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
+		...  # pragma: no cover
+
+	def to_string(self, *args, **kwargs) -> Optional[str]:
+		...  # pragma: no cover
+
+
+class _Etcetera(str):
+
+	def __new__(cls):
+		return str.__new__(cls, "...")  # type: ignore
+
+	def __repr__(self) -> str:
+		return str(self)
+
+
+etc = _Etcetera()
+"""
+Object that provides an ellipsis string
+
+.. versionadded:: 0.8.0
+"""
+
+
+def head(obj: Union[Tuple, List, "DataFrame", "Series", "String"], n: int = 10) -> str:
+	"""
+	Returns the head of the given object.
+
+	:param obj:
+	:param n: Show the first ``n`` items of ``obj``.
+
+	.. versionadded:: 0.8.0
+	"""
+
+	if isinstance(obj, tuple) and hasattr(obj, "_fields"):
+		if len(obj) <= n:
+			return repr(obj)
+		else:
+			# Likely a namedtuple
+			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}  # type: ignore
+			repr_fmt = '(' + ', '.join(f'{k}={v!r}' for k, v in head_of_namedtuple.items()) + f', {etc})'
+			return obj.__class__.__name__ + repr_fmt
+
+	elif isinstance(obj, (list, tuple)):
+		if len(obj) > n:
+			return pformat(obj.__class__((*obj[:n], etc)))
+		else:
+			return pformat(obj)
+
+	elif isinstance(obj, HasHead):
+		return obj.head(n).to_string()
+
+	elif len(obj) <= n:  # type: ignore
+		return str(obj)
+
+	else:
+		return str(obj[:n]) + etc  # type: ignore

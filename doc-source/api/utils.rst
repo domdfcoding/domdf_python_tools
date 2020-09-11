@@ -3,4 +3,3 @@
 =================================
 
 .. automodule:: domdf_python_tools.utils
-	:undoc-members:
