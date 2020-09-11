@@ -325,10 +325,9 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 		if hasattr(base, attr_name):
 			base_docstring = getattr(base, attr_name).__doc__
 
-		doc: Optional[str] = getattr(obj, attr_name).__doc__
-
-		if doc in {None, base_docstring}:
-			getattr(obj, attr_name).__doc__ = new_docstrings[attr_name]
+		doc: Optional[str] = attribute.__doc__
+		if doc in {None, base_docstring} and attribute is not None:
+			attribute.__doc__ = new_docstrings[attr_name]
 
 
 def prettify_docstrings(obj: Type) -> Type:
