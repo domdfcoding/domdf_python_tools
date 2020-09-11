@@ -305,6 +305,8 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 	:param new_docstrings:
 
 	:return:
+
+	.. versionadded:: 0.8.0
 	"""
 
 	for attr_name in new_docstrings:
@@ -328,7 +330,7 @@ def prettify_docstrings(obj: Type) -> Type:
 
 	:return: The object
 
-	Default :func:`dir` implementation.
+	.. versionadded:: 0.8.0
 	"""
 
 	repr_docstring = f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`."

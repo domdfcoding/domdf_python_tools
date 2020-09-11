@@ -3,6 +3,11 @@
 #  stringlist.py
 """
 A list of strings that represent lines in a multiline string.
+
+.. versionchanged:: 0.8.0
+
+	String moved to :mod:`domdf_python_tools.typing`.
+	It will be removed from this module in 1.0.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -31,7 +36,6 @@ from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
-# Will be removed in 1.0
 String = String
 
 __all__ = ["Indent", "StringList"]

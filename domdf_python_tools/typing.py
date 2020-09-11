@@ -158,20 +158,7 @@ class JsonLibrary(Protocol):
 #  Copyright © 2000 BeOpen.com . All rights reserved.
 #  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
-#
 
-# if domdf_python_tools.DOCUMENTING:
-# 	WrapperDescriptorType = ''
-# 	"""
-# 	The type of methods of some built-in data types and base classes such as
-# 	:meth:`object.__init__` or :meth:`object.__lt__`.
-# 	"""
-#
-# 	MethodWrapperType = ''
-# 	MethodDescriptorType = ''
-# 	ClassMethodDescriptorType = ''
-
-# else:
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
 MethodDescriptorType = type(str.join)
@@ -182,6 +169,10 @@ ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
 class String(Protocol):
 	"""
 	:class:`~typing.Protocol` for classes that implement ``__str__``.
+
+	.. versionchanged:: 0.8.0
+
+		Moved from :mod:`domdf_python_tools.stringlist`.
 	"""
 
 	def __str__(self) -> str:
@@ -194,6 +185,8 @@ class HasHead(Protocol):
 	:class:`typing.Protocol` for classes that have a ``head``.
 
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
+
+	.. versionadded:: 0.8.0
 	"""
 
 	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
