@@ -117,6 +117,9 @@ class Indent:
 class StringList(List[str]):
 	"""
 	A list of strings that represent lines in a multiline string.
+
+	:param iterable: Content to populate the StringList with.
+	:param convert_indents: Whether indents at the start of lines should be converted.
 	"""
 
 	#: The indent to insert at the beginning of new lines.

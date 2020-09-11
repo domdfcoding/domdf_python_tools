@@ -1,4 +1,5 @@
 # stdlib
+import pickle
 from textwrap import dedent
 
 # 3rd party
@@ -404,6 +405,11 @@ class TestStringList:
 		sl = StringList(["", '', "hello", "world", '', '', '', "1234", ''])
 		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234\n"
 
+	@pytest.mark.xfail()
+	def test_pickle(self):
+		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		assert sl == pickle.loads(pickle.dumps(sl))
+
 
 class TestIndent:
 
@@ -485,3 +491,7 @@ class TestIndent:
 		assert Indent(2, "\t") == '\t\t'
 
 		assert not Indent() == 1
+
+	def test_pickle(self):
+		indent = Indent(2, "    ")
+		assert indent == pickle.loads(pickle.dumps(indent))
