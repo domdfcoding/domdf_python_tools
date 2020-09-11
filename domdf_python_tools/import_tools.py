@@ -45,8 +45,10 @@ Functions for importing classes.
 #
 
 # stdlib
+# import importlib.util
 import inspect
 import pkgutil
+# import sys
 from types import ModuleType
 from typing import Any, Callable, List, Optional, Type
 
@@ -90,3 +92,18 @@ def discover(
 			matched_classes.append(imported_objects)
 
 	return matched_classes
+
+
+#
+# def import_module(filename: str):
+# 	"""
+# 	Import the module with the given filename.
+# 	:param filename:
+# 	:return:
+# 	"""
+#
+# 	spec = importlib.util.spec_from_file_location("typing", filename)
+# 	mod = importlib.util.module_from_spec(spec)
+# 	spec.loader.exec_module(mod)
+# 	sys.modules[mod.__name__] = mod
+# 	return mod

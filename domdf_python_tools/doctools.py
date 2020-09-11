@@ -324,17 +324,15 @@ def prettify_docstrings(obj: Type) -> Type:
 	"""
 	Prettify the default :class:`object` docstrings for use in Sphinx documentation.
 
-	:param obj: The object to prettify the docstrings for.
+	:param obj: The object to prettify the method docstrings for.
 
 	:return: The object
 
 	Default :func:`dir` implementation.
 	"""
 
-	new_docstrings = {
-			**base_new_docstrings,
-			"__repr__": f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`.",
-			}
+	repr_docstring = f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`."
+	new_docstrings = {**base_new_docstrings, "__repr__": repr_docstring}
 
 	_do_prettify(obj, object, new_docstrings)
 	_do_prettify(obj, dict, container_docstrings)
