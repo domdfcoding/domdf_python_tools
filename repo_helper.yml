@@ -49,3 +49,6 @@ yapf_exclude:
 
 manifest_additional:
   - "include domdf_python_tools/google-10000-english-no-swears.txt"
+
+sphinx_conf_epilogue:
+  - set_type_checking_flag = True

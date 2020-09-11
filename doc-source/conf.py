@@ -55,6 +55,7 @@ extensions = [
 	'sphinxcontrib.toctree_plus',
 	'seed_intersphinx_mapping',
 	'sphinx.ext.autosectionlabel',
+	'patched_autosummary',
 	]
 
 sphinxemoji_style = 'twemoji'
@@ -125,3 +126,6 @@ autodoc_default_options = {
 				"__hash__",
 				]),
 		}
+
+
+set_type_checking_flag = True
