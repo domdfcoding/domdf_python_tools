@@ -10,12 +10,18 @@ Test functions in doctools.py
 import math
 
 # 3rd party
+from typing import get_type_hints
+
 import pytest
 
 # this package
 from domdf_python_tools import doctools
 
 # TODO: test sphinxification of docstrings
+from domdf_python_tools.doctools import (
+	base_int_docstrings, base_new_docstrings, container_docstrings, operator_docstrings,
+	prettify_docstrings,
+	)
 
 
 class Cafe:
@@ -339,3 +345,187 @@ def test_sphinxify_docstring():
 		:return: pi
 		:rtype: float
 		"""
+
+
+
+@prettify_docstrings
+class Klasse:
+	def __delattr__(self, **kwargs):
+		...  # pragma: no cover
+	
+	def __dir__(self): 
+		...  # pragma: no cover
+	
+	def __eq__(self, **kwargs):
+		...  # pragma: no cover
+	
+	def __getattribute__(self, **kwargs):
+		...  # pragma: no cover
+	
+	def __ge__(self): 
+		...  # pragma: no cover
+	
+	def __gt__(self): 
+		...  # pragma: no cover
+	
+	def __hash__(self): 
+		...  # pragma: no cover
+	
+	def __lt__(self): 
+		...  # pragma: no cover
+	
+	def __le__(self): 
+		...  # pragma: no cover
+	
+	def __ne__(self, **kwargs):
+		...  # pragma: no cover
+	
+	def __setattr__(self, **kwargs):
+		...  # pragma: no cover
+	
+	def __sizeof__(self): 
+		...  # pragma: no cover
+	
+	def __str__(self): 
+		...  # pragma: no cover
+	
+	def __contains__(self): 
+		...  # pragma: no cover
+	
+	def __getitem__(self): 
+		...  # pragma: no cover
+	
+	def __setitem__(self): 
+		...  # pragma: no cover
+	
+	def __delitem__(self): 
+		...  # pragma: no cover
+	
+	def __and__(self): 
+		...  # pragma: no cover
+	
+	def __add__(self): 
+		...  # pragma: no cover
+	
+	def __abs__(self): 
+		...  # pragma: no cover
+	
+	def __divmod__(self): 
+		...  # pragma: no cover
+	
+	def __floordiv__(self): 
+		...  # pragma: no cover
+	
+	def __invert__(self): 
+		...  # pragma: no cover
+	
+	def __lshift__(self): 
+		...  # pragma: no cover
+	
+	def __mod__(self): 
+		...  # pragma: no cover
+	
+	def __mul__(self): 
+		...  # pragma: no cover
+	
+	def __neg__(self): 
+		...  # pragma: no cover
+	
+	def __or__(self): 
+		...  # pragma: no cover
+	
+	def __pos__(self): 
+		...  # pragma: no cover
+	
+	def __pow__(self): 
+		...  # pragma: no cover
+	
+	def __radd__(self): 
+		...  # pragma: no cover
+	
+	def __rand__(self): 
+		...  # pragma: no cover
+	
+	def __rdivmod__(self): 
+		...  # pragma: no cover
+	
+	def __rfloordiv__(self): 
+		...  # pragma: no cover
+	
+	def __rlshift__(self): 
+		...  # pragma: no cover
+	
+	def __rmod__(self): 
+		...  # pragma: no cover
+	
+	def __rmul__(self): 
+		...  # pragma: no cover
+	
+	def __ror__(self): 
+		...  # pragma: no cover
+	
+	def __rpow__(self): 
+		...  # pragma: no cover
+	
+	def __rrshift__(self): 
+		...  # pragma: no cover
+	
+	def __rshift__(self): 
+		...  # pragma: no cover
+	
+	def __rsub__(self): 
+		...  # pragma: no cover
+	
+	def __rtruediv__(self): 
+		...  # pragma: no cover
+	
+	def __rxor__(self): 
+		...  # pragma: no cover
+	
+	def __sub__(self): 
+		...  # pragma: no cover
+	
+	def __truediv__(self): 
+		...  # pragma: no cover
+	
+	def __xor__(self): 
+		...  # pragma: no cover
+	
+	def __float__(self): 
+		...  # pragma: no cover
+	
+	def __int__(self): 
+		...  # pragma: no cover
+	
+	def __repr__(self):
+		...  # pragma: no cover
+
+	def __bool__(self): 
+		...  # pragma: no cover
+
+
+def test_prettify_docstrings():
+
+	all_docstrings = {
+			**base_new_docstrings,
+			**container_docstrings,
+			**operator_docstrings,
+			**base_int_docstrings,
+			}
+
+	for attr_name, docstring in base_new_docstrings.items():
+		assert getattr(Klasse, attr_name).__doc__ == docstring
+
+	assert get_type_hints(Klasse.__eq__)["return"] is bool
+	assert get_type_hints(Klasse.__ge__)["return"] is bool
+	assert get_type_hints(Klasse.__gt__)["return"] is bool
+	assert get_type_hints(Klasse.__lt__)["return"] is bool
+	assert get_type_hints(Klasse.__le__)["return"] is bool
+	assert get_type_hints(Klasse.__ne__)["return"] is bool
+	assert get_type_hints(Klasse.__repr__)["return"] is str
+	assert get_type_hints(Klasse.__str__)["return"] is str
+	assert get_type_hints(Klasse.__int__)["return"] is int
+	assert get_type_hints(Klasse.__float__)["return"] is float
+	assert get_type_hints(Klasse.__bool__)["return"] is bool
+
+	assert Klasse.__repr__.__doc__ == "Return a string representation of the :class:`~tests.test_doctools.Klasse`."

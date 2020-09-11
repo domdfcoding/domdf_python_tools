@@ -29,7 +29,10 @@ Utilities for documenting functions, classes and methods.
 # stdlib
 import builtins
 from textwrap import dedent
-from typing import Any, Callable, Optional, Sequence, Type, TypeVar, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
+
+# this package
+from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
 		"F",
@@ -40,6 +43,7 @@ __all__ = [
 		"is_documented_by",
 		"append_docstring_from",
 		"sphinxify_docstring",
+		"prettify_docstrings",
 		]
 
 F = TypeVar('F', bound=Callable[..., Any])
@@ -203,3 +207,150 @@ def sphinxify_docstring() -> Callable:
 		return target
 
 	return wrapper
+
+
+# Check against object
+base_new_docstrings = {
+		"__delattr__": "Implement :func:`delattr(self, name) <delattr>`.",
+		"__dir__": "Default :func:`dir` implementation.",
+		"__eq__": "Return ``self == other``.",  # __format__
+		"__getattribute__": "Return :func:`getattr(self, name) <getattr>`.",
+		"__ge__": "Return ``self >= other``.",
+		"__gt__": "Return ``self > other``.",
+		"__hash__": "Return :func:`hash(self) <hash>`.",
+		# __init_subclass__
+		# __init__  # not usually shown in sphinx
+		"__lt__": "Return ``self < other``.",
+		"__le__": "Return ``self <= other``.",  # __new__
+		"__ne__": "Return ``self != other``.",
+		# __reduce_ex__
+		# __reduce__
+		# __repr__ is defined within the function
+		"__setattr__": "Implement :func:`setattr(self, name) <setattr>`.",
+		"__sizeof__": "Returns the size of the object in memory, in bytes.",
+		"__str__": "Return :func:`str(self) <str>`.",  # __subclasshook__
+		}
+
+# Check against dict
+container_docstrings = {
+		"__contains__": "Return ``key in self``.",
+		"__getitem__": "Return ``self[key]``.",
+		"__setitem__": "Set ``self[key]`` to ``value``.",
+		"__delitem__": "Delete ``self[key]````.",
+		}
+
+# Check against int
+operator_docstrings = {
+		"__and__": "Return ``self & value``.",
+		"__add__": "Return ``self + value``.",
+		"__abs__": "Return :func:`abs(self) <abs>`.",
+		"__divmod__": "Return :func:`divmod(self, value) <divmod>`.",
+		"__floordiv__": "Return ``self // value``.",
+		"__invert__": "Return ``~ self``.",
+		"__lshift__": "Return ``self << value``.",
+		"__mod__": "Return ``self % value``.",
+		"__mul__": "Return ``self * value``.",
+		"__neg__": "Return ``- self``.",
+		"__or__": "Return ``self | value``.",
+		"__pos__": "Return ``+ self``.",
+		"__pow__": "Return :func:`pow(self, value, mod) <pow>`.",
+		"__radd__": "Return ``value + self``.",
+		"__rand__": "Return ``value & self``.",
+		"__rdivmod__": "Return :func:`divmod(value, self) <divmod>`.",
+		"__rfloordiv__": "Return ``value // self``.",
+		"__rlshift__": "Return ``value << self``.",
+		"__rmod__": "Return ``value % self``.",
+		"__rmul__": "Return ``value * self``.",
+		"__ror__": "Return ``value | self``.",
+		"__rpow__": "Return :func:`pow(value, self, mod) <pow>`.",
+		"__rrshift__": "Return ``self >> value``.",
+		"__rshift__": "Return ``self >> value``.",
+		"__rsub__": "Return ``value - self``.",
+		"__rtruediv__": "Return ``value / self``.",
+		"__rxor__": "Return ``value ^ self``.",
+		"__sub__": "Return ``value - self``.",
+		"__truediv__": "Return ``self / value``.",
+		"__xor__": "Return ``self ^ value``.",
+		}
+
+# Check against int
+base_int_docstrings = {
+		# "__bool__": "Return ``self != 0`.",  # TODO
+		# __ceil__
+		"__float__": "Return :func:`float(self) <float>`.",  # __floor__
+		"__int__": "Return :func:`int(self) <int>`.",  # __round__
+		}
+
+new_return_types = {
+		"__eq__": bool,
+		"__ge__": bool,
+		"__gt__": bool,
+		"__lt__": bool,
+		"__le__": bool,
+		"__ne__": bool,
+		"__repr__": str,
+		"__str__": str,
+		"__int__": int,
+		"__float__": float,
+		"__bool__": bool,
+		}
+
+
+def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
+	"""
+	Perform the actual prettification for :func`~.prettify_docstrings`.
+
+	:param obj:
+	:param base:
+	:param new_docstrings:
+
+	:return:
+	"""
+
+	for attr_name in new_docstrings:
+
+		if hasattr(obj, attr_name):
+			attribute = getattr(obj, attr_name)
+
+			if not isinstance(attribute, (WrapperDescriptorType, MethodDescriptorType, MethodWrapperType)):
+
+				doc: Optional[str] = getattr(obj, attr_name).__doc__
+
+				if doc in {None, getattr(base, attr_name).__doc__}:
+					getattr(obj, attr_name).__doc__ = new_docstrings[attr_name]
+
+
+def prettify_docstrings(obj: Type) -> Type:
+	"""
+	Prettify the default :class:`object` docstrings for use in Sphinx documentation.
+
+	:param obj: The object to prettify the docstrings for.
+
+	:return: The object
+
+	Default :func:`dir` implementation.
+	"""
+
+	new_docstrings = {
+			**base_new_docstrings,
+			"__repr__": f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`.",
+			}
+
+	_do_prettify(obj, object, new_docstrings)
+	_do_prettify(obj, dict, container_docstrings)
+	_do_prettify(obj, int, operator_docstrings)
+	_do_prettify(obj, int, base_int_docstrings)
+
+	for attribute in new_return_types:
+		if hasattr(obj, attribute):
+			annotations: Dict = getattr(getattr(obj, attribute), "__annotations__", {})
+
+			if "return" not in annotations or annotations["return"] is Any:
+				annotations["return"] = new_return_types[attribute]
+
+			try:
+				getattr(obj, attribute).__annotations__ = annotations
+			except AttributeError:  # pragma: no cover
+				pass
+
+	return obj
