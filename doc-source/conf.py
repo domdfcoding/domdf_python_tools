@@ -55,7 +55,6 @@ extensions = [
 	'sphinxcontrib.toctree_plus',
 	'seed_intersphinx_mapping',
 	'sphinx.ext.autosectionlabel',
-	'patched_autosummary',
 	]
 
 sphinxemoji_style = 'twemoji'
@@ -100,7 +99,21 @@ latex_documents = [('index', f'{slug}.tex', project, author, 'manual')]
 man_pages = [('index', slug, project, [author], 1)]
 texinfo_documents = [('index', slug, project, author, slug, project, 'Miscellaneous')]
 
-toctree_plus_types = {"class", "function", "method", "data"}
+toctree_plus_types = {
+		"class",
+		"function",
+		"method",
+		"data",
+		"enum",
+		"flag",
+		"confval",
+		"directive",
+		"confval",
+		"protocol",
+		"typeddict",
+		}
+
+add_module_names = False
 
 
 autodoc_default_options = {

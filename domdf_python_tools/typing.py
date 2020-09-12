@@ -15,8 +15,6 @@ Common aliases for type hinting
 	:data:`~.MethodWrapperType`, The type of *bound* methods of some built-in data types and base classes.
 	:data:`~.MethodDescriptorType`, The type of methods of some built-in data types.
 	:data:`~.ClassMethodDescriptorType`, The type of *unbound* class methods of some built-in data types.
-	:data:`~.String`, :class:`~typing.Protocol` for classes that implement ``__str__``.
-	:data:`~.HasHead`, :class:`typing.Protocol` for classes that have a ``head``.
 
 """
 #
@@ -186,7 +184,7 @@ class String(Protocol):
 @runtime_checkable
 class HasHead(Protocol):
 	"""
-	:class:`typing.Protocol` for classes that have a ``head``.
+	:class:`typing.Protocol` for classes that have a ``head`` method.
 
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
 
@@ -194,10 +192,18 @@ class HasHead(Protocol):
 	"""
 
 	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
-		...  # pragma: no cover
+		"""
+		Return the first n rows.
+
+		:param n: Number of rows to select.
+
+		:return: The first n rows of the caller object.
+		"""
 
 	def to_string(self, *args, **kwargs) -> Optional[str]:
-		...  # pragma: no cover
+		"""
+		Render the object to a console-friendly tabular output.
+		"""
 
 
 # class SupportsLessThan(Protocol):
