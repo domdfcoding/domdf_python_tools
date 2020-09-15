@@ -16,7 +16,11 @@ import pytest
 # this package
 from domdf_python_tools import doctools
 from domdf_python_tools.doctools import (
-		base_int_docstrings, base_new_docstrings, container_docstrings, operator_docstrings, prettify_docstrings
+		base_int_docstrings,
+		base_new_docstrings,
+		container_docstrings,
+		operator_docstrings,
+		prettify_docstrings
 		)
 
 # TODO: test sphinxification of docstrings
