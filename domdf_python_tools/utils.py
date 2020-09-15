@@ -57,7 +57,6 @@ from typing import TYPE_CHECKING, Any, Callable, Dict, Generator, Iterable, List
 
 # 3rd party
 import deprecation  # type: ignore
-from typing_extensions import Protocol, runtime_checkable
 
 # this package
 import domdf_python_tools.words
