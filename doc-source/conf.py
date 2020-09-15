@@ -35,21 +35,15 @@ package_root = "domdf_python_tools"
 
 extensions = [
 	'sphinx_toolbox',
-	'sphinx_toolbox.autodoc_augment_defaults',
-	'sphinx_toolbox.autodoc_typehints',
+	'sphinx_toolbox.more_autodoc',
+	'sphinx_toolbox.more_autosummary',
 	'sphinx.ext.intersphinx',
-	'sphinx.ext.autodoc',
 	'sphinx.ext.mathjax',
-	'sphinx.ext.viewcode',
 	'sphinxcontrib.httpdomain',
 	'sphinxcontrib.extras_require',
 	'sphinx.ext.todo',
 	'sphinxemoji.sphinxemoji',
 	'notfound.extension',
-	'sphinx_tabs.tabs',
-	'sphinx-prompt',
-	'sphinx.ext.autosummary',
-	'autodocsumm',
 	'sphinx_copybutton',
 	'sphinxcontrib.default_values',
 	'sphinxcontrib.toctree_plus',
@@ -120,6 +114,7 @@ autodoc_default_options = {
 		'members': None,  # Include all members (methods).
 		'special-members': None,
 		"autosummary": None,
+		"show-inheritance": None,
 		'exclude-members': ','.join([   # Exclude "standard" methods.
 				"__dict__",
 				"__class__",
