@@ -230,7 +230,7 @@ base_new_docstrings = {
 		# __repr__ is defined within the function
 		"__setattr__": "Implement :func:`setattr(self, name) <setattr>`.",
 		"__sizeof__": "Returns the size of the object in memory, in bytes.",
-		"__str__": "Return :func:`str(self) <str>`.",  # __subclasshook__
+		"__str__": "Return :class:`str(self) <str>`.",  # __subclasshook__
 		}
 
 # Check against dict
@@ -321,12 +321,15 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 		if not PYPY and isinstance(attribute, (WrapperDescriptorType, MethodDescriptorType, MethodWrapperType)):
 			continue
 
+		if attribute is None:
+			continue
+
 		base_docstring: Optional[str] = None
 		if hasattr(base, attr_name):
 			base_docstring = getattr(base, attr_name).__doc__
 
 		doc: Optional[str] = attribute.__doc__
-		if doc in {None, base_docstring} and attribute is not None:
+		if doc in {None, base_docstring}:
 			attribute.__doc__ = new_docstrings[attr_name]
 
 
