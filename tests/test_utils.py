@@ -383,36 +383,6 @@ def test_posargs2kwargs(args, posarg_names, kwargs, expects):
 	assert utils.posargs2kwargs(args, posarg_names, kwargs) == expects
 
 
-def test_word_join():
-	assert utils.word_join([]) == ''
-
-	assert utils.word_join(["bob"]) == "bob"
-	assert utils.word_join(["bob", "alice"]) == "bob and alice"
-	assert utils.word_join(["bob", "alice", "fred"]) == "bob, alice and fred"
-
-	assert utils.word_join(["bob"], use_repr=True) == "'bob'"
-	assert utils.word_join(["bob", "alice"], use_repr=True) == "'bob' and 'alice'"
-	assert utils.word_join(["bob", "alice", "fred"], use_repr=True) == "'bob', 'alice' and 'fred'"
-
-	assert utils.word_join(["bob"], use_repr=True, oxford=True) == "'bob'"
-	assert utils.word_join(["bob", "alice"], use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert utils.word_join(["bob", "alice", "fred"], use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
-
-	assert utils.word_join(()) == ''
-
-	assert utils.word_join(("bob", )) == "bob"
-	assert utils.word_join(("bob", "alice")) == "bob and alice"
-	assert utils.word_join(("bob", "alice", "fred")) == "bob, alice and fred"
-
-	assert utils.word_join(("bob", ), use_repr=True) == "'bob'"
-	assert utils.word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
-	assert utils.word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
-
-	assert utils.word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
-	assert utils.word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert utils.word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
-
-
 def test_convert_indents():
 
 	# TODO: test 'to'

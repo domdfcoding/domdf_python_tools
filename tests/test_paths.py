@@ -358,7 +358,7 @@ def test_copytree():
 
 		copytree(srcdir, destdir)
 
-		assert os.listdir(srcdir) == os.listdir(destdir)
+		assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
 
 		assert (destdir / "root.txt").exists()
 		assert (destdir / "root.txt").is_file()
@@ -411,7 +411,7 @@ def test_copytree_exists():
 
 		copytree(srcdir, destdir)
 
-		assert os.listdir(srcdir) == os.listdir(destdir)
+		assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
 
 		assert (destdir / "root.txt").exists()
 		assert (destdir / "root.txt").is_file()
