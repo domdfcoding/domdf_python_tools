@@ -456,10 +456,10 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", "String"], n: int = 10) 
 	"""
 
 	if isinstance(obj, tuple) and hasattr(obj, "_fields"):
+		# Likely a namedtuple
 		if len(obj) <= n:
 			return repr(obj)
 		else:
-			# Likely a namedtuple
 			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}  # type: ignore
 			repr_fmt = '(' + ', '.join(f'{k}={v!r}' for k, v in head_of_namedtuple.items()) + f', {etc})'
 			return obj.__class__.__name__ + repr_fmt
