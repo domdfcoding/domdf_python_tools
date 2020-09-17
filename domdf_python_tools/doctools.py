@@ -238,7 +238,7 @@ container_docstrings = {
 		"__contains__": "Return ``key in self``.",
 		"__getitem__": "Return ``self[key]``.",
 		"__setitem__": "Set ``self[key]`` to ``value``.",
-		"__delitem__": "Delete ``self[key]````.",
+		"__delitem__": "Delete ``self[key]``.",
 		}
 
 # Check against int

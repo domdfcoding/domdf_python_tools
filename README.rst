@@ -90,7 +90,7 @@ domdf_python_tools
 .. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/domdf_python_tools
 	:alt: GitHub top language
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/domdf_python_tools/v0.8.2
+.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/domdf_python_tools/v0.8.3
 	:target: https://github.com/domdfcoding/domdf_python_tools/pulse
 	:alt: GitHub commits since tagged version
 
