@@ -8,20 +8,23 @@ Test functions in doctools.py
 
 # stdlib
 import math
-from typing import get_type_hints
+from typing import Iterable, get_type_hints
 
 # 3rd party
 import pytest
 
 # this package
 from domdf_python_tools import doctools
+from domdf_python_tools.bases import Dictable
 from domdf_python_tools.doctools import (
+		PYPY,
 		base_int_docstrings,
 		base_new_docstrings,
 		container_docstrings,
 		operator_docstrings,
 		prettify_docstrings
 		)
+from domdf_python_tools.testing import max_version
 
 # TODO: test sphinxification of docstrings
 
@@ -515,7 +518,9 @@ def test_prettify_docstrings():
 			**base_int_docstrings,
 			}
 
-	for attr_name, docstring in base_new_docstrings.items():
+	for attr_name, docstring in all_docstrings.items():
+		if PYPY and attr_name in {"__delattr__", "__dir__"}:
+			continue
 		assert getattr(Klasse, attr_name).__doc__ == docstring
 
 	assert get_type_hints(Klasse.__eq__)["return"] is bool
@@ -531,3 +536,17 @@ def test_prettify_docstrings():
 	assert get_type_hints(Klasse.__bool__)["return"] is bool
 
 	assert Klasse.__repr__.__doc__ == "Return a string representation of the :class:`~tests.test_doctools.Klasse`."
+
+
+@max_version("3.7")
+def test_prettify_with_method():
+
+	class F(Iterable):
+		pass
+
+	assert prettify_docstrings(F).__getitem__.__doc__ != "Return ``self[key]``."
+
+	class G(Dictable):
+		pass
+
+	assert prettify_docstrings(G).__getitem__.__doc__ != "Return ``self[key]``."

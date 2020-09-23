@@ -30,6 +30,7 @@ Utilities for documenting functions, classes and methods.
 import builtins
 import platform
 from textwrap import dedent
+from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
 # this package
@@ -318,7 +319,12 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 
 		attribute = getattr(obj, attr_name)
 
-		if not PYPY and isinstance(attribute, (WrapperDescriptorType, MethodDescriptorType, MethodWrapperType)):
+		if not PYPY and isinstance(
+				attribute,
+				(WrapperDescriptorType, MethodDescriptorType, MethodWrapperType, MethodType),
+				):
+			continue
+		elif PYPY and isinstance(attribute, MethodType):
 			continue
 
 		if attribute is None:
