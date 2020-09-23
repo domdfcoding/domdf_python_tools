@@ -39,14 +39,18 @@ Common aliases for type hinting
 # stdlib
 import os
 import pathlib
+import typing
 from decimal import Decimal
 from json import JSONDecoder, JSONEncoder
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 # 3rd party
 from typing_extensions import Protocol, runtime_checkable
 
-if TYPE_CHECKING:
+# this package
+import domdf_python_tools
+
+if typing.TYPE_CHECKING or domdf_python_tools.__docs:
 	# 3rd party
 	from pandas._typing import FrameOrSeries  # type: ignore
 

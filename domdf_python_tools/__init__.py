@@ -29,3 +29,5 @@ __copyright__: str = "2014-2020 Dominic Davis-Foster"
 __license__: str = "LGPLv3+"
 __version__: str = "0.8.3"
 __email__: str = "dominic@davis-foster.co.uk"
+
+__docs = False

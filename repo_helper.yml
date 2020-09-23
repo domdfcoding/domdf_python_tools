@@ -40,6 +40,8 @@ classifiers:
 extras_require:
   dates:
     - pytz>=2019.1
+  testing:
+    - pytest>=6.0.0
 
 keywords:
   - utilities
@@ -50,5 +52,8 @@ yapf_exclude:
 manifest_additional:
   - "include domdf_python_tools/google-10000-english-no-swears.txt"
 
-sphinx_conf_epilogue:
-  - set_type_checking_flag = True
+sphinx_conf_preamble:
+  - import domdf_python_tools
+  - domdf_python_tools.__docs = True
+
+tox_testenv_extras: all

@@ -13,6 +13,8 @@ sys.path.append(os.path.abspath('..'))
 from __pkginfo__ import __version__
 
 # User-configurable lines
+import domdf_python_tools
+domdf_python_tools.__docs = True
 # End of user-configurable lines
 
 github_username = "domdfcoding"
@@ -37,6 +39,7 @@ extensions = [
 	'sphinx_toolbox',
 	'sphinx_toolbox.more_autodoc',
 	'sphinx_toolbox.more_autosummary',
+	'sphinx_toolbox.tweaks.param_dash',
 	'sphinx.ext.intersphinx',
 	'sphinx.ext.mathjax',
 	'sphinxcontrib.httpdomain',
@@ -48,7 +51,6 @@ extensions = [
 	'sphinxcontrib.default_values',
 	'sphinxcontrib.toctree_plus',
 	'seed_intersphinx_mapping',
-	'sphinx.ext.autosectionlabel',
 	]
 
 sphinxemoji_style = 'twemoji'
@@ -136,6 +138,3 @@ autodoc_default_options = {
 				"__hash__",
 				]),
 		}
-
-
-set_type_checking_flag = True

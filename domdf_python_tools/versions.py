@@ -24,6 +24,7 @@ NamedTuple-like class to represent a version number.
 #
 
 # stdlib
+import re
 from typing import Generator, Sequence, Tuple, Union
 
 __all__ = ["Version"]
@@ -176,13 +177,13 @@ class Version(Tuple[int, int, int]):
 
 		:param version_string: The version number.
 
-		:return: The created Version
+		:return: The created :class:`~domdf_python_tools.versions.Version`.
 		"""
 
 		return cls(*_iter_string(version_string))
 
 	@classmethod
-	def from_tuple(cls, version_tuple: Tuple[Union[str, int], Union[str, int], Union[str, int]]) -> "Version":
+	def from_tuple(cls, version_tuple: Tuple[Union[str, int], ...]) -> "Version":
 		"""
 		Create a :class:`~.Version` from a :class:`tuple`.
 
@@ -200,7 +201,7 @@ class Version(Tuple[int, int, int]):
 
 		:param version_float: The version number.
 
-		:return: The created Version
+		:return: The created :class:`~domdf_python_tools.versions.Version`.
 		"""
 
 		return cls.from_str(str(version_float))

@@ -4,7 +4,8 @@
 """
 Handy functions for testing code.
 
-Requires `pytest <https://docs.pytest.org/en/stable/>`_ to be installed.
+.. extras-require:: testing
+	:__pkginfo__:
 
 .. versionadded:: 0.4.9
 """

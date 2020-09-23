@@ -54,8 +54,9 @@ import difflib
 import inspect
 import itertools
 import sys
+import typing
 from pprint import pformat
-from typing import TYPE_CHECKING, Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
 import deprecation  # type: ignore
@@ -66,7 +67,7 @@ from domdf_python_tools import __version__
 from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
-if TYPE_CHECKING:
+if typing.TYPE_CHECKING or domdf_python_tools.__docs:
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
 
