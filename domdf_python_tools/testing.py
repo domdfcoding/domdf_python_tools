@@ -31,15 +31,19 @@ Handy functions for testing code.
 # stdlib
 import itertools
 import random
+import sys
 from functools import lru_cache
-from typing import Any, Iterator, List, Sequence
+from typing import Any, Iterator, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
+import _pytest
 import pytest
 from _pytest.mark import MarkDecorator
 
 # this package
+from domdf_python_tools.doctools import PYPY
 from domdf_python_tools.utils import Len
+from domdf_python_tools.versions import Version
 
 __all__ = [
 		"generate_truthy_values",
@@ -49,6 +53,12 @@ __all__ = [
 		"whitespace_perms_list",
 		"whitespace_perms",
 		"count",
+		"min_version",
+		"max_version",
+		"not_windows",
+		"only_windows",
+		"not_pypy",
+		"only_pypy",
 		]
 
 
@@ -199,3 +209,110 @@ def count(stop: int, start: int = 0, step: int = 1) -> MarkDecorator:
 	"""
 
 	return pytest.mark.parametrize("count", range(start, stop, step))
+
+
+def _make_version(version: Union[str, float, Tuple[int, ...]]) -> Version:
+	if isinstance(version, float):
+		return Version.from_float(version)
+	elif isinstance(version, str):
+		return Version.from_str(version)
+	else:
+		return Version.from_tuple(version)
+
+
+def min_version(
+		version: Union[str, float, Tuple[int]],
+		reason: Optional[str] = None,
+		) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current Python version is less than the required one.
+
+	:param version: The version number to compare to :py:data:`sys.version_info`.
+	:param reason: The reason to display when skipping.
+	:default reason: ``'Requires Python <version> or greater.'``
+
+	.. versionadded:: 0.9.0
+	"""
+
+	version_ = _make_version(version)
+
+	if reason is None:
+		reason = f"Requires Python {version_} or greater."
+
+	return pytest.mark.skipif(condition=sys.version_info[:3] < version_, reason=reason)
+
+
+def max_version(
+		version: Union[str, float, Tuple[int]],
+		reason: Optional[str] = None,
+		) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current Python version is greater than the required one.
+
+	:param version: The version number to compare to :py:data:`sys.version_info`.
+	:param reason: The reason to display when skipping.
+	:default reason: ``'Not needed after Python <version>.'``
+
+	.. versionadded:: 0.9.0
+	"""
+
+	version_ = _make_version(version)
+
+	if reason is None:
+		reason = f"Not needed after Python {version_}."
+
+	return pytest.mark.skipif(condition=sys.version_info[:3] > version_, reason=reason)
+
+
+def not_windows(reason: str = "Not required on Windows.", ) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current platform is Windows.
+
+	:param reason: The reason to display when skipping.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	return pytest.mark.skipif(condition=sys.platform == "win32", reason=reason)
+
+
+def only_windows(reason: str = "Only required on Windows.", ) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current platform is **not** Windows.
+
+	:param reason: The reason to display when skipping.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	return pytest.mark.skipif(condition=sys.platform != "win32", reason=reason)
+
+
+def not_pypy(reason: str = "Not required on PyPy.", ) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current Python implementation is PyPy.
+
+	:param reason: The reason to display when skipping.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	return pytest.mark.skipif(condition=PYPY, reason=reason)
+
+
+def only_pypy(reason: str = "Only required on PyPy.", ) -> _pytest.mark.structures.MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current Python implementation is not PyPy.
+
+	:param reason: The reason to display when skipping.
+
+	.. versionadded:: 0.9.0
+	"""
+
+	return pytest.mark.skipif(condition=PYPY, reason=reason)

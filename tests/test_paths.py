@@ -22,6 +22,7 @@ import pytest
 # this package
 from domdf_python_tools import paths
 from domdf_python_tools.paths import PathPlus, clean_writer, copytree
+from domdf_python_tools.testing import not_pypy, not_windows
 
 
 def test_maybe_make():
@@ -156,7 +157,7 @@ def test_parent_path():
 		assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
-@pytest.mark.skipif(sys.platform == "win32", reason="Needs special-casing for Windows")
+@not_windows("Needs special-casing for Windows")
 @pytest.mark.parametrize(
 		"relto, relpath",
 		[
@@ -288,7 +289,7 @@ def test_pathplus_write_clean(input_string, output_string):
 		assert tempfile.read_text() == "\n".join(output_string)
 
 
-@pytest.mark.xfail(reason="Unsupported on PyPy3 <7.2", condition=(platform.python_implementation() == "PyPy"))
+@not_pypy()
 def test_make_executable():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.sh"

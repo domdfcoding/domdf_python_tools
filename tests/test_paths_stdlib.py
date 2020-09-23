@@ -26,6 +26,7 @@ import pytest
 
 # this package
 from domdf_python_tools.paths import PathPlus, PosixPathPlus, WindowsPathPlus
+from domdf_python_tools.testing import min_version
 
 try:
 	# stdlib
@@ -236,7 +237,7 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
-	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@min_version(3.9, "Requires Python 3.9 or higher")
 	def test_unlink_missing_ok(self):  # pragma: no cover (<py37)
 		p = PathPlus(BASE) / 'fileAAA'
 		self.assertFileNotFound(p.unlink)
@@ -250,7 +251,7 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
-	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@min_version(3.9, "Requires Python 3.9 or higher")
 	@unittest.skipUnless(hasattr(os, "link"), "os.link() is not present")
 	def test_link_to(self):  # pragma: no cover (<py37)
 		P = PathPlus(BASE)
@@ -340,7 +341,7 @@ class PathTest(unittest.TestCase):
 		self.assertEqual(os.stat(r).st_size, size)
 		self.assertFileNotFound(q.stat)
 
-	@pytest.mark.skipif(sys.version_info < (3, 9), reason="requires python3.9 or higher")
+	@min_version(3.9, "Requires Python 3.9 or higher")
 	@with_symlinks
 	def test_readlink(self):  # pragma: no cover (<py39)
 		P = PathPlus(BASE)
@@ -544,7 +545,7 @@ class PathTest(unittest.TestCase):
 			self.assertFalse((P / 'linkB').is_file())
 			self.assertFalse((P / 'brokenLink').is_file())
 
-	@pytest.mark.skipif(sys.version_info < (3, 7), reason="requires python3.7 or higher")
+	@min_version(3.9, "Requires Python 3.9 or higher")
 	@only_posix
 	def test_is_mount(self):  # pragma: no cover (<py37)
 		P = PathPlus(BASE)

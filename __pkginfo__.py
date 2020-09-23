@@ -51,7 +51,7 @@ github_username = "domdfcoding"
 web = github_url = "https://github.com/domdfcoding/domdf_python_tools"
 repo_root = pathlib.Path(__file__).parent
 install_requires = (repo_root / "requirements.txt").read_text(encoding="utf-8").split('\n')
-extras_require = {'dates': ['pytz>=2019.1'], 'all': ['pytz>=2019.1']}
+extras_require = {'dates': ['pytz>=2019.1'], 'testing': ['pytest>=6.0.0'], 'all': ['pytest>=6.0.0', 'pytz>=2019.1']}
 
 
 

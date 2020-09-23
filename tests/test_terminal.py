@@ -12,6 +12,7 @@ from faker.providers import bank, company, internet, phone_number, python  # typ
 # this package
 from domdf_python_tools import terminal_colours
 from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
+from domdf_python_tools.testing import not_windows, only_windows
 
 fake = Faker()
 fake.add_provider(internet)
@@ -44,7 +45,7 @@ def test_br(capsys):
 	assert stdout == ["foo", '', "bar", '']
 
 
-@pytest.mark.skipif(condition=os.name != "nt", reason="Different test used for POSIX")
+@only_windows(reason="Different test used for POSIX")
 def test_interrupt_windows(capsys):
 	interrupt()
 
@@ -53,7 +54,7 @@ def test_interrupt_windows(capsys):
 	assert stdout == ["(Press Ctrl-C to quit at any time.)", '']
 
 
-@pytest.mark.skipif(condition=os.name == "nt", reason="Different test used for Windows")
+@not_windows(reason="Different test used for Windows")
 def test_interrupt_posix(capsys):
 	interrupt()
 
@@ -62,7 +63,7 @@ def test_interrupt_posix(capsys):
 	assert stdout == ["(Press Ctrl-D to quit at any time.)", '']
 
 
-# @pytest.mark.skipif(condition=os.name != "nt", reason="Different test used for POSIX")
+# @only_windows(reason="Different test used for POSIX")
 # def test_clear_windows(capsys):
 # 	clear()
 #
@@ -72,7 +73,7 @@ def test_interrupt_posix(capsys):
 #
 
 
-@pytest.mark.skipif(condition=os.name == "nt", reason="Different test used for Windows")
+@not_windows(reason="Different test used for Windows")
 def test_clear_posix(capsys):
 	clear()
 

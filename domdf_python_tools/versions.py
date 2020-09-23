@@ -189,10 +189,15 @@ class Version(Tuple[int, int, int]):
 
 		:param version_tuple: The version number.
 
-		:return: The created Version
+		:return: The created :class:`~domdf_python_tools.versions.Version`.
+
+		.. versionchanged:: 0.9.0
+
+			Tuples with more than three elements are truncated.
+			Previously a :exc:`TypeError` was raised.
 		"""
 
-		return cls(*(int(x) for x in version_tuple))
+		return cls(*(int(x) for x in version_tuple[:3]))
 
 	@classmethod
 	def from_float(cls, version_float: float) -> "Version":
@@ -216,7 +221,7 @@ def _iter_string(version_string: str) -> Generator[int, None, None]:
 	:return: Iterable elements of the version.
 	"""
 
-	return (int(x) for x in version_string.split("."))
+	return (int(x) for x in re.split("[.,]", version_string))
 
 
 def _iter_float(version_float: float) -> Generator[int, None, None]:
