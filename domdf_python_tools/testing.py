@@ -292,7 +292,7 @@ def only_windows(reason: str = "Only required on Windows.", ) -> _pytest.mark.st
 	return pytest.mark.skipif(condition=sys.platform != "win32", reason=reason)
 
 
-def not_pypy(reason: str = "Not required on PyPy.", ) -> _pytest.mark.structures.MarkDecorator:
+def not_pypy(reason: str = "Not required on PyPy.") -> _pytest.mark.structures.MarkDecorator:
 	"""
 	Factory function to return a ``@pytest.mark.skipif`` decorator that will
 	skip a test if the current Python implementation is PyPy.
@@ -305,7 +305,7 @@ def not_pypy(reason: str = "Not required on PyPy.", ) -> _pytest.mark.structures
 	return pytest.mark.skipif(condition=PYPY, reason=reason)
 
 
-def only_pypy(reason: str = "Only required on PyPy.", ) -> _pytest.mark.structures.MarkDecorator:
+def only_pypy(reason: str = "Only required on PyPy.") -> _pytest.mark.structures.MarkDecorator:
 	"""
 	Factory function to return a ``@pytest.mark.skipif`` decorator that will
 	skip a test if the current Python implementation is not PyPy.
@@ -315,4 +315,4 @@ def only_pypy(reason: str = "Only required on PyPy.", ) -> _pytest.mark.structur
 	.. versionadded:: 0.9.0
 	"""
 
-	return pytest.mark.skipif(condition=PYPY, reason=reason)
+	return pytest.mark.skipif(condition=not PYPY, reason=reason)
