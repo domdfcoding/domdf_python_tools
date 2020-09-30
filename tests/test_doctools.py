@@ -8,7 +8,7 @@ Test functions in doctools.py
 
 # stdlib
 import math
-from typing import Iterable, get_type_hints
+from typing import Iterable, NamedTuple, get_type_hints
 
 # 3rd party
 import pytest
@@ -550,3 +550,13 @@ def test_prettify_with_method():
 		pass
 
 	assert prettify_docstrings(G).__getitem__.__doc__ != "Return ``self[key]``."
+
+
+def test_prettify_namedtuple():
+
+	@prettify_docstrings
+	class T(NamedTuple):
+		a: str
+		b: float
+
+	assert T.__repr__.__doc__ == "Return a string representation of the :class:`~tests.test_doctools.T`."

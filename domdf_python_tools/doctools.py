@@ -370,4 +370,7 @@ def prettify_docstrings(obj: Type) -> Type:
 			except AttributeError:  # pragma: no cover
 				pass
 
+	if issubclass(obj, tuple) and obj.__repr__.__doc__ == "Return a nicely formatted representation string":
+		obj.__repr__.__doc__ = repr_docstring
+
 	return obj
