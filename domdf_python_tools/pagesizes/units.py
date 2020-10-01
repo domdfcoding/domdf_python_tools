@@ -33,7 +33,7 @@
 # stdlib
 import math
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Union
+from typing import SupportsFloat, Union
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
@@ -62,7 +62,7 @@ def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) 
 
 @prettify_docstrings
 class Unit(float):
-	"""
+	r"""
 	Represents a unit, such as a point.
 
 	Behaves much like a float (which it inherits from).
@@ -139,7 +139,7 @@ class Unit(float):
 
 	**Division**
 
-	:class:`~domdf_python_tools.pagesizes.units.Unit`s can only be divided by :class:`float` and :class:`int` objects:
+	:class:`~domdf_python_tools.pagesizes.units.Unit`\s can only be divided by :class:`float` and :class:`int` objects:
 
 	.. code-block:: python
 
@@ -281,8 +281,14 @@ class Unit(float):
 
 		return cls(value / cls._in_pt)
 
-	def __call__(self, *args, **kwargs) -> "Unit":
-		return self.__class__(*args, **kwargs)
+	def __call__(self, value: Union[SupportsFloat, str, bytes, bytearray] = 0.0) -> "Unit":
+		"""
+		Returns an instance of the :class:`Unit` with the given value.
+
+		:param value:
+		"""
+
+		return self.__class__(value)
 
 
 class Unitpt(Unit):
