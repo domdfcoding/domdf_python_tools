@@ -46,7 +46,7 @@ class Indent:
 	Represents an indent, having a symbol/type and a size.
 	"""
 
-	def __init__(self, size: int = 0, type: str = "\t"):
+	def __init__(self, size: int = 0, type: str = "\t"):  # noqa A002  # pylint: disable=redefined-builtin
 		self.size = int(size)
 		self.type = str(type)
 
@@ -71,15 +71,15 @@ class Indent:
 		self._size = int(size)
 
 	@property
-	def type(self) -> str:  # noqa A002
+	def type(self) -> str:  # noqa A002  # pylint: disable=redefined-builtin
 		"""
 		The indent character.
 		"""
 
 		return self._type
 
-	@type.setter  # noqa A002
-	def type(self, type: str) -> None:  # noqa A002
+	@type.setter  # noqa A002  # pylint: disable=redefined-builtin
+	def type(self, type: str) -> None:  # noqa A002  # pylint: disable=redefined-builtin
 		if not str(type):
 			raise ValueError("'type' cannot an empty string.")
 
@@ -324,7 +324,7 @@ class StringList(List[str]):
 		return str(self.indent.type)
 
 	@indent_type.setter
-	def indent_type(self, type: str) -> None:  # noqa: A002
+	def indent_type(self, type: str) -> None:  # noqa: A002  # pylint: disable=redefined-builtin
 		"""
 		Sets the indent type.
 		"""

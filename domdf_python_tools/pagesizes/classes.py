@@ -40,6 +40,7 @@ from collections import namedtuple
 from typing import List, Tuple
 
 # this package
+from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import AnyNumber
 
 # this package
@@ -57,6 +58,7 @@ __all__ = [
 		]
 
 
+@prettify_docstrings
 class BaseSize(namedtuple("__BaseSize", "width, height")):
 	"""
 	Base class namedtuple representing a page size, in point.

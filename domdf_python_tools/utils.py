@@ -437,7 +437,7 @@ Object that provides an ellipsis string
 """
 
 
-def head(obj: Union[Tuple, List, "DataFrame", "Series", "String"], n: int = 10) -> str:
+def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int = 10) -> str:
 	"""
 	Returns the head of the given object.
 
@@ -445,6 +445,8 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", "String"], n: int = 10) 
 	:param n: Show the first ``n`` items of ``obj``.
 
 	.. versionadded:: 0.8.0
+
+	.. seealso:: :func:`textwrap.shorten`, which truncates a string to fit within a given number of characters.
 	"""
 
 	if isinstance(obj, tuple) and hasattr(obj, "_fields"):

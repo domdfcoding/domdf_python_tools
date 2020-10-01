@@ -408,7 +408,7 @@ class TestStringList:
 	@pytest.mark.xfail()
 	def test_pickle(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
-		assert sl == pickle.loads(pickle.dumps(sl))
+		assert sl == pickle.loads(pickle.dumps(sl))  # nosec: B301
 
 
 class TestIndent:
@@ -490,8 +490,8 @@ class TestIndent:
 		assert Indent(2, "\t") == (2, "\t")
 		assert Indent(2, "\t") == "\t\t"
 
-		assert not Indent() == 1
+		assert Indent() != 1
 
 	def test_pickle(self):
 		indent = Indent(2, "    ")
-		assert indent == pickle.loads(pickle.dumps(indent))
+		assert indent == pickle.loads(pickle.dumps(indent))  # nosec: B301
