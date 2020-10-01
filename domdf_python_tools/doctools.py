@@ -134,8 +134,8 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 	:param builtins_list: A list of builtins to make links for.
 	:default builtins_list: dir(:py:obj:`builtins`)
 
-	:return: processed string with links
-	"""
+	:return: Processed string with links.
+	"""  # noqa SXL001
 
 	if builtins_list is None:
 		builtins_list = dir(builtins)
@@ -199,7 +199,7 @@ def sphinxify_docstring() -> Callable:
 
 	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
 	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
-	"""
+	"""  # noqa SXL001
 
 	def wrapper(target: F) -> F:
 		target_doc = target.__doc__

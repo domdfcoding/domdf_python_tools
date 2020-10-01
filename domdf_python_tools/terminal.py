@@ -2,7 +2,7 @@
 #
 #  terminal.py
 """
-Useful functions for terminal-based programs
+Useful functions for terminal-based programs.
 """
 #
 #  Copyright © 2014-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -95,7 +95,7 @@ def clear() -> None:
 
 def br() -> None:
 	"""
-	Prints a line break
+	Prints a line break.
 	"""
 
 	print('')
@@ -128,15 +128,11 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=None, flush: bool = F
 
 	:param objects: A list of strings or string-like objects to write to the terminal.
 	:param sep: String to separate the objects with.
-	:type sep: str
 	:param end: String to end with.
-	:type end: str
 	:param file: An object with a ``write(string)`` method.
 	:default file: ``sys.stdout``
-	:type file:
 	:param flush: If true, the stream is forcibly flushed.
-	:type flush: bool
-	"""
+	"""  # noqa D400
 
 	object0 = f"\r{objects[0]}"
 	objects = (object0, *objects[1:])

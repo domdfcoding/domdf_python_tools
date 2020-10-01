@@ -59,20 +59,26 @@ __all__ = [
 
 class BaseSize(namedtuple("__BaseSize", "width, height")):
 	"""
-	Base class namedtuple representing a page size, in point
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Base class namedtuple representing a page size, in point.
 	"""
 
 	__slots__: List[str] = []
 	_unit: Unit = pt
+
+	#: The page width.
 	width: Unit
+
+	#: The page height.
 	height: Unit
 
 	def __new__(cls, width: AnyNumber, height: AnyNumber):
+		"""
+		Create a new :class:`~.BaseSize` object.
+
+		:param width: The page width.
+		:param height: The page height.
+		"""
+
 		return super().__new__(
 				cls,
 				cls._unit(width),
@@ -88,10 +94,10 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a
 		page size in point.
 
-		:param size: The size, in point, to convert from
+		:param size: The size, in point, to convert from.
 
 		:rtype: A subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-		"""
+		"""  # noqa D400
 
 		assert isinstance(size, PageSize)
 
@@ -100,35 +106,35 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	@classmethod
 	def from_size(cls, size: Tuple[AnyNumber, AnyNumber]) -> "BaseSize":
 		"""
-		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a tuple
+		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a tuple.
 		"""
 
 		return cls(*size)
 
 	def is_landscape(self) -> bool:
 		"""
-		Returns whether the page is in the landscape orientation
+		Returns whether the page is in the landscape orientation.
 		"""
 
 		return self.width >= self.height
 
 	def is_portrait(self) -> bool:
 		"""
-		Returns whether the page is in the portrait orientation
+		Returns whether the page is in the portrait orientation.
 		"""
 
 		return self.width < self.height
 
 	def is_square(self) -> bool:
 		"""
-		Returns whether the given pagesize is square
+		Returns whether the given pagesize is square.
 		"""
 
 		return self.width == self.height
 
 	def landscape(self) -> "BaseSize":
 		"""
-		Returns the pagesize in landscape orientation
+		Returns the pagesize in landscape orientation.
 		"""
 
 		if self.is_portrait():
@@ -138,7 +144,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 	def portrait(self) -> "BaseSize":
 		"""
-		Returns the pagesize in portrait orientation
+		Returns the pagesize in portrait orientation.
 		"""
 
 		if self.is_landscape():
@@ -148,7 +154,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 	def to_pt(self) -> "PageSize":
 		"""
-		Returns the page size in point
+		Returns the page size in point.
 		"""
 
 		return PageSize(self.width.as_pt(), self.height.as_pt())
@@ -159,13 +165,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 
 class Size_mm(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in millimeters.
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Represents a pagesize in millimeters.
 	"""
 
 	_unit = mm
@@ -173,13 +173,7 @@ class Size_mm(BaseSize):
 
 class Size_inch(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in inches.
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Represents a pagesize in inches.
 	"""
 
 	_unit = inch
@@ -187,13 +181,7 @@ class Size_inch(BaseSize):
 
 class Size_cm(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in centimeters.
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Represents a pagesize in centimeters.
 	"""
 
 	_unit = cm
@@ -201,13 +189,7 @@ class Size_cm(BaseSize):
 
 class Size_um(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in micrometers.
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Represents a pagesize in micrometers.
 	"""
 
 	_unit = um
@@ -215,13 +197,7 @@ class Size_um(BaseSize):
 
 class Size_pica(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in pica.
-
-	:param width: The page width
-	:type width: |AnyNumber|
-	:param height: The page height
-	:type height: |AnyNumber|
+	Represents a pagesize in pica.
 	"""
 
 	_unit = pica
@@ -229,13 +205,10 @@ class Size_pica(BaseSize):
 
 class PageSize(BaseSize):
 	"""
-	Subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-	representing a pagesize in point.
+	Represents a pagesize in point.
 
 	:param width: The page width
-	:type width: |AnyNumber|
 	:param height: The page height
-	:type height: |AnyNumber|
 
 	The pagesize can be converted to other units using the properties below.
 	"""
@@ -246,8 +219,8 @@ class PageSize(BaseSize):
 		"""
 		Create a new :class:`~domdf_python_tools.pagesizes.classes.PageSize` object.
 
-		:param width:
-		:param height:
+		:param width: The page width.
+		:param height: The page height.
 		:param unit:
 		"""
 

@@ -153,7 +153,7 @@ def testing_boolean_values(
 	:param ratio: The ratio of the number of values to select to the total number of values.
 
 	.. versionadded:: 0.4.9
-	"""
+	"""  # noqa D400
 
 	truthy = generate_truthy_values(extra_truthy, ratio)
 	falsy = generate_falsy_values(extra_falsy, ratio)
@@ -172,7 +172,7 @@ whitespace = " \t\n\r"
 @lru_cache(1)
 def whitespace_perms_list() -> List[str]:
 	chain = itertools.chain.from_iterable(itertools.permutations(whitespace, n) for n in Len(whitespace))
-	return list("".join(x) for x in chain)
+	return list(''.join(x) for x in chain)
 
 
 def whitespace_perms(ratio: float = 0.5) -> MarkDecorator:
@@ -188,7 +188,7 @@ def whitespace_perms(ratio: float = 0.5) -> MarkDecorator:
 	:param ratio: The ratio of the number of permutations to select to the total number of permutations.
 
 	.. versionadded:: 0.4.9
-	"""
+	"""  # noqa D400
 
 	perms = whitespace_perms_list()
 	return pytest.mark.parametrize("char", random.sample(perms, int(len(perms) * ratio)))
@@ -206,7 +206,7 @@ def count(stop: int, start: int = 0, step: int = 1) -> MarkDecorator:
 	:param step: The step passed to :class:`range`.
 
 	.. versionadded:: 0.4.9
-	"""
+	"""  # noqa D400
 
 	return pytest.mark.parametrize("count", range(start, stop, step))
 
@@ -233,7 +233,7 @@ def min_version(
 	:default reason: ``'Requires Python <version> or greater.'``
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	version_ = _make_version(version)
 
@@ -256,7 +256,7 @@ def max_version(
 	:default reason: ``'Not needed after Python <version>.'``
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	version_ = _make_version(version)
 
@@ -274,7 +274,7 @@ def not_windows(reason: str = "Not required on Windows.", ) -> _pytest.mark.stru
 	:param reason: The reason to display when skipping.
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	return pytest.mark.skipif(condition=sys.platform == "win32", reason=reason)
 
@@ -287,7 +287,7 @@ def only_windows(reason: str = "Only required on Windows.", ) -> _pytest.mark.st
 	:param reason: The reason to display when skipping.
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	return pytest.mark.skipif(condition=sys.platform != "win32", reason=reason)
 
@@ -300,7 +300,7 @@ def not_pypy(reason: str = "Not required on PyPy.") -> _pytest.mark.structures.M
 	:param reason: The reason to display when skipping.
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	return pytest.mark.skipif(condition=PYPY, reason=reason)
 
@@ -313,6 +313,6 @@ def only_pypy(reason: str = "Only required on PyPy.") -> _pytest.mark.structures
 	:param reason: The reason to display when skipping.
 
 	.. versionadded:: 0.9.0
-	"""
+	"""  # noqa D400
 
 	return pytest.mark.skipif(condition=not PYPY, reason=reason)

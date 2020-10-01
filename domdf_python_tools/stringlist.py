@@ -52,7 +52,7 @@ class Indent:
 
 	def __iter__(self) -> Iterator[Union[str, Any]]:
 		"""
-		Returns the size and type of the :class:`~domdf_python_tools.stringlist.Indent`
+		Returns the size and type of the :class:`~domdf_python_tools.stringlist.Indent`.
 		"""
 
 		yield self.size
@@ -61,8 +61,9 @@ class Indent:
 	@property
 	def size(self) -> int:
 		"""
-		The indent size
+		The indent size.
 		"""
+
 		return self._size
 
 	@size.setter
@@ -70,15 +71,15 @@ class Indent:
 		self._size = int(size)
 
 	@property
-	def type(self) -> str:
+	def type(self) -> str:  # noqa A002
 		"""
-		The indent character
+		The indent character.
 		"""
 
 		return self._type
 
-	@type.setter
-	def type(self, type: str) -> None:
+	@type.setter  # noqa A002
+	def type(self, type: str) -> None:  # noqa A002
 		if not str(type):
 			raise ValueError("'type' cannot an empty string.")
 
@@ -139,10 +140,10 @@ class StringList(List[str]):
 
 	def _make_line(self, line: str) -> str:
 		if not str(self.indent_type).strip(" \t") and self.convert_indents:
-			if self.indent_type == '\t':
-				line = convert_indents(line, tab_width=1, from_='    ', to='\t')
+			if self.indent_type == "\t":
+				line = convert_indents(line, tab_width=1, from_='    ', to="\t")
 			else:  # pragma: no cover
-				line = convert_indents(line, tab_width=1, from_='\t', to=self.indent_type)
+				line = convert_indents(line, tab_width=1, from_="\t", to=self.indent_type)
 
 		return f"{self.indent}{line}".rstrip()
 
@@ -323,7 +324,7 @@ class StringList(List[str]):
 		return str(self.indent.type)
 
 	@indent_type.setter
-	def indent_type(self, type: str) -> None:
+	def indent_type(self, type: str) -> None:  # noqa: A002
 		"""
 		Sets the indent type.
 		"""

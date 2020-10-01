@@ -74,7 +74,6 @@ def test_repr(obj, expects):
 		[
 				(Size_mm(12, 34), "Size_mm(width=12, height=34)"),
 				(Size_cm(12, 34), "Size_cm(width=12, height=34)"),
-				(Size_mm(12, 34), "Size_mm(width=12, height=34)"),
 				(Size_um(12, 34), "Size_um(width=12, height=34)"),
 				(Size_pica(12, 34), "Size_pica(width=12, height=34)"),
 				]
@@ -201,13 +200,13 @@ def test_from_size(size, expected, class_):
 				("12.34in", [("12.34", "in")]),
 				("12.34 in", [("12.34", "in")]),
 				(".34 in", [(".34", "in")]),
-				("12.34\"", [("12.34", "\"")]),
-				("12.34 \"", [("12.34", "\"")]),
-				(".34 \"", [(".34", "\"")]),
-				("12.34mm .34\"", [("12.34", "mm"), (".34", "\"")]),
+				('12.34"', [("12.34", '"')]),
+				('12.34 "', [("12.34", '"')]),
+				('.34 "', [(".34", '"')]),
+				('12.34mm .34"', [("12.34", "mm"), (".34", '"')]),
 				("12", [("12", '')]),
 				('', []),
-				('10μm', [('10', 'μm')]),
+				("10μm", [("10", "μm")]),
 				]
 		)
 def test_measurement_re(string, expects):
@@ -216,9 +215,9 @@ def test_measurement_re(string, expects):
 
 def test_parse_measurement_errors():
 	with pytest.raises(ValueError, match="Too many measurements"):
-		parse_measurement("12.34mm .34\"")
+		parse_measurement('12.34mm .34"')
 	with pytest.raises(ValueError, match="Unable to parse measurement"):
-		parse_measurement("")
+		parse_measurement('')
 	with pytest.raises(ValueError, match="Unable to parse measurement"):
 		parse_measurement("bananas")
 	with pytest.raises(ValueError, match="Unable to parse measurement"):
@@ -245,7 +244,7 @@ def test_parse_measurement_errors():
 				("12µm", um(12)),
 				("12 in", inch(12)),
 				("12 inch", inch(12)),
-				("12\"", inch(12)),
+				('12"', inch(12)),
 				("12 cm", cm(12)),
 				("12cm", cm(12)),
 				("12 pc", pc(12)),

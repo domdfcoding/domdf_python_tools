@@ -27,23 +27,23 @@ class TestStringList:
 	def test_append(self):
 		sl = StringList()
 
-		sl.append("")
-		assert sl == [""]
+		sl.append('')
+		assert sl == ['']
 
-		sl.append("")
-		assert sl == ["", '']
+		sl.append('')
+		assert sl == ['', '']
 
 		sl.append("hello")
-		assert sl == ["", '', "hello"]
+		assert sl == ['', '', "hello"]
 
 		sl.append("world\n\n\n")
-		assert sl == ["", '', "hello", "world", '', '', '']
+		assert sl == ['', '', "hello", "world", '', '', '']
 
 		sl.append("1234")
-		assert sl == ["", '', "hello", "world", '', '', '', "1234"]
+		assert sl == ['', '', "hello", "world", '', '', '', "1234"]
 
 	def test_insert(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
 		sl.insert(0, "foo")
 		assert sl == ["foo", '', '', "hello", "world", '', '', '', "1234"]
@@ -66,7 +66,7 @@ class TestStringList:
 				]
 
 	def test_setitem(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
 		sl[0] = "foo"
 		assert sl == ["foo", '', "hello", "world", '', '', '', "1234"]
@@ -81,37 +81,37 @@ class TestStringList:
 		assert sl == ["foo", "bar", '', '', "foo", "bar", '', "baz", '', "world", '', '', '', "1234"]
 
 	def test_blankline(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
 		sl.blankline()
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
 		sl.blankline()
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '', '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '', '']
 
 		sl.blankline(ensure_single=True)
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
 		sl.blankline(ensure_single=True)
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
 		sl.append("\t")
 		sl.blankline(ensure_single=True)
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
 		sl.append("    ")
 		sl.blankline(ensure_single=True)
 
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
 		sl.append("    ")
 		sl.blankline(ensure_single=True)
 		sl.blankline()
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '', '']
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '', '']
 
 	def test_slicing(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
-		assert sl[:-3] == ["", '', "hello", "world", '']
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
+		assert sl[:-3] == ['', '', "hello", "world", '']
 		assert sl[-3:] == ['', '', "1234"]
 
 	def test_start_of_line_indents(self):
@@ -119,7 +119,7 @@ class TestStringList:
 		assert StringList("Hello\n    World", convert_indents=True) == ["Hello", "\tWorld"]
 
 	def test_indent_size(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
 		assert sl.indent_size == 0
 
@@ -139,12 +139,12 @@ class TestStringList:
 		assert sl.indent_size == 1
 
 	def test_indent_type(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
 		assert sl.indent_type == "\t"
 
 		with pytest.raises(ValueError, match="'type' cannot an empty string."):
-			sl.indent_type = ""
+			sl.indent_type = ''
 
 		assert sl.indent_type == "\t"
 
@@ -158,7 +158,7 @@ class TestStringList:
 		assert sl.indent_type == " "
 
 		with pytest.raises(ValueError, match="'type' cannot an empty string."):
-			sl.set_indent_type("")
+			sl.set_indent_type('')
 
 		assert sl.indent_type == " "
 
@@ -339,75 +339,75 @@ class TestStringList:
 			sl.set_indent(Indent(0, "    "), 5)
 
 	def test_extend(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.extend(["\nfoo\nbar\n    baz"])
 
-		assert sl == ["", '', "hello", "world", '', '', '', "1234", '', "foo", "bar", "    baz"]
+		assert sl == ['', '', "hello", "world", '', '', '', "1234", '', "foo", "bar", "    baz"]
 
 	def test_clear(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.clear()
 
 		assert sl == []
 
 	def test_copy(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl2 = sl.copy()
 
 		assert sl == sl2
-		assert sl2 == ["", '', "hello", "world", '', '', '', "1234"]
+		assert sl2 == ['', '', "hello", "world", '', '', '', "1234"]
 		assert isinstance(sl2, StringList)
 
 	def test_count(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert sl.count("hello") == 1
 
 	def test_count_blanklines(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert sl.count_blanklines() == 5
 
 	def test_index(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert sl.index("hello") == 2
 
 	def test_pop(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert sl.pop(2) == "hello"
-		assert sl == ["", '', "world", '', '', '', "1234"]
+		assert sl == ['', '', "world", '', '', '', "1234"]
 		assert isinstance(sl, StringList)
 
 	def test_remove(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.remove("hello")
-		assert sl == ["", '', "world", '', '', '', "1234"]
+		assert sl == ['', '', "world", '', '', '', "1234"]
 		assert isinstance(sl, StringList)
 
 	def test_reverse(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.reverse()
 		assert sl == ["1234", '', '', '', "world", "hello", '', '']
 		assert isinstance(sl, StringList)
 
 	def test_sort(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.sort()
 		assert sl == ['', '', '', '', '', "1234", "hello", "world"]
 		assert isinstance(sl, StringList)
 
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		sl.sort(reverse=True)
 		assert sl == ["world", "hello", "1234", '', '', '', '', '']
 		assert isinstance(sl, StringList)
 
 	def test_str(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234"
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234", ''])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234", ''])
 		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234\n"
 
 	@pytest.mark.xfail()
 	def test_pickle(self):
-		sl = StringList(["", '', "hello", "world", '', '', '', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 		assert sl == pickle.loads(pickle.dumps(sl))
 
 
@@ -458,13 +458,13 @@ class TestIndent:
 			indent.type = ''
 
 	def test_str(self):
-		assert str(Indent()) == ""
+		assert str(Indent()) == ''
 		assert str(Indent(1)) == "\t"
 		assert str(Indent(5)) == "\t\t\t\t\t"
-		assert str(Indent(type="    ")) == ""
+		assert str(Indent(type="    ")) == ''
 		assert str(Indent(1, type="    ")) == "    "
 		assert str(Indent(5, type="    ")) == "    " * 5
-		assert str(Indent(type=">>> ")) == ""
+		assert str(Indent(type=">>> ")) == ''
 		assert str(Indent(1, type=">>> ")) == ">>> "
 
 	def test_repr(self):
@@ -484,11 +484,11 @@ class TestIndent:
 
 		assert Indent(1, "    ") == Indent(1, "    ")
 		assert Indent(1, "    ") == (1, "    ")
-		assert Indent(1, "    ") == '    '
+		assert Indent(1, "    ") == "    "
 
 		assert Indent(2, "\t") == Indent(2, "\t")
 		assert Indent(2, "\t") == (2, "\t")
-		assert Indent(2, "\t") == '\t\t'
+		assert Indent(2, "\t") == "\t\t"
 
 		assert not Indent() == 1
 

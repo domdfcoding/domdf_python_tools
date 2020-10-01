@@ -56,12 +56,10 @@ try:
 			) -> Optional[datetime.timedelta]:
 		"""
 		Returns the offset between UTC and the requested timezone on the given date.
-		If ``date`` is ``None`` then the current date is used.
+		If ``date`` is :py:obj:`None` then the current date is used.
 
 		:param tz: ``pytz.timezone`` or a string representing the timezone
 		:param date: The date to obtain the UTC offset for
-
-		:return:
 		"""
 
 		if date is None:
@@ -79,12 +77,10 @@ try:
 	def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
 		"""
 		Returns a localized :class:`pytz.timezone` object for the given date.
-		If ``date`` is ``None`` then the current date is used.
+		If ``date`` is :py:obj:`None` then the current date is used.
 
 		:param tz: A string representing a pytz timezone
 		:param date: The date to obtain the timezone for
-
-		:return:
 		"""
 
 		if date is None:
@@ -113,7 +109,7 @@ The error was {e}.
 
 def current_tzinfo() -> Optional[datetime.tzinfo]:
 	"""
-	Returns a tzinfo object for the current timezone
+	Returns a tzinfo object for the current timezone.
 
 	:rtype: :class:`python:datetime.tzinfo`
 	"""

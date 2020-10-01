@@ -79,7 +79,7 @@ def test_clear_posix(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ['\033c']
+	assert stdout == ["\033c"]
 
 	print("Hello World!")
 	clear()
@@ -96,7 +96,7 @@ def test_overtype(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ['Waiting...\rfoo bar']
+	assert stdout == ["Waiting...\rfoo bar"]
 
 	print("Waiting...", end='')
 	overtype("foo", "bar", sep='')
@@ -104,7 +104,7 @@ def test_overtype(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ['Waiting...\rfoobar']
+	assert stdout == ["Waiting...\rfoobar"]
 
 	print("Waiting...", end='')
 	overtype("foo", "bar", sep='-', end="\n")
@@ -112,7 +112,7 @@ def test_overtype(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ['Waiting...\rfoo-bar', '']
+	assert stdout == ["Waiting...\rfoo-bar", '']
 
 	sys.stderr.write("Waiting...")
 	overtype("foo", "bar", file=sys.stderr)
@@ -120,7 +120,7 @@ def test_overtype(capsys):
 
 	captured = capsys.readouterr()
 	stderr = captured.err.split("\n")
-	assert stderr == ['Waiting...\rfoo bar']
+	assert stderr == ["Waiting...\rfoo bar"]
 
 
 def test_echo(capsys):
@@ -172,7 +172,7 @@ def test_echo(capsys):
 def test_terminal_colours_constants():
 	assert terminal_colours.CSI == "\033["
 	assert terminal_colours.OSC == "\033]"
-	assert terminal_colours.BEL == '\a'
+	assert terminal_colours.BEL == "\a"
 
 
 def test_terminal_colours_stacks():

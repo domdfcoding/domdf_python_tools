@@ -15,6 +15,7 @@ from __pkginfo__ import __version__
 # User-configurable lines
 import domdf_python_tools
 domdf_python_tools.__docs = True
+overloads_location = "bottom"
 # End of user-configurable lines
 
 github_username = "domdfcoding"

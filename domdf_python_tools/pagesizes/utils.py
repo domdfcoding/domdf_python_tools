@@ -62,13 +62,11 @@ def convert_from(
 		value: Union[Sequence[AnyNumber], AnyNumber],
 		from_: AnyNumber,
 		) -> Union[float, Tuple[float, ...]]:
-	"""
+	r"""
 	Convert ``value`` to point from the unit specified in ``from_``.
 
 	:param value:
-	:param from_: The unit to convert from, specified as a number of points
-
-	:return:
+	:param from\_: The unit to convert from, specified as a number of points.
 	"""
 
 	if isinstance(value, Sequence):
@@ -94,9 +92,6 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 	Parse the given measurement.
 
 	:param measurement:
-	:type measurement: str
-
-	:return:
 	"""
 
 	# TODO: docstring
@@ -109,7 +104,7 @@ def parse_measurement(measurement: str) -> Union[float, Tuple[float, ...]]:
 
 	val, unit = all_matches[0]
 
-	if "" in {val, unit}:
+	if '' in {val, unit}:
 		raise ValueError("Unable to parse measurement")
 
 	val = float(val)

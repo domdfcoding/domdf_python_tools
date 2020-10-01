@@ -49,7 +49,7 @@ def test_check_dependencies(capsys):
 
 	missing_deps = utils.check_dependencies(["pytest"])
 	captured = capsys.readouterr()
-	stdout = captured.out.split('\n')
+	stdout = captured.out.split("\n")
 	assert stdout[0] == "All modules installed"
 	assert stdout[1] == ''
 	assert isinstance(missing_deps, list)
@@ -433,13 +433,17 @@ class TestHead:
 
 	def test_tuple(self):
 		assert head((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...)"
-		assert head((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-					13) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"
+		assert head(
+				(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+				13,
+				) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"
 
 	def test_list(self):
 		assert head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]"
-		assert head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-					13) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
+		assert head(
+				[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+				13,
+				) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
 
 	def test_data_frame(self):
 		pandas = pytest.importorskip("pandas")
@@ -476,3 +480,28 @@ Occupation    Apprentice\
 		assert head("Hello World") == "Hello Worl..."
 		assert head("Hello World", 11) == "Hello World"
 		assert head("Hello World", 5) == "Hello..."
+
+
+def test_deprecations():
+	# this package
+	from domdf_python_tools.utils import as_text, list2string, tuple2str, word_join
+
+	with pytest.warns(DeprecationWarning) as record:
+		as_text(1)
+		word_join(["a", "b"])
+		tuple2str(("a", "b"))
+		list2string(["a", "b"])
+
+	assert len(record) == 4
+	assert record[0].message.args == (
+			'as_text', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+			)
+	assert record[1].message.args == (
+			'word_join', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+			)
+	assert record[2].message.args == (
+			'tuple2str', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
+			)
+	assert record[3].message.args == (
+			'list2string', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
+			)

@@ -2,7 +2,7 @@
 #
 #  typing.py
 """
-Common aliases for type hinting
+Common aliases for type hinting.
 
 **Data:**
 
@@ -81,14 +81,11 @@ Type hint for numbers.
 
 
 def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
-	"""
+	r"""
 	Check if the type of ``obj`` is one of the types in a :py:data:`typing.Union`, :class:`typing.Sequence` etc.
 
 	:param obj: The object to check the type of
-	:param type_: A :class:`~typing.Type` that has members, such as a List, Union or Sequence.
-
-	:return:
-	:rtype:
+	:param type\_: A :class:`~typing.Type` that has members, such as a List, Union or Sequence.
 	"""
 
 	return isinstance(obj, type_.__args__)  # type: ignore
@@ -168,7 +165,7 @@ class JsonLibrary(Protocol):
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
 MethodDescriptorType = type(str.join)
-ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
+ClassMethodDescriptorType = type(dict.__dict__["fromkeys"])
 
 
 @runtime_checkable

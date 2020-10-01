@@ -264,8 +264,20 @@ Too many newlines
 
 @pytest.mark.parametrize(
 		"input_string, output_string",
-		[(["Top line", "    ", "Line with whitespace   ", "Line with tabs				   ", "No newline at end of file"
-			], ["Top line", '', "Line with whitespace", "Line with tabs", "No newline at end of file", ""]),
+		[([
+				"Top line",
+				"    ",
+				"Line with whitespace   ",
+				"Line with tabs				   ",
+				"No newline at end of file",
+				], [
+						"Top line",
+						'',
+						"Line with whitespace",
+						"Line with tabs",
+						"No newline at end of file",
+						'',
+						]),
 			([
 					"Top line",
 					"    ",
@@ -274,11 +286,11 @@ Too many newlines
 					"Too many newlines\n\n\n\n\n\n\n"
 					], [
 							"Top line",
-							"",
+							'',
 							"Line with whitespace",
 							"Line with tabs",
 							"Too many newlines",
-							"",
+							'',
 							]), ([], [''])]
 		)
 def test_pathplus_write_clean(input_string, output_string):
@@ -317,7 +329,7 @@ def test_make_executable():
 
 
 def test_instantiate_wrong_platform():
-	if os.name == 'nt':
+	if os.name == "nt":
 		with pytest.raises(NotImplementedError, match="cannot instantiate .* on your system"):
 			paths.PosixPathPlus()
 	else:

@@ -36,7 +36,7 @@ def test_whitespace_perms():
 	assert isinstance(testing.whitespace_perms(.1).mark.args[1], list)
 	assert isinstance(testing.whitespace_perms(.1).mark.args[1][0], str)
 
-	assert testing.whitespace_perms(.1).mark.args[1] == ['\n\t\r', '\r\t', '\t \n', '\n\r']
+	assert testing.whitespace_perms(.1).mark.args[1] == ["\n\t\r", "\r\t", "\t \n", "\n\r"]
 
 	for string in testing.whitespace_perms().mark.args[1]:
 		assert re.match(r"^\s*$", string)
@@ -96,7 +96,7 @@ def test_generate_truthy():
 			"bar",
 			]
 
-	assert list(testing.generate_truthy_values(ratio=.3)) == ['1', 'yes', 'True', True]
+	assert list(testing.generate_truthy_values(ratio=.3)) == ['1', "yes", "True", True]
 
 
 def test_generate_falsy():
@@ -123,4 +123,4 @@ def test_generate_falsy():
 			False, "False", "false", "falSE", 'n', 'N', "NO", "no", "nO", "OFF", "off", "oFF", '0', 0, "bar"
 			]
 
-	assert list(testing.generate_falsy_values(ratio=.3)) == ['0', 'no', 'False', False]
+	assert list(testing.generate_falsy_values(ratio=.3)) == ['0', "no", "False", False]

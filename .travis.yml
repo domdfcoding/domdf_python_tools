@@ -21,7 +21,7 @@ install:
   - pip install coveralls coverage_pyver_pragma
 
 script:
-  - tox
+  - tox -vv
 after_success:
   - coveralls
 

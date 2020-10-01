@@ -222,7 +222,7 @@ def test_decorators():
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
 	assert undocumented_function.__name__ == "undocumented_function"
-	assert undocumented_function.__annotations__ == {'a': float, 'b': float, 'c': float, 'd': int, 'return': float}
+	assert undocumented_function.__annotations__ == {'a': float, 'b': float, 'c': float, 'd': int, "return": float}
 	assert partially_documented_function.__doc__.startswith(
 			"\nThis function works like ``documented_function`` except it returns the result telepathically.",
 			)
@@ -339,7 +339,7 @@ def test_sphinxify_docstring():
 
 		:return: pi
 		:rtype: float
-		"""
+		""" # noqa SXL001
 
 		return math.pi
 

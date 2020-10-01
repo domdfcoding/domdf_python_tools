@@ -76,7 +76,7 @@ def test_font():
 
 	assert DOUBLESTRUCK_LETTERS["-"] == "-"
 	assert DOUBLESTRUCK_LETTERS.get("-") == '-'
-	assert DOUBLESTRUCK_LETTERS.get("-", "Default") == 'Default'
+	assert DOUBLESTRUCK_LETTERS.get("-", "Default") == "Default"
 
 
 def test_alpha_sort():

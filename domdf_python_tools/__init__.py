@@ -2,7 +2,7 @@
 #
 #  __init__.py
 """
-Helpful functions for Python 🐍 🛠️
+Helpful functions for Python 🐍 🛠️ .
 """
 #
 #  Copyright © 2018-2020 by Dominic Davis-Foster <dominic@davis-foster.co.uk>

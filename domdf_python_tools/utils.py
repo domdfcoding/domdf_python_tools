@@ -3,7 +3,7 @@
 #
 #  utils.py
 """
-General utility functions
+General utility functions.
 
 .. versionchanged:: 0.8.0
 
@@ -48,13 +48,30 @@ General utility functions
 #  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #
+#  deprecated based on https://github.com/briancurtin/deprecation
+#  Modified to only change the docstring of the wrapper and not the original function.
+#  |  Licensed under the Apache License, Version 2.0 (the "License"); you may
+#  |  not use this file except in compliance with the License. You may obtain
+#  |  a copy of the License at
+#  |
+#  |      http://www.apache.org/licenses/LICENSE-2.0
+#  |
+#  |  Unless required by applicable law or agreed to in writing, software
+#  |  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  |  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  |  License for the specific language governing permissions and limitations
+#  |  under the License.
+#
 
 # stdlib
 import difflib
+import functools
 import inspect
 import itertools
 import sys
+import textwrap
 import typing
+import warnings
 from pprint import pformat
 from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
@@ -84,7 +101,6 @@ __all__ = [
 		"stderr_writer",
 		"printe",
 		"split_len",
-		"splitLen",
 		"str2tuple",
 		"strtobool",
 		"enquote_value",
@@ -94,6 +110,7 @@ __all__ = [
 		"convert_indents",
 		"etc",
 		"head",
+		"deprecated",
 		]
 
 #: The current major python version.
@@ -172,10 +189,6 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	return sep.join([str(x) for x in the_list])
 
 
-# Will be removed in 1.0.0
-tuple2str = list2string = list2str
-
-
 def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	"""
 	Return permutations containing ``n`` items from ``data`` without any reverse duplicates.
@@ -240,9 +253,6 @@ def split_len(string: str, n: int) -> List[str]:
 	return [string[i:i + n] for i in range(0, len(string), n)]
 
 
-splitLen = split_len
-
-
 def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	"""
 	Convert a comma-separated string of integers into a tuple.
@@ -251,7 +261,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 
 		The input string must represent a comma-separated series of integers.
 
-	.. TODO:: Allow custom types, not just ``int`` (making ``int`` the default)
+	.. TODO:: Allow custom types, not just :class:`int` (making :class:`int` the default)
 
 	:param input_string: The string to be converted into a tuple
 	:param sep: The separator in the string. Default `,`
@@ -270,7 +280,7 @@ def strtobool(val: Union[str, bool]) -> bool:
 
 	:py:obj:`False` values are ``'n'``, ``'no'``, ``'f'``, ``'false'``, ``'off'``, ``'0'``, and ``0``.
 
-	:raises: :py:exc:`ValueError` if 'val' is anything else.
+	:raises: :py:exc:`ValueError` if ``val`` is anything else.
 	"""
 
 	if isinstance(val, int):
@@ -410,25 +420,6 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = 
 	return "\n".join(output)
 
 
-as_text = deprecation.deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.words' instead.",
-		)(
-				domdf_python_tools.words.as_text
-				)
-
-word_join = deprecation.deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.words' instead.",
-		)(
-				domdf_python_tools.words.word_join
-				)
-
-
 class _Etcetera(str):
 
 	def __new__(cls):
@@ -489,7 +480,7 @@ def coloured_diff(
 		fromfiledate: str = '',
 		tofiledate: str = '',
 		n: int = 3,
-		lineterm: str = '\n',
+		lineterm: str = "\n",
 		removed_colour: Colour = Fore.RED,
 		added_colour: Colour = Fore.GREEN,
 		) -> str:
@@ -562,3 +553,226 @@ def coloured_diff(
 	buf.blankline(ensure_single=True)
 
 	return str(buf)
+
+
+# stdlib
+from datetime import date
+
+# 3rd party
+from packaging import version
+
+
+def deprecated(
+		deprecated_in: Optional[str] = None,
+		removed_in: Optional[str] = None,
+		current_version: Optional[str] = None,
+		details: str = "",
+		name: Optional[str] = None
+		):
+	r"""Decorate a function to signify its deprecation
+
+	This function wraps a method that will soon be removed and does two things:
+
+	* The docstring of the method will be modified to include a notice
+	  about deprecation, e.g., "Deprecated since 0.9.11. Use foo instead."
+	* Raises a :class:`~deprecation.DeprecatedWarning`
+	  via the :mod:`warnings` module, which is a subclass of the built-in
+	  :class:`DeprecationWarning`. Note that built-in
+	  :class:`DeprecationWarning`\s are ignored by default, so for users
+	  to be informed of said warnings they will need to enable them -- see
+	  the :mod:`warnings` module documentation for more details.
+
+	:param deprecated_in: The version at which the decorated method is considered
+		deprecated. This will usually be the next version to be released when
+		the decorator is added. The default is **None**, which effectively means
+		immediate deprecation. If this is not specified, then the `removed_in` and
+		`current_version` arguments are ignored.
+	:no-default deprecated_in:
+
+	:param removed_in: The version or :class:`datetime.date` when the decorated
+		method will be removed. The default is **None**, specifying that the
+		function is not currently planned to be removed.
+
+		.. note:: This parameter cannot be set to a value if ``deprecated_in=None``.
+	:no-default removed_in:
+
+	:param current_version: The source of version information for the currently
+		running code. This will usually be a ``__version__`` attribute in your
+		library. The default is :py:obj:`None`. When ``current_version=None``
+		the automation to determine if the wrapped function is actually in
+		a period of deprecation or time for removal does not work, causing a
+		:class:`~deprecation.DeprecatedWarning` to be raised in all cases.
+	:no-default current_version:
+
+	:param details: Extra details to be added to the method docstring and
+		warning. For example, the details may point users to a replacement method,
+		such as "Use the foo_bar method instead".
+
+	:param name: The name of the deprecated function, if an alias is being deprecated.
+		Default's to the name of the decorated function.
+	:no-default name:
+	"""
+
+	# You can't just jump to removal. It's weird, unfair, and also makes
+	# building up the docstring weird.
+	if deprecated_in is None and removed_in is not None:
+		raise TypeError("Cannot set removed_in to a value without also setting deprecated_in")
+
+	# Only warn when it's appropriate. There may be cases when it makes sense
+	# to add this decorator before a formal deprecation period begins.
+	# In CPython, PendingDeprecatedWarning gets used in that period,
+	# so perhaps mimick that at some point.
+	is_deprecated = False
+	is_unsupported = False
+
+	# StrictVersion won't take a None or a "", so make whatever goes to it
+	# is at least *something*. Compare versions only if removed_in is not
+	# of type datetime.date
+	if isinstance(removed_in, date):
+		if date.today() >= removed_in:
+			is_unsupported = True
+		else:
+			is_deprecated = True
+	elif current_version:
+		current_version = version.parse(current_version)
+
+		if removed_in is not None and current_version >= version.parse(removed_in):
+			is_unsupported = True
+		elif deprecated_in is not None and current_version >= version.parse(deprecated_in):
+			is_deprecated = True
+	else:
+		# If we can't actually calculate that we're in a period of
+		# deprecation...well, they used the decorator, so it's deprecated.
+		# This will cover the case of someone just using
+		# @deprecated("1.0") without the other advantages.
+		is_deprecated = True
+
+	should_warn = any([is_deprecated, is_unsupported])
+
+	def _function_wrapper(function):
+		# Everything *should* have a docstring, but just in case...
+		existing_docstring = function.__doc__ or ""
+
+		# split docstring at first occurrence of newline
+		string_list = existing_docstring.split("\n", 1)
+
+		if should_warn:
+			# The various parts of this decorator being optional makes for
+			# a number of ways the deprecation notice could go. The following
+			# makes for a nicely constructed sentence with or without any
+			# of the parts.
+
+			# If removed_in is a date, use "removed on"
+			# If removed_in is a version, use "removed in"
+			parts = {
+					"deprecated_in":
+							f" {deprecated_in}" if deprecated_in else "",
+					"removed_in":
+							f"\n   This will be removed {'on' if isinstance(removed_in, date) else 'in'} {removed_in}."
+							if removed_in else "",
+					"details":
+							f" {details}" if details else ""
+					}
+
+			deprecation_note = (".. deprecated::{deprecated_in}{removed_in}{details}".format(**parts))
+
+			# default location for insertion of deprecation note
+			loc = 1
+
+			if len(string_list) > 1:
+				# With a multi-line docstring, when we modify
+				# existing_docstring to add our deprecation_note,
+				# if we're not careful we'll interfere with the
+				# indentation levels of the contents below the
+				# first line, or as PEP 257 calls it, the summary
+				# line. Since the summary line can start on the
+				# same line as the """, dedenting the whole thing
+				# won't help. Split the summary and contents up,
+				# dedent the contents independently, then join
+				# summary, dedent'ed contents, and our
+				# deprecation_note.
+
+				# in-place dedent docstring content
+				string_list[1] = textwrap.dedent(string_list[1])
+
+				# we need another newline
+				string_list.insert(loc, "\n")
+
+				# change the message_location if we add to end of docstring
+				# do this always if not "top"
+				if deprecation.message_location != "top":
+					loc = 3
+
+			# insert deprecation note and dual newline
+			string_list.insert(loc, deprecation_note)
+			string_list.insert(loc, "\n\n")
+
+		@functools.wraps(function)
+		def _inner(*args, **kwargs):
+			if should_warn:
+				if is_unsupported:
+					cls = deprecation.UnsupportedWarning
+				else:
+					cls = deprecation.DeprecatedWarning
+
+				the_warning = cls(name or function.__name__, deprecated_in, removed_in, details)
+				warnings.warn(the_warning, category=DeprecationWarning, stacklevel=2)
+
+			return function(*args, **kwargs)
+
+		_inner.__doc__ = "".join(string_list)
+
+		return _inner
+
+	return _function_wrapper
+
+
+# Moved elsewhere
+as_text = deprecated(
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.words' instead.",
+		)(
+				domdf_python_tools.words.as_text
+				)
+
+word_join = deprecated(
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.words' instead.",
+		)(
+				domdf_python_tools.words.word_join
+				)
+
+# Deprecated aliases
+tuple2str = deprecated(
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
+		current_version=__version__,
+		details="Use 'domdf_python_tools.utils.list2str' instead.",
+		name="tuple2str",
+		)(
+				list2str
+				)
+
+list2string = deprecated(
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
+		current_version=__version__,
+		details="Use 'domdf_python_tools.utils.list2str' instead.",
+		name="list2string",
+		)(
+				list2str
+				)
+
+splitLen = deprecated(
+		deprecated_in="0.8.0",
+		removed_in="1.0.0",
+		current_version=__version__,
+		details="Use 'domdf_python_tools.utils.split_len' instead.",
+		name="splitLen",
+		)(
+				split_len
+				)

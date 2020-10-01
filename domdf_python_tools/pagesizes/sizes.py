@@ -2,7 +2,7 @@
 #
 #  sizes.py
 """
-Common pagesizes in point/pt
+Common pagesizes in point/pt.
 
 .. TODO:: finish the list of the page sizes
 

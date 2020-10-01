@@ -1,3 +1,5 @@
+# flake8: noqa
+
 #  Adapted from https://github.com/python/cpython/blob/master/Lib/test/test_pathlib.py
 #
 #  Licensed under the Python Software Foundation License Version 2.

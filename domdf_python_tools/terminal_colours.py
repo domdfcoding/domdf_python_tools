@@ -89,7 +89,7 @@ init()
 
 CSI: Final[str] = "\033["
 OSC: Final[str] = "\033]"
-BEL: Final[str] = '\a'
+BEL: Final[str] = "\a"
 
 fore_stack: List[str] = []
 back_stack: List[str] = []
@@ -101,7 +101,7 @@ def code_to_chars(code) -> str:
 
 
 def set_title(title: str) -> str:
-	return OSC + '2;' + title + BEL
+	return OSC + "2;" + title + BEL
 
 
 def clear_screen(mode: int = 2) -> str:
@@ -179,9 +179,6 @@ class AnsiCursor:
 		"""
 
 		:param n:
-		:type n: int
-
-		:return:
 		"""
 
 		return f"{CSI}{str(n)}A"
@@ -190,9 +187,6 @@ class AnsiCursor:
 		"""
 
 		:param n:
-		:type n: int
-
-		:return:
 		"""
 
 		return f"{CSI}{str(n)}B"
@@ -201,9 +195,6 @@ class AnsiCursor:
 		"""
 
 		:param n:
-		:type n: int
-
-		:return:
 		"""
 
 		return f"{CSI}{str(n)}C"
@@ -212,9 +203,6 @@ class AnsiCursor:
 		"""
 
 		:param n:
-		:type n: int
-
-		:return:
 		"""
 
 		return f"{CSI}{str(n)}D"
@@ -223,11 +211,7 @@ class AnsiCursor:
 		"""
 
 		:param x:
-		:type x: int
 		:param y:
-		:type y: int
-
-		:return:
 		"""
 
 		return f"{CSI}{str(y)};{str(x)}H"

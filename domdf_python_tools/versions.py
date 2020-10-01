@@ -68,7 +68,7 @@ class Version(Tuple[int, int, int]):
 		"""
 
 		field_names = self.__annotations__.keys()
-		repr_fmt = '(' + ', '.join(f"{name}=%r" for name in field_names) + ')'
+		repr_fmt = '(' + ", ".join(f"{name}=%r" for name in field_names) + ')'
 		return self.__class__.__name__ + repr_fmt % self
 
 	def __str__(self) -> str:

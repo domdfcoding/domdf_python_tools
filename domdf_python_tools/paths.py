@@ -196,9 +196,9 @@ def read(filename: PathLike, **kwargs) -> str:
 
 	.. TODO:: make this the file in the given directory, by default the current directory
 
-	:param filename: The file to read from
+	:param filename: The file to read from.
 
-	:return: The contents of the file
+	:return: The contents of the file.
 	"""
 
 	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:
@@ -214,9 +214,7 @@ def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.P
 	:param relative_to: The directory to find the path relative to.
 		Defaults to the current directory.
 	:no-default relative_to:
-
-	:return:
-	"""
+	"""  # noqa D400
 
 	if not isinstance(path, pathlib.Path):
 		path = pathlib.Path(path)
@@ -246,8 +244,8 @@ def write(var: str, filename: PathLike, **kwargs) -> None:
 
 	.. TODO:: make this the file in the given directory, by default the current directory
 
-	:param var: The value to write to the file
-	:param filename: The file to write to
+	:param var: The value to write to the file.
+	:param filename: The file to write to.
 	"""
 
 	with open(os.path.join(os.getcwd(), filename), 'w', **kwargs) as f:
@@ -425,7 +423,7 @@ class PathPlus(pathlib.Path):
 		:param errors:
 
 		.. versionadded:: 0.5.0
-		"""
+		"""  # noqa D400
 
 		return self.write_clean("\n".join(data), encoding=encoding, errors=errors)
 
@@ -462,41 +460,36 @@ class PathPlus(pathlib.Path):
 		:return: The content of the file.
 
 		.. versionadded:: 0.5.0
-		"""
+		"""  # noqa D400
 
 		return self.read_text(encoding=encoding, errors=errors).split("\n")
 
-	def open(
-			self,
-			mode: str = "r",
-			buffering: int = -1,
-			encoding: Optional[str] = "UTF-8",
-			errors: Optional[str] = None,
-			newline: Optional[str] = newline_default,  # type: ignore
-			) -> IO[Any]:
+	def open(  # noqa A003
+		self,
+		mode: str = "r",
+		buffering: int = -1,
+		encoding: Optional[str] = "UTF-8",
+		errors: Optional[str] = None,
+		newline: Optional[str] = newline_default,  # type: ignore
+		) -> IO[Any]:
 		"""
 		Open the file pointed by this path and return a file object, as
-		the built-in open() function does.
+		the built-in :func:`open` function does.
 
 		:param mode: The mode to open the file in.
 		:default mode: ``'r'`` (read only)
-		:type mode: str
 		:param buffering:
-		:type buffering: int
 		:param encoding:
-		:type encoding: str
 		:param errors:
 		:param newline:
 		:default newline: `universal newlines <https://docs.python.org/3/glossary.html#term-universal-newlines>`__ for reading, Unix line endings (``LF``) for writing.
-
-		:return:
 
 		.. versionadded:: 0.3.8
 
 		.. versionchanged:: 0.5.1
 
 			Defaults to Unix line endings (``LF``) on all platforms.
-		"""
+		"""  # noqa D400
 
 		if 'b' in mode:
 			encoding = None
@@ -566,23 +559,25 @@ class PathPlus(pathlib.Path):
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 	"""
-	PathPlus subclass for non-Windows systems.
+	:class:`~.PathPlus` subclass for non-Windows systems.
 
 	On a POSIX system, instantiating a PathPlus object should return an instance of this class.
 
 	.. versionadded:: 0.3.8
 	"""
+
 	__slots__ = ()
 
 
 class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 	"""
-	PathPlus subclass for Windows systems.
+	:class:`~.PathPlus` subclass for Windows systems.
 
 	On a Windows system, instantiating a PathPlus object should return an instance of this class.
 
 	.. versionadded:: 0.3.8
 	"""
+
 	__slots__ = ()
 
 	def owner(self):  # pragma: no cover
