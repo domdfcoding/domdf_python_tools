@@ -7,6 +7,9 @@ Common pagesizes in point/pt.
 .. TODO:: finish the list of the page sizes
 
 .. |iso216| replace:: `ISO 216 <https://en.wikipedia.org/wiki/ISO_216>`__
+
+Each pagesize is an instance of :class:`domdf_python_tools.pagesizes.PageSize`.
+The following sizes are available:
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -224,54 +227,54 @@ LEGAL = Size_inch(8.5, 14).to_pt()  #: North American "Legal" Paper
 TABLOID = ELEVENSEVENTEEN = Size_inch(11, 17).to_pt()
 
 # From https://en.wikipedia.org/wiki/Paper_size
-JUNIOR_LEGAL = Size_inch(5, 8).to_pt()
-HALF_LETTER = Size_inch(5.5, 8).to_pt()
-GOV_LETTER = Size_inch(8, 10.5).to_pt()
-GOV_LEGAL = Size_inch(8.5, 13).to_pt()
-LEDGER = Size_inch(17, 11).to_pt()
-EMPEROR = Size_inch(48, 72).to_pt()
-QUAD_ROYAL = Size_inch(40, 50).to_pt()
-QUAD_DEMY = Size_inch(35, 40).to_pt()
-ANTIQUARIAN = Size_inch(31, 53).to_pt()
-GRAND_EAGLE = Size_inch(28.75, 42).to_pt()
-DOUBLE_ELEPHANT = Size_inch(26.75, 40).to_pt()
-ATLAS = Size_inch(26, 34).to_pt()
-DOUBLE_ROYAL = Size_inch(25, 40).to_pt()
-COLOMBIER = Size_inch(23.5, 34.5).to_pt()
-DOUBLE_DEMY_US = Size_inch(22.5, 35.5).to_pt()
-DOUBLE_DEMY = DOUBLE_DEMY_UK = Size_inch(22.5, 35).to_pt()
-IMPERIAL = Size_inch(22, 30).to_pt()
-DOUBLE_LARGE_POST = Size_inch(21, 33).to_pt()
-ELEPHANT = Size_inch(23, 28).to_pt()
-PRINCESS = Size_inch(22.5, 28).to_pt()
-CARTRIDGE = Size_inch(21, 26).to_pt()
-ROYAL = Size_inch(20, 25).to_pt()
-SHEET = HALF_POST = Size_inch(19.5, 23.5).to_pt()
-DOUBLE_POST = Size_inch(19, 30.5).to_pt()
-SUPER_ROYAL = Size_inch(19, 27).to_pt()
-BROADSHEET = Size_inch(18, 24).to_pt()
-MEDIUM_US = Size_inch(17.5, 23).to_pt()
-MEDIUM_UK = Size_inch(18, 23).to_pt()
-DEMY = Size_inch(17.5, 22.5).to_pt()
-COPY_DRAUGHT = Size_inch(16, 20).to_pt()
-LARGE_POST_US = Size_inch(15.5, 20).to_pt()
-LARGE_POST_UK = Size_inch(16.5, 21).to_pt()
-POST_US = Size_inch(15.5, 19.35).to_pt()
-POST_UK = Size_inch(15.5, 19.5).to_pt()
-CROWN = Size_inch(15, 20).to_pt()
-PINCHED_POST = Size_inch(14.75, 18.5).to_pt()
-FOOLSCAP_US = Size_inch(13.5, 17).to_pt()
-FOOLSCAP_UK = Size_inch(13, 18).to_pt()
-SMALL_FOOLSCAP = Size_inch(13.35, 16.5).to_pt()
-BRIEF = Size_inch(13.5, 16).to_pt()
-POTT = Size_inch(12.5, 15).to_pt()
-QUARTO_US = Size_inch(9, 11).to_pt()
-EXECUTIVE = MONARCH = Size_inch(7.35, 10.5).to_pt()
-FOLIO = FOOLSCAP_FOLIO = Size_inch(8, 13).to_pt()
-QUARTO = QUARTO_UK = Size_inch(8, 10).to_pt()
+JUNIOR_LEGAL = Size_inch(5, 8).to_pt()  #: Junior Legal
+HALF_LETTER = Size_inch(5.5, 8).to_pt()  #: Half Letter
+GOV_LETTER = Size_inch(8, 10.5).to_pt()  #: Government Letter
+GOV_LEGAL = Size_inch(8.5, 13).to_pt()  #: Government Legal
+LEDGER = Size_inch(17, 11).to_pt()  #: Ledger
+EMPEROR = Size_inch(48, 72).to_pt()  #: Emperor
+QUAD_ROYAL = Size_inch(40, 50).to_pt()  #: Quad Royal
+QUAD_DEMY = Size_inch(35, 40).to_pt()  #:
+ANTIQUARIAN = Size_inch(31, 53).to_pt()  #:
+GRAND_EAGLE = Size_inch(28.75, 42).to_pt()  #:
+DOUBLE_ELEPHANT = Size_inch(26.75, 40).to_pt()  #:
+ATLAS = Size_inch(26, 34).to_pt()  #:
+DOUBLE_ROYAL = Size_inch(25, 40).to_pt()  #:
+COLOMBIER = Size_inch(23.5, 34.5).to_pt()  #:
+DOUBLE_DEMY_US = Size_inch(22.5, 35.5).to_pt()  #:
+DOUBLE_DEMY = DOUBLE_DEMY_UK = Size_inch(22.5, 35).to_pt()  #:
+IMPERIAL = Size_inch(22, 30).to_pt()  #:
+DOUBLE_LARGE_POST = Size_inch(21, 33).to_pt()  #:
+ELEPHANT = Size_inch(23, 28).to_pt()  #:
+PRINCESS = Size_inch(22.5, 28).to_pt()  #:
+CARTRIDGE = Size_inch(21, 26).to_pt()  #:
+ROYAL = Size_inch(20, 25).to_pt()  #:
+SHEET = HALF_POST = Size_inch(19.5, 23.5).to_pt()  #:
+DOUBLE_POST = Size_inch(19, 30.5).to_pt()  #:
+SUPER_ROYAL = Size_inch(19, 27).to_pt()  #:
+BROADSHEET = Size_inch(18, 24).to_pt()  #:
+MEDIUM_US = Size_inch(17.5, 23).to_pt()  #:
+MEDIUM_UK = Size_inch(18, 23).to_pt()  #:
+DEMY = Size_inch(17.5, 22.5).to_pt()  #:
+COPY_DRAUGHT = Size_inch(16, 20).to_pt()  #:
+LARGE_POST_US = Size_inch(15.5, 20).to_pt()  #:
+LARGE_POST_UK = Size_inch(16.5, 21).to_pt()  #:
+POST_US = Size_inch(15.5, 19.35).to_pt()  #:
+POST_UK = Size_inch(15.5, 19.5).to_pt()  #:
+CROWN = Size_inch(15, 20).to_pt()  #:
+PINCHED_POST = Size_inch(14.75, 18.5).to_pt()  #:
+FOOLSCAP_US = Size_inch(13.5, 17).to_pt()  #:
+FOOLSCAP_UK = Size_inch(13, 18).to_pt()  #:
+SMALL_FOOLSCAP = Size_inch(13.35, 16.5).to_pt()  #:
+BRIEF = Size_inch(13.5, 16).to_pt()  #:
+POTT = Size_inch(12.5, 15).to_pt()  #:
+QUARTO_US = Size_inch(9, 11).to_pt()  #:
+EXECUTIVE = MONARCH = Size_inch(7.35, 10.5).to_pt()  #:
+FOLIO = FOOLSCAP_FOLIO = Size_inch(8, 13).to_pt()  #:
+QUARTO = QUARTO_UK = Size_inch(8, 10).to_pt()  #:
 # IMPERIAL = Size_inch(7*inch, 9*inch).to_pt()  there are two of these?
-KINGS = Size_inch(6.5, 8).to_pt()
-DUKES = Size_inch(5.5, 7).to_pt()
+KINGS = Size_inch(6.5, 8).to_pt()  #:
+DUKES = Size_inch(5.5, 7).to_pt()  #:
 
 # https://en.wikipedia.org/wiki/ISO/IEC_7810
 ID_1 = Size_mm(85.60, 53.98).to_pt()  #: Most banking cards and ID cards

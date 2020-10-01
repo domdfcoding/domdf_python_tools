@@ -35,6 +35,9 @@ import math
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Union
 
+# this package
+from domdf_python_tools.doctools import prettify_docstrings
+
 __all__ = [
 		"pt",
 		"inch",
@@ -44,6 +47,12 @@ __all__ = [
 		"pc",
 		"pica",
 		"Unit",
+		"Unitpt",
+		"UnitInch",
+		"Unitcm",
+		"Unitmm",
+		"Unitum",
+		"Unitpc",
 		]
 
 
@@ -51,6 +60,7 @@ def _rounders(val_to_round: Union[str, int, float, Decimal], round_format: str) 
 	return Decimal(Decimal(val_to_round).quantize(Decimal(str(round_format)), rounding=ROUND_HALF_UP))
 
 
+@prettify_docstrings
 class Unit(float):
 	"""
 	Represents a unit, such as a point.
@@ -61,39 +71,47 @@ class Unit(float):
 
 	Units can be added to each other:
 
-	>>> (3*mm) + (7*mm)
-	<Unit '10.000 mm': 28.346pt>
+	.. code-block:: python
+
+		>>> (3*mm) + (7*mm)
+		<Unit '10.000 mm': 28.346pt>
 
 	When adding different :class:`~domdf_python_tools.pagesizes.units.Unit` objects,
 	the result has the type of the former unit:
 
-	>>> (2.54*cm) + inch
-	<Unit '5.080 cm': 144.000pt>
-	>>> inch + (2.54*cm)
-	<Unit '2.000 in': 144.000pt>
+	.. code-block:: python
+
+		>>> (2.54*cm) + inch
+		<Unit '5.080 cm': 144.000pt>
+		>>> inch + (2.54*cm)
+		<Unit '2.000 in': 144.000pt>
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can also be added to :class:`float` and :class:`int` objects:
 
-	>>> (3*cm) + 7
-	<Unit '10.000 cm': 283.465pt>
-	>>> 7 + (3*cm)
-	<Unit '10.000 cm': 283.465pt>
+	.. code-block:: python
+
+		>>> (3*cm) + 7
+		<Unit '10.000 cm': 283.465pt>
+		>>> 7 + (3*cm)
+		<Unit '10.000 cm': 283.465pt>
 
 
 	**Subtraction**
 
 	Subtraction works the same as addition:
 
-	>>> (17*mm) - (7*mm)
-	<Unit '10.000 mm': 28.346pt>
-	>>> (2.54*cm) - inch
-	<Unit '-0.000 cm': -0.000pt>
-	>>> inch - (2.54*cm)
-	<Unit '0.000 in': 0.000pt>
-	>>> (17*cm) - 7
-	<Unit '10.000 cm': 283.465pt>
-	>>> 17 - (7*cm)
-	<Unit '10.000 cm': 283.465pt>
+	.. code-block:: python
+
+		>>> (17*mm) - (7*mm)
+		<Unit '10.000 mm': 28.346pt>
+		>>> (2.54*cm) - inch
+		<Unit '-0.000 cm': -0.000pt>
+		>>> inch - (2.54*cm)
+		<Unit '0.000 in': 0.000pt>
+		>>> (17*cm) - 7
+		<Unit '10.000 cm': 283.465pt>
+		>>> 17 - (7*cm)
+		<Unit '10.000 cm': 283.465pt>
 
 
 	**Multiplcation**
@@ -101,38 +119,48 @@ class Unit(float):
 	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can only be multipled by
 	:class:`float` and :class:`int` objects:
 
-	>>> (3*mm) * 3
-	<Unit '9.000 mm': 25.512pt>
-	>>> 3 * (3*mm)
-	<Unit '9.000 mm': 25.512pt>
-	>>> 3.5 * (3*mm)
-	<Unit '10.500 mm': 29.764pt>
+	.. code-block:: python
+
+		>>> (3*mm) * 3
+		<Unit '9.000 mm': 25.512pt>
+		>>> 3 * (3*mm)
+		<Unit '9.000 mm': 25.512pt>
+		>>> 3.5 * (3*mm)
+		<Unit '10.500 mm': 29.764pt>
 
 	Multiplication works either way round.
 
 	Multiplying by another :class:`~domdf_python_tools.pagesizes.units.Unit` results in a :exc:`TypeError`:
 
-	>>> inch * (7*cm)
-	TypeError: unsupported operand type(s) for *: 'UnitInch' and 'Unitcm'
+	.. code-block:: python
+
+		>>> inch * (7*cm)
+		TypeError: unsupported operand type(s) for *: 'UnitInch' and 'Unitcm'
 
 	**Division**
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit`s can only be divided by :class:`float` and :class:`int` objects:
 
-	>>> (3*mm) / 3
-	<Unit '1.000 mm': 2.835pt>
-	>>> (10*mm) / 2.5
-	<Unit '4.000 mm': 11.339pt>
+	.. code-block:: python
+
+		>>> (3*mm) / 3
+		<Unit '1.000 mm': 2.835pt>
+		>>> (10*mm) / 2.5
+		<Unit '4.000 mm': 11.339pt>
 
 	Dividing by another unit results in a :exc:`TypeError`:
 
-	>>> inch / (7*cm)
-	TypeError: unsupported operand type(s) for /: 'UnitInch' and 'Unitcm'
+	.. code-block:: python
+
+		>>> inch / (7*cm)
+		TypeError: unsupported operand type(s) for /: 'UnitInch' and 'Unitcm'
 
 	Likewise, trying to divide a:class:`float` and :class:`int` object by a unit results in a :exc:`TypeError`:
 
-	>>> 3 / (3*mm)
-	TypeError: unsupported operand type(s) for /: 'int' and 'Unitmm'
+	.. code-block:: python
+
+		>>> 3 / (3*mm)
+		TypeError: unsupported operand type(s) for /: 'int' and 'Unitmm'
 
 
 	**Powers**
@@ -145,8 +173,10 @@ class Unit(float):
 	Modulo division of a :class:`~domdf_python_tools.pagesizes.units.Unit` by a
 	:class:`float` or :class:`int` object is allowed:
 
-	>>> (3*mm) % 2.5
-	<Unit '0.500 mm': 1.417pt>
+	.. code-block:: python
+
+		>>> (3*mm) % 2.5
+		<Unit '0.500 mm': 1.417pt>
 
 	Dividing by a unit, or modulo division of two units, is not officially supported.
 	"""
@@ -235,10 +265,20 @@ class Unit(float):
 			return self.__class__(super().__rsub__(other))
 
 	def as_pt(self) -> "Unit":
+		"""
+		Returns the unit in point.
+		"""
+
 		return Unit(float(_rounders(float(self) * self._in_pt, "0.000000")))
 
 	@classmethod
 	def from_pt(cls, value: float) -> "Unit":
+		"""
+		Construct a :class:`~.Unit` object from a value in point.
+
+		:param value:
+		"""
+
 		return cls(value / cls._in_pt)
 
 	def __call__(self, *args, **kwargs) -> "Unit":
@@ -246,39 +286,63 @@ class Unit(float):
 
 
 class Unitpt(Unit):
+	"""
+	Point
+	"""
+
 	name = "pt"
 	_in_pt = 1
 
 
 class UnitInch(Unit):
+	"""
+	Inch
+	"""
+
 	name = "inch"
 	_in_pt = 72.0
 
 
 class Unitcm(Unit):
+	"""
+	Centimetres
+	"""
+
 	name = "cm"
 	_in_pt = 28.3464566929
 
 
 class Unitmm(Unit):
+	"""
+	Millimetres
+	"""
+
 	name = "mm"
 	_in_pt = 2.83464566929
 
 
 class Unitum(Unit):
+	"""
+	Micrometres
+	"""
+
 	name = "µm"
 	_in_pt = 0.00283464566929
 
 
 class Unitpc(Unit):
+	"""
+	Pica
+	"""
+
 	name = "pc"
 	_in_pt = 12.0
 
 
 # Units
-pt = Unitpt(1)
-inch = UnitInch(1)
-cm = Unitcm(1)
-mm = Unitmm(1)
-um = Unitum(1)
-pc = pica = Unitpc(1)
+pt = Unitpt(1)  #: Point
+inch = UnitInch(1)  #: Inch
+cm = Unitcm(1)  #: Centimetre
+mm = Unitmm(1)  #: Millimetre
+um = Unitum(1)  #: Micrometre
+pc = pica = Unitpc(1)  #: Pica
