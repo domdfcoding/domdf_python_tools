@@ -636,11 +636,11 @@ def deprecated(
 		else:
 			is_deprecated = True
 	elif current_version:
-		current_version = version.parse(current_version)
+		current_version = version.parse(current_version)  # type: ignore
 
-		if removed_in is not None and current_version >= version.parse(removed_in):
+		if removed_in is not None and current_version >= version.parse(removed_in):  # type: ignore
 			is_unsupported = True
-		elif deprecated_in is not None and current_version >= version.parse(deprecated_in):
+		elif deprecated_in is not None and current_version >= version.parse(deprecated_in):  # type: ignore
 			is_deprecated = True
 	else:
 		# If we can't actually calculate that we're in a period of
