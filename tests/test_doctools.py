@@ -215,7 +215,7 @@ def test_decorators():
 			"I don't know why the cafe has a ceil function, but we'd better document it properly.",
 			)
 	assert doctools.deindent_string(SpamCafe.ceil.__doc__
-									).endswith(doctools.deindent_string(math.ceil.__doc__) + "\n")
+									).rstrip().endswith(doctools.deindent_string(math.ceil.__doc__).rstrip())
 	# Dedented both strings to be sure of equivalence
 
 	# Functions
