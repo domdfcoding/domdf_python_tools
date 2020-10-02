@@ -29,7 +29,7 @@ Utilities for documenting functions, classes and methods.
 # stdlib
 import builtins
 import platform
-from textwrap import dedent
+from inspect import cleandoc
 from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
@@ -102,13 +102,13 @@ def append_doctring_from_another(target: Union[Type, Callable], original: Union[
 	original_doc = original.__doc__
 
 	if isinstance(original_doc, str) and isinstance(target_doc, str):
-		deindented_target_doc = dedent(target_doc)
-		deindented_original_doc = dedent(original_doc)
+		deindented_target_doc = cleandoc(target_doc)
+		deindented_original_doc = cleandoc(original_doc)
 
 		target.__doc__ = deindented_target_doc + "\n" + deindented_original_doc
 
 	elif not isinstance(target_doc, str) and isinstance(original_doc, str):
-		target.__doc__ = dedent(original_doc)
+		target.__doc__ = cleandoc(original_doc)
 
 
 def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] = None) -> str:
