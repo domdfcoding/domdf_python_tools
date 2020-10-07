@@ -49,7 +49,7 @@ class FancyPrinter(PrettyPrinter):
 	# TODO: docs
 	_dispatch: MutableMapping[Callable, Callable]
 	_indent_per_level: int
-	_format_items: Callable[[Any, Any, Any, Any, Any, Any], None]
+	_format_items: Callable[[PrettyPrinter, Any, Any, Any, Any, Any, Any], None]
 	_dispatch = dict(PrettyPrinter._dispatch)  # type: ignore
 
 	def _make_open(self, char: str, indent: int, obj):
@@ -58,13 +58,13 @@ class FancyPrinter(PrettyPrinter):
 		else:
 			the_indent = ' ' * (indent + self._indent_per_level)
 
-		if len(obj) and not self._compact:
+		if len(obj) and not self._compact:  # type: ignore
 			return f"{char}\n{the_indent}"
 		else:
 			return char
 
 	def _make_close(self, char: str, indent: int, obj):
-		if len(obj) and not self._compact:
+		if len(obj) and not self._compact:  # type: ignore
 			return f",\n{' ' * (indent + self._indent_per_level)}{char}"
 		else:
 			return char
@@ -77,7 +77,14 @@ class FancyPrinter(PrettyPrinter):
 			write((self._indent_per_level - 1) * ' ')
 
 		if len(object):
-			self._format_dict_items(object.items(), stream, indent, allowance + 1, context, level)
+			self._format_dict_items(  # type: ignore
+				object.items(),
+				stream,
+				indent,
+				allowance + 1,
+				context,
+				level,
+				)
 
 		write(self._make_close('}', indent, object))
 
@@ -139,29 +146,23 @@ class ReprPrettyPrinter(FancyPrinter):
 
 	_dispatch = dict(FancyPrinter._dispatch)  # type: ignore
 
-	def pformat(self, object):
+	def format_attributes(self, obj: Attributes):
 		stream = StringIO()
 		context = {}
 
-		p = self._dispatch.get(type(object).__repr__, None)
-
-		context[id(object)] = 1
-		p(self, object, stream, 0, 0, context, 1)
-		del context[id(object)]
-		return stream.getvalue()
-
-	def _pprint_attributes(self, object, stream, indent, allowance, context, level):
+		context[id(obj)] = 1
 
 		stream.write(f"(\n{self._indent_per_level * ' '}")
 
 		if self._indent_per_level > 1:
 			stream.write((self._indent_per_level - 1) * ' ')
 
-		if len(object):
-			self._format_attribute_items(list(object), stream, indent, allowance + 1, context, level)
+		if len(obj):
+			self._format_attribute_items(list(obj), stream, 0, 0 + 1, context, 1)
 		stream.write(f"\n{self._indent_per_level * ' '})")
 
-	_dispatch[Attributes.__repr__] = _pprint_attributes
+		del context[id(obj)]
+		return stream.getvalue()
 
 	def _format_attribute_items(self, items, stream, indent, allowance, context, level):
 
@@ -174,14 +175,14 @@ class ReprPrettyPrinter(FancyPrinter):
 			last = i == last_index
 			write(key)
 			write('=')
-			self._format(
-					ent,
-					stream,
-					indent + len(key) + 2,
-					allowance if last else 1,
-					context,
-					level,
-					)
+			self._format(  # type: ignore
+				ent,
+				stream,
+				indent + len(key) + 2,
+				allowance if last else 1,
+				context,
+				level,
+				)
 
 			if not last:
 				write(delimnl)
@@ -209,12 +210,12 @@ def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 
 			class_name = f"{type(self).__module__}.{type(self).__name__}" if show_module else type(self).__name__
 
-			return f"{class_name}{formatter.pformat(Attributes(self, *attributes))}"
+			return f"{class_name}{formatter.format_attributes(Attributes(self, *attributes))}"
 
 		__repr__.__doc__ = f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`."
 		__repr__.__name__ = "__repr__"
 		__repr__.__module__ = obj.__module__
-		__repr__.__qualname____ = f"{obj.__module__}.__repr__"
+		__repr__.__qualname__ = f"{obj.__module__}.__repr__"
 		obj.__repr__ = __repr__
 
 		return obj
