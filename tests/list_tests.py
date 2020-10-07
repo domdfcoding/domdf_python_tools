@@ -14,6 +14,8 @@ import sys
 from functools import cmp_to_key
 
 # 3rd party
+from typing import List, no_type_check
+
 import pytest
 
 # this package
@@ -43,18 +45,20 @@ class CommonTest(seq_tests.CommonTest):
 		self.assertNotEqual(id(a), id(b))
 		self.assertEqual(a, b)
 
+	@no_type_check
 	def test_getitem_error(self):
 		a = []
 		with pytest.raises(TypeError, match="list indices must be integers or slices"):
 			a['a']
 
+	@no_type_check
 	def test_setitem_error(self):
 		a = []
 		with pytest.raises(TypeError, match="list indices must be integers or slices"):
 			a['a'] = "python"
 
 	def test_repr(self):
-		l0 = []
+		l0: List = []
 		l2 = [0, 1, 2]
 		a0 = self.type2test(l0)
 		a2 = self.type2test(l2)

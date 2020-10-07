@@ -81,7 +81,7 @@ def delegate_kwargs(to: Callable, *except_):
 				if param in to_params:
 					del to_params[param]
 
-			f.__signature__ = from_sig.replace(
+			f.__signature__ = from_sig.replace(  # type: ignore
 					parameters=[*from_params.values(), *to_params.values()]
 					)  # type: ignore
 			f.__annotations__ = {**to_annotations, **from_annotations}

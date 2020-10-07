@@ -10,7 +10,7 @@
 
 # stdlib
 import sys
-from typing import Callable
+from typing import Callable, Type, Union
 
 # this package
 from domdf_python_tools.bases import NamedList, UserList, namedlist
@@ -19,7 +19,7 @@ from tests.test_userlist import TestList
 
 
 class TestNamedList(TestList):
-	type2test = NamedList
+	type2test: Type[NamedList] = NamedList
 
 	def test_add_specials(self):
 		u = NamedList("spam")
@@ -58,7 +58,7 @@ class TestShoppingList(TestNamedList):
 	Test a subclass of NamedList.
 	"""
 
-	type2test = ShoppingList
+	type2test: Type[ShoppingList] = ShoppingList
 
 	def test_repr(self):
 		a0 = self.type2test([])
@@ -77,10 +77,11 @@ class TestShoppingList(TestNamedList):
 
 
 class NamedListTest:
-	shopping_list: Callable
+	shopping_list: Union[NamedList[str], Callable]
 
 	repr_out = "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
 	str_out = "ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
+	cls_str: str
 
 	def test(self, capsys):
 		assert isinstance(self.shopping_list, UserList)

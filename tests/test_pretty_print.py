@@ -14,8 +14,10 @@ import random
 import types
 
 # 3rd party
+from typing import no_type_check
+
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture
+from pytest_regressions.file_regression import FileRegressionFixture  # type: ignore
 
 # this package
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
@@ -140,6 +142,7 @@ class Orderable:
 
 class TestFancyPrinter:
 
+	@no_type_check
 	def test_init(self):
 		FancyPrinter()
 		FancyPrinter(indent=4, width=40, depth=5, stream=io.StringIO(), compact=True)
@@ -182,6 +185,7 @@ class TestFancyPrinter:
 		assert not pp.isrecursive(safe), f"expected not isrecursive for {safe!r}"
 		assert pp.isreadable(safe), f"expected isreadable for {safe!r}"
 
+	@no_type_check
 	def test_knotted(self):
 		a = list(range(100))
 		b = list(range(200))
@@ -278,6 +282,7 @@ class TestFancyPrinter:
 	# 		self.assertEqual(FancyPrinter().pformat(cont), expected)
 	# 		self.assertEqual(FancyPrinter(width=1, indent=0).pformat(cont), expected)
 
+	@no_type_check
 	def test_basic_line_wrap(self):
 		# verify basic line-wrapping operation
 		o = {
@@ -449,7 +454,7 @@ class TestFancyPrinter:
 										(): {}}) == r"{5: [[]], 'xy\tab\n': (3,), (): {}}"
 
 	def test_ordered_dict(self, file_regression: FileRegressionFixture):
-		d = collections.OrderedDict()
+		d: collections.OrderedDict = collections.OrderedDict()
 		assert FancyPrinter(width=1).pformat(d) == 'OrderedDict()'
 		d = collections.OrderedDict([])
 		assert FancyPrinter(width=1).pformat(d) == 'OrderedDict()'
@@ -564,7 +569,7 @@ mappingproxy(OrderedDict([
 		assert FancyPrinter().pformat({Unorderable: 0, 1: 0}) == '{1: 0, ' + repr(Unorderable) + ': 0}'
 
 		# Issue 14998: TypeError on tuples with NoneTypes as dict keys.
-		keys = [(1, ), (None, )]
+		keys = [(1, ), (None, )]  # type: ignore
 		assert FancyPrinter().pformat(dict.fromkeys(keys, 0)) == '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id))
 
 	def test_sort_orderable_and_unorderable_values(self):
@@ -694,7 +699,7 @@ mappingproxy(OrderedDict([
 		number = 10
 		o = [0] * number
 		for i in range(levels - 1):
-			o = [o]
+			o = [o]  # type: ignore
 		for w in range(levels * 2 + 1, levels + 3 * number - 1):
 			lines = FancyPrinter(width=w, compact=True).pformat(o, ).splitlines()
 			maxwidth = max(map(len, lines))
@@ -811,20 +816,20 @@ mappingproxy(OrderedDict([
 		self.check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
 
 	def test_default_dict(self, file_regression: FileRegressionFixture):
-		d = collections.defaultdict(int)
+		d: collections.defaultdict = collections.defaultdict(int)
 		assert FancyPrinter(width=1).pformat(d) == "defaultdict(<class 'int'>, {})"
 		words = 'the quick brown fox jumped over a lazy dog'.split()
 		d = collections.defaultdict(int, zip(words, itertools.count()))
 		self.check_file_regression(FancyPrinter().pformat(d), file_regression)
 
 	def test_counter(self, file_regression: FileRegressionFixture):
-		d = collections.Counter()
+		d: collections.Counter = collections.Counter()
 		assert FancyPrinter(width=1).pformat(d) == "Counter()"
 		d = collections.Counter('senselessness')
 		self.check_file_regression(FancyPrinter(width=40).pformat(d), file_regression)
 
 	def test_chainmap(self, file_regression: FileRegressionFixture):
-		d = collections.ChainMap()
+		d: collections.ChainMap = collections.ChainMap()
 		assert FancyPrinter(width=1).pformat(d) == "ChainMap({})"
 		words = 'the quick brown fox jumped over a lazy dog'.split()
 		items = list(zip(words, itertools.count()))
@@ -838,7 +843,7 @@ mappingproxy(OrderedDict([
 		self.check_file_regression(FancyPrinter().pformat(d), file_regression)
 
 	def test_deque(self):
-		d = collections.deque()
+		d: collections.deque = collections.deque()
 		assert FancyPrinter(width=1).pformat(d) == "deque([])"
 		d = collections.deque(maxlen=7)
 		assert FancyPrinter(width=1).pformat(d) == "deque([], maxlen=7)"
@@ -873,14 +878,14 @@ deque([('brown', 2),
 		file_regression.check(data, extension=".txt", encoding="UTF-8")
 
 	def test_user_dict(self, file_regression: FileRegressionFixture):
-		d = collections.UserDict()
+		d: collections.UserDict = collections.UserDict()
 		assert FancyPrinter(width=1).pformat(d) == "{}"
 		words = 'the quick brown fox jumped over a lazy dog'.split()
-		d = collections.UserDict(zip(words, itertools.count()))
+		d = collections.UserDict(zip(words, itertools.count()))  # type: ignore
 		self.check_file_regression(FancyPrinter().pformat(d), file_regression)
 
 	def test_user_list(self, file_regression: FileRegressionFixture):
-		d = collections.UserList()
+		d: collections.UserList = collections.UserList()
 		assert FancyPrinter(width=1).pformat(d) == "[]"
 		words = 'the quick brown fox jumped over a lazy dog'.split()
 		d = collections.UserList(zip(words, itertools.count()))

@@ -9,6 +9,8 @@
 # Check every path through every method of UserList
 
 # this package
+from typing import Type
+
 from domdf_python_tools.bases import UserList
 from domdf_python_tools.testing import not_pypy
 from tests import list_tests
@@ -59,7 +61,7 @@ class TestList(list_tests.CommonTest):
 
 
 class TestUserList(TestList):
-	type2test = UserList
+	type2test: Type[UserList] = UserList
 
 	def test_add_specials(self):
 		u = UserList("spam")

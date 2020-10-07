@@ -97,7 +97,7 @@ class Dictable(Iterable):
 
 
 _T = TypeVar("_T")
-_S = TypeVar('_S')
+_S = TypeVar('_S', bound="UserList")
 
 
 @prettify_docstrings
@@ -197,7 +197,7 @@ class UserList(MutableSequence[_T]):
 		...  # pragma: no cover
 
 	def __setitem__(self, i: Union[int, slice], item: Union[_T, Iterable[_T]]) -> None:
-		self.data[i] = item
+		self.data[i] = item  # type: ignore
 
 	def __delitem__(self, i: Union[int, slice]):
 		del self.data[i]

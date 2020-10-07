@@ -14,6 +14,8 @@ import sys
 from itertools import chain
 
 # 3rd party
+from typing import List
+
 import pytest
 
 # this package
@@ -173,7 +175,7 @@ class LyingList(list):
 
 class CommonTest:
 	# The type to be tested
-	type2test = None
+	type2test: type
 
 	def assertEqual(self, left, right):
 		assert left == right
@@ -186,7 +188,7 @@ class CommonTest:
 			func(*args)
 
 	def test_constructors(self):
-		l0 = []
+		l0: List = []
 		l1 = [0]
 		l2 = [0, 1]
 
@@ -370,7 +372,7 @@ class CommonTest:
 		self.assertEqual(u2 + u2 + u2, u2 * 3)
 		self.assertEqual(u2 + u2 + u2, 3 * u2)
 
-		class subclass(self.type2test):
+		class subclass(self.type2test):  # type: ignore
 			pass
 
 		u3 = subclass([0, 1])
@@ -399,7 +401,7 @@ class CommonTest:
 
 	def test_getitemoverwriteiter(self):
 		# Verify that __getitem__ overrides are not recognized by __iter__
-		class T(self.type2test):
+		class T(self.type2test):  # type: ignore
 
 			def __getitem__(self, key):
 				return str(key) + '!!!'
