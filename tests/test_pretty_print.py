@@ -21,8 +21,8 @@ from pytest_regressions.file_regression import FileRegressionFixture
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
 from domdf_python_tools.stringlist import StringList
 
-
 # list, tuple and dict subclasses that do or don't overwrite __repr__
+
 
 class list2(list):
 	pass
@@ -930,6 +930,7 @@ class DottedPrettyPrinter(FancyPrinter):
 
 
 def test_simple_repr(file_regression: FileRegressionFixture):
+
 	@simple_repr("a", "b", "c", "d", width=10)
 	class F:
 		a = "apple"

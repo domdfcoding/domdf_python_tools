@@ -408,7 +408,10 @@ class TestStringList:
 	@pytest.mark.xfail()
 	def test_pickle(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
-		assert sl == pickle.loads(pickle.dumps(sl))  # nosec: B301
+		loaded = pickle.loads(pickle.dumps(sl))  # nosec: B301
+		assert sl == loaded
+		assert sl.indent == loaded.indent
+		assert isinstance(loaded, StringList)
 
 
 class TestIndent:
