@@ -8,6 +8,7 @@ Handy functions for testing code.
 	:__pkginfo__:
 
 .. versionadded:: 0.4.9
+
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -33,6 +34,7 @@ import itertools
 import random
 import sys
 from functools import lru_cache
+from pathlib import Path
 from typing import Any, Iterator, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
@@ -42,6 +44,7 @@ from _pytest.mark import MarkDecorator
 
 # this package
 from domdf_python_tools.doctools import PYPY
+from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.utils import Len
 from domdf_python_tools.versions import Version
 
@@ -316,3 +319,28 @@ def only_pypy(reason: str = "Only required on PyPy.") -> _pytest.mark.structures
 	"""  # noqa D400
 
 	return pytest.mark.skipif(condition=not PYPY, reason=reason)
+
+
+@pytest.fixture(scope="function")
+def tmp_pathplus(tmp_path: Path) -> PathPlus:
+	"""
+
+	Pytest fixture that returns a temporary directory in the form of a
+	:class:`~domdf_python_tools.paths.PathPlus` object.
+
+	The directory is unique to each test function invocation,
+	created as a sub directory of the base temporary directory.
+
+	Use it as follows:
+
+	.. code-block:: python
+
+		pytest_plugins = ("domdf_python_tools.testing", )
+
+		def my_test(tmp_pathplus: PathPlus):
+			assert True
+
+	.. versionadded:: 0.10.0
+	"""
+
+	return PathPlus(tmp_path)

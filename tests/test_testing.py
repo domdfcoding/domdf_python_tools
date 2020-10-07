@@ -1,4 +1,5 @@
 # stdlib
+import platform
 import random
 import re
 
@@ -7,6 +8,8 @@ from _pytest.mark import Mark, MarkDecorator
 
 # this package
 from domdf_python_tools import testing
+from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.testing import not_pypy
 from domdf_python_tools.utils import strtobool
 
 
@@ -124,3 +127,17 @@ def test_generate_falsy():
 			]
 
 	assert list(testing.generate_falsy_values(ratio=.3)) == ['0', "no", "False", False]
+
+
+@not_pypy("Success")
+def test_not_pypy():
+	if platform.python_implementation() == "PyPy":
+		assert False
+
+
+pytest_plugins = ("domdf_python_tools.testing", )
+
+
+def test_tmp_pathplus(tmp_pathplus):
+	assert isinstance(tmp_pathplus, PathPlus)
+	assert tmp_pathplus.exists()
