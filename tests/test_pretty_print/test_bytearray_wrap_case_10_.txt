@@ -1,0 +1,7 @@
+{
+ 'a': 1,
+ 'b': bytearray(b'abcdefghijkl'
+                b'mnopqrstuvwx'
+                b'yz'),
+ 'c': 2,
+ }

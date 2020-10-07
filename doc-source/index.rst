@@ -110,8 +110,6 @@ domdf_python_tools
 .. end shields
 
 
-|
-
 Installation
 -------------
 

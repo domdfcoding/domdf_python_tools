@@ -1,0 +1,22 @@
+ChainMap({
+          'the': 0,
+          'quick': 1,
+          'brown': 2,
+          'fox': 3,
+          'jumped': 4,
+          'over': 5,
+          'a': 6,
+          'lazy': 7,
+          'dog': 8,
+          },
+         OrderedDict([
+                      ('the', 0),
+                      ('quick', 1),
+                      ('brown', 2),
+                      ('fox', 3),
+                      ('jumped', 4),
+                      ('over', 5),
+                      ('a', 6),
+                      ('lazy', 7),
+                      ('dog', 8),
+                      ]))

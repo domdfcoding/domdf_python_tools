@@ -1,0 +1,12 @@
+[
+ [
+  [
+   [
+    [
+     bytearray(b'abcdefghijklmnop'
+               b'qrstuvwxyz'),
+     ],
+    ],
+   ],
+  ],
+ ]

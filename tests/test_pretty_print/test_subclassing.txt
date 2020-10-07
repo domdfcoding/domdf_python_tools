@@ -1,0 +1,4 @@
+{
+ 'names with spaces': 'should be presented using repr()',
+ others.should.not.be: like.this,
+ }

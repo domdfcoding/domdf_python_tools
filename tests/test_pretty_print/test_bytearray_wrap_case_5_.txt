@@ -1,0 +1,3 @@
+bytearray(b'abcdefghijkl'
+          b'mnopqrstuvwx'
+          b'yz')
