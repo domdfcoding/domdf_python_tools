@@ -9,13 +9,13 @@ Test functions in bases.py
 # stdlib
 import copy
 import pickle  # nosec: B101
-from collections import UserList
+import sys
 
 # 3rd party
 import pytest
 
 # this package
-from domdf_python_tools.bases import Dictable, NamedList, namedlist
+from domdf_python_tools.bases import Dictable, NamedList, UserList, namedlist
 from domdf_python_tools.utils import printr, printt
 
 
@@ -94,97 +94,3 @@ class TestDictable:
 		child = Child("Bob", 12, "Big School")
 		assert person == child
 		assert "School" not in person.__dict__
-
-
-def test_namedlist(capsys):
-	mylist = namedlist()
-	assert isinstance(mylist(), UserList)
-
-	ShoppingList = namedlist("ShoppingList")
-	shopping_list = ShoppingList(["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"])
-	assert isinstance(shopping_list, UserList)
-	assert shopping_list[0] == "egg and bacon"
-
-	printt(shopping_list)
-	printr(shopping_list)
-	print(shopping_list)
-
-	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
-	assert stdout[0] == "<class 'domdf_python_tools.bases.namedlist.<locals>.cls'>"
-	assert stdout[1] == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert stdout[2] == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)
-
-	assert str(type(shopping_list)) == "<class 'domdf_python_tools.bases.namedlist.<locals>.cls'>"
-	assert repr(
-			shopping_list
-			) == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert str(shopping_list) == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)
-
-
-def test_namedlist_subclass_function(capsys):
-
-	class ShoppingList(namedlist()):  # type: ignore
-		pass
-
-	shopping_list = ShoppingList(["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"])
-	assert isinstance(shopping_list, UserList)
-	assert shopping_list[0] == "egg and bacon"
-
-	printt(shopping_list)
-	printr(shopping_list)
-	print(shopping_list)
-
-	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
-	assert stdout[0] == "<class 'tests.test_bases.test_namedlist_subclass_function.<locals>.ShoppingList'>"
-	assert stdout[1] == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert stdout[2] == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)
-
-	assert str(
-			type(shopping_list)
-			) == "<class 'tests.test_bases.test_namedlist_subclass_function.<locals>.ShoppingList'>"
-	assert repr(
-			shopping_list
-			) == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert str(shopping_list) == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)
-
-
-def test_namedlist_subclass_class(capsys):
-
-	class ShoppingList(NamedList):
-		pass
-
-	shopping_list = ShoppingList(["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"])
-	assert isinstance(shopping_list, UserList)
-	assert shopping_list[0] == "egg and bacon"
-
-	printt(shopping_list)
-	printr(shopping_list)
-	print(shopping_list)
-
-	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
-	assert stdout[0] == "<class 'tests.test_bases.test_namedlist_subclass_class.<locals>.ShoppingList'>"
-	assert stdout[1] == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert stdout[2] == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)
-
-	assert str(
-			type(shopping_list)
-			) == "<class 'tests.test_bases.test_namedlist_subclass_class.<locals>.ShoppingList'>"
-	assert repr(
-			shopping_list
-			) == "['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-	assert str(shopping_list) == (
-			"ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
-			)

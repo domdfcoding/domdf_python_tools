@@ -14,6 +14,14 @@ Dictable
 	:special-members:
 
 
+UserList
+---------
+
+.. autoclass:: domdf_python_tools.bases.UserList
+	:inherited-members:
+	:special-members:
+
+
 NamedList
 ----------
 
@@ -48,7 +56,5 @@ and not this:
 This avoids any potential issues with `mypy <http://mypy-lang.org/>`_
 
 .. autoclass:: domdf_python_tools.bases.NamedList
-	:inherited-members:
-	:special-members:
 
 .. autofunction:: domdf_python_tools.bases.namedlist
