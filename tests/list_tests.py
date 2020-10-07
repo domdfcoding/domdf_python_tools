@@ -13,9 +13,10 @@ Tests common to list and UserList.UserList
 import sys
 from functools import cmp_to_key
 
-# this package
+# 3rd party
 import pytest
 
+# this package
 from domdf_python_tools.testing import not_pypy
 from tests import seq_tests
 from tests.seq_tests import ALWAYS_EQ, NEVER_EQ

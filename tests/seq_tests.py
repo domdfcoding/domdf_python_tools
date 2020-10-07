@@ -12,11 +12,11 @@ Tests common to tuple, list and UserList.UserList
 import pickle
 import sys
 from itertools import chain
-from test import support
 
-# this package
+# 3rd party
 import pytest
 
+# this package
 from domdf_python_tools.testing import not_pypy
 
 

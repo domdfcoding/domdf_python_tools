@@ -10,10 +10,9 @@
 
 # stdlib
 import sys
-
-# this package
 from typing import Callable
 
+# this package
 from domdf_python_tools.bases import NamedList, UserList, namedlist
 from domdf_python_tools.utils import printr, printt
 from tests.test_userlist import TestList

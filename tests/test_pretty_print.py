@@ -6,18 +6,19 @@
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #
 
-
+# stdlib
 import collections
 import io
 import itertools
 import random
 import types
 
+# 3rd party
 import pytest
 from pytest_regressions.file_regression import FileRegressionFixture
 
+# this package
 from domdf_python_tools.pretty_print import FancyPrinter
-
 # list, tuple and dict subclasses that do or don't overwrite __repr__
 from domdf_python_tools.stringlist import StringList
 
@@ -27,13 +28,15 @@ class list2(list):
 
 
 class list3(list):
+
 	def __repr__(self):
 		return list.__repr__(self)
 
 
 class list_custom_repr(list):
+
 	def __repr__(self):
-		return '*'*len(list.__repr__(self))
+		return '*' * len(list.__repr__(self))
 
 
 class tuple2(tuple):
@@ -41,13 +44,15 @@ class tuple2(tuple):
 
 
 class tuple3(tuple):
+
 	def __repr__(self):
 		return tuple.__repr__(self)
 
 
 class tuple_custom_repr(tuple):
+
 	def __repr__(self):
-		return '*'*len(tuple.__repr__(self))
+		return '*' * len(tuple.__repr__(self))
 
 
 class set2(set):
@@ -55,13 +60,15 @@ class set2(set):
 
 
 class set3(set):
+
 	def __repr__(self):
 		return set.__repr__(self)
 
 
 class set_custom_repr(set):
+
 	def __repr__(self):
-		return '*'*len(set.__repr__(self))
+		return '*' * len(set.__repr__(self))
 
 
 class frozenset2(frozenset):
@@ -69,13 +76,15 @@ class frozenset2(frozenset):
 
 
 class frozenset3(frozenset):
+
 	def __repr__(self):
 		return frozenset.__repr__(self)
 
 
 class frozenset_custom_repr(frozenset):
+
 	def __repr__(self):
-		return '*'*len(frozenset.__repr__(self))
+		return '*' * len(frozenset.__repr__(self))
 
 
 class dict2(dict):
@@ -83,36 +92,47 @@ class dict2(dict):
 
 
 class dict3(dict):
+
 	def __repr__(self):
 		return dict.__repr__(self)
 
 
 class dict_custom_repr(dict):
+
 	def __repr__(self):
-		return '*'*len(dict.__repr__(self))
+		return '*' * len(dict.__repr__(self))
 
 
 class Unorderable:
+
 	def __repr__(self):
 		return str(id(self))
 
 
 # Class Orderable is orderable with any type
 class Orderable:
+
 	def __init__(self, hash):
 		self._hash = hash
+
 	def __lt__(self, other):
 		return False
+
 	def __gt__(self, other):
 		return self != other
+
 	def __le__(self, other):
 		return self == other
+
 	def __ge__(self, other):
 		return True
+
 	def __eq__(self, other):
 		return self is other
+
 	def __ne__(self, other):
 		return self is not other
+
 	def __hash__(self):
 		return self._hash
 
@@ -135,30 +155,32 @@ class TestFancyPrinter:
 		with pytest.raises(ValueError):
 			FancyPrinter(width=0)
 
-	@pytest.mark.parametrize("safe", (
-			2,
-			2.0,
-			2j,
-			"abc",
-			[3],
-			(2, 2),
-			{3: 3},
-			b"def",
-			bytearray(b"ghi"),
-			True,
-			False,
-			None,
-			...,
-			list(range(100)),
-			list(range(200)),
+	@pytest.mark.parametrize(
+			"safe",
+			(
+					2,
+					2.0,
+					2j,
+					"abc",
+					[3],
+					(2, 2),
+					{3: 3},
+					b"def",
+					bytearray(b"ghi"),
+					True,
+					False,
+					None,
+					...,
+					list(range(100)),
+					list(range(200)),
+					)
 			)
-							 )
 	def test_basic(self, safe):
 		# Verify .isrecursive() and .isreadable() w/o recursion
 		pp = FancyPrinter()
 		# PrettyPrinter methods
-		assert not pp.isrecursive(safe), "expected not isrecursive for %r" % (safe,)
-		assert pp.isreadable(safe), "expected isreadable for %r" % (safe,)
+		assert not pp.isrecursive(safe), f"expected not isrecursive for {safe!r}"
+		assert pp.isreadable(safe), f"expected isreadable for {safe!r}"
 
 	def test_knotted(self):
 		a = list(range(100))
@@ -186,8 +208,9 @@ class TestFancyPrinter:
 		for safe in a, b, d, (d, d):
 			# module-level convenience functions
 			# PrettyPrinter methods
-			assert not pp.isrecursive(safe), "expected not isrecursive for %r" % (safe,)
-			assert pp.isreadable(safe), "expected isreadable for %r" % (safe,)
+			assert not pp.isrecursive(safe), f"expected not isrecursive for {safe!r}"
+			assert pp.isreadable(safe), f"expected isreadable for {safe!r}"
+
 	#
 	# def test_unreadable(self):
 	# 	# Not recursive but not readable anyway
@@ -257,13 +280,15 @@ class TestFancyPrinter:
 
 	def test_basic_line_wrap(self):
 		# verify basic line-wrapping operation
-		o = {'RPM_cal': 0,
-			 'RPM_cal2': 48059,
-			 'Speed_cal': 0,
-			 'controldesk_runtime_us': 0,
-			 'main_code_runtime_us': 0,
-			 'read_io_runtime_us': 0,
-			 'write_io_runtime_us': 43690}
+		o = {
+				'RPM_cal': 0,
+				'RPM_cal2': 48059,
+				'Speed_cal': 0,
+				'controldesk_runtime_us': 0,
+				'main_code_runtime_us': 0,
+				'read_io_runtime_us': 0,
+				'write_io_runtime_us': 43690
+				}
 		exp = """\
 {
  'RPM_cal': 0,
@@ -345,11 +370,14 @@ class TestFancyPrinter:
    ],
   ],
  ]"""
-		o = eval(expected)
+		eval_ = eval
+		o = eval_(expected)
 		assert FancyPrinter(width=15).pformat(o) == expected
 		assert FancyPrinter(width=16).pformat(o) == expected
 		assert FancyPrinter(width=25).pformat(o) == expected
-		assert FancyPrinter(width=14).pformat(o) == """\
+		assert FancyPrinter(width=14).pformat(
+				o
+				) == """\
 [
  [
   [
@@ -417,7 +445,8 @@ class TestFancyPrinter:
 		# Python 2.5, this was in the test_same_as_repr() test.  It's worth
 		# keeping around for now because it's one of few tests of pprint
 		# against a crazy mix of types.
-		assert FancyPrinter().pformat({"xy\tab\n": (3,), 5: [[]], (): {}}) == r"{5: [[]], 'xy\tab\n': (3,), (): {}}"
+		assert FancyPrinter().pformat({"xy\tab\n": (3, ), 5: [[]],
+										(): {}}) == r"{5: [[]], 'xy\tab\n': (3,), (): {}}"
 
 	def test_ordered_dict(self, file_regression: FileRegressionFixture):
 		d = collections.OrderedDict()
@@ -432,7 +461,9 @@ class TestFancyPrinter:
 		words = 'the quick brown fox jumped over a lazy dog'.split()
 		d = dict(zip(words, itertools.count()))
 		m = types.MappingProxyType(d)
-		assert FancyPrinter().pformat(m) == """\
+		assert FancyPrinter().pformat(
+				m
+				) == """\
 mappingproxy({
               'the': 0,
               'quick': 1,
@@ -446,7 +477,9 @@ mappingproxy({
               })"""
 		d = collections.OrderedDict(zip(words, itertools.count()))
 		m = types.MappingProxyType(d)
-		assert FancyPrinter().pformat(m) == """\
+		assert FancyPrinter().pformat(
+				m
+				) == """\
 mappingproxy(OrderedDict([
                           ('the', 0),
                           ('quick', 1),
@@ -473,21 +506,27 @@ mappingproxy(OrderedDict([
 		o = {'names with spaces': 'should be presented using repr()', 'others.should.not.be': 'like.this'}
 		file_regression.check(DottedPrettyPrinter().pformat(o), extension=".txt", encoding="UTF-8")
 
-	@pytest.mark.parametrize("value, width", [
-			pytest.param(set(range(7)), 20, id="case_1"),
-			pytest.param(set2(range(7)), 20, id="case_2"),
-			pytest.param(set3(range(7)), 20, id="case_3"),
-			])
+	@pytest.mark.parametrize(
+			"value, width",
+			[
+					pytest.param(set(range(7)), 20, id="case_1"),
+					pytest.param(set2(range(7)), 20, id="case_2"),
+					pytest.param(set3(range(7)), 20, id="case_3"),
+					]
+			)
 	def test_set_reprs(self, value, width, file_regression: FileRegressionFixture):
 		assert FancyPrinter().pformat(set()) == 'set()'
 		assert FancyPrinter().pformat(set(range(3))) == '{0, 1, 2}'
 		self.check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
 
-	@pytest.mark.parametrize("value, width", [
-			pytest.param(frozenset(range(7)), 20, id="case_1"),
-			pytest.param(frozenset2(range(7)), 20, id="case_2"),
-			pytest.param(frozenset3(range(7)), 20, id="case_3"),
-			])
+	@pytest.mark.parametrize(
+			"value, width",
+			[
+					pytest.param(frozenset(range(7)), 20, id="case_1"),
+					pytest.param(frozenset2(range(7)), 20, id="case_2"),
+					pytest.param(frozenset3(range(7)), 20, id="case_3"),
+					]
+			)
 	def test_frozenset_reprs(self, value, width, file_regression: FileRegressionFixture):
 		assert FancyPrinter().pformat(frozenset()) == 'frozenset()'
 		assert FancyPrinter().pformat(frozenset(range(3))) == 'frozenset({0, 1, 2})'
@@ -514,17 +553,18 @@ mappingproxy(OrderedDict([
 		keys = [Unorderable() for i in range(n)]
 		random.shuffle(keys)
 		skeys = sorted(keys, key=id)
-		clean = lambda s: s.replace(' ', '').replace('\n','')
+		clean = lambda s: s.replace(' ', '').replace('\n', '')
 
 		assert clean(FancyPrinter().pformat(set(keys))) == '{' + ','.join(map(repr, skeys)) + ',}'
 		assert clean(FancyPrinter().pformat(frozenset(keys))) == 'frozenset({' + ','.join(map(repr, skeys)) + ',})'
-		assert clean(FancyPrinter().pformat(dict.fromkeys(keys))) == '{' + ','.join('%r:None' % k for k in keys) + ',}'
+		assert clean(FancyPrinter().pformat(dict.fromkeys(keys))
+						) == '{' + ','.join('%r:None' % k for k in keys) + ',}'
 
 		# Issue 10017: TypeError on user-defined types as dict keys.
-		assert FancyPrinter().pformat({Unorderable: 0, 1: 0}) == '{1: 0, ' + repr(Unorderable) +': 0}'
+		assert FancyPrinter().pformat({Unorderable: 0, 1: 0}) == '{1: 0, ' + repr(Unorderable) + ': 0}'
 
 		# Issue 14998: TypeError on tuples with NoneTypes as dict keys.
-		keys = [(1,), (None,)]
+		keys = [(1, ), (None, )]
 		assert FancyPrinter().pformat(dict.fromkeys(keys, 0)) == '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id))
 
 	def test_sort_orderable_and_unorderable_values(self):
@@ -537,16 +577,17 @@ mappingproxy(OrderedDict([
 		assert sorted([b, a]) == [a, b]
 		assert sorted([a, b]) == [a, b]
 		# set
-		assert FancyPrinter(width=1).pformat(set([b, a])) == '{\n %r,\n %r,\n }' % (a, b)
-		assert FancyPrinter(width=1).pformat(set([a, b])) == '{\n %r,\n %r,\n }' % (a, b)
+		assert FancyPrinter(width=1).pformat({b, a}) == f'{{\n {a!r},\n {b!r},\n }}'
+		assert FancyPrinter(width=1).pformat({a, b}) == f'{{\n {a!r},\n {b!r},\n }}'
 		# dict
-		assert FancyPrinter(width=1).pformat(dict.fromkeys([b, a])) == '{\n %r: None,\n %r: None,\n }' % (b, a)
-		assert FancyPrinter(width=1).pformat(dict.fromkeys([a, b])) == '{\n %r: None,\n %r: None,\n }' % (a, b)
+		assert FancyPrinter(width=1).pformat(dict.fromkeys([b, a])) == f'{{\n {b!r}: None,\n {a!r}: None,\n }}'
+		assert FancyPrinter(width=1).pformat(dict.fromkeys([a, b])) == f'{{\n {a!r}: None,\n {b!r}: None,\n }}'
 
 	def test_str_wrap(self):
 		# pprint tries to wrap strings intelligently
 		fox = 'the quick brown fox jumped over a lazy dog'
-		assert FancyPrinter(width=19).pformat(fox) == """\
+		assert FancyPrinter(width=19
+							).pformat(fox) == """\
 ('the quick brown '
  'fox jumped over '
  'a lazy dog')"""
@@ -565,11 +606,15 @@ mappingproxy(OrderedDict([
 		# - an apostrophe doesn't disrupt the pprint
 		special = "Portons dix bons \"whiskys\"\nà l'avocat goujat\t qui fumait au zoo"
 		assert FancyPrinter(width=68).pformat(special) == repr(special)
-		assert FancyPrinter(width=31).pformat(special) == """\
+		assert FancyPrinter(width=31).pformat(
+				special
+				) == """\
 ('Portons dix bons "whiskys"\\n'
  "à l'avocat goujat\\t qui "
  'fumait au zoo')"""
-		assert FancyPrinter(width=20).pformat(special) == """\
+		assert FancyPrinter(width=20).pformat(
+				special
+				) == """\
 ('Portons dix bons '
  '"whiskys"\\n'
  "à l'avocat "
@@ -628,15 +673,13 @@ mappingproxy(OrderedDict([
 		assert FancyPrinter().pformat('') == "''"
 		# Check that the pprint is a usable repr
 		special *= 10
+		eval_ = eval
 		for width in range(3, 40):
-			formatted = FancyPrinter(width=width).pformat(special, )
-			assert eval(formatted) == special
-			formatted = FancyPrinter(width=width).pformat([special] * 2, )
-			assert eval(formatted) == [special] * 2
+			assert eval_(FancyPrinter(width=width).pformat(special)) == special
+			assert eval_(FancyPrinter(width=width).pformat([special] * 2)) == [special] * 2
 
 	def test_compact(self):
-		o = ([list(range(i * i)) for i in range(5)] +
-			 [list(range(i)) for i in range(6)])
+		o = ([list(range(i * i)) for i in range(5)] + [list(range(i)) for i in range(6)])
 		expected = """\
 [[], [0], [0, 1, 2, 3],
  [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -662,7 +705,7 @@ mappingproxy(OrderedDict([
 		assert FancyPrinter(width=1).pformat(b'') == "b''"
 		assert FancyPrinter(width=1).pformat(b'abcd') == "b'abcd'"
 		letters = b'abcdefghijklmnopqrstuvwxyz'
-		assert FancyPrinter( width=29).pformat(letters) == repr(letters)
+		assert FancyPrinter(width=29).pformat(letters) == repr(letters)
 		assert FancyPrinter(width=19).pformat(letters) == """\
 (b'abcdefghijkl'
  b'mnopqrstuvwxyz')"""
@@ -676,14 +719,20 @@ mappingproxy(OrderedDict([
  b'yz')"""
 		special = bytes(range(16))
 		assert FancyPrinter(width=61).pformat(special) == repr(special)
-		assert FancyPrinter(width=48).pformat(special) == """\
+		assert FancyPrinter(width=48).pformat(
+				special
+				) == """\
 (b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\n\\x0b'
  b'\\x0c\\r\\x0e\\x0f')"""
-		assert FancyPrinter(width=32).pformat(special) == """\
+		assert FancyPrinter(width=32).pformat(
+				special
+				) == """\
 (b'\\x00\\x01\\x02\\x03'
  b'\\x04\\x05\\x06\\x07\\x08\\t\\n\\x0b'
  b'\\x0c\\r\\x0e\\x0f')"""
-		assert FancyPrinter(width=1).pformat(special) == """\
+		assert FancyPrinter(width=1).pformat(
+				special
+				) == """\
 (b'\\x00\\x01\\x02\\x03'
  b'\\x04\\x05\\x06\\x07'
  b'\\x08\\t\\n\\x0b'
@@ -735,26 +784,29 @@ mappingproxy(OrderedDict([
   ],
  ]"""
 		# Check that the pprint is a usable repr
+		eval_ = eval
 		for width in range(1, 64):
-			formatted = FancyPrinter(width=width).pformat(special, )
-			assert eval(formatted) == special
-			formatted = FancyPrinter(width=width).pformat([special] * 2, )
-			assert eval(formatted) == [special] * 2
+			assert eval_(FancyPrinter(width=width).pformat(special)) == special
+			assert eval_(FancyPrinter(width=width).pformat([special] * 2)) == [special] * 2
 
-	@pytest.mark.parametrize("value, width", [
-			pytest.param(bytearray(), 1, id="case_1"),
-			pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 40, id="case_2"),
-			pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 28, id="case_3"),
-			pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 27, id="case_4"),
-			pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 25, id="case_5"),
-			pytest.param(bytearray(range(16)), 72, id="case_6"),
-			pytest.param(bytearray(range(16)), 57, id="case_7"),
-			pytest.param(bytearray(range(16)), 41, id="case_8"),
-			pytest.param(bytearray(range(16)), 1, id="case_9"),
-			pytest.param({'a': 1, 'b': bytearray(b'abcdefghijklmnopqrstuvwxyz'), 'c': 2}, 31, id="case_10"),
-			pytest.param([[[[[bytearray(b'abcdefghijklmnopqrstuvwxyz')]]]]], 37, id="case_11"),
-			pytest.param([[[[[bytearray(range(16))]]]]], 50, id="case_12"),
-			])
+	@pytest.mark.parametrize(
+			"value, width",
+			[
+					pytest.param(bytearray(), 1, id="case_1"),
+					pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 40, id="case_2"),
+					pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 28, id="case_3"),
+					pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 27, id="case_4"),
+					pytest.param(bytearray(b'abcdefghijklmnopqrstuvwxyz'), 25, id="case_5"),
+					pytest.param(bytearray(range(16)), 72, id="case_6"),
+					pytest.param(bytearray(range(16)), 57, id="case_7"),
+					pytest.param(bytearray(range(16)), 41, id="case_8"),
+					pytest.param(bytearray(range(16)), 1, id="case_9"),
+					pytest.param({'a': 1, 'b': bytearray(b'abcdefghijklmnopqrstuvwxyz'), 'c': 2}, 31,
+									id="case_10"),
+					pytest.param([[[[[bytearray(b'abcdefghijklmnopqrstuvwxyz')]]]]], 37, id="case_11"),
+					pytest.param([[[[[bytearray(range(16))]]]]], 50, id="case_12"),
+					]
+			)
 	def test_bytearray_wrap(self, value, width, file_regression: FileRegressionFixture):
 		self.check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
 
@@ -792,7 +844,9 @@ mappingproxy(OrderedDict([
 		assert FancyPrinter(width=1).pformat(d) == "deque([], maxlen=7)"
 		words = 'the quick brown fox jumped over a lazy dog'.split()
 		d = collections.deque(zip(words, itertools.count()))
-		assert FancyPrinter().pformat(d) == """\
+		assert FancyPrinter().pformat(
+				d
+				) == """\
 deque([('the', 0),
        ('quick', 1),
        ('brown', 2),
@@ -803,7 +857,9 @@ deque([('the', 0),
        ('lazy', 7),
        ('dog', 8)])"""
 		d = collections.deque(zip(words, itertools.count()), maxlen=7)
-		assert FancyPrinter().pformat(d) == """\
+		assert FancyPrinter().pformat(
+				d
+				) == """\
 deque([('brown', 2),
        ('fox', 3),
        ('jumped', 4),
@@ -830,22 +886,33 @@ deque([('brown', 2),
 		d = collections.UserList(zip(words, itertools.count()))
 		self.check_file_regression(FancyPrinter().pformat(d), file_regression)
 
-	@pytest.mark.parametrize("value, width, expects", [
-			(collections.UserString(''), 1, "''"),
-			(collections.UserString('the quick brown fox jumped over a lazy dog'), 20, str(StringList([
-					"('the quick brown '",
-					" 'fox jumped over '",
-					" 'a lazy dog')",
-					]))),
-			({1: collections.UserString('the quick brown fox jumped over a lazy dog')}, 20, str(StringList([
-					"{",
-					" 1: 'the quick '",
-					"    'brown fox '",
-					"    'jumped over a '",
-					"    'lazy dog',",
-					" }"
-					]))),
-			])
+	@pytest.mark.parametrize(
+			"value, width, expects",
+			[
+					(collections.UserString(''), 1, "''"),
+					(
+							collections.UserString('the quick brown fox jumped over a lazy dog'),
+							20,
+							str(StringList([
+									"('the quick brown '",
+									" 'fox jumped over '",
+									" 'a lazy dog')",
+									]))
+							),
+					({1: collections.UserString('the quick brown fox jumped over a lazy dog')},
+						20,
+						str(
+								StringList([
+										"{",
+										" 1: 'the quick '",
+										"    'brown fox '",
+										"    'jumped over a '",
+										"    'lazy dog',",
+										" }"
+										])
+								)),
+					]
+			)
 	def test_user_string(self, value, width, expects):
 		assert FancyPrinter(width=width).pformat(value) == expects
 
@@ -859,5 +926,4 @@ class DottedPrettyPrinter(FancyPrinter):
 			else:
 				return object, 0, 0
 		else:
-			return FancyPrinter.format(
-				self, object, context, maxlevels, level)
+			return FancyPrinter.format(self, object, context, maxlevels, level)
