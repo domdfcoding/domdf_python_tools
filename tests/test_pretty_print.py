@@ -12,10 +12,9 @@ import io
 import itertools
 import random
 import types
-
-# 3rd party
 from typing import no_type_check
 
+# 3rd party
 import pytest
 from pytest_regressions.file_regression import FileRegressionFixture  # type: ignore
 

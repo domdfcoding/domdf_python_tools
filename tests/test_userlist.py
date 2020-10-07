@@ -8,21 +8,22 @@
 
 # Check every path through every method of UserList
 
-# this package
-from typing import Type
+# stdlib
+from typing import Sequence, Type, no_type_check
 
+# this package
 from domdf_python_tools.bases import UserList
 from domdf_python_tools.testing import not_pypy
 from tests import list_tests
 
 
 class TestList(list_tests.CommonTest):
-	type2test = list
+	type2test: Type[Sequence] = list
 
 	def test_getslice(self):
 		super().test_getslice()
 		l = [0, 1, 2, 3, 4]
-		u = self.type2test(l)
+		u = self.type2test(l)  # type: ignore
 		for i in range(-3, 6):
 			assert u[:i] == l[:i]
 			assert u[i:] == l[i:]
@@ -31,7 +32,7 @@ class TestList(list_tests.CommonTest):
 
 	def test_slice_type(self):
 		l = [0, 1, 2, 3, 4]
-		u = self.type2test(l)
+		u = self.type2test(l)  # type: ignore
 		assert u[:] != u.__class__
 		assert u[:] == u
 
@@ -39,20 +40,23 @@ class TestList(list_tests.CommonTest):
 	def test_iadd(self):
 		super().test_iadd()
 		u = [0, 1]
-		u += self.type2test([0, 1])
+		u += self.type2test([0, 1])  # type: ignore
 		assert u == [0, 1, 0, 1]
 
+	@no_type_check
 	def test_mixedcmp(self):
 		u = self.type2test([0, 1])
 		assert u == [0, 1]
 		assert u != [0]
 		assert u != [0, 2]
 
+	@no_type_check
 	def test_mixedadd(self):
 		u = self.type2test([0, 1])
 		assert u + [] == u
 		assert u + [2] == [0, 1, 2]
 
+	@no_type_check
 	def test_userlist_copy(self):
 		u = self.type2test([6, 8, 1, 9, 1])
 		v = u.copy()

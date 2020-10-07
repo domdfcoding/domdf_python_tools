@@ -12,10 +12,9 @@ Tests common to list and UserList.UserList
 # stdlib
 import sys
 from functools import cmp_to_key
-
-# 3rd party
 from typing import List, no_type_check
 
+# 3rd party
 import pytest
 
 # this package

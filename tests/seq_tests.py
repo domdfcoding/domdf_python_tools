@@ -12,10 +12,9 @@ Tests common to tuple, list and UserList.UserList
 import pickle
 import sys
 from itertools import chain
-
-# 3rd party
 from typing import List
 
+# 3rd party
 import pytest
 
 # this package
@@ -219,19 +218,19 @@ class CommonTest:
 		v0 = self.type2test(s)
 		self.assertEqual(len(v0), len(s))
 
-		s = "this is also a sequence"
-		vv = self.type2test(s)
-		self.assertEqual(len(vv), len(s))
+		s2 = "this is also a sequence"
+		vv = self.type2test(s2)
+		self.assertEqual(len(vv), len(s2))
 
 		# Create from various iteratables
-		for s in ("123", "", range(1000), ('do', 1.2), range(2000, 2200, 5)):
+		for s2 in ("123", "", range(1000), ('do', 1.2), range(2000, 2200, 5)):  # type: ignore
 			for g in (Sequence, IterFunc, IterGen, itermulti, iterfunc):
-				self.assertEqual(self.type2test(g(s)), self.type2test(s))
-			self.assertEqual(self.type2test(IterFuncStop(s)), self.type2test())
+				self.assertEqual(self.type2test(g(s2)), self.type2test(s2))
+			self.assertEqual(self.type2test(IterFuncStop(s2)), self.type2test())
 			self.assertEqual(self.type2test(c for c in "123"), self.type2test("123"))
-			self.assertRaises(TypeError, self.type2test, IterNextOnly(s))
-			self.assertRaises(TypeError, self.type2test, IterNoNext(s))
-			self.assertRaises(ZeroDivisionError, self.type2test, IterGenExc(s))
+			self.assertRaises(TypeError, self.type2test, IterNextOnly(s2))
+			self.assertRaises(TypeError, self.type2test, IterNoNext(s2))
+			self.assertRaises(ZeroDivisionError, self.type2test, IterGenExc(s2))
 
 		# Issue #23757
 		self.assertEqual(self.type2test(LyingTuple((2, ))), self.type2test((1, )))
