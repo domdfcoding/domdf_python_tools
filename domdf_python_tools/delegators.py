@@ -6,7 +6,7 @@
 Decorators for functions that delegate parts of their functionality
 to other functions.
 
-.. versionadded:: 1.0.0
+.. versionadded:: 0.10.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>

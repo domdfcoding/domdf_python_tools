@@ -5,7 +5,7 @@
 """
 Functions and classes for pretty printing.
 
-.. versionadded:: 1.0.0
+.. versionadded:: 0.10.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -34,18 +34,18 @@ Functions and classes for pretty printing.
 #
 
 # stdlib
-import re
 from io import StringIO
-from pprint import PrettyPrinter, _recursion, _safe_key, _safe_tuple  # type: ignore
-from typing import Any, Callable, Iterator, MutableMapping, Optional, Tuple
+from pprint import PrettyPrinter, _safe_key  # type: ignore
+from typing import Any, Callable, Iterator, MutableMapping, Tuple
 
-# this package
-from domdf_python_tools.stringlist import StringList
-
-__all__ = ["FancyPrinter", "pformat_tabs", "Attributes", "ReprPrettyPrinter", "simple_repr"]
+__all__ = ["FancyPrinter", "simple_repr"]
 
 
 class FancyPrinter(PrettyPrinter):
+	"""
+	Subclass of :class:`~.pprint.PrettyPrinter` with different formatting.
+	"""
+
 	# TODO: docs
 	_dispatch: MutableMapping[Callable, Callable]
 	_indent_per_level: int
@@ -118,32 +118,6 @@ class FancyPrinter(PrettyPrinter):
 	_dispatch[frozenset.__repr__] = _pprint_set
 
 
-def pformat_tabs(
-		object: object,
-		width: int = 80,
-		depth: Optional[int] = None,
-		*,
-		compact: bool = False,
-		) -> str:
-	"""
-	Format a Python object into a pretty-printed representation.
-	Indentation is set at one tab.
-
-	:param object:
-	:param width:
-	:param depth:
-	:param compact:
-	"""
-
-	prettyprinter = FancyPrinter(indent=4, width=width, depth=depth, compact=compact)
-
-	buf = StringList()
-	for line in prettyprinter.pformat(object).splitlines():
-		buf.append(re.sub("^ {4}", r"\t", line))
-
-	return str(buf)
-
-
 class Attributes:
 
 	def __init__(self, obj: object, *attributes: str):
@@ -169,18 +143,11 @@ class ReprPrettyPrinter(FancyPrinter):
 		stream = StringIO()
 		context = {}
 
-		objid = id(object)
-		if objid in context:
-			stream.write(_recursion(object))
-			self._recursive = True
-			self._readable = False
-			return
-
 		p = self._dispatch.get(type(object).__repr__, None)
 
-		context[objid] = 1
+		context[id(object)] = 1
 		p(self, object, stream, 0, 0, context, 1)
-		del context[objid]
+		del context[id(object)]
 		return stream.getvalue()
 
 	def _pprint_attributes(self, object, stream, indent, allowance, context, level):
@@ -225,12 +192,11 @@ _default_formatter = ReprPrettyPrinter()
 
 def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 	r"""
-	Adds a simple ``__repr__` method to the decorated class.
+	Adds a simple ``__repr__`` method to the decorated class.
 
 	:param attributes: The attributes to include in the ``__repr__``.
 	:param show_module: Whether to show the name of the module in the ``__repr__``.
 	:param \*\*kwargs: Keyword arguments passed on to :class:`pprint.PrettyPrinter`.
-		Has no effect if `multiline` is :py:obj:`False`.
 	"""
 
 	def deco(obj):

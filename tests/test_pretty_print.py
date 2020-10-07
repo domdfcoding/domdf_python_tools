@@ -18,10 +18,11 @@ import pytest
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
-from domdf_python_tools.pretty_print import FancyPrinter
-# list, tuple and dict subclasses that do or don't overwrite __repr__
+from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
 from domdf_python_tools.stringlist import StringList
 
+
+# list, tuple and dict subclasses that do or don't overwrite __repr__
 
 class list2(list):
 	pass
@@ -143,7 +144,6 @@ class TestFancyPrinter:
 		FancyPrinter()
 		FancyPrinter(indent=4, width=40, depth=5, stream=io.StringIO(), compact=True)
 		FancyPrinter(4, 40, 5, io.StringIO())
-		FancyPrinter(sort_dicts=False)
 		with pytest.raises(TypeError):
 			FancyPrinter(4, 40, 5, io.StringIO(), True)
 		with pytest.raises(ValueError):
@@ -927,3 +927,14 @@ class DottedPrettyPrinter(FancyPrinter):
 				return object, 0, 0
 		else:
 			return FancyPrinter.format(self, object, context, maxlevels, level)
+
+
+def test_simple_repr(file_regression: FileRegressionFixture):
+	@simple_repr("a", "b", "c", "d", width=10)
+	class F:
+		a = "apple"
+		b = "banana"
+		c = "cherry"
+		d = list(range(100))
+
+	file_regression.check(repr(F()), encoding="UTF-8", extension=".txt")

@@ -126,7 +126,7 @@ class UserList(MutableSequence[_T]):
 		methods supported by this class will need to be overridden; please consult the
 		sources for information about the methods which need to be provided in that case.
 
-	.. versionadded:: 1.0.0
+	.. versionadded:: 0.10.0
 	"""
 
 	#: A real list object used to store the contents of the :class:`~domdf_python_tools.bases.UserList`.
@@ -350,7 +350,7 @@ class NamedList(UserList[_T]):
 
 	The name of the list is taken from the name of the subclass.
 
-	.. versionchanged:: 1.0.0
+	.. versionchanged:: 0.10.0
 
 		:class:`~.NamedList` now subclasses :class:`.UserList` rather than :class:`collections.UserList`.
 	"""
