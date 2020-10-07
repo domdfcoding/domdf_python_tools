@@ -307,9 +307,11 @@ class PathPlus(pathlib.Path):
 		self._init()
 		return self
 
-	def make_executable(self):
+	def make_executable(self) -> None:
 		"""
 		Make the file executable.
+
+		:rtype:
 
 		.. versionadded:: 0.3.8
 		"""
@@ -328,6 +330,8 @@ class PathPlus(pathlib.Path):
 		:param string:
 		:param encoding: The encoding to write to the file using.
 		:param errors:
+
+		:rtype:
 
 		.. versionadded:: 0.3.8
 		"""
@@ -350,7 +354,6 @@ class PathPlus(pathlib.Path):
 			This appears to be due to the behaviour of :func:`os.mkdir`.
 
 		:param mode: Combined with the process’ umask value to determine the file mode and access flags
-		:type mode:
 		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
 			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
@@ -362,6 +365,8 @@ class PathPlus(pathlib.Path):
 			component is not an existing non-directory file.
 		:no-default exist_ok:
 		:type exist_ok: bool, optional
+
+		:rtype:
 
 		.. versionadded:: 0.3.8
 		"""
@@ -378,9 +383,10 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, append the given string to it, and close the file.
 
 		:param string:
-		:type string: str
 		:param encoding: The encoding to write to the file using.
 		:param errors:
+
+		:rtype:
 
 		.. versionadded:: 0.3.8
 		"""
@@ -398,9 +404,10 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, write to it, and close the file.
 
 		:param data:
-		:type data: str
 		:param encoding: The encoding to write to the file using.
 		:param errors:
+
+		:rtype:
 
 		.. versionadded:: 0.3.8
 		"""

@@ -311,7 +311,7 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 	:param base:
 	:param new_docstrings:
 
-	:return:
+	:rtype:
 
 	.. versionadded:: 0.8.0
 	"""

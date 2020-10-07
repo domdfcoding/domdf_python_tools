@@ -190,6 +190,8 @@ def whitespace_perms(ratio: float = 0.5) -> MarkDecorator:
 
 	:param ratio: The ratio of the number of permutations to select to the total number of permutations.
 
+	:rtype:
+
 	.. versionadded:: 0.4.9
 	"""  # noqa D400
 
@@ -207,6 +209,8 @@ def count(stop: int, start: int = 0, step: int = 1) -> MarkDecorator:
 	:param stop: The stop value passed to :class:`range`.
 	:param start: The start value passed to :class:`range`.
 	:param step: The step passed to :class:`range`.
+
+	:rtype:
 
 	.. versionadded:: 0.4.9
 	"""  # noqa D400
@@ -257,6 +261,8 @@ def max_version(
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
 	:default reason: ``'Not needed after Python <version>.'``
+
+	:rtype:
 
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
