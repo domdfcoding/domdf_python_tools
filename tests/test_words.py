@@ -111,31 +111,37 @@ def test_as_text(value, expects):
 	assert words.as_text(value) == expects
 
 
-def test_word_join():
-	assert words.word_join([]) == ''
-
-	assert words.word_join(["bob"]) == "bob"
-	assert words.word_join(["bob", "alice"]) == "bob and alice"
-	assert words.word_join(["bob", "alice", "fred"]) == "bob, alice and fred"
-
-	assert words.word_join(["bob"], use_repr=True) == "'bob'"
-	assert words.word_join(["bob", "alice"], use_repr=True) == "'bob' and 'alice'"
-	assert words.word_join(["bob", "alice", "fred"], use_repr=True) == "'bob', 'alice' and 'fred'"
-
-	assert words.word_join(["bob"], use_repr=True, oxford=True) == "'bob'"
-	assert words.word_join(["bob", "alice"], use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert words.word_join(["bob", "alice", "fred"], use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
-
-	assert words.word_join(()) == ''
-
-	assert words.word_join(("bob", )) == "bob"
-	assert words.word_join(("bob", "alice")) == "bob and alice"
-	assert words.word_join(("bob", "alice", "fred")) == "bob, alice and fred"
-
-	assert words.word_join(("bob", ), use_repr=True) == "'bob'"
-	assert words.word_join(("bob", "alice"), use_repr=True) == "'bob' and 'alice'"
-	assert words.word_join(("bob", "alice", "fred"), use_repr=True) == "'bob', 'alice' and 'fred'"
-
-	assert words.word_join(("bob", ), use_repr=True, oxford=True) == "'bob'"
-	assert words.word_join(("bob", "alice"), use_repr=True, oxford=True) == "'bob' and 'alice'"
-	assert words.word_join(("bob", "alice", "fred"), use_repr=True, oxford=True) == "'bob', 'alice', and 'fred'"
+@pytest.mark.parametrize(
+		"args, kwargs, expects",
+		[
+				(([], ), {}, ''),
+				(((), ), {}, ''),
+				((["bob"], ), {}, "bob"),
+				((["bob", "alice"], ), {}, "bob and alice"),
+				((["bob", "alice", "fred"], ), {}, "bob, alice and fred"),
+				((("bob", ), ), {}, "bob"),
+				((("bob", "alice"), ), {}, "bob and alice"),
+				((("bob", "alice", "fred"), ), {}, "bob, alice and fred"),
+				((("bob", ), ), {"delimiter": ';'}, "bob"),
+				((("bob", "alice"), ), {"delimiter": ';'}, "bob and alice"),
+				((("bob", "alice", "fred"), ), {"delimiter": ';'}, "bob; alice and fred"),
+				((["bob"], ), {"use_repr": True}, "'bob'"),
+				((["bob", "alice"], ), {"use_repr": True}, "'bob' and 'alice'"),
+				((["bob", "alice", "fred"], ), {"use_repr": True}, "'bob', 'alice' and 'fred'"),
+				((("bob", ), ), {"use_repr": True}, "'bob'"),
+				((("bob", "alice"), ), {"use_repr": True}, "'bob' and 'alice'"),
+				((("bob", "alice", "fred"), ), {"use_repr": True}, "'bob', 'alice' and 'fred'"),
+				((["bob"], ), {"use_repr": True, "oxford": True}, "'bob'"),
+				((["bob", "alice"], ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
+				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
+				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "delimiter": ';'},
+					"'bob'; 'alice'; and 'fred'"),
+				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "connective": 'or'},
+					"'bob', 'alice', or 'fred'"),
+				((("bob", ), ), {"use_repr": True, "oxford": True}, "'bob'"),
+				((("bob", "alice"), ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
+				((("bob", "alice", "fred"), ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
+				]
+		)
+def test_word_join(args, kwargs, expects):
+	assert words.word_join(*args, **kwargs) == expects

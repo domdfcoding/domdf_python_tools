@@ -21,7 +21,7 @@ import pytest
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import PathPlus, clean_writer, copytree
+from domdf_python_tools.paths import PathPlus, clean_writer, copytree, in_directory
 from domdf_python_tools.testing import not_pypy, not_windows
 
 
@@ -594,3 +594,20 @@ def test_load_json(tmpdir):
 	}"""))
 
 	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}
+
+
+def test_in_directory(tmp_pathplus):
+	cwd = os.getcwd()
+
+	with in_directory(tmp_pathplus):
+		assert str(os.getcwd()) == str(tmp_pathplus)
+
+	assert os.getcwd() == cwd
+
+	tmpdir = tmp_pathplus / "tmp"
+	tmpdir.maybe_make()
+
+	with in_directory(tmpdir):
+		assert str(os.getcwd()) == str(tmpdir)
+
+	assert os.getcwd() == cwd

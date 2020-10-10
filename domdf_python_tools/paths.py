@@ -40,6 +40,7 @@ Functions for paths and files.
 #
 
 # stdlib
+import contextlib
 import json
 import os
 import pathlib
@@ -277,6 +278,23 @@ def make_executable(filename: PathLike) -> None:
 
 	st = os.stat(str(filename))
 	os.chmod(str(filename), st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+
+@contextlib.contextmanager
+def in_directory(directory: PathLike):
+	"""
+	Context manager to change into the given directory for the
+	duration of the ``with`` block.
+
+	:param directory:
+	"""
+
+	oldwd = os.getcwd()
+	try:
+		os.chdir(str(directory))
+		yield
+	finally:
+		os.chdir(oldwd)
 
 
 class PathPlus(pathlib.Path):

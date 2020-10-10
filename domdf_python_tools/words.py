@@ -493,7 +493,13 @@ def as_text(value: Any) -> str:
 	return str(value)
 
 
-def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = False) -> str:
+def word_join(
+		iterable: Iterable[str],
+		use_repr: bool = False,
+		oxford: bool = False,
+		delimiter: str = ",",
+		connective: str = "and",
+		) -> str:
 	"""
 	Join the given list of strings in a natural manner, with 'and' to join the last two elements.
 
@@ -501,7 +507,16 @@ def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = Fa
 	:param use_repr: Whether to join the ``repr`` of each object.
 	:param oxford: Whether to use an oxford comma when joining the last two elements.
 		Always :py:obj:`False` if there are fewer than three elements.
+	:param delimiter: A single character to use between the words.
+	:param connective: The connective to join the final two words with.
+
+	.. versionchanged:: 0.11.0
+
+		Added ``delimiter`` and ``connective`` arguments.
+
 	"""
+
+	delimiter = f"{delimiter} "
 
 	if use_repr:
 		words = [repr(w) for w in iterable]
@@ -516,6 +531,6 @@ def word_join(iterable: Iterable[str], use_repr: bool = False, oxford: bool = Fa
 		return " and ".join(words)
 	else:
 		if oxford:
-			return ", ".join(words[:-1]) + f", and {words[-1]}"
+			return delimiter.join(words[:-1]) + f"{delimiter}{connective} {words[-1]}"
 		else:
-			return ", ".join(words[:-1]) + f" and {words[-1]}"
+			return delimiter.join(words[:-1]) + f" {connective} {words[-1]}"
