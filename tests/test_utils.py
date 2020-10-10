@@ -17,11 +17,13 @@ from collections import namedtuple
 
 # 3rd party
 import pytest
+from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools import utils
+from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import testing_boolean_values
-from domdf_python_tools.utils import HasHead, head
+from domdf_python_tools.utils import HasHead, coloured_diff, head
 
 
 def test_pyversion():
@@ -504,4 +506,26 @@ def test_deprecations():
 			)
 	assert record[3].message.args == (
 			'list2string', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
+			)
+
+
+def test_diff(file_regression: FileRegressionFixture):
+	data_dir = PathPlus(__file__).parent / "test_diff"
+	original = data_dir / "original"
+	modified = data_dir / "modified"
+
+	diff = coloured_diff(
+					original.read_lines(),
+					modified.read_lines(),
+					fromfile="original_file.txt",
+					tofile="modified_file.txt",
+					fromfiledate="(original)",
+					tofiledate="(modified)",
+					lineterm='',
+					)
+
+	file_regression.check(
+			diff,
+			encoding="UTF-8",
+			extension=".txt"
 			)
