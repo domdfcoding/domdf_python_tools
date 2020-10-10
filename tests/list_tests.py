@@ -48,7 +48,7 @@ class CommonTest(seq_tests.CommonTest):
 	def test_getitem_error(self):
 		a = []
 		with pytest.raises(TypeError, match="list indices must be integers or slices"):
-			a['a']
+			a['a']  # pylint: disable=pointless-statement
 
 	@no_type_check
 	def test_setitem_error(self):

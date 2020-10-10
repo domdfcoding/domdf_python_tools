@@ -72,11 +72,13 @@ import sys
 import textwrap
 import typing
 import warnings
+from datetime import date
 from pprint import pformat
 from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
 import deprecation  # type: ignore
+from packaging import version
 
 # this package
 import domdf_python_tools.words
@@ -84,7 +86,7 @@ from domdf_python_tools import __version__
 from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
-if typing.TYPE_CHECKING or domdf_python_tools.__docs:
+if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
 
@@ -110,6 +112,7 @@ __all__ = [
 		"convert_indents",
 		"etc",
 		"head",
+		"coloured_diff",
 		"deprecated",
 		]
 
@@ -270,7 +273,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	return tuple(int(x) for x in input_string.split(sep))
 
 
-def strtobool(val: Union[str, bool]) -> bool:
+def strtobool(val: Union[str, int]) -> bool:
 	"""
 	Convert a string representation of truth to :py:obj:`True` or :py:obj:`False`.
 
@@ -555,13 +558,6 @@ def coloured_diff(
 	buf.blankline(ensure_single=True)
 
 	return str(buf)
-
-
-# stdlib
-from datetime import date
-
-# 3rd party
-from packaging import version
 
 
 def deprecated(

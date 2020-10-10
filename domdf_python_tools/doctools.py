@@ -329,7 +329,7 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 				):
 			continue
 		elif PYPY and isinstance(attribute, MethodType):
-			continue
+			continue  # pragma: no cover (!PyPy)
 
 		if attribute is None:
 			continue

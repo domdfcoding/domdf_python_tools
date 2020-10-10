@@ -23,7 +23,8 @@ from pytest_regressions.file_regression import FileRegressionFixture
 from domdf_python_tools import utils
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import testing_boolean_values
-from domdf_python_tools.utils import HasHead, coloured_diff, head
+from domdf_python_tools.typing import HasHead
+from domdf_python_tools.utils import coloured_diff, head
 
 
 def test_pyversion():
@@ -495,18 +496,18 @@ def test_deprecations():
 		list2string(["a", "b"])
 
 	assert len(record) == 4
-	assert record[0].message.args == (
-			'as_text', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
-			)
-	assert record[1].message.args == (
-			'word_join', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
-			)
-	assert record[2].message.args == (
-			'tuple2str', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
-			)
-	assert record[3].message.args == (
-			'list2string', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
-			)
+	assert record[0].message.args == (  # type: ignore
+		'as_text', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+		)
+	assert record[1].message.args == (  # type: ignore
+		'word_join', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+		)
+	assert record[2].message.args == (  # type: ignore
+		'tuple2str', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
+		)
+	assert record[3].message.args == (  # type: ignore
+		'list2string', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
+		)
 
 
 def test_diff(file_regression: FileRegressionFixture):
@@ -515,17 +516,13 @@ def test_diff(file_regression: FileRegressionFixture):
 	modified = data_dir / "modified"
 
 	diff = coloured_diff(
-					original.read_lines(),
-					modified.read_lines(),
-					fromfile="original_file.txt",
-					tofile="modified_file.txt",
-					fromfiledate="(original)",
-					tofiledate="(modified)",
-					lineterm='',
-					)
-
-	file_regression.check(
-			diff,
-			encoding="UTF-8",
-			extension=".txt"
+			original.read_lines(),
+			modified.read_lines(),
+			fromfile="original_file.txt",
+			tofile="modified_file.txt",
+			fromfiledate="(original)",
+			tofiledate="(modified)",
+			lineterm='',
 			)
+
+	file_regression.check(diff, encoding="UTF-8", extension=".txt")

@@ -16,7 +16,7 @@ from typing import no_type_check
 
 # 3rd party
 import pytest
-from pytest_regressions.file_regression import FileRegressionFixture  # type: ignore
+from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
@@ -578,8 +578,8 @@ mappingproxy(OrderedDict([
 		# self-test
 		assert a < b
 		assert str(type(b)) < str(type(a))
-		assert sorted([b, a]) == [a, b]
-		assert sorted([a, b]) == [a, b]
+		assert sorted([b, a]) == [a, b]  # type: ignore
+		assert sorted([a, b]) == [a, b]  # type: ignore
 		# set
 		assert FancyPrinter(width=1).pformat({b, a}) == f'{{\n {a!r},\n {b!r},\n }}'
 		assert FancyPrinter(width=1).pformat({a, b}) == f'{{\n {a!r},\n {b!r},\n }}'
@@ -703,7 +703,7 @@ mappingproxy(OrderedDict([
 			lines = FancyPrinter(width=w, compact=True).pformat(o, ).splitlines()
 			maxwidth = max(map(len, lines))
 			assert maxwidth <= w
-			maxwidth > w - 3
+			maxwidth > w - 3  # pylint: disable=pointless-statement
 
 	def test_bytes_wrap(self):
 		assert FancyPrinter(width=1).pformat(b'') == "b''"

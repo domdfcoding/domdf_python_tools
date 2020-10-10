@@ -66,6 +66,7 @@ __all__ = [
 		"PathPlus",
 		"PosixPathPlus",
 		"WindowsPathPlus",
+		"in_directory",
 		]
 
 newline_default = object()
@@ -489,7 +490,7 @@ class PathPlus(pathlib.Path):
 
 		return self.read_text(encoding=encoding, errors=errors).split("\n")
 
-	def open(  # noqa A003
+	def open(  # type: ignore  # noqa A003
 		self,
 		mode: str = "r",
 		buffering: int = -1,
@@ -526,7 +527,14 @@ class PathPlus(pathlib.Path):
 			else:
 				newline = "\n"
 
-		return super().open(mode, buffering=buffering, encoding=encoding, errors=errors, newline=newline)
+		return super(
+		).open(  # type: ignore
+				mode,
+				buffering=buffering,
+				encoding=encoding,
+				errors=errors,
+				newline=newline,
+				)
 
 	def dump_json(
 			self,

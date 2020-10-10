@@ -61,7 +61,7 @@ class TestList(list_tests.CommonTest):
 		u = self.type2test([6, 8, 1, 9, 1])
 		v = u.copy()
 		assert u == v
-		assert type(u) == type(v)
+		assert type(u) == type(v)  # pylint: disable=unidiomatic-typecheck
 
 
 class TestUserList(TestList):

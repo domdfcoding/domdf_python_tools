@@ -19,6 +19,7 @@ import pytest
 
 # this package
 from domdf_python_tools.testing import not_pypy
+from domdf_python_tools.utils import Len
 
 
 class _ALWAYS_EQ:
@@ -139,7 +140,7 @@ class IterGenExc:
 		return self
 
 	def __next__(self):
-		3 // 0
+		3 // 0  # pylint: disable=pointless-statement
 
 
 class IterFuncStop:
@@ -242,7 +243,7 @@ class CommonTest:
 
 	def test_getitem(self):
 		u = self.type2test([0, 1, 2, 3, 4])
-		for i in range(len(u)):
+		for i in Len(u):
 			self.assertEqual(u[i], i)
 			self.assertEqual(u[int(i)], i)
 		for i in range(-len(u), -1):
