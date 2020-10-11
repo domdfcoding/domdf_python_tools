@@ -242,6 +242,7 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
+	@min_version(3.9, "Requires Python 3.9 or higher")
 	@unittest.skipUnless(hasattr(os, "link"), "os.link() is not present")
 	def test_link_to(self):
 		P = PathPlus(BASE)

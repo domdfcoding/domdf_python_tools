@@ -682,18 +682,6 @@ class PathPlus(pathlib.Path):
 				if not missing_ok:
 					raise
 
-		def link_to(self, target: Union[str, bytes, os.PathLike[str]]) -> None:
-			"""
-			Create a hard link pointing to a path named target.
-
-			:param target:
-
-			.. versionadded:: 0.3.8 for Python 3.8 and above
-			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
-			"""
-
-			self._accessor.link_to(self, target)  # type: ignore
-
 	if sys.version_info < (3, 9):
 
 		def __enter__(self):
