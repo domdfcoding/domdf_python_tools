@@ -116,7 +116,6 @@ def copytree(
 		the copy process. You can set the optional ignore_dangling_symlinks
 		flag to true if you want to silence this exception. Notice that this
 		option has no effect on platforms that don’t support :class:`python:os.symlink`.
-	:type symlinks: bool, optional
 	:param ignore: A callable that will receive as its arguments the source
 		directory, and a list of its contents. The ignore callable will be
 		called once for each directory that is copied. The callable must return
@@ -162,18 +161,15 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, ex
 
 	:param directory: Directory to create
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
-	:type mode:
 	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 	:no-default parents:
-	:type parents: bool, optional
 	:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
 		target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
 		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 		component is not an existing non-directory file.
 	:no-default exist_ok:
-	:type exist_ok: bool, optional
 	"""
 
 	if not isinstance(directory, pathlib.Path):
@@ -383,13 +379,11 @@ class PathPlus(pathlib.Path):
 			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 		:no-default parents:
-		:type parents: bool, optional
 		:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
 			target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
 			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 			component is not an existing non-directory file.
 		:no-default exist_ok:
-		:type exist_ok: bool, optional
 
 		:rtype:
 
@@ -450,7 +444,6 @@ class PathPlus(pathlib.Path):
 		and close the file.
 
 		:param data:
-		:type data: str
 		:param encoding: The encoding to write to the file using.
 		:param errors:
 
