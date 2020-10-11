@@ -46,7 +46,8 @@ import os
 import pathlib
 import shutil
 import stat
-from typing import IO, Any, Callable, Iterable, List, Optional
+import sys
+from typing import IO, Any, Callable, Iterable, List, Optional, TypeVar, Union
 
 # this package
 from domdf_python_tools.stringlist import StringList
@@ -67,9 +68,14 @@ __all__ = [
 		"PosixPathPlus",
 		"WindowsPathPlus",
 		"in_directory",
+		"_P",
 		]
 
 newline_default = object()
+_P = TypeVar('_P', bound=pathlib.PurePath)
+"""
+.. versionadded:: 0.11.0
+"""
 
 
 def append(var: str, filename: PathLike, **kwargs) -> int:
@@ -588,6 +594,121 @@ class PathPlus(pathlib.Path):
 				self.read_text(encoding=encoding, errors=errors),
 				**kwargs,
 				)
+
+	if sys.version_info < (3, 7):
+
+		def is_mount(self) -> bool:
+			"""
+			Check if this path is a POSIX mount point.
+
+			:rtype:
+
+			.. versionadded:: 0.3.8 for Python 3.7 and above
+			.. versionadded:: 0.11.0 for Python 3.6
+			"""
+
+			# Need to exist and be a dir
+			if not self.exists() or not self.is_dir():
+				return False
+
+			parent = pathlib.Path(self.parent)
+			try:
+				parent_dev = parent.stat().st_dev
+			except OSError:
+				return False
+
+			dev = self.stat().st_dev
+			if dev != parent_dev:
+				return True
+			ino = self.stat().st_ino
+			parent_ino = parent.stat().st_ino
+			return ino == parent_ino
+
+	if sys.version_info < (3, 8):
+
+		def rename(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
+			"""
+			Rename this path to the target path.
+
+			The target path may be absolute or relative. Relative paths are
+			interpreted relative to the current working directory, *not* the
+			directory of the Path object.
+
+			:param target:
+
+			:returns: The new Path instance pointing to the target path.
+
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+			"""
+
+			self._accessor.rename(self, target)  # type: ignore
+			return self.__class__(target)
+
+		def replace(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
+			"""
+			Rename this path to the target path, overwriting if that path exists.
+
+			The target path may be absolute or relative. Relative paths are
+			interpreted relative to the current working directory, *not* the
+			directory of the Path object.
+
+			Returns the new Path instance pointing to the target path.
+
+			:param target:
+
+			:returns: The new Path instance pointing to the target path.
+
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+			"""
+
+			self._accessor.replace(self, target)  # type: ignore
+			return self.__class__(target)
+
+		def unlink(self, missing_ok: bool = False) -> None:
+			"""
+			Remove this file or link.
+
+			If the path is a directory, use :meth:`~domdf_python_tools.paths.PathPlus.rmdir()` instead.
+
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+			"""
+
+			try:
+				self._accessor.unlink(self)  # type: ignore
+			except FileNotFoundError:
+				if not missing_ok:
+					raise
+
+		def link_to(self, target: Union[str, bytes, os.PathLike[str]]) -> None:
+			"""
+			Create a hard link pointing to a path named target.
+
+			:param target:
+
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+			"""
+
+			self._accessor.link_to(self, target)  # type: ignore
+
+	if sys.version_info < (3, 9):
+
+		def __enter__(self):
+			return self
+
+		def __exit__(self, t, v, tb):
+			# https://bugs.python.org/issue39682
+			# In previous versions of pathlib, this method marked this path as
+			# closed; subsequent attempts to perform I/O would raise an IOError.
+			# This functionality was never documented, and had the effect of
+			# making Path objects mutable, contrary to PEP 428. In Python 3.9 the
+			# _closed attribute was removed, and this method made a no-op.
+			# This method and __enter__()/__exit__() should be deprecated and
+			# removed in the future.
+			pass
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):

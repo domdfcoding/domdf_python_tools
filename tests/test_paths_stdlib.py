@@ -159,25 +159,15 @@ class PathTest(unittest.TestCase):
 		with p:
 			pass
 
-		if sys.version_info < (3, 9):  # pragma: no cover (>=py39)
-			# I/O operation on closed path
-			self.assertRaises(ValueError, next, it)
-			self.assertRaises(ValueError, next, it2)
-			self.assertRaises(ValueError, p.open)
-			self.assertRaises(ValueError, p.resolve)
-			self.assertRaises(ValueError, p.absolute)
-			self.assertRaises(ValueError, p.__enter__)
-
-		else:  # pragma: no cover (<py39)
-			# Using a path as a context manager is a no-op, thus the following
-			# operations should still succeed after the context manage exits.
-			next(it)
-			next(it2)
-			p.exists()
-			p.resolve()
-			p.absolute()
-			with p:
-				pass
+		# Using a path as a context manager is a no-op, thus the following
+		# operations should still succeed after the context manage exits.
+		next(it)
+		next(it2)
+		p.exists()
+		p.resolve()
+		p.absolute()
+		with p:
+			pass
 
 	def test_chmod(self):
 		p = PathPlus(BASE) / 'fileA'
@@ -239,8 +229,7 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
-	@min_version(3.9, "Requires Python 3.9 or higher")
-	def test_unlink_missing_ok(self):  # pragma: no cover (<py37)
+	def test_unlink_missing_ok(self):
 		p = PathPlus(BASE) / 'fileAAA'
 		self.assertFileNotFound(p.unlink)
 		p.unlink(missing_ok=True)  # type: ignore
@@ -253,9 +242,8 @@ class PathTest(unittest.TestCase):
 		self.assertFileNotFound(p.stat)
 		self.assertFileNotFound(p.unlink)
 
-	@min_version(3.9, "Requires Python 3.9 or higher")
 	@unittest.skipUnless(hasattr(os, "link"), "os.link() is not present")
-	def test_link_to(self):  # pragma: no cover (<py37)
+	def test_link_to(self):
 		P = PathPlus(BASE)
 		p = P / 'fileA'
 		size = p.stat().st_size
@@ -547,9 +535,8 @@ class PathTest(unittest.TestCase):
 			self.assertFalse((P / 'linkB').is_file())
 			self.assertFalse((P / 'brokenLink').is_file())
 
-	@min_version(3.9, "Requires Python 3.9 or higher")
 	@only_posix
-	def test_is_mount(self):  # pragma: no cover (<py37)
+	def test_is_mount(self):
 		P = PathPlus(BASE)
 		R = PathPlus('/')  # TODO: Work out Windows.
 		self.assertFalse((P / 'fileA').is_mount())  # type: ignore
