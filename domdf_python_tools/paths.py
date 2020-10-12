@@ -4,9 +4,9 @@
 """
 Functions for paths and files.
 
-.. versionchanged:: 0.8.0
+.. versionchanged:: 1.0.0
 
-	``relpath2`` is deprecated and will be removed in 1.0.0.
+	Removed ``relpath2``.
 	Use :func:`domdf_python_tools.paths.relpath` instead.
 """
 #
@@ -237,9 +237,6 @@ def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.P
 		return abs_path.relative_to(relative_to)
 	except ValueError:
 		return abs_path
-
-
-relpath2 = relpath
 
 
 def write(var: str, filename: PathLike, **kwargs) -> None:
@@ -526,8 +523,7 @@ class PathPlus(pathlib.Path):
 			else:
 				newline = "\n"
 
-		return super(
-		).open(  # type: ignore
+		return super().open(  # type: ignore
 				mode,
 				buffering=buffering,
 				encoding=encoding,

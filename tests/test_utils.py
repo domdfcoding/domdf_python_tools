@@ -24,7 +24,7 @@ from domdf_python_tools import utils
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import testing_boolean_values
 from domdf_python_tools.typing import HasHead
-from domdf_python_tools.utils import coloured_diff, head
+from domdf_python_tools.utils import coloured_diff, deprecated, head
 
 
 def test_pyversion():
@@ -485,29 +485,46 @@ Occupation    Apprentice\
 		assert head("Hello World", 5) == "Hello..."
 
 
-def test_deprecations():
-	# this package
-	from domdf_python_tools.utils import as_text, list2string, tuple2str, word_join
+def test_deprecation():
+
+	def func(*args, **kwargs):
+		"""
+		A normal function.
+		"""
+
+		return args, kwargs
+
+	@deprecated(deprecated_in="1", removed_in="3", current_version="2", details="use 'bar' instead.")
+	def deprecated_func(*args, **kwargs):
+		"""
+		A deprecated function.
+		"""
+
+		return args, kwargs
+
+	deprecated_alias = deprecated(
+			deprecated_in="1",
+			removed_in="3",
+			current_version="2",
+			details="use 'bar' instead.",
+			name="deprecated_alias",
+			)(func)
 
 	with pytest.warns(DeprecationWarning) as record:
-		as_text(1)
-		word_join(["a", "b"])
-		tuple2str(("a", "b"))
-		list2string(["a", "b"])
+		assert deprecated_func(1, a_list=["a", "b"]) == ((1, ), {"a_list": ["a", "b"]})
+		assert deprecated_alias(1, a_list=["a", "b"]) == ((1, ), {"a_list": ["a", "b"]})
 
-	assert len(record) == 4
+	assert len(record) == 2
 	assert record[0].message.args == (  # type: ignore
-		'as_text', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+		'deprecated_func', '1', '3', "use 'bar' instead."
 		)
 	assert record[1].message.args == (  # type: ignore
-		'word_join', '0.8.0', '1.0.0', "Import from 'domdf_python_tools.words' instead."
+		'deprecated_alias', '1', '3', "use 'bar' instead."
 		)
-	assert record[2].message.args == (  # type: ignore
-		'tuple2str', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
-		)
-	assert record[3].message.args == (  # type: ignore
-		'list2string', '0.8.0', '1.0.0', "Use 'domdf_python_tools.utils.list2str' instead."
-		)
+
+	assert ".. deprecated::" in deprecated_func.__doc__
+	assert ".. deprecated::" in deprecated_alias.__doc__
+	assert ".. deprecated::" not in func.__doc__
 
 
 def test_diff(file_regression: FileRegressionFixture):

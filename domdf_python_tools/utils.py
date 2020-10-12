@@ -5,10 +5,14 @@
 """
 General utility functions.
 
-.. versionchanged:: 0.8.0
+.. versionchanged:: 1.0.0
 
-	``tuple2str`` and ``list2string`` are deprecated and will be removed in 1.0.0.
-	Use :func:`domdf_python_tools.utils.list2str` instead.
+	* Removed ``tuple2str`` and ``list2string``.
+	  Use :func:`domdf_python_tools.utils.list2str` instead.
+	* Removed ``as_text`` and ``word_join``.
+	  Import from :mod:`domdf_python_tools.words` instead.
+	* Removed ``splitLen``.
+	  Use :func:`domdf_python_tools.utils.split_len` instead.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -723,54 +727,3 @@ def deprecated(
 		return _inner
 
 	return _function_wrapper
-
-
-# Moved elsewhere
-as_text = deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.words' instead.",
-		)(
-				domdf_python_tools.words.as_text
-				)
-
-word_join = deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.words' instead.",
-		)(
-				domdf_python_tools.words.word_join
-				)
-
-# Deprecated aliases
-tuple2str = deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Use 'domdf_python_tools.utils.list2str' instead.",
-		name="tuple2str",
-		)(
-				list2str
-				)
-
-list2string = deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Use 'domdf_python_tools.utils.list2str' instead.",
-		name="list2string",
-		)(
-				list2str
-				)
-
-splitLen = deprecated(
-		deprecated_in="0.8.0",
-		removed_in="1.0.0",
-		current_version=__version__,
-		details="Use 'domdf_python_tools.utils.split_len' instead.",
-		name="splitLen",
-		)(
-				split_len
-				)

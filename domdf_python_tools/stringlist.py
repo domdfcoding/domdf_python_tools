@@ -4,10 +4,9 @@
 """
 A list of strings that represent lines in a multiline string.
 
-.. versionchanged:: 0.8.0
+.. versionchanged:: 1.0.0
 
-	String moved to :mod:`domdf_python_tools.typing`.
-	It will be removed from this module in 1.0.0
+	``String`` should now be imported from :mod:`domdf_python_tools.typing`.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -35,8 +34,6 @@ from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 # this package
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
-
-String = String
 
 __all__ = ["Indent", "StringList"]
 
