@@ -40,11 +40,9 @@ import re
 from string import ascii_lowercase, ascii_uppercase
 from typing import Any, Dict, Iterable, List, Optional
 
-# 3rd party
-import importlib_resources
-
 # this package
 import domdf_python_tools
+from domdf_python_tools.compat import importlib_resources
 
 __all__ = [
 		"greek_uppercase",
