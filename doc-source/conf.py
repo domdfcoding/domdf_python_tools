@@ -10,18 +10,18 @@ import sys
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 
+# 3rd party
+import domdf_python_tools
+
+# this package
 from __pkginfo__ import __version__
 
-# User-configurable lines
-import domdf_python_tools
 domdf_python_tools.__docs = True
 overloads_location = "bottom"
-# End of user-configurable lines
 
 github_username = "domdfcoding"
 github_repository = "domdf_python_tools"
 github_url = f"https://github.com/{github_username}/{github_repository}"
-
 
 rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
 .. |pkgname2| replace:: ``domdf_python_tools``
@@ -37,22 +37,22 @@ language = 'en'
 package_root = "domdf_python_tools"
 
 extensions = [
-	'sphinx_toolbox',
-	'sphinx_toolbox.more_autodoc',
-	'sphinx_toolbox.more_autosummary',
-	'sphinx_toolbox.tweaks.param_dash',
-	'sphinx.ext.intersphinx',
-	'sphinx.ext.mathjax',
-	'sphinxcontrib.httpdomain',
-	'sphinxcontrib.extras_require',
-	'sphinx.ext.todo',
-	'sphinxemoji.sphinxemoji',
-	'notfound.extension',
-	'sphinx_copybutton',
-	'sphinxcontrib.default_values',
-	'sphinxcontrib.toctree_plus',
-	'seed_intersphinx_mapping',
-	]
+		'sphinx_toolbox',
+		'sphinx_toolbox.more_autodoc',
+		'sphinx_toolbox.more_autosummary',
+		'sphinx_toolbox.tweaks.param_dash',
+		'sphinx.ext.intersphinx',
+		'sphinx.ext.mathjax',
+		'sphinxcontrib.httpdomain',
+		'sphinxcontrib.extras_require',
+		'sphinx.ext.todo',
+		'sphinxemoji.sphinxemoji',
+		'notfound.extension',
+		'sphinx_copybutton',
+		'sphinxcontrib.default_values',
+		'sphinxcontrib.toctree_plus',
+		'seed_intersphinx_mapping',
+		]
 
 sphinxemoji_style = 'twemoji'
 todo_include_todos = bool(os.environ.get("SHOW_TODOS", 0))
@@ -113,29 +113,31 @@ toctree_plus_types = {
 		}
 
 add_module_names = False
+hide_none_rtype = True
 
 
+autodoc_exclude_members = [   # Exclude "standard" methods.
+		"__dict__",
+		"__class__",
+		"__dir__",
+		"__weakref__",
+		"__module__",
+		"__annotations__",
+		"__orig_bases__",
+		"__parameters__",
+		"__subclasshook__",
+		"__init_subclass__",
+		"__attrs_attrs__",
+		"__init__",
+		"__new__",
+		"__getnewargs__",
+		"__abstractmethods__",
+		"__hash__",
+		]
 autodoc_default_options = {
 		'members': None,  # Include all members (methods).
 		'special-members': None,
 		"autosummary": None,
 		"show-inheritance": None,
-		'exclude-members': ','.join([   # Exclude "standard" methods.
-				"__dict__",
-				"__class__",
-				"__dir__",
-				"__weakref__",
-				"__module__",
-				"__annotations__",
-				"__orig_bases__",
-				"__parameters__",
-				"__subclasshook__",
-				"__init_subclass__",
-				"__attrs_attrs__",
-				"__init__",
-				"__new__",
-				"__getnewargs__",
-				"__abstractmethods__",
-				"__hash__",
-				]),
+		'exclude-members': ','.join(autodoc_exclude_members),
 		}
