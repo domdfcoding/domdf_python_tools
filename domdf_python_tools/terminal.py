@@ -7,10 +7,6 @@ Useful functions for terminal-based programs.
 #
 #  Copyright © 2014-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
-#  get_terminal_size, _get_terminal_size_windows, _get_terminal_size_tput and _get_terminal_size_posix
-# 		from https://gist.github.com/jtriley/1108174
-#  		Copyright © 2011 jtriley
-#
 #  Parts of the docstrings based on the Python 3.8.2 Documentation
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
@@ -62,13 +58,14 @@ Useful functions for terminal-based programs.
 # stdlib
 import inspect
 import os
-import platform
 import pprint
-import shlex
-import struct
-import subprocess
+import shutil
 import textwrap
-from typing import Any, Optional, Tuple
+from typing import Tuple
+
+# this package
+from domdf_python_tools import __version__
+from domdf_python_tools.utils import deprecated
 
 __all__ = [
 		"clear",
@@ -139,6 +136,12 @@ def overtype(*objects, sep: str = ' ', end: str = '', file=None, flush: bool = F
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
 
 
+@deprecated(
+		deprecated_in="1.0.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Use :func:`shutil.get_terminal_size` instead.",
+		)
 def get_terminal_size() -> Tuple[int, int]:  # pragma: no cover
 	"""
 	Get width and height of console.
@@ -148,94 +151,7 @@ def get_terminal_size() -> Tuple[int, int]:  # pragma: no cover
 	:return: Screen width and screen height.
 	"""
 
-	current_os = platform.system()
-	tuple_xy = None
-
-	if current_os == "Windows":
-		tuple_xy = _get_terminal_size_windows()
-		if tuple_xy is None:
-			tuple_xy = _get_terminal_size_tput()
-		# needed for window's python in cygwin's xterm!
-
-	if current_os in {"Linux", "Darwin"} or current_os.startswith("CYGWIN"):
-		tuple_xy = _get_terminal_size_posix()
-
-	if tuple_xy is None:
-		print("default")
-		tuple_xy = (80, 25)  # default value
-
-	return tuple_xy
-
-
-def _get_terminal_size_windows() -> Optional[Tuple[int, int]]:  # pragma: no cover
-	try:
-
-		# stdlib
-		from ctypes import create_string_buffer, windll  # type: ignore
-
-		# stdin handle is -10
-		# stdout handle is -11
-		# stderr handle is -12
-		h = windll.kernel32.GetStdHandle(-12)
-		csbi = create_string_buffer(22)
-		res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
-
-		if res:
-			(buf_x, buf_y, cur_x, cur_y, wattr, left, top, right, bottom, maxx,
-				maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
-			size_x = right - left + 1
-			size_y = bottom - top + 1
-
-			return size_x, size_y
-	except Exception:  # nosec: B110
-		pass
-
-	return None
-
-
-def _get_terminal_size_tput() -> Optional[Tuple[int, int]]:  # pragma: no cover
-	# get terminal width
-	# src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
-	try:
-		cols = int(subprocess.check_call(shlex.split("tput cols")))
-		rows = int(subprocess.check_call(shlex.split("tput lines")))
-		return cols, rows
-	except Exception:  # nosec: B110
-		return None
-
-
-def _get_terminal_size_posix() -> Optional[Tuple[int, int]]:  # pragma: no cover
-
-	# stdlib
-	import fcntl
-	import termios
-
-	def ioctl_GWINSZ(fd: int) -> Optional[Tuple[Any, ...]]:
-		try:
-			cr = struct.unpack("hh", fcntl.ioctl(fd, termios.TIOCGWINSZ, b"1234"))
-			return cr
-		except Exception:  # nosec: B110
-			pass
-
-		return None
-
-	cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
-
-	if not cr:
-		try:
-			fd = os.open(os.ctermid(), os.O_RDONLY)  # type: ignore
-			cr = ioctl_GWINSZ(fd)
-			os.close(fd)
-		except Exception:  # nosec: B110
-			pass
-
-	if not cr:
-		try:
-			cr = (os.environ["LINES"], os.environ["COLUMNS"])
-		except Exception:  # nosec: B110
-			return None
-
-	return int(cr[1]), int(cr[0])
+	return shutil.get_terminal_size((80, 25))
 
 
 class Echo:
