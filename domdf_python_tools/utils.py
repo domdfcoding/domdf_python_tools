@@ -93,6 +93,9 @@ if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
 
+	Series.__module__ = "pandas"
+	DataFrame.__module__ = "pandas"
+
 __all__ = [
 		"pyversion",
 		"SPACE_PLACEHOLDER",

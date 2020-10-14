@@ -37,9 +37,9 @@ import sys
 
 __all__ = ["importlib_resources"]
 
-if sys.version_info < (3, 7):
+if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
 	# 3rd party
 	import importlib_resources
-else:
+else:  # pragma: no cover (<py37)
 	# stdlib
 	import importlib.resources as importlib_resources

@@ -50,17 +50,15 @@ from typing_extensions import Protocol, runtime_checkable
 # this package
 import domdf_python_tools
 
-if typing.TYPE_CHECKING or domdf_python_tools.__docs:
+if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
-	from pandas import Series, DataFrame  # type: ignore
+	from pandas import DataFrame, Series  # type: ignore
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
 
-
 #: .. versionadded:: 1.0.0
 FrameOrSeries = typing.TypeVar("FrameOrSeries", "Series", "DataFrame")
-
 
 __all__ = [
 		"PathLike",

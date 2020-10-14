@@ -38,11 +38,14 @@ import sys
 from io import StringIO
 from typing import IO, Any, Callable, Iterator, MutableMapping, Optional, Tuple
 
-try:
+try:  # pragma: no cover
+
 	# 3rd party
 	from pprint36 import PrettyPrinter
 	from pprint36._pprint import _safe_key  # type: ignore
+
 except ImportError:
+
 	# stdlib
 	from pprint import PrettyPrinter, _safe_key  # type: ignore
 
