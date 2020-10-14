@@ -523,13 +523,13 @@ class PathPlus(pathlib.Path):
 			else:
 				newline = "\n"
 
-		return super().open(  # type: ignore
-				mode,
-				buffering=buffering,
-				encoding=encoding,
-				errors=errors,
-				newline=newline,
-				)
+		return super().open(  # type: ignore  # yapf: disable
+			mode,
+			buffering=buffering,
+			encoding=encoding,
+			errors=errors,
+			newline=newline,
+			)
 
 	def dump_json(
 			self,
@@ -538,7 +538,7 @@ class PathPlus(pathlib.Path):
 			errors: Optional[str] = None,
 			json_library: JsonLibrary = json,  # type: ignore
 			**kwargs,
-			) -> int:
+			) -> None:
 		"""
 		Dump ``data`` to the file as JSON.
 
@@ -550,9 +550,15 @@ class PathPlus(pathlib.Path):
 		:param kwargs: Keyword arguments to pass to the JSON serialisation function.
 
 		.. versionadded:: 0.5.0
+
+		.. versionchanged:: 1.0.0
+
+			Now uses :meth:`PathPlus.write_clean <domdf_python_tools.paths.PathPlus.write_clean>`
+			rather than :meth:`PathPlus.write_text <domdf_python_tools.paths.PathPlus.write_text>`,
+			and returns :py:obj:`None` rather than :class:`int`.
 		"""
 
-		return self.write_text(
+		return self.write_clean(
 				json_library.dumps(data, **kwargs),
 				encoding=encoding,
 				errors=errors,
