@@ -565,7 +565,7 @@ def test_dump_json(tmpdir):
 
 	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34})
 
-	assert tmp_file.read_text() == '{"key": "value", "int": 1234, "float": 12.34}'
+	assert tmp_file.read_text() == '{"key": "value", "int": 1234, "float": 12.34}\n'
 
 	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34}, indent=2)
 
@@ -574,7 +574,8 @@ def test_dump_json(tmpdir):
 	  "key": "value",
 	  "int": 1234,
 	  "float": 12.34
-	}""")
+	}
+""")
 
 
 def test_load_json(tmpdir):
