@@ -114,6 +114,8 @@ toctree_plus_types = {
 
 add_module_names = False
 hide_none_rtype = True
+all_typevars = True
+overloads_location = "bottom"
 
 
 autodoc_exclude_members = [   # Exclude "standard" methods.

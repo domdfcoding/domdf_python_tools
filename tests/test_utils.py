@@ -503,12 +503,12 @@ def test_deprecation():
 		return args, kwargs
 
 	deprecated_alias = deprecated(
-			deprecated_in="1",
-			removed_in="3",
-			current_version="2",
-			details="use 'bar' instead.",
-			name="deprecated_alias",
-			)(func)
+		deprecated_in="1",
+		removed_in="3",
+		current_version="2",
+		details="use 'bar' instead.",
+		name="deprecated_alias",
+		)(func)  # yapf: disable
 
 	with pytest.warns(DeprecationWarning) as record:
 		assert deprecated_func(1, a_list=["a", "b"]) == ((1, ), {"a_list": ["a", "b"]})
