@@ -51,7 +51,7 @@ def test_interrupt_windows(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ["(Press Ctrl-C to quit at any time.)", '']
+	assert stdout == ["(Press Ctrl-C to quit at any time)", '']
 
 
 @not_windows(reason="Different test used for Windows")
@@ -60,7 +60,7 @@ def test_interrupt_posix(capsys):
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout == ["(Press Ctrl-D to quit at any time.)", '']
+	assert stdout == ["(Press Ctrl-D to quit at any time)", '']
 
 
 # @only_windows(reason="Different test used for POSIX")
