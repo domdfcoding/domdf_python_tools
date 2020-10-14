@@ -55,6 +55,11 @@ manifest_additional:
 sphinx_conf_preamble:
   - import domdf_python_tools
   - domdf_python_tools.__docs = True
-  - overloads_location = "bottom"
 
 tox_testenv_extras: all
+
+intersphinx_mapping:
+  - "'pandas': ('https://pandas.pydata.org/docs/', None)"
+
+mypy_deps:
+  - pprint36

@@ -32,6 +32,8 @@ Utilities for working with dates and times.
 
 # stdlib
 import datetime
+import sys
+import typing
 from collections import OrderedDict
 from typing import Optional, Union
 
@@ -110,8 +112,6 @@ The error was {e}.
 def current_tzinfo() -> Optional[datetime.tzinfo]:
 	"""
 	Returns a tzinfo object for the current timezone.
-
-	:rtype: :class:`python:datetime.tzinfo`
 	"""
 
 	return datetime.datetime.now().astimezone().tzinfo  # pragma: no cover (hard to test)
@@ -126,7 +126,7 @@ def current_tzinfo() -> Optional[datetime.tzinfo]:
 # 	:type datetime: :class:`datetime.datetime`
 # 	:param current_tzinfo: A tzinfo object representing the current timezone.
 # 		If None it will be inferred.
-# 	:type current_tzinfo: :class:`~python:datetime.tzinfo`
+# 	:type current_tzinfo: :class:`datetime.tzinfo`
 #
 # 	:return: Timestamp in UTC timezone
 # 	:rtype: float
@@ -140,12 +140,10 @@ def set_timezone(obj: datetime.datetime, tzinfo: datetime.tzinfo) -> datetime.da
 	"""
 	Sets the timezone / tzinfo of the given :class:`datetime.datetime` object.
 	This will not convert the time (i.e. the hours will stay the same).
-	Use :meth:`python:datetime.datetime.astimezone` to accomplish that.
+	Use :meth:`datetime.datetime.astimezone` to accomplish that.
 
 	:param obj:
 	:param tzinfo:
-
-	:return:
 	"""
 
 	return obj.replace(tzinfo=tzinfo)
@@ -161,7 +159,7 @@ def utc_timestamp_to_datetime(
 	If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
 	and the local timezone is inferred and set for the object.
 
-	If ``output_tz`` is not None, it must be an instance of a :class:`~python:datetime.tzinfo` subclass,
+	If ``output_tz`` is not None, it must be an instance of a :class:`datetime.tzinfo` subclass,
 	and the timestamp is converted to ``output_tz``’s time zone.
 
 
@@ -171,7 +169,7 @@ def utc_timestamp_to_datetime(
 
 	:return: The timestamp as a datetime object.
 
-	:raises: :class:`~python:OverflowError` if the timestamp is out of the range
+	:raises OverflowError: if the timestamp is out of the range
 		of values supported by the platform C localtime() or gmtime() functions,
 		and OSError on localtime() or gmtime() failure. It’s common for this to
 		be restricted to years in 1970 through 2038.
@@ -181,8 +179,13 @@ def utc_timestamp_to_datetime(
 	return new_datetime.astimezone(output_tz)
 
 
-# Mapping of months to their 3-character shortcodes.
-months = OrderedDict(
+if sys.version_info <= (3, 7):
+	MonthsType = OrderedDict
+else:
+	MonthsType = typing.OrderedDict[str, str]
+
+#: Mapping of 3-character shortcodes to full month names.
+months: MonthsType = OrderedDict(
 		Jan="January",
 		Feb="February",
 		Mar="March",

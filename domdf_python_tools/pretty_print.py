@@ -34,9 +34,17 @@ Functions and classes for pretty printing.
 #
 
 # stdlib
+import sys
 from io import StringIO
-from pprint import PrettyPrinter, _safe_key  # type: ignore
-from typing import Any, Callable, Iterator, MutableMapping, Tuple
+from typing import IO, Any, Callable, Iterator, MutableMapping, Optional, Tuple
+
+try:
+	# 3rd party
+	from pprint36 import PrettyPrinter
+	from pprint36._pprint import _safe_key  # type: ignore
+except ImportError:
+	# stdlib
+	from pprint import PrettyPrinter, _safe_key  # type: ignore
 
 __all__ = ["FancyPrinter", "simple_repr"]
 
@@ -44,9 +52,45 @@ __all__ = ["FancyPrinter", "simple_repr"]
 class FancyPrinter(PrettyPrinter):
 	"""
 	Subclass of :class:`~.pprint.PrettyPrinter` with different formatting.
+
+	:param indent: Number of spaces to indent for each level of nesting.
+	:param width: Attempted maximum number of columns in the output.
+	:param depth: The maximum depth to print out nested structures.
+	:param stream: The desired output stream.  If omitted (or :py:obj:`False`), the standard
+		output stream available at construction will be used.
+	:param compact: If :py:obj:`True`, several items will be combined in one line.
+	:param sort_dicts: If :py:obj:`True`, dict keys are sorted.
+		Only takes effect on Python 3.8 and later, or if ``pprint36`` is installed.
 	"""
 
-	# TODO: docs
+	def __init__(
+			self,
+			indent: int = 1,
+			width: int = 80,
+			depth: Optional[int] = None,
+			stream: Optional[IO[str]] = None,
+			*,
+			compact: bool = False,
+			sort_dicts: bool = True,
+			):
+		if sys.version_info < (3, 8):
+			super().__init__(
+					indent=indent,
+					width=width,
+					depth=depth,
+					stream=stream,
+					compact=compact,
+					)
+		else:
+			super().__init__(
+					indent=indent,
+					width=width,
+					depth=depth,
+					stream=stream,
+					compact=compact,
+					sort_dicts=sort_dicts,
+					)
+
 	_dispatch: MutableMapping[Callable, Callable]
 	_indent_per_level: int
 	_format_items: Callable[[PrettyPrinter, Any, Any, Any, Any, Any, Any], None]

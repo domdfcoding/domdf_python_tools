@@ -45,21 +45,40 @@ Functions for importing classes.
 #
 
 # stdlib
-# import importlib.util
 import inspect
 import pkgutil
-# import sys
 from types import ModuleType
-from typing import Any, Callable, List, Optional, Type
+from typing import Any, Callable, List, Optional, Type, overload
+
+# 3rd party
+from typing_extensions import Literal
 
 __all__ = ["discover"]
+
+
+@overload
+def discover(
+		package: ModuleType,
+		match_func: Optional[Callable[[Any], bool]] = ...,
+		exclude_side_effects: Literal[True] = ...,
+		) -> List[Type[Any]]:
+	...
+
+
+@overload
+def discover(
+		package: ModuleType,
+		match_func: Optional[Callable[[Any], bool]] = ...,
+		exclude_side_effects: Literal[False] = ...,
+		) -> List[Any]:
+	...
 
 
 def discover(
 		package: ModuleType,
 		match_func: Optional[Callable[[Any], bool]] = None,
 		exclude_side_effects: bool = True,
-		) -> List[Type[Any]]:
+		) -> List[Any]:
 	"""
 	Returns a list of objects in the directory matched by ``match_func``.
 

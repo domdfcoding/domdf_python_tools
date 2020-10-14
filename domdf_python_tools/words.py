@@ -245,6 +245,8 @@ def make_font(
 	:param greek_uppers: Optional iterable of uppercase Greek letters (𝚨-𝛁).
 	:param greek_lowers: Optional iterable of lowercase Greek letters (𝛂-𝛡).
 
+	:rtype:
+
 	.. versionadded:: 0.7.0
 	"""  # noqa D400
 
@@ -286,7 +288,7 @@ SERIF_BOLD_LETTERS = make_font(
 		greek_lowers=SERIF_BOLD_GREEK_LOWER,
 		)
 """
-Bold Serif :class:`domdf_python_tools.words.Font`.
+Bold Serif :class:`domdf_python_tools.words.Font`
 
 This font includes numbers and Greek letters.
 
@@ -309,7 +311,7 @@ SERIF_ITALIC_LETTERS = make_font(
 		greek_lowers=SERIF_ITALIC_GREEK_LOWER,
 		)
 """
-Italic Serif :class:`domdf_python_tools.words.Font`.
+Italic Serif :class:`domdf_python_tools.words.Font`
 
 This font includes and Greek letters.
 
@@ -332,7 +334,7 @@ SERIF_BOLD_ITALIC_LETTERS = make_font(
 		greek_lowers=SERIF_BOLD_ITALIC_GREEK_LOWER,
 		)
 """
-Bold and Italic Serif :class:`domdf_python_tools.words.Font`.
+Bold and Italic Serif :class:`domdf_python_tools.words.Font`
 
 This font includes Greek letters.
 
@@ -352,7 +354,7 @@ SANS_SERIF_LETTERS = make_font(
 		digits=SANS_SERIF_DIGITS,
 		)
 """
-Normal Sans-Serif :class:`domdf_python_tools.words.Font`.
+Normal Sans-Serif :class:`domdf_python_tools.words.Font`
 
 This font includes numbers.
 
@@ -410,7 +412,7 @@ SANS_SERIF_BOLD_ITALIC_LETTERS = make_font(
 		greek_lowers=SANS_SERIF_BOLD_ITALIC_GREEK_LOWER,
 		)
 """
-Bold and Italic Sans-Serif :class:`domdf_python_tools.words.Font`.
+Bold and Italic Sans-Serif :class:`domdf_python_tools.words.Font`
 
 This font includes Greek letters.
 
@@ -424,7 +426,7 @@ SCRIPT_LOWER = '𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹
 
 SCRIPT_LETTERS = make_font(SCRIPT_UPPER, SCRIPT_LOWER)
 """
-Script :class:`domdf_python_tools.words.Font`.
+Script :class:`domdf_python_tools.words.Font`
 
 .. versionadded:: 0.7.0
 """
@@ -436,7 +438,7 @@ FRAKTUR_LOWER = "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔�
 
 FRAKTUR_LETTERS = make_font(FRAKTUR_UPPER, FRAKTUR_LOWER)
 """
-Fraktur :class:`domdf_python_tools.words.Font`.
+Fraktur :class:`domdf_python_tools.words.Font`
 
 .. versionadded:: 0.7.0
 """
@@ -450,7 +452,7 @@ MONOSPACE_DIGITS = "𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿"
 
 MONOSPACE_LETTERS = make_font(MONOSPACE_UPPER, MONOSPACE_LOWER, MONOSPACE_DIGITS)
 """
-Monospace :class:`domdf_python_tools.words.Font`.
+Monospace :class:`domdf_python_tools.words.Font`
 
 This font includes numbers.
 
@@ -480,6 +482,8 @@ def as_text(value: Any) -> str:
 
 	:param value: The value to convert to a string.
 
+	:rtype:
+
 	.. versionchanged:: 0.8.0
 
 		Moved from :mod:`domdf_python_tools.utils`.
@@ -504,14 +508,15 @@ def word_join(
 	:param iterable:
 	:param use_repr: Whether to join the ``repr`` of each object.
 	:param oxford: Whether to use an oxford comma when joining the last two elements.
-		Always :py:obj:`False` if there are fewer than three elements.
+	:default oxford: :py:obj:`False`. Always :py:obj:`False` if there are fewer than three elements
 	:param delimiter: A single character to use between the words.
 	:param connective: The connective to join the final two words with.
+
+	:rtype:
 
 	.. versionchanged:: 0.11.0
 
 		Added ``delimiter`` and ``connective`` arguments.
-
 	"""
 
 	delimiter = f"{delimiter} "

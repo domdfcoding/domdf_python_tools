@@ -51,13 +51,16 @@ from typing import (
 # 3rd party
 import pydash  # type: ignore
 
-__all__ = ["Dictable", "NamedList", "namedlist", "UserList"]
-
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
 
+__all__ = ["Dictable", "NamedList", "namedlist", "UserList"]
 
-class Dictable(Iterable):
+_V = TypeVar("_V")
+
+
+@prettify_docstrings
+class Dictable(Iterable[Tuple[str, _V]]):
 	"""
 	The basic structure of a class that can be converted into a dictionary.
 	"""
@@ -66,13 +69,20 @@ class Dictable(Iterable):
 	def __init__(self, *args, **kwargs):
 		pass
 
+	def __repr__(self) -> str:
+		return super().__repr__()
+
 	def __str__(self) -> str:
 		return self.__repr__()
 
-	def __iter__(self) -> Iterable[Tuple[str, Any]]:  # type: ignore[override]
+	def __iter__(self) -> Iterator[Tuple[str, _V]]:
+		"""
+		Iterate over the attributes of the class.
+		"""
+
 		yield from self.__dict__.items()
 
-	def __getstate__(self) -> Dict[str, Any]:
+	def __getstate__(self) -> Dict[str, _V]:
 		return self.__dict__
 
 	def __setstate__(self, state):

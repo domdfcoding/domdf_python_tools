@@ -6,7 +6,7 @@ A list of strings that represent lines in a multiline string.
 
 .. versionchanged:: 1.0.0
 
-	``String`` should now be imported from :mod:`domdf_python_tools.typing`.
+	:class:`~domdf_python_tools.typing.String` should now be imported from :mod:`domdf_python_tools.typing`.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -32,15 +32,20 @@ from contextlib import contextmanager
 from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
 
 # this package
+from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
 __all__ = ["Indent", "StringList"]
 
 
+@prettify_docstrings
 class Indent:
 	"""
 	Represents an indent, having a symbol/type and a size.
+
+	:param size: The indent size.
+	:param type: The indent character.
 	"""
 
 	def __init__(self, size: int = 0, type: str = "\t"):  # noqa A002  # pylint: disable=redefined-builtin

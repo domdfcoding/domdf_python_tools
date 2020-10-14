@@ -25,9 +25,13 @@ Functions for working with secrets, such as API tokens.
 #  MA 02110-1301, USA.
 #
 
+# this package
+from domdf_python_tools.doctools import prettify_docstrings
+
 __all__ = ["Secret"]
 
 
+@prettify_docstrings
 class Secret(str):
 	"""
 	Subclass of :py:class:`str` that guards against accidentally printing a secret to the terminal.

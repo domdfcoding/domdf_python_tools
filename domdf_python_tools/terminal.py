@@ -61,7 +61,7 @@ import os
 import pprint
 import shutil
 import textwrap
-from typing import Tuple
+from typing import IO, Tuple
 
 # this package
 from domdf_python_tools import __version__
@@ -92,7 +92,7 @@ def clear() -> None:
 
 def br() -> None:
 	"""
-	Prints a line break.
+	Prints a blank line.
 	"""
 
 	print('')
@@ -104,12 +104,20 @@ def interrupt() -> None:
 
 	Useful when you have a long-running script that you might want to
 	interrupt part way through.
+
+	**Example:**
+
+	.. code-block:: python
+
+		>>> interrupt()
+		(Press Ctrl-C to quit at any time)
+
 	"""
 
-	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time.)")
+	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time)")
 
 
-def overtype(*objects, sep: str = ' ', end: str = '', file=None, flush: bool = False) -> None:
+def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bool = False) -> None:
 	"""
 	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
 	and followed by ``end``.

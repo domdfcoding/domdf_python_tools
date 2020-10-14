@@ -34,7 +34,6 @@ from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
 # this package
-from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
@@ -99,6 +98,9 @@ def append_doctring_from_another(target: Union[Type, Callable], original: Union[
 	:param original: The object to copy the docstring from
 	"""
 
+	# this package
+	from domdf_python_tools.stringlist import StringList
+
 	target_doc = target.__doc__
 	original_doc = original.__doc__
 
@@ -129,7 +131,7 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 
 	.. code-block:: rest
 
-		:class:`~python:str`
+		:class:`str`
 
 	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
 	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
@@ -147,7 +149,7 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 	working_string = f"{input_string}"
 
 	for builtin in {x for x in builtins_list if not x.startswith("__") and x != "None"}:
-		working_string = working_string.replace(f"``{builtin}``", f":class:`~python:{builtin}`")
+		working_string = working_string.replace(f"``{builtin}``", f":class:`{builtin}`")
 
 	return working_string
 
@@ -185,7 +187,7 @@ def append_docstring_from(original: F) -> Callable:
 	return wrapper
 
 
-def sphinxify_docstring() -> Callable:
+def sphinxify_docstring() -> Callable[[F], F]:
 	r"""
 	Decorator to make proper sphinx links out of double-backticked strings in the docstring.
 
@@ -199,7 +201,7 @@ def sphinxify_docstring() -> Callable:
 
 	.. code-block:: rest
 
-		:class:`~python:str`
+		:class:`str`
 
 	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
 	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
@@ -345,11 +347,11 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 
 def prettify_docstrings(obj: Type) -> Type:
 	"""
-	Prettify the default :class:`object` docstrings for use in Sphinx documentation.
+	Decorator to prettify the default :class:`object` docstrings for use in Sphinx documentation.
 
 	:param obj: The object to prettify the method docstrings for.
 
-	:return: The object
+	:rtype:
 
 	.. versionadded:: 0.8.0
 	"""

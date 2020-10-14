@@ -52,7 +52,15 @@ import domdf_python_tools
 
 if typing.TYPE_CHECKING or domdf_python_tools.__docs:
 	# 3rd party
-	from pandas._typing import FrameOrSeries  # type: ignore
+	from pandas import Series, DataFrame  # type: ignore
+
+	Series.__module__ = "pandas"
+	DataFrame.__module__ = "pandas"
+
+
+#: .. versionadded:: 1.0.0
+FrameOrSeries = typing.TypeVar("FrameOrSeries", "Series", "DataFrame")
+
 
 __all__ = [
 		"PathLike",
@@ -65,6 +73,7 @@ __all__ = [
 		"ClassMethodDescriptorType",
 		"HasHead",
 		"String",
+		"FrameOrSeries",
 		]
 
 #: Type hint for objects that represent filesystem paths.
@@ -185,11 +194,11 @@ class String(Protocol):
 @runtime_checkable
 class HasHead(Protocol):
 	"""
+	.. versionadded:: 0.8.0
+
 	:class:`typing.Protocol` for classes that have a ``head`` method.
 
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
-
-	.. versionadded:: 0.8.0
 	"""
 
 	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":

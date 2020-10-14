@@ -12,26 +12,33 @@
 
 .. automodule:: domdf_python_tools.dates
 	:undoc-members:
+	:exclude-members: months
 
-	.. py:data:: months
+	**Data:**
 
-		Mapping of months to their 3-character shortcodes.
+	.. autosummary::
 
-		Essentially:
+		~domdf_python_tools.dates.months
 
-		.. code-block:: python
 
-			months = {
-				Jan="January",
-				Feb="February",
-				Mar="March",
-				Apr="April",
-				May="May",
-				Jun="June",
-				Jul="July",
-				Aug="August",
-				Sep="September",
-				Oct="October",
-				Nov="November",
-				Dec="December",
-			}
+.. autovariable:: domdf_python_tools.dates.months
+	:no-value:
+
+	Essentially:
+
+	.. code-block:: python
+
+		months = {
+			Jan="January",
+			Feb="February",
+			Mar="March",
+			Apr="April",
+			May="May",
+			Jun="June",
+			Jul="July",
+			Aug="August",
+			Sep="September",
+			Oct="October",
+			Nov="November",
+			Dec="December",
+		}

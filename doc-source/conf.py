@@ -17,7 +17,6 @@ import domdf_python_tools
 from __pkginfo__ import __version__
 
 domdf_python_tools.__docs = True
-overloads_location = "bottom"
 
 github_username = "domdfcoding"
 github_repository = "domdf_python_tools"
@@ -73,6 +72,7 @@ intersphinx_mapping = {
 		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
 		"h5py": ('https://docs.h5py.org/en/latest/', None),
 		"sarge": ('https://sarge.readthedocs.io/en/latest/', None),
+		'pandas': ('https://pandas.pydata.org/docs/', None),
 		}
 
 html_theme = 'domdf_sphinx_theme'

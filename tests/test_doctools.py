@@ -317,7 +317,7 @@ def test_make_sphinx_links():
 		"""
 
 	sphinx = """
-		This is a docstring that contains references to :class:`~python:str`, :class:`~python:int`, and :class:`~python:float`
+		This is a docstring that contains references to :class:`str`, :class:`int`, and :class:`float`
 		but lacks proper references to them when rendered in Sphinx.
 
 		:return: pi
@@ -342,7 +342,7 @@ def test_sphinxify_docstring():
 		return math.pi
 
 	assert demo_function.__doc__ == """
-		This is a docstring that contains references to :class:`~python:str`, :class:`~python:int`, and :class:`~python:float`
+		This is a docstring that contains references to :class:`str`, :class:`int`, and :class:`float`
 		but lacks proper references to them when rendered in Sphinx.
 
 		:return: pi

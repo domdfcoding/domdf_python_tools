@@ -50,7 +50,6 @@ import sys
 from typing import IO, Any, Callable, Iterable, List, Optional, TypeVar, Union
 
 # this package
-from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.typing import JsonLibrary, PathLike
 
 __all__ = [
@@ -115,14 +114,14 @@ def copytree(
 		added in the list of errors raised in an Error exception at the end of
 		the copy process. You can set the optional ignore_dangling_symlinks
 		flag to true if you want to silence this exception. Notice that this
-		option has no effect on platforms that don’t support :class:`python:os.symlink`.
+		option has no effect on platforms that don’t support :func:`os.symlink`.
 	:param ignore: A callable that will receive as its arguments the source
 		directory, and a list of its contents. The ignore callable will be
 		called once for each directory that is copied. The callable must return
 		a sequence of directory and file names relative to the current
 		directory (i.e. a subset of the items in its second argument); these
 		names will then be ignored in the copy process.
-		:class:`python:shutil.ignore_patterns` can be used to create such a callable
+		:func:`shutil.ignore_patterns` can be used to create such a callable
 		that ignores names based on
 		glob-style patterns.
 	"""
@@ -154,19 +153,19 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, ex
 	"""
 	Create a directory at the given path, but only if the directory does not already exist.
 
-	.. note::
+	.. attention::
 
 		This will fail silently if a file with the same name already exists.
 		This appears to be due to the behaviour of :func:`os.mkdir`.
 
 	:param directory: Directory to create
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
-	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
+	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`FileNotFoundError`.
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 	:no-default parents:
-	:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
-		target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
+	:param exist_ok: If :py:obj:`False` (the default), a :class:`FileExistsError` is raised if the
+		target directory already exists. If :py:obj:`True`, :class:`FileExistsError` exceptions
 		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 		component is not an existing non-directory file.
 	:no-default exist_ok:
@@ -261,6 +260,9 @@ def clean_writer(string: str, fp: IO) -> None:
 	:param fp:
 	"""
 
+	# this package
+	from domdf_python_tools.stringlist import StringList
+
 	buffer = StringList(string)
 	buffer.blankline(ensure_single=True)
 	fp.write(str(buffer))
@@ -299,7 +301,7 @@ def in_directory(directory: PathLike):
 
 class PathPlus(pathlib.Path):
 	"""
-	Subclass of :mod:`pathlib.Path` with additional methods and a default encoding of UTF-8.
+	Subclass of :class:`pathlib.Path` with additional methods and a default encoding of UTF-8.
 
 	Path represents a filesystem path but unlike PurePath, also offers
 	methods to do system calls on path objects. Depending on your system,
@@ -343,10 +345,10 @@ class PathPlus(pathlib.Path):
 			errors: Optional[str] = None,
 			):
 		"""
-		Open the file in text mode, write to it without trailing spaces, and close the file.
+		Write to the file without trailing whitespace, and with a newline at the end of the file.
 
 		:param string:
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:rtype:
@@ -372,12 +374,12 @@ class PathPlus(pathlib.Path):
 			This appears to be due to the behaviour of :func:`os.mkdir`.
 
 		:param mode: Combined with the process’ umask value to determine the file mode and access flags
-		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`~python:FileNotFoundError`.
+		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`FileNotFoundError`.
 			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 		:no-default parents:
-		:param exist_ok: If :py:obj:`False` (the default), a :class:`~python:FileExistsError` is raised if the
-			target directory already exists. If :py:obj:`True`, :class:`~python:FileExistsError` exceptions
+		:param exist_ok: If :py:obj:`False` (the default), a :class:`FileExistsError` is raised if the
+			target directory already exists. If :py:obj:`True`, :class:`FileExistsError` exceptions
 			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
 			component is not an existing non-directory file.
 		:no-default exist_ok:
@@ -399,7 +401,7 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, append the given string to it, and close the file.
 
 		:param string:
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:rtype:
@@ -420,7 +422,7 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, write to it, and close the file.
 
 		:param data:
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:rtype:
@@ -437,11 +439,10 @@ class PathPlus(pathlib.Path):
 			errors: Optional[str] = None,
 			) -> None:
 		"""
-		Open the file in text mode, write the given list of lines to it without trailing spaces,
-		and close the file.
+		Write the given list of lines to the file without trailing whitespace.
 
 		:param data:
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		.. versionadded:: 0.5.0
@@ -457,7 +458,7 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file in text mode, read it, and close the file.
 
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:return: The content of the file.
@@ -476,7 +477,7 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, return a list containing the lines in the file,
 		and close the file.
 
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:return: The content of the file.
@@ -543,7 +544,7 @@ class PathPlus(pathlib.Path):
 		Dump ``data`` to the file as JSON.
 
 		:param data: The object to serialise to JSON.
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
 		:default json_library: :mod:`json`
@@ -574,7 +575,7 @@ class PathPlus(pathlib.Path):
 		"""
 		Load JSON data from the file.
 
-		:param encoding: The encoding to write to the file using.
+		:param encoding: The encoding to write to the file in.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
 		:default json_library: :mod:`json`
@@ -718,10 +719,22 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 	__slots__ = ()
 
 	def owner(self):  # pragma: no cover
+		"""
+		Unsupported on Windows
+		"""
+
 		raise NotImplementedError("Path.owner() is unsupported on this system")
 
 	def group(self):  # pragma: no cover
+		"""
+		Unsupported on Windows
+		"""
+
 		raise NotImplementedError("Path.group() is unsupported on this system")
 
 	def is_mount(self):  # pragma: no cover
+		"""
+		Unsupported on Windows
+		"""
+
 		raise NotImplementedError("Path.is_mount() is unsupported on this system")

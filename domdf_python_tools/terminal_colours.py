@@ -113,17 +113,17 @@ def clear_line(mode: int = 2) -> str:
 
 
 class Colour(str):
-	"""
+	r"""
 	An ANSI escape sequence representing a colour.
 
 	The colour can be used as a context manager, a string, or a function.
 
 	:param style: Escape sequence representing the style.
-	:type style: str
+	:type style: :class:`str`
 	:param stack: The stack to place the escape sequence on.
-	:type stack: str
-	:param reset: The escape requence the reset the style.
-	:type reset: str
+	:type stack: :class:`~typing.List`\[:class:`str`\]
+	:param reset: The escape sequence the reset the style.
+	:type reset: :class:`str`
 	"""
 
 	style: str
@@ -148,6 +148,10 @@ class Colour(str):
 			print(self.stack[-1], end='')
 
 	def __call__(self, text) -> str:
+		"""
+		Returns the given text in this colour.
+		"""
+
 		return f"{self}{text}{self.reset}"
 
 

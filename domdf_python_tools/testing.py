@@ -74,6 +74,8 @@ def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Ite
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
 
+	:rtype:
+
 	.. versionadded:: 0.4.9
 	"""
 
@@ -109,6 +111,8 @@ def generate_falsy_values(extra_falsy: Sequence = (), ratio: float = 1) -> Itera
 
 	:param extra_falsy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
+
+	:rtype:
 
 	.. versionadded:: 0.4.9
 	"""
@@ -154,6 +158,8 @@ def testing_boolean_values(
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
+
+	:rtype:
 
 	.. versionadded:: 0.4.9
 	"""  # noqa D400
@@ -237,7 +243,9 @@ def min_version(
 
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
-	:default reason: ``'Requires Python <version> or greater.'``
+	:default reason: :file:`'Requires Python {<version>} or greater.'`
+
+	:rtype:
 
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
@@ -260,7 +268,7 @@ def max_version(
 
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
-	:default reason: ``'Not needed after Python <version>.'``
+	:default reason: :file:`'Not needed after Python {<version>}.'`
 
 	:rtype:
 
@@ -282,6 +290,8 @@ def not_windows(reason: str = "Not required on Windows.", ) -> _pytest.mark.stru
 
 	:param reason: The reason to display when skipping.
 
+	:rtype:
+
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
 
@@ -294,6 +304,8 @@ def only_windows(reason: str = "Only required on Windows.", ) -> _pytest.mark.st
 	skip a test if the current platform is **not** Windows.
 
 	:param reason: The reason to display when skipping.
+
+	:rtype:
 
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
@@ -308,6 +320,8 @@ def not_pypy(reason: str = "Not required on PyPy.") -> _pytest.mark.structures.M
 
 	:param reason: The reason to display when skipping.
 
+	:rtype:
+
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
 
@@ -320,6 +334,8 @@ def only_pypy(reason: str = "Only required on PyPy.") -> _pytest.mark.structures
 	skip a test if the current Python implementation is not PyPy.
 
 	:param reason: The reason to display when skipping.
+
+	:rtype:
 
 	.. versionadded:: 0.9.0
 	"""  # noqa D400
@@ -345,6 +361,8 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 
 		def my_test(tmp_pathplus: PathPlus):
 			assert True
+
+	:rtype:
 
 	.. versionadded:: 0.10.0
 	"""

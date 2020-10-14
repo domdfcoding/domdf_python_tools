@@ -86,7 +86,6 @@ from packaging import version
 
 # this package
 import domdf_python_tools.words
-from domdf_python_tools import __version__
 from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
@@ -132,9 +131,9 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	Check whether one or more dependencies are available to be imported.
 
 	:param dependencies: The list of dependencies to check the availability of.
-	:param prt: Whether the status should be printed to the terminal. Default :py:obj:`True`.
+	:param prt: Whether the status should be printed to the terminal.
 
-	:return: A list of any missing modules
+	:return: A list of any missing modules.
 	"""
 
 	# stdlib
@@ -173,7 +172,7 @@ def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
 
 def cmp(x, y) -> int:
 	"""
-	Implementation of cmp for Python 3.
+	Implementation of ``cmp`` for Python 3.
 
 	Compare the two objects x and y and return an integer according to the outcome.
 
@@ -271,7 +270,7 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	.. TODO:: Allow custom types, not just :class:`int` (making :class:`int` the default)
 
 	:param input_string: The string to be converted into a tuple
-	:param sep: The separator in the string. Default `,`
+	:param sep: The separator in the string.
 	"""
 
 	return tuple(int(x) for x in input_string.split(sep))
@@ -363,7 +362,8 @@ def double_chain(iterable: Iterable[Iterable]):
 
 
 	:param iterable: The iterable to chain.
-	:return:
+
+	:rtype:
 
 	.. versionadded:: 0.4.7
 	"""
@@ -444,7 +444,7 @@ Object that provides an ellipsis string
 """
 
 
-def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int = 10) -> str:
+def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int = 10) -> Optional[str]:
 	"""
 	Returns the head of the given object.
 
@@ -497,24 +497,24 @@ def coloured_diff(
 	Compare two sequences of lines; generate the delta as a unified diff.
 
 	Unified diffs are a compact way of showing line changes and a few
-	lines of context. The number of context lines is set by 'n' which
+	lines of context. The number of context lines is set by ``n`` which
 	defaults to three.
 
-	By default, the diff control lines (those with ---, +++, or @@) are
-	created with a trailing newline. This is helpful so that inputs
-	created from file.readlines() result in diffs that are suitable for
-	file.writelines() since both the inputs and outputs have trailing
+	By default, the diff control lines (those with ``---``, ``+++``, or ``@@``)
+	are created with a trailing newline. This is helpful so that inputs
+	created from ``file.readlines()`` result in diffs that are suitable for
+	``file.writelines()`` since both the inputs and outputs have trailing
 	newlines.
 
 	For inputs that do not have trailing newlines, set the lineterm
-	argument to "" so that the output will be uniformly newline free.
+	argument to ``''`` so that the output will be uniformly newline free.
 
 	The unidiff format normally has a header for filenames and modification
 	times. Any or all of these may be specified using strings for
-	'fromfile', 'tofile', 'fromfiledate', and 'tofiledate'.
+	``fromfile``, ``tofile``, ``fromfiledate``, and ``tofiledate``.
 	The modification times are normally expressed in the ISO 8601 format.
 
-	Example:
+	**Example:**
 
 	>>> for line in coloured_diff('one two three four'.split(),
 	...             'zero one tree four'.split(), 'Original', 'Current',
@@ -541,8 +541,6 @@ def coloured_diff(
 	:param lineterm:
 	:param removed_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were removed.
 	:param added_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were added.
-
-	:return:
 	"""
 
 	# this package
@@ -586,16 +584,19 @@ def deprecated(
 
 	:param deprecated_in: The version at which the decorated method is considered
 		deprecated. This will usually be the next version to be released when
-		the decorator is added. The default is **None**, which effectively means
-		immediate deprecation. If this is not specified, then the `removed_in` and
-		`current_version` arguments are ignored.
+		the decorator is added. The default is :py:obj:`None`, which effectively
+		means immediate deprecation. If this is not specified, then the
+		``removed_in`` and ``current_version`` arguments are ignored.
 	:no-default deprecated_in:
 
 	:param removed_in: The version or :class:`datetime.date` when the decorated
-		method will be removed. The default is **None**, specifying that the
-		function is not currently planned to be removed.
+		method will be removed. The default is :py:obj:`None`, specifying that
+		the function is not currently planned to be removed.
 
-		.. note:: This parameter cannot be set to a value if ``deprecated_in=None``.
+		.. note::
+
+			This parameter cannot be set to a value if ``deprecated_in=None``.
+
 	:no-default removed_in:
 
 	:param current_version: The source of version information for the currently
@@ -607,11 +608,11 @@ def deprecated(
 	:no-default current_version:
 
 	:param details: Extra details to be added to the method docstring and
-		warning. For example, the details may point users to a replacement method,
-		such as "Use the foo_bar method instead".
+		warning. For example, the details may point users to a replacement
+		method, such as "Use the foo_bar method instead".
 
-	:param name: The name of the deprecated function, if an alias is being deprecated.
-		Default's to the name of the decorated function.
+	:param name: The name of the deprecated function, if an alias is being
+		deprecated. Default is to the name of the decorated function.
 	:no-default name:
 	"""
 
