@@ -58,6 +58,7 @@ __all__ = ["discover"]
 def discover(
 		package: ModuleType,
 		match_func: Optional[Callable[[Any], bool]] = None,
+		exclude_side_effects: bool = True,
 		) -> List[Type[Any]]:
 	"""
 	Returns a list of objects in the directory matched by ``match_func``.
@@ -65,8 +66,13 @@ def discover(
 	:param package: A Python package
 	:param match_func: Function taking an object and returning true if the object is to be included in the output.
 	:default match_func: :py:obj:`None`, which includes all objects.
+	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
 
 	:return: List of matching objects.
+
+	.. versionchanged:: 1.0.0
+
+		Added the ``exclude_side_effects`` parameter.
 	"""
 
 	matched_classes = list()
@@ -82,12 +88,12 @@ def discover(
 
 		# Check all the functions in that module
 		for _, imported_objects in inspect.getmembers(module, match_func):
-			if not hasattr(imported_objects, "__module__"):
-				continue
 
-			# Don't include things that are only there due to a side effect of importing
-			if imported_objects.__module__ != module.__name__:
-				continue
+			if exclude_side_effects:
+				if not hasattr(imported_objects, "__module__"):
+					continue
+				if imported_objects.__module__ != module.__name__:
+					continue
 
 			matched_classes.append(imported_objects)
 
