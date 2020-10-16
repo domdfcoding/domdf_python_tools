@@ -89,6 +89,7 @@ __all__ = [
 		"Back",
 		"Style",
 		"Cursor",
+		"strip_ansi",
 		]
 
 init()
@@ -127,6 +128,8 @@ def strip_ansi(value: str) -> str:
 
 	:param value:
 
+	:rtype:
+
 	.. versionadded:: 1.1.0
 	"""
 
@@ -143,7 +146,7 @@ class Colour(str):
 	:type style: :class:`str`
 	:param stack: The stack to place the escape sequence on.
 	:type stack: :class:`~typing.List`\[:class:`str`\]
-	:param reset: The escape sequence the reset the style.
+	:param reset: The escape sequence to reset the style.
 	:type reset: :class:`str`
 	"""
 
