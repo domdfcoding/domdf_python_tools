@@ -12,6 +12,7 @@ import io
 import itertools
 import random
 import types
+from textwrap import dedent
 from typing import no_type_check
 
 # 3rd party
@@ -139,7 +140,41 @@ class Orderable:
 		return self._hash
 
 
+fruit = [
+		"apple",
+		"orange",
+		"pear",
+		"lemon",
+		"grape",
+		"strawberry",
+		"banana",
+		"plum",
+		"tomato",
+		"cherry",
+		"blackcurrant",
+		]
+
+
 class TestFancyPrinter:
+
+	def test_list(self):
+		assert FancyPrinter().pformat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+		assert FancyPrinter().pformat(fruit) == dedent(
+				"""\
+		[
+		 'apple',
+		 'orange',
+		 'pear',
+		 'lemon',
+		 'grape',
+		 'strawberry',
+		 'banana',
+		 'plum',
+		 'tomato',
+		 'cherry',
+		 'blackcurrant',
+		 ]"""
+				)
 
 	@no_type_check
 	def test_init(self):
