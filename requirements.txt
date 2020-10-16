@@ -1,6 +1,6 @@
 colorama>=0.4.3
 deprecation>=2.1.0
-importlib_resources>=3.0.0; python_version < "3.7"
 importlib_metadata>=1.5.0; python_version < "3.8"
+importlib_resources>=3.0.0; python_version < "3.7"
 pydash>=4.7.4
 typing_extensions>=3.7.4.3

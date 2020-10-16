@@ -51,7 +51,6 @@ else:  # pragma: no cover (<py37)
 	# stdlib
 	import importlib.resources as importlib_resources
 
-
 if sys.version_info[:2] < (3, 8):  # pragma: no cover (>=py38)
 	# 3rd party
 	import importlib_metadata  # type: ignore

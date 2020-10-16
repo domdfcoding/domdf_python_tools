@@ -53,6 +53,7 @@ from typing import Any, Callable, List, Optional, Type, overload
 # 3rd party
 from typing_extensions import Literal
 
+# this package
 from domdf_python_tools.compat import importlib_metadata
 
 __all__ = ["discover"]
