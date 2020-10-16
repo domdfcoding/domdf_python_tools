@@ -36,7 +36,7 @@ from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
-__all__ = ["Indent", "StringList"]
+__all__ = ["Indent", "StringList", "DelimitedList"]
 
 
 @prettify_docstrings
@@ -432,6 +432,7 @@ class DelimitedList(List[str]):
 		>>> f"Numbers: {l:, }"
 		'Numbers: 1, 2, 3, 4, 5'
 
+	.. versionadded:: 1.1.0
 	"""
 
 	def __format__(self, format_spec: str) -> str:
