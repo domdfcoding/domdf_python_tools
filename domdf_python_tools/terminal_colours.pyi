@@ -28,7 +28,7 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #  Based on colorama
 #  https://github.com/tartley/colorama
 #  Copyright Jonathan Hartley 2013
-#  Distrubuted under the BSD 3-Clause license.
+#  Distributed under the BSD 3-Clause license.
 #  |  Redistribution and use in source and binary forms, with or without
 #  |  modification, are permitted provided that the following conditions are met:
 #  |
@@ -64,19 +64,22 @@ from typing import List
 # 3rd party
 from typing_extensions import Final
 
-CSI: Final[str] = '\033['
-OSC: Final[str] = '\033]'
-BEL: Final[str] = '\a'
+CSI: Final[str]
+OSC: Final[str]
+BEL: Final[str]
 
-fore_stack: List[str] = []
-back_stack: List[str] = []
-style_stack: List[str] = []
+fore_stack: List[str]
+back_stack: List[str]
+style_stack: List[str]
 
 
 def code_to_chars(code) -> str: ...
 def set_title(title: str) -> str: ...
 def clear_screen(mode: int = 2) -> str: ...
 def clear_line(mode: int = 2) -> str: ...
+
+
+def strip_ansi(value: str) -> str: ...
 
 
 class Colour(str):
@@ -134,8 +137,8 @@ class AnsiFore(AnsiCodes):
 
 class AnsiBack(AnsiCodes):
 
-	_stack = back_stack
-	_reset = "\033[49m"
+	_stack: List[str]
+	_reset: str
 
 	BLACK: Colour
 	RED: Colour
@@ -160,8 +163,8 @@ class AnsiBack(AnsiCodes):
 
 class AnsiStyle(AnsiCodes):
 
-	_stack = style_stack
-	_reset = "\033[22m"
+	_stack: List[str]
+	_reset: str
 
 	BRIGHT: Colour
 	DIM: Colour
@@ -173,7 +176,3 @@ Fore = AnsiFore()
 Back = AnsiBack()
 Style = AnsiStyle()
 Cursor = AnsiCursor()
-
-fore_stack.append(Fore.RESET)
-back_stack.append(Back.RESET)
-style_stack.append(Style.NORMAL)

@@ -126,6 +126,8 @@ def strip_ansi(value: str) -> str:
 	Strip ANSI colour codes from the given string to return a plaintext output.
 
 	:param value:
+
+	.. versionadded:: 1.1.0
 	"""
 
 	return _ansi_re.sub("", value)
