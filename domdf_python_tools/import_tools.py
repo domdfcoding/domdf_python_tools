@@ -53,6 +53,8 @@ from typing import Any, Callable, List, Optional, Type, overload
 # 3rd party
 from typing_extensions import Literal
 
+from domdf_python_tools.compat import importlib_metadata
+
 __all__ = ["discover"]
 
 
@@ -80,10 +82,11 @@ def discover(
 		exclude_side_effects: bool = True,
 		) -> List[Any]:
 	"""
-	Returns a list of objects in the directory matched by ``match_func``.
+	Returns a list of objects in the given module,
+	optionally filtered by ``match_func``.
 
 	:param package: A Python package
-	:param match_func: Function taking an object and returning true if the object is to be included in the output.
+	:param match_func: Function taking an object and returning :py:obj:`True` if the object is to be included in the output.
 	:default match_func: :py:obj:`None`, which includes all objects.
 	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
 
@@ -94,7 +97,7 @@ def discover(
 		Added the ``exclude_side_effects`` parameter.
 	"""
 
-	matched_classes = list()
+	matching_objects = []
 
 	for _, module_name, _ in pkgutil.walk_packages(
 		# https://github.com/python/mypy/issues/1422
@@ -114,9 +117,9 @@ def discover(
 				if imported_objects.__module__ != module.__name__:
 					continue
 
-			matched_classes.append(imported_objects)
+			matching_objects.append(imported_objects)
 
-	return matched_classes
+	return matching_objects
 
 
 #
@@ -132,3 +135,33 @@ def discover(
 # 	spec.loader.exec_module(mod)
 # 	sys.modules[mod.__name__] = mod
 # 	return mod
+
+
+def discover_entry_points(
+		group_name: str,
+		match_func: Optional[Callable[[Any], bool]] = None,
+		) -> List[Any]:
+	"""
+	Returns a list of entry points in the given category,
+	optionally filtered by ``match_func``.
+
+	:param group_name: The entry point group name, e.g. ``'entry_points'``.
+	:param match_func: Function taking an object and returning :py:obj:`True` if the object is to be included in the output.
+	:default match_func: :py:obj:`None`, which includes all objects.
+
+	:return: List of matching objects.
+
+	.. versionadded:: 1.1.0
+	"""
+
+	matching_objects = []
+
+	for entry_point in importlib_metadata.entry_points().get(group_name, ()):
+		entry_point = entry_point.load()
+
+		if match_func is not None and not match_func(entry_point):
+			continue
+
+		matching_objects.append(entry_point)
+
+	return matching_objects

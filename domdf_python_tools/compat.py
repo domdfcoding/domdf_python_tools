@@ -12,6 +12,13 @@ Provides the following:
 
 	`importlib_resources <https://importlib-resources.readthedocs.io/en/latest/>`_ on Python 3.6;
 	:mod:`importlib.resources` on Python 3.7 and later.
+
+.. py:data:: importlib_metadata
+
+	`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`_ on Python 3.7 and earlier;
+	:mod:`importlib.metadata` on Python 3.8 and later.
+
+	.. versionadded:: 1.1.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -35,7 +42,7 @@ Provides the following:
 # stdlib
 import sys
 
-__all__ = ["importlib_resources"]
+__all__ = ["importlib_resources", "importlib_metadata"]
 
 if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
 	# 3rd party
@@ -43,3 +50,11 @@ if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
 else:  # pragma: no cover (<py37)
 	# stdlib
 	import importlib.resources as importlib_resources
+
+
+if sys.version_info[:2] < (3, 8):  # pragma: no cover (>=py38)
+	# 3rd party
+	import importlib_metadata  # type: ignore
+else:  # pragma: no cover (<py38)
+	# stdlib
+	import importlib.metadata as importlib_metadata
