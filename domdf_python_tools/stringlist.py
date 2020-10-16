@@ -416,3 +416,23 @@ class StringList(List[str]):
 			yield
 		finally:
 			self.indent_type = original_indent_type
+
+
+class DelimitedList(List[str]):
+	"""
+	Subclass of :class:`list` that supports custom delimiters in format strings.
+
+	**Example:**
+
+	.. code-block::
+
+		>>> l = DelimitedList([1, 2, 3, 4, 5])
+		>>> format(l, ", ")
+		'1, 2, 3, 4, 5'
+		>>> f"Numbers: {l:, }"
+		'Numbers: 1, 2, 3, 4, 5'
+
+	"""
+
+	def __format__(self, format_spec: str) -> str:
+		return format_spec.join([str(x) for x in self])
