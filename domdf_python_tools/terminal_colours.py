@@ -28,7 +28,7 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #  Based on colorama
 #  https://github.com/tartley/colorama
 #  Copyright Jonathan Hartley 2013
-#  Distrubuted under the BSD 3-Clause license.
+#  Distributed under the BSD 3-Clause license.
 #  |  Redistribution and use in source and binary forms, with or without
 #  |  modification, are permitted provided that the following conditions are met:
 #  |
@@ -56,10 +56,16 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #
 #  Includes modifications to colorama made by Bram Geelen in
 #  https://github.com/tartley/colorama/pull/141/files
+#
+#  _ansi_re and strip_ansi based on https://github.com/pallets/click
+#  Copyright 2014 Pallets
+#  Distributed under the BSD 3-Clause license.
+#
 
 # stdlib
+import re
 from abc import ABC
-from typing import List
+from typing import List, Pattern
 
 # 3rd party
 from colorama import init  # type: ignore
@@ -110,6 +116,19 @@ def clear_screen(mode: int = 2) -> str:
 
 def clear_line(mode: int = 2) -> str:
 	return CSI + str(mode) + 'K'
+
+
+_ansi_re: Pattern[str] = re.compile(r"\033\[[;?0-9]*[a-zA-Z]")
+
+
+def strip_ansi(value: str) -> str:
+	"""
+	Strip ANSI colour codes from the given string to return a plaintext output.
+
+	:param value:
+	"""
+
+	return _ansi_re.sub("", value)
 
 
 class Colour(str):
