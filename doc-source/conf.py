@@ -69,9 +69,6 @@ pygments_style = 'default'
 intersphinx_mapping = {
 		'python': ('https://docs.python.org/3/', None),
 		'sphinx': ('https://www.sphinx-doc.org/en/stable/', None),
-		'rtd': ('https://docs.readthedocs.io/en/latest/', None),
-		"h5py": ('https://docs.h5py.org/en/latest/', None),
-		"sarge": ('https://sarge.readthedocs.io/en/latest/', None),
 		'pandas': ('https://pandas.pydata.org/docs/', None),
 		}
 
