@@ -71,7 +71,7 @@ __all__ = [
 		]
 
 newline_default = object()
-_P = TypeVar('_P', bound=pathlib.PurePath)
+_P = TypeVar("_P", bound=pathlib.PurePath)
 """
 .. versionadded:: 0.11.0
 """
@@ -289,7 +289,7 @@ def in_directory(directory: PathLike):
 	duration of the ``with`` block.
 
 	:param directory:
-	"""
+	"""  # noqa: D400
 
 	oldwd = os.getcwd()
 	try:
@@ -316,9 +316,9 @@ class PathPlus(pathlib.Path):
 		Defaults to Unix line endings (``LF``) on all platforms.
 	"""
 
-	def __new__(cls, *args, **kwargs):
+	def __new__(cls, *args, **kwargs):  # noqa D102
 		if cls is PathPlus:
-			cls = WindowsPathPlus if os.name == 'nt' else PosixPathPlus
+			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus
 
 		self = cls._from_parts(args, init=False)  # type: ignore
 		if not self._flavour.is_supported:
@@ -720,21 +720,21 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 
 	def owner(self):  # pragma: no cover
 		"""
-		Unsupported on Windows
+		Unsupported on Windows.
 		"""
 
 		raise NotImplementedError("Path.owner() is unsupported on this system")
 
 	def group(self):  # pragma: no cover
 		"""
-		Unsupported on Windows
+		Unsupported on Windows.
 		"""
 
 		raise NotImplementedError("Path.group() is unsupported on this system")
 
 	def is_mount(self):  # pragma: no cover
 		"""
-		Unsupported on Windows
+		Unsupported on Windows.
 		"""
 
 		raise NotImplementedError("Path.is_mount() is unsupported on this system")

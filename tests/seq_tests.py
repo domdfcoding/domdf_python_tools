@@ -58,7 +58,7 @@ NEVER_EQ = _NEVER_EQ()
 # Various iterables
 # This is used for checking the constructor (here and in test_deque.py)
 def iterfunc(seqn):
-	'Regular generator'
+	"""Regular generator"""
 	for i in seqn:
 		yield i
 
@@ -217,25 +217,28 @@ class CommonTest:
 
 		s = OtherSeq(u0)
 		v0 = self.type2test(s)
-		self.assertEqual(len(v0), len(s))
+		assert len(v0) == len(s)
 
 		s2 = "this is also a sequence"
 		vv = self.type2test(s2)
-		self.assertEqual(len(vv), len(s2))
+		assert len(vv) == len(s2)
 
 		# Create from various iteratables
-		for s2 in ("123", "", range(1000), ('do', 1.2), range(2000, 2200, 5)):  # type: ignore
+		for s2 in ("123", '', range(1000), ("do", 1.2), range(2000, 2200, 5)):  # type: ignore
 			for g in (Sequence, IterFunc, IterGen, itermulti, iterfunc):
-				self.assertEqual(self.type2test(g(s2)), self.type2test(s2))
-			self.assertEqual(self.type2test(IterFuncStop(s2)), self.type2test())
-			self.assertEqual(self.type2test(c for c in "123"), self.type2test("123"))
-			self.assertRaises(TypeError, self.type2test, IterNextOnly(s2))
-			self.assertRaises(TypeError, self.type2test, IterNoNext(s2))
-			self.assertRaises(ZeroDivisionError, self.type2test, IterGenExc(s2))
+				assert self.type2test(g(s2)) == self.type2test(s2)
+			assert self.type2test(IterFuncStop(s2)) == self.type2test()
+			assert self.type2test(c for c in "123") == self.type2test("123")
+			with pytest.raises(TypeError):
+				self.type2test(IterNextOnly(s2))
+			with pytest.raises(TypeError):
+				self.type2test(IterNoNext(s2))
+			with pytest.raises(ZeroDivisionError):
+				self.type2test(IterGenExc(s2))
 
 		# Issue #23757
-		self.assertEqual(self.type2test(LyingTuple((2, ))), self.type2test((1, )))
-		self.assertEqual(self.type2test(LyingList([2])), self.type2test([1]))
+		assert self.type2test(LyingTuple((2, ))) == self.type2test((1, ))
+		assert self.type2test(LyingList([2])) == self.type2test([1])
 
 	def test_truth(self):
 		assert not self.type2test()
@@ -271,38 +274,38 @@ class CommonTest:
 		l = [0, 1, 2, 3, 4]
 		u = self.type2test(l)
 
-		self.assertEqual(u[0:0], self.type2test())
-		self.assertEqual(u[1:2], self.type2test([1]))
-		self.assertEqual(u[-2:-1], self.type2test([3]))
-		self.assertEqual(u[-1000:1000], u)
-		self.assertEqual(u[1000:-1000], self.type2test([]))
-		self.assertEqual(u[:], u)
-		self.assertEqual(u[1:None], self.type2test([1, 2, 3, 4]))
-		self.assertEqual(u[None:3], self.type2test([0, 1, 2]))
+		assert u[0:0] == self.type2test()
+		assert u[1:2] == self.type2test([1])
+		assert u[-2:-1] == self.type2test([3])
+		assert u[-1000:1000] == u
+		assert u[1000:-1000] == self.type2test([])
+		assert u[:] == u
+		assert u[1:None] == self.type2test([1, 2, 3, 4])
+		assert u[None:3] == self.type2test([0, 1, 2])
 
 		# Extended slices
-		self.assertEqual(u[::], u)
-		self.assertEqual(u[::2], self.type2test([0, 2, 4]))
-		self.assertEqual(u[1::2], self.type2test([1, 3]))
-		self.assertEqual(u[::-1], self.type2test([4, 3, 2, 1, 0]))
-		self.assertEqual(u[::-2], self.type2test([4, 2, 0]))
-		self.assertEqual(u[3::-2], self.type2test([3, 1]))
-		self.assertEqual(u[3:3:-2], self.type2test([]))
-		self.assertEqual(u[3:2:-2], self.type2test([3]))
-		self.assertEqual(u[3:1:-2], self.type2test([3]))
-		self.assertEqual(u[3:0:-2], self.type2test([3, 1]))
-		self.assertEqual(u[::-100], self.type2test([4]))
-		self.assertEqual(u[100:-100:], self.type2test([]))
-		self.assertEqual(u[-100:100:], u)
-		self.assertEqual(u[100:-100:-1], u[::-1])
-		self.assertEqual(u[-100:100:-1], self.type2test([]))
-		self.assertEqual(u[-100:100:2], self.type2test([0, 2, 4]))
+		assert u[::] == u
+		assert u[::2] == self.type2test([0, 2, 4])
+		assert u[1::2] == self.type2test([1, 3])
+		assert u[::-1] == self.type2test([4, 3, 2, 1, 0])
+		assert u[::-2] == self.type2test([4, 2, 0])
+		assert u[3::-2] == self.type2test([3, 1])
+		assert u[3:3:-2] == self.type2test([])
+		assert u[3:2:-2] == self.type2test([3])
+		assert u[3:1:-2] == self.type2test([3])
+		assert u[3:0:-2] == self.type2test([3, 1])
+		assert u[::-100] == self.type2test([4])
+		assert u[100:-100:] == self.type2test([])
+		assert u[-100:100:] == u
+		assert u[100:-100:-1] == u[::-1]
+		assert u[-100:100:-1] == self.type2test([])
+		assert u[-100:100:2] == self.type2test([0, 2, 4])
 
 		# Test extreme cases with long ints
 		a = self.type2test([0, 1, 2, 3, 4])
-		self.assertEqual(a[-pow(2, 128):3], self.type2test([0, 1, 2]))
-		self.assertEqual(a[3:pow(2, 145)], self.type2test([3, 4]))
-		self.assertEqual(a[3::sys.maxsize], self.type2test([3]))
+		assert a[-pow(2, 128):3] == self.type2test([0, 1, 2])
+		assert a[3:pow(2, 145)] == self.type2test([3, 4])
+		assert a[3::sys.maxsize] == self.type2test([3])
 
 	def test_contains(self):
 		u = self.type2test([0, 1, 2])
@@ -340,15 +343,15 @@ class CommonTest:
 		self.assertRaises(DoNotTestEq, checklast.__contains__, 1)
 
 	def test_len(self):
-		self.assertEqual(len(self.type2test()), 0)
-		self.assertEqual(len(self.type2test([])), 0)
-		self.assertEqual(len(self.type2test([0])), 1)
-		self.assertEqual(len(self.type2test([0, 1, 2])), 3)
+		assert len(self.type2test()) == 0
+		assert len(self.type2test([])) == 0
+		assert len(self.type2test([0])) == 1
+		assert len(self.type2test([0, 1, 2])) == 3
 
 	def test_minmax(self):
 		u = self.type2test([0, 1, 2])
-		self.assertEqual(min(u), 0)
-		self.assertEqual(max(u), 2)
+		assert min(u) == 0
+		assert max(u) == 2
 
 	def test_addmul(self):
 		u1 = self.type2test([0])
@@ -361,16 +364,16 @@ class CommonTest:
 		self.assertEqual(self.type2test(), 0 * u2)
 		self.assertEqual(self.type2test(), u2 * 0)
 		self.assertEqual(self.type2test(), 0 * u2)
-		self.assertEqual(u2, u2 * 1)
-		self.assertEqual(u2, 1 * u2)
-		self.assertEqual(u2, u2 * 1)
-		self.assertEqual(u2, 1 * u2)
-		self.assertEqual(u2 + u2, u2 * 2)
-		self.assertEqual(u2 + u2, 2 * u2)
-		self.assertEqual(u2 + u2, u2 * 2)
-		self.assertEqual(u2 + u2, 2 * u2)
-		self.assertEqual(u2 + u2 + u2, u2 * 3)
-		self.assertEqual(u2 + u2 + u2, 3 * u2)
+		assert u2 == u2 * 1
+		assert u2 == 1 * u2
+		assert u2 == u2 * 1
+		assert u2 == 1 * u2
+		assert u2 + u2 == u2 * 2
+		assert u2 + u2 == 2 * u2
+		assert u2 + u2 == u2 * 2
+		assert u2 + u2 == 2 * u2
+		assert u2 + u2 + u2 == u2 * 3
+		assert u2 + u2 + u2 == 3 * u2
 
 		class subclass(self.type2test):  # type: ignore
 			pass
@@ -404,7 +407,7 @@ class CommonTest:
 		class T(self.type2test):  # type: ignore
 
 			def __getitem__(self, key):
-				return str(key) + '!!!'
+				return str(key) + "!!!"
 
 		assert next(iter(T((1, 2)))) == 1
 
@@ -420,38 +423,45 @@ class CommonTest:
 		if sys.maxsize <= 2147483647:
 			x = self.type2test([0])
 			x *= 2**16
-			self.assertRaises(MemoryError, x.__mul__, 2**16)
-			if hasattr(x, '__imul__'):
-				self.assertRaises(MemoryError, x.__imul__, 2**16)
+			with pytest.raises(MemoryError):
+				x.__mul__(2**16)
+			if hasattr(x, "__imul__"):
+				with pytest.raises(MemoryError):
+					x.__imul__(2**16)
 
 	def test_subscript(self):
 		a = self.type2test([10, 11])
-		self.assertEqual(a.__getitem__(0), 10)
-		self.assertEqual(a.__getitem__(1), 11)
-		self.assertEqual(a.__getitem__(-2), 10)
-		self.assertEqual(a.__getitem__(-1), 11)
-		self.assertRaises(IndexError, a.__getitem__, -3)
-		self.assertRaises(IndexError, a.__getitem__, 3)
-		self.assertEqual(a.__getitem__(slice(0, 1)), self.type2test([10]))
-		self.assertEqual(a.__getitem__(slice(1, 2)), self.type2test([11]))
-		self.assertEqual(a.__getitem__(slice(0, 2)), self.type2test([10, 11]))
-		self.assertEqual(a.__getitem__(slice(0, 3)), self.type2test([10, 11]))
-		self.assertEqual(a.__getitem__(slice(3, 5)), self.type2test([]))
-		self.assertRaises(ValueError, a.__getitem__, slice(0, 10, 0))
-		self.assertRaises(TypeError, a.__getitem__, 'x')
+		assert a.__getitem__(0) == 10
+		assert a.__getitem__(1) == 11
+		assert a.__getitem__(-2) == 10
+		assert a.__getitem__(-1) == 11
+		with pytest.raises(IndexError):
+			a.__getitem__(-3)
+		with pytest.raises(IndexError):
+			a.__getitem__(3)
+		assert a.__getitem__(slice(0, 1)) == self.type2test([10])
+		assert a.__getitem__(slice(1, 2)) == self.type2test([11])
+		assert a.__getitem__(slice(0, 2)) == self.type2test([10, 11])
+		assert a.__getitem__(slice(0, 3)) == self.type2test([10, 11])
+		assert a.__getitem__(slice(3, 5)) == self.type2test([])
+		with pytest.raises(ValueError):
+			a.__getitem__(slice(0, 10, 0))
+		with pytest.raises(TypeError):
+			a.__getitem__('x')
 
 	def test_count(self):
 		a = self.type2test([0, 1, 2]) * 3
-		self.assertEqual(a.count(0), 3)
-		self.assertEqual(a.count(1), 3)
-		self.assertEqual(a.count(3), 0)
+		assert a.count(0) == 3
+		assert a.count(1) == 3
+		assert a.count(3) == 0
 
-		self.assertEqual(a.count(ALWAYS_EQ), 9)
-		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).count(1), 2)
-		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).count(NEVER_EQ), 2)
-		self.assertEqual(self.type2test([NEVER_EQ, NEVER_EQ]).count(ALWAYS_EQ), 0)
+		assert a.count(ALWAYS_EQ), 9
+		assert self.type2test([ALWAYS_EQ, ALWAYS_EQ]).count(1) == 2
+		assert self.type2test([ALWAYS_EQ, ALWAYS_EQ]).count(NEVER_EQ) == 2
+		assert self.type2test([NEVER_EQ, NEVER_EQ]).count(ALWAYS_EQ) == 0
 
-		self.assertRaises(TypeError, a.count)
+		with pytest.raises(TypeError):
+			a.count()
 
 		class BadExc(Exception):
 			pass
@@ -463,30 +473,35 @@ class CommonTest:
 					raise BadExc()
 				return False
 
-		self.assertRaises(BadExc, a.count, BadCmp())
+		with pytest.raises(BadExc):
+			a.count(BadCmp())
 
 	@not_pypy("Doesn't work on PyPy")
 	def test_index(self):
 		u = self.type2test([0, 1])
-		self.assertEqual(u.index(0), 0)
-		self.assertEqual(u.index(1), 1)
-		self.assertRaises(ValueError, u.index, 2)
+		assert u.index(0) == 0
+		assert u.index(1) == 1
+		with pytest.raises(ValueError):
+			u.index(2)
 
 		u = self.type2test([-2, -1, 0, 0, 1, 2])
-		self.assertEqual(u.count(0), 2)
-		self.assertEqual(u.index(0), 2)
-		self.assertEqual(u.index(0, 2), 2)
-		self.assertEqual(u.index(-2, -10), 0)
-		self.assertEqual(u.index(0, 3), 3)
-		self.assertEqual(u.index(0, 3, 4), 3)
-		self.assertRaises(ValueError, u.index, 2, 0, -10)
+		assert u.count(0) == 2
+		assert u.index(0) == 2
+		assert u.index(0, 2) == 2
+		assert u.index(-2, -10) == 0
+		assert u.index(0, 3) == 3
+		assert u.index(0, 3, 4) == 3
+		with pytest.raises(ValueError):
+			u.index(2, 0, -10)
 
-		self.assertEqual(u.index(ALWAYS_EQ), 0)
+		assert u.index(ALWAYS_EQ) == 0
 		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(1), 0)
 		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(NEVER_EQ), 0)
-		self.assertRaises(ValueError, self.type2test([NEVER_EQ, NEVER_EQ]).index, ALWAYS_EQ)
+		with pytest.raises(ValueError):
+			self.type2test([NEVER_EQ, NEVER_EQ]).index(ALWAYS_EQ)
 
-		self.assertRaises(TypeError, u.index)
+		with pytest.raises(TypeError):
+			u.index()
 
 		class BadExc(Exception):
 			pass
@@ -499,24 +514,27 @@ class CommonTest:
 				return False
 
 		a = self.type2test([0, 1, 2, 3])
-		self.assertRaises(BadExc, a.index, BadCmp())
+		with pytest.raises(BadExc):
+			a.index(BadCmp())
 
 		a = self.type2test([-2, -1, 0, 0, 1, 2])
-		self.assertEqual(a.index(0), 2)
-		self.assertEqual(a.index(0, 2), 2)
-		self.assertEqual(a.index(0, -4), 2)
-		self.assertEqual(a.index(-2, -10), 0)
-		self.assertEqual(a.index(0, 3), 3)
-		self.assertEqual(a.index(0, -3), 3)
-		self.assertEqual(a.index(0, 3, 4), 3)
-		self.assertEqual(a.index(0, -3, -2), 3)
-		self.assertEqual(a.index(0, -4 * sys.maxsize, 4 * sys.maxsize), 2)
-		self.assertRaises(ValueError, a.index, 0, 4 * sys.maxsize, -4 * sys.maxsize)
-		self.assertRaises(ValueError, a.index, 2, 0, -10)
+		assert a.index(0) == 2
+		assert a.index(0, 2) == 2
+		assert a.index(0, -4) == 2
+		assert a.index(-2, -10) == 0
+		assert a.index(0, 3) == 3
+		assert a.index(0, -3) == 3
+		assert a.index(0, 3, 4) == 3
+		assert a.index(0, -3, -2) == 3
+		assert a.index(0, -4 * sys.maxsize, 4 * sys.maxsize) == 2
+		with pytest.raises(ValueError):
+			a.index(0, 4 * sys.maxsize, -4 * sys.maxsize)
+		with pytest.raises(ValueError):
+			a.index(2, 0, -10)
 
 	def test_pickle(self):
 		lst = self.type2test([4, 5, 6, 7])
 		for proto in range(pickle.HIGHEST_PROTOCOL + 1):
 			lst2 = pickle.loads(pickle.dumps(lst, proto))
-			self.assertEqual(lst2, lst)
-			self.assertNotEqual(id(lst2), id(lst))
+			assert lst2 == lst
+			assert id(lst2) != id(lst)

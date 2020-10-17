@@ -516,10 +516,10 @@ def test_deprecation():
 
 	assert len(record) == 2
 	assert record[0].message.args == (  # type: ignore
-			'deprecated_func', '1', '3', "use 'bar' instead."
+			"deprecated_func", '1', '3', "use 'bar' instead."
 			)
 	assert record[1].message.args == (  # type: ignore
-			'deprecated_alias', '1', '3', "use 'bar' instead."
+			"deprecated_alias", '1', '3', "use 'bar' instead."
 			)
 
 	assert ".. deprecated::" in deprecated_func.__doc__

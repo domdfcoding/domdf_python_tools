@@ -73,7 +73,7 @@ class Indent:
 		self._size = int(size)
 
 	@property
-	def type(self) -> str:  # noqa A002  # pylint: disable=redefined-builtin
+	def type(self) -> str:  # noqa A002,A003  # pylint: disable=redefined-builtin
 		"""
 		The indent character.
 		"""
@@ -143,7 +143,7 @@ class StringList(List[str]):
 	def _make_line(self, line: str) -> str:
 		if not str(self.indent_type).strip(" \t") and self.convert_indents:
 			if self.indent_type == "\t":
-				line = convert_indents(line, tab_width=1, from_='    ', to="\t")
+				line = convert_indents(line, tab_width=1, from_="    ", to="\t")
 			else:  # pragma: no cover
 				line = convert_indents(line, tab_width=1, from_="\t", to=self.indent_type)
 

@@ -197,7 +197,7 @@ class HasHead(Protocol):
 	:class:`typing.Protocol` for classes that have a ``head`` method.
 
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
-	"""
+	"""  # noqa D400
 
 	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
 		"""

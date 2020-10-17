@@ -136,7 +136,7 @@ def test_as_text(value, expects):
 				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
 				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "delimiter": ';'},
 					"'bob'; 'alice'; and 'fred'"),
-				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "connective": 'or'},
+				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "connective": "or"},
 					"'bob', 'alice', or 'fred'"),
 				((("bob", ), ), {"use_repr": True, "oxford": True}, "'bob'"),
 				((("bob", "alice"), ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),

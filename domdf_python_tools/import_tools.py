@@ -107,7 +107,7 @@ def discover(
 		package.__path__,  # type: ignore
 		prefix=package.__name__ + '.',
 		):
-		module = __import__(module_name, fromlist=['__trash'], level=0)
+		module = __import__(module_name, fromlist=["__trash"], level=0)
 
 		# Check all the functions in that module
 		for _, imported_objects in inspect.getmembers(module, match_func):

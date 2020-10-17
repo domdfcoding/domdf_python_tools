@@ -302,7 +302,7 @@ class Unitpt(Unit):
 
 class UnitInch(Unit):
 	"""
-	Inch
+	Inch.
 	"""
 
 	name = "inch"
@@ -311,7 +311,7 @@ class UnitInch(Unit):
 
 class Unitcm(Unit):
 	"""
-	Centimetres
+	Centimetres.
 	"""
 
 	name = "cm"
@@ -320,7 +320,7 @@ class Unitcm(Unit):
 
 class Unitmm(Unit):
 	"""
-	Millimetres
+	Millimetres.
 	"""
 
 	name = "mm"
@@ -329,7 +329,7 @@ class Unitmm(Unit):
 
 class Unitum(Unit):
 	"""
-	Micrometres
+	Micrometres.
 	"""
 
 	name = "µm"
@@ -338,7 +338,7 @@ class Unitum(Unit):
 
 class Unitpc(Unit):
 	"""
-	Pica
+	Pica.
 	"""
 
 	name = "pc"

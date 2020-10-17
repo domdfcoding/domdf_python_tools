@@ -132,7 +132,7 @@ def test_generate_falsy():
 @not_pypy("Success")
 def test_not_pypy():
 	if platform.python_implementation() == "PyPy":
-		assert False
+		assert False  # noqa: PT015
 
 
 pytest_plugins = ("domdf_python_tools.testing", )

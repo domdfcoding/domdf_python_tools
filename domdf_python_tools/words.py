@@ -209,7 +209,7 @@ class Font(Dict[str, str]):
 		:return:
 		"""
 
-		return "".join(self[char] for char in text)
+		return ''.join(self[char] for char in text)
 
 	def get(self, char: str, default: Optional[str] = None) -> str:  # type: ignore
 		"""
@@ -422,7 +422,7 @@ This font includes Greek letters.
 #: Script letters (uppercase)
 SCRIPT_UPPER = "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩"
 #: Script letters (lowercase)
-SCRIPT_LOWER = '𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃'
+SCRIPT_LOWER = "𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃"
 
 SCRIPT_LETTERS = make_font(SCRIPT_UPPER, SCRIPT_LOWER)
 """

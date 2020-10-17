@@ -133,7 +133,7 @@ def strip_ansi(value: str) -> str:
 	.. versionadded:: 1.1.0
 	"""
 
-	return _ansi_re.sub("", value)
+	return _ansi_re.sub('', value)
 
 
 class Colour(str):
@@ -154,7 +154,7 @@ class Colour(str):
 	reset: str
 	stack: List[str]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour":
+	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour":  # noqa D102
 		color = super().__new__(cls, style)  # type: ignore
 		color.style = style
 		color.stack = stack

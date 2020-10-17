@@ -53,7 +53,7 @@ class Secret(str):
 
 	value: str  #: The actual value of the secret.
 
-	def __new__(cls, value) -> "Secret":
+	def __new__(cls, value) -> "Secret":  # noqa D102
 		obj: Secret = super().__new__(cls, "<SECRET>")  # type: ignore
 		obj.value = str(value)
 		return obj

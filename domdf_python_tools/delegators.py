@@ -3,8 +3,7 @@
 #
 #  delegators.py
 """
-Decorators for functions that delegate parts of their functionality
-to other functions.
+Decorators for functions that delegate parts of their functionality to other functions.
 
 .. versionadded:: 0.10.0
 """
@@ -59,7 +58,7 @@ def delegate_kwargs(to: Callable, *except_):
 	:param \*except\_: Parameter names not to delegate.
 
 	:raises ValueError: if a non-default argument follows a default argument.
-	"""
+	"""  # noqa: D400
 
 	# TODO: return annotation
 
@@ -97,7 +96,7 @@ def delegates(to: Callable) -> Callable[[_C], _C]:
 	with the signature of the delegated function.
 
 	:param to: The function the arguments are passed on to.
-	"""
+	"""  # noqa: D400
 
 	def copy_annotations(f):
 		if hasattr(to, "__annotations__"):

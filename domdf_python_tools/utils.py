@@ -465,7 +465,7 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 			return repr(obj)
 		else:
 			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}  # type: ignore
-			repr_fmt = '(' + ', '.join(f'{k}={v!r}' for k, v in head_of_namedtuple.items()) + f', {etc})'
+			repr_fmt = '(' + ', '.join(f"{k}={v!r}" for k, v in head_of_namedtuple.items()) + f", {etc})"
 			return obj.__class__.__name__ + repr_fmt
 
 	elif isinstance(obj, (list, tuple)):
@@ -672,12 +672,12 @@ def deprecated(
 			# If removed_in is a version, use "removed in"
 			parts = {
 					"deprecated_in":
-							f" {deprecated_in}" if deprecated_in else "",
+							f" {deprecated_in}" if deprecated_in else '',
 					"removed_in":
 							f"\n   This will be removed {'on' if isinstance(removed_in, date) else 'in'} {removed_in}."
-							if removed_in else "",
+							if removed_in else '',
 					"details":
-							f" {details}" if details else ""
+							f" {details}" if details else ''
 					}
 
 			deprecation_note = (".. deprecated::{deprecated_in}{removed_in}{details}".format(**parts))

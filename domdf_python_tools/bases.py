@@ -107,7 +107,7 @@ class Dictable(Iterable[Tuple[str, _V]]):
 
 
 _T = TypeVar("_T")
-_S = TypeVar('_S', bound="UserList")
+_S = TypeVar("_S", bound="UserList")
 
 
 @prettify_docstrings
