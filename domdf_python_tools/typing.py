@@ -121,7 +121,7 @@ class JsonLibrary(Protocol):
 			**kwds: Any,
 			) -> str:
 		"""
-		Serialize ``obj`` to a JSON formatted ``str``.
+		Serialize ``obj`` to a JSON formatted :class:`str`.
 
 		:param obj:
 		:param skipkeys:

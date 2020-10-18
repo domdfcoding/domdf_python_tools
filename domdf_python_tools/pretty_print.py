@@ -116,56 +116,57 @@ class FancyPrinter(PrettyPrinter):
 		else:
 			return char
 
-	def _pprint_dict(self, object, stream, indent, allowance, context, level):
+	def _pprint_dict(self, object, stream, indent, allowance, context, level):  # noqa: A002
+		obj = object
 		write = stream.write
-		write(self._make_open('{', indent, object))
+		write(self._make_open('{', indent, obj))
 
 		if self._indent_per_level > 1:
 			write((self._indent_per_level - 1) * ' ')
 
-		if len(object):
+		if len(obj):
 			self._format_dict_items(  # type: ignore
-				object.items(),
-				stream,
-				indent,
-				allowance + 1,
-				context,
-				level,
-				)
+					obj.items(),
+					stream,
+					indent,
+					allowance + 1,
+					context,
+					level,
+					)
 
-		write(self._make_close('}', indent, object))
+		write(self._make_close('}', indent, obj))
 
 	_dispatch[dict.__repr__] = _pprint_dict
 
-	def _pprint_list(self, object, stream, indent, allowance, context, level):
-		stream.write(self._make_open('[', indent, object))
-		self._format_items(object, stream, indent, allowance + 1, context, level)
-		stream.write(self._make_close(']', indent, object))
+	def _pprint_list(self, obj, stream, indent, allowance, context, level):
+		stream.write(self._make_open('[', indent, obj))
+		self._format_items(obj, stream, indent, allowance + 1, context, level)
+		stream.write(self._make_close(']', indent, obj))
 
 	_dispatch[list.__repr__] = _pprint_list
 
-	def _pprint_tuple(self, object, stream, indent, allowance, context, level):
-		stream.write(self._make_open('(', indent, object))
-		endchar = ",)" if len(object) == 1 else self._make_close(')', indent, object)
-		self._format_items(object, stream, indent, allowance + len(endchar), context, level)
+	def _pprint_tuple(self, obj, stream, indent, allowance, context, level):
+		stream.write(self._make_open('(', indent, obj))
+		endchar = ",)" if len(obj) == 1 else self._make_close(')', indent, obj)
+		self._format_items(obj, stream, indent, allowance + len(endchar), context, level)
 		stream.write(endchar)
 
 	_dispatch[tuple.__repr__] = _pprint_tuple
 
-	def _pprint_set(self, object, stream, indent, allowance, context, level):
-		if not len(object):
-			stream.write(repr(object))
+	def _pprint_set(self, obj, stream, indent, allowance, context, level):
+		if not len(obj):
+			stream.write(repr(obj))
 			return
-		typ = object.__class__
+		typ = obj.__class__
 		if typ is set:
-			stream.write(self._make_open('{', indent, object))
-			endchar = self._make_close('}', indent, object)
+			stream.write(self._make_open('{', indent, obj))
+			endchar = self._make_close('}', indent, obj)
 		else:
 			stream.write(typ.__name__ + f"({{\n{' ' * (indent + self._indent_per_level + len(typ.__name__) + 1)}")
 			endchar = f",\n{' ' * (indent + self._indent_per_level + len(typ.__name__) + 1)}}})"
 			indent += len(typ.__name__) + 1
-		object = sorted(object, key=_safe_key)
-		self._format_items(object, stream, indent, allowance + len(endchar), context, level)
+		obj = sorted(obj, key=_safe_key)
+		self._format_items(obj, stream, indent, allowance + len(endchar), context, level)
 		stream.write(endchar)
 
 	_dispatch[set.__repr__] = _pprint_set
@@ -215,7 +216,7 @@ class ReprPrettyPrinter(FancyPrinter):
 
 		write = stream.write
 		indent += self._indent_per_level
-		delimnl = ',\n' + ' ' * indent
+		delimnl = ",\n" + ' ' * indent
 		last_index = len(items) - 1
 
 		for i, (key, ent) in enumerate(items):

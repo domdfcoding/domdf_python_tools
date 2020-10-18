@@ -96,7 +96,7 @@ def discover(
 	.. versionchanged:: 1.0.0
 
 		Added the ``exclude_side_effects`` parameter.
-	"""
+	"""  # noqa D400
 
 	matching_objects = []
 

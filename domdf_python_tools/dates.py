@@ -179,7 +179,7 @@ def utc_timestamp_to_datetime(
 	return new_datetime.astimezone(output_tz)
 
 
-if sys.version_info <= (3, 7):
+if sys.version_info <= (3, 7, 2):
 	MonthsType = OrderedDict
 else:
 	MonthsType = typing.OrderedDict[str, str]

@@ -247,28 +247,36 @@ class CommonTest:
 	def test_getitem(self):
 		u = self.type2test([0, 1, 2, 3, 4])
 		for i in Len(u):
-			self.assertEqual(u[i], i)
-			self.assertEqual(u[int(i)], i)
+			assert u[i] == i
+			assert u[int(i)] == i
 		for i in range(-len(u), -1):
-			self.assertEqual(u[i], len(u) + i)
-			self.assertEqual(u[int(i)], len(u) + i)
-		self.assertRaises(IndexError, u.__getitem__, -len(u) - 1)
-		self.assertRaises(IndexError, u.__getitem__, len(u))
-		self.assertRaises(ValueError, u.__getitem__, slice(0, 10, 0))
+			assert u[i] == len(u) + i
+			assert u[int(i)] == len(u) + i
+		with pytest.raises(IndexError):
+			u.__getitem__(-len(u) - 1)
+		with pytest.raises(IndexError):
+			u.__getitem__(len(u))
+		with pytest.raises(ValueError):
+			u.__getitem__(slice(0, 10, 0))
 
 		u = self.type2test()
-		self.assertRaises(IndexError, u.__getitem__, 0)
-		self.assertRaises(IndexError, u.__getitem__, -1)
+		with pytest.raises(IndexError):
+			u.__getitem__(0)
+		with pytest.raises(IndexError):
+			u.__getitem__(-1)
 
-		self.assertRaises(TypeError, u.__getitem__)
+		with pytest.raises(TypeError):
+			u.__getitem__()
 
 		a = self.type2test([10, 11])
-		self.assertEqual(a[0], 10)
-		self.assertEqual(a[1], 11)
-		self.assertEqual(a[-2], 10)
-		self.assertEqual(a[-1], 11)
-		self.assertRaises(IndexError, a.__getitem__, -3)
-		self.assertRaises(IndexError, a.__getitem__, 3)
+		assert a[0] == 10
+		assert a[1] == 11
+		assert a[-2] == 10
+		assert a[-1] == 11
+		with pytest.raises(IndexError):
+			a.__getitem__(-3)
+		with pytest.raises(IndexError):
+			a.__getitem__(3)
 
 	def test_getslice(self):
 		l = [0, 1, 2, 3, 4]
@@ -314,7 +322,8 @@ class CommonTest:
 		for i in min(u) - 1, max(u) + 1:
 			assert i not in u
 
-		self.assertRaises(TypeError, u.__contains__)
+		with pytest.raises(TypeError):
+			u.__contains__()
 
 	def test_contains_fake(self):
 		# Sequences must use rich comparison against each item
@@ -340,7 +349,8 @@ class CommonTest:
 		checkfirst = self.type2test([1, StopCompares()])
 		assert 1 in checkfirst
 		checklast = self.type2test([StopCompares(), 1])
-		self.assertRaises(DoNotTestEq, checklast.__contains__, 1)
+		with pytest.raises(DoNotTestEq):
+			checklast.__contains__(1)
 
 	def test_len(self):
 		assert len(self.type2test()) == 0
@@ -356,14 +366,14 @@ class CommonTest:
 	def test_addmul(self):
 		u1 = self.type2test([0])
 		u2 = self.type2test([0, 1])
-		self.assertEqual(u1, u1 + self.type2test())
-		self.assertEqual(u1, self.type2test() + u1)
-		self.assertEqual(u1 + self.type2test([1]), u2)
-		self.assertEqual(self.type2test([-1]) + u1, self.type2test([-1, 0]))
-		self.assertEqual(self.type2test(), u2 * 0)
-		self.assertEqual(self.type2test(), 0 * u2)
-		self.assertEqual(self.type2test(), u2 * 0)
-		self.assertEqual(self.type2test(), 0 * u2)
+		assert u1 == u1 + self.type2test()
+		assert u1 == self.type2test() + u1
+		assert u1 + self.type2test([1]) == u2
+		assert self.type2test([-1]) + u1 == self.type2test([-1, 0])
+		assert self.type2test() == u2 * 0
+		assert self.type2test() == 0 * u2
+		assert self.type2test() == u2 * 0
+		assert self.type2test() == 0 * u2
 		assert u2 == u2 * 1
 		assert u2 == 1 * u2
 		assert u2 == u2 * 1
@@ -385,15 +395,15 @@ class CommonTest:
 	def test_iadd(self):
 		u = self.type2test([0, 1])
 		u += self.type2test()
-		self.assertEqual(u, self.type2test([0, 1]))
+		assert u == self.type2test([0, 1])
 		u += self.type2test([2, 3])
-		self.assertEqual(u, self.type2test([0, 1, 2, 3]))
+		assert u == self.type2test([0, 1, 2, 3])
 		u += self.type2test([4, 5])
-		self.assertEqual(u, self.type2test([0, 1, 2, 3, 4, 5]))
+		assert u == self.type2test([0, 1, 2, 3, 4, 5])
 
 		u = self.type2test("spam")
 		u += self.type2test("eggs")
-		self.assertEqual(u, self.type2test("spameggs"))
+		assert u == self.type2test("spameggs")
 
 	def test_imul(self):
 		u = self.type2test([0, 1])
@@ -415,9 +425,9 @@ class CommonTest:
 		for m in range(4):
 			s = tuple(range(m))
 			for n in range(-3, 5):
-				self.assertEqual(self.type2test(s * n), self.type2test(s) * n)
-			self.assertEqual(self.type2test(s) * (-4), self.type2test([]))
-			self.assertEqual(id(s), id(s * 1))
+				assert self.type2test(s * n) == self.type2test(s) * n
+			assert self.type2test(s) * (-4) == self.type2test([])
+			assert id(s) == id(s * 1)
 
 	def test_bigrepeat(self):
 		if sys.maxsize <= 2147483647:
@@ -495,8 +505,8 @@ class CommonTest:
 			u.index(2, 0, -10)
 
 		assert u.index(ALWAYS_EQ) == 0
-		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(1), 0)
-		self.assertEqual(self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(NEVER_EQ), 0)
+		assert self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(1) == 0
+		assert self.type2test([ALWAYS_EQ, ALWAYS_EQ]).index(NEVER_EQ) == 0
 		with pytest.raises(ValueError):
 			self.type2test([NEVER_EQ, NEVER_EQ]).index(ALWAYS_EQ)
 

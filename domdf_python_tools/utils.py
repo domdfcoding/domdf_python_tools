@@ -465,7 +465,7 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 			return repr(obj)
 		else:
 			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}  # type: ignore
-			repr_fmt = '(' + ', '.join(f"{k}={v!r}" for k, v in head_of_namedtuple.items()) + f", {etc})"
+			repr_fmt = '(' + ", ".join(f"{k}={v!r}" for k, v in head_of_namedtuple.items()) + f", {etc})"
 			return obj.__class__.__name__ + repr_fmt
 
 	elif isinstance(obj, (list, tuple)):
@@ -569,10 +569,10 @@ def deprecated(
 		deprecated_in: Optional[str] = None,
 		removed_in: Optional[str] = None,
 		current_version: Optional[str] = None,
-		details: str = "",
+		details: str = '',
 		name: Optional[str] = None
 		):
-	r"""Decorate a function to signify its deprecation
+	r"""Decorate a function to signify its deprecation.
 
 	This function wraps a method that will soon be removed and does two things:
 
@@ -657,7 +657,7 @@ def deprecated(
 
 	def _function_wrapper(function):
 		# Everything *should* have a docstring, but just in case...
-		existing_docstring = function.__doc__ or ""
+		existing_docstring = function.__doc__ or ''
 
 		# split docstring at first occurrence of newline
 		string_list = existing_docstring.split("\n", 1)
@@ -726,7 +726,7 @@ def deprecated(
 
 			return function(*args, **kwargs)
 
-		_inner.__doc__ = "".join(string_list)
+		_inner.__doc__ = ''.join(string_list)
 
 		return _inner
 

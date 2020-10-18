@@ -121,7 +121,7 @@ def delegates(to: Callable) -> Callable[[_C], _C]:
 			f.__signature__ = from_sig.replace(  # type: ignore
 				parameters=[
 				from_params["self"],
-				*to_sig.parameters.values()
+				*to_sig.parameters.values(),
 				]
 				)
 

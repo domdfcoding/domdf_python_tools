@@ -343,10 +343,9 @@ def only_pypy(reason: str = "Only required on PyPy.") -> _pytest.mark.structures
 	return pytest.mark.skipif(condition=not PYPY, reason=reason)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def tmp_pathplus(tmp_path: Path) -> PathPlus:
 	"""
-
 	Pytest fixture that returns a temporary directory in the form of a
 	:class:`~domdf_python_tools.paths.PathPlus` object.
 
@@ -365,6 +364,6 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 	:rtype:
 
 	.. versionadded:: 0.10.0
-	"""
+	"""  # noqa: D400
 
 	return PathPlus(tmp_path)

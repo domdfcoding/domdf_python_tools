@@ -293,7 +293,7 @@ class Unit(float):
 
 class Unitpt(Unit):
 	"""
-	Point
+	Point.
 	"""
 
 	name = "pt"
