@@ -56,7 +56,7 @@ from typing_extensions import Literal
 # this package
 from domdf_python_tools.compat import importlib_metadata
 
-__all__ = ["discover"]
+__all__ = ["discover", "discover_entry_points"]
 
 
 @overload
