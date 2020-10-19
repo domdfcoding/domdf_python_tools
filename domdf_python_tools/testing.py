@@ -30,6 +30,7 @@ Handy functions for testing code.
 #
 
 # stdlib
+import datetime
 import itertools
 import random
 import sys
@@ -367,3 +368,11 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 	"""  # noqa: D400
 
 	return PathPlus(tmp_path)
+
+
+def pytest_report_header(config, startdir):
+	"""
+	Prints the start time of the pytest session.
+	"""
+
+	return f"Test session started at {datetime.datetime.now():%H:%M:%S}"
