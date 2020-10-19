@@ -1,5 +1,5 @@
 coverage>=5.1
-coverage_pyver_pragma>=0.0.6
+coverage-pyver-pragma>=0.0.6
 faker>=4.1.2
 iniconfig!=1.1.0,>=1.0.1
 pandas>=1.0.0; implementation_name == "cpython" and python_version < "3.9"
