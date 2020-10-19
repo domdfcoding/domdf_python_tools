@@ -345,6 +345,7 @@ def test_copytree():
 		srcdir.mkdir()
 
 		(srcdir / "root.txt").touch()
+
 		(srcdir / "a").mkdir()
 		(srcdir / "a" / "a.txt").touch()
 		(srcdir / "b").mkdir()
@@ -368,6 +369,7 @@ def test_copytree():
 		assert (srcdir / "c" / "c.txt").is_file()
 
 		destdir = tmpdir_p / "dest"
+		destdir.mkdir()
 
 		copytree(srcdir, destdir)
 
