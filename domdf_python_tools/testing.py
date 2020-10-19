@@ -63,6 +63,7 @@ __all__ = [
 		"only_windows",
 		"not_pypy",
 		"only_pypy",
+		"pytest_report_header",
 		]
 
 
@@ -373,6 +374,8 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 def pytest_report_header(config, startdir):
 	"""
 	Prints the start time of the pytest session.
+
+	.. versionadded:: 1.2.0
 	"""
 
 	return f"Test session started at {datetime.datetime.now():%H:%M:%S}"
