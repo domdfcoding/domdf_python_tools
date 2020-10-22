@@ -75,7 +75,7 @@ def teardown_module():
 				(Fore.LIGHTMAGENTA_EX, "\033[95m"),
 				(Fore.LIGHTCYAN_EX, "\033[96m"),
 				(Fore.LIGHTWHITE_EX, "\033[97m"),
-				]
+				],
 		)
 def test_fore_attributes(obj, expects, capsys):
 	assert obj == expects

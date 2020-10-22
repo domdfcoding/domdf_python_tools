@@ -22,7 +22,7 @@ from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, alpha_sort, get_rando
 				(100, ["stats", "seafood", "creativity", "outdoors", "sacred"]),
 				(250, ["arranged", "volumes", "korea", "basename", "islands"]),
 				(500, ["tuning", "knowledgestorm", "backing", "motivation", "calculated"]),
-				]
+				],
 		)
 def test_get_random_word(seed, expected_values):
 	random.seed(seed)
@@ -75,7 +75,7 @@ def test_font():
 	assert DOUBLESTRUCK_LETTERS.get("A") == "𝔸"
 
 	assert DOUBLESTRUCK_LETTERS["-"] == "-"
-	assert DOUBLESTRUCK_LETTERS.get("-") == '-'
+	assert DOUBLESTRUCK_LETTERS.get("-") == "-"
 	assert DOUBLESTRUCK_LETTERS.get("-", "Default") == "Default"
 
 
@@ -105,7 +105,7 @@ def test_alpha_sort():
 				(PathPlus('.'), '.'),
 				(StringList(["Hello", "World"]), "Hello\nWorld"),
 				(decimal.Decimal("1234"), "1234"),
-				]
+				],
 		)
 def test_as_text(value, expects):
 	assert words.as_text(value) == expects
@@ -141,7 +141,7 @@ def test_as_text(value, expects):
 				((("bob", ), ), {"use_repr": True, "oxford": True}, "'bob'"),
 				((("bob", "alice"), ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
 				((("bob", "alice", "fred"), ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
-				]
+				],
 		)
 def test_word_join(args, kwargs, expects):
 	assert words.word_join(*args, **kwargs) == expects

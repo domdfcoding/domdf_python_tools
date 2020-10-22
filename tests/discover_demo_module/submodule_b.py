@@ -3,9 +3,9 @@ from math import ceil
 from string import ascii_letters
 
 
-class Bob():
+class Bob:
 	pass
 
 
-class Alice():
+class Alice:
 	pass

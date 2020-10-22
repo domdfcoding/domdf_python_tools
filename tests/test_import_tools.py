@@ -89,7 +89,7 @@ def raises_attribute_error(obj, **kwargs):
 				raises_attribute_error({1, 2, 3}, id="set"),
 				raises_attribute_error({"a": 1, "b": 2, "c": 3}, id="dictionary"),
 				pytest.param(HasPath, haspath_error, id="HasPath"),
-				]
+				],
 		)
 def test_discover_errors(obj, expects):
 	with expects:

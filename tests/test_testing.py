@@ -34,12 +34,12 @@ def test_whitespace_perms():
 	assert testing.whitespace_perms().mark.args[0] == "char"
 	assert len(testing.whitespace_perms().mark.args[1]) == 20
 	assert len(testing.whitespace_perms(1).mark.args[1]) == 41
-	assert len(testing.whitespace_perms(.1).mark.args[1]) == 4
+	assert len(testing.whitespace_perms(0.1).mark.args[1]) == 4
 
-	assert isinstance(testing.whitespace_perms(.1).mark.args[1], list)
-	assert isinstance(testing.whitespace_perms(.1).mark.args[1][0], str)
+	assert isinstance(testing.whitespace_perms(0.1).mark.args[1], list)
+	assert isinstance(testing.whitespace_perms(0.1).mark.args[1][0], str)
 
-	assert testing.whitespace_perms(.1).mark.args[1] == ["\n\t\r", "\r\t", "\t \n", "\n\r"]
+	assert testing.whitespace_perms(0.1).mark.args[1] == ["\n\t\r", "\r\t", "\t \n", "\n\r"]
 
 	for string in testing.whitespace_perms().mark.args[1]:
 		assert re.match(r"^\s*$", string)
@@ -69,15 +69,15 @@ def test_generate_truthy():
 			"True",
 			"true",
 			"tRUe",
-			'y',
-			'Y',
+			"y",
+			"Y",
 			"YES",
 			"yes",
 			"Yes",
 			"yEs",
 			"ON",
 			"on",
-			'1',
+			"1",
 			1,
 			]
 
@@ -86,26 +86,43 @@ def test_generate_truthy():
 			"True",
 			"true",
 			"tRUe",
-			'y',
-			'Y',
+			"y",
+			"Y",
 			"YES",
 			"yes",
 			"Yes",
 			"yEs",
 			"ON",
 			"on",
-			'1',
+			"1",
 			1,
 			"bar",
 			]
 
-	assert list(testing.generate_truthy_values(ratio=.3)) == ['1', "yes", "True", True]
+	assert list(testing.generate_truthy_values(ratio=0.3)) == ["1", "yes", "True", True]
 
 
 def test_generate_falsy():
 	random.seed(1234)
 
 	assert list(testing.generate_falsy_values()) == [
+			False,
+			"False",
+			"false",
+			"falSE",
+			"n",
+			"N",
+			"NO",
+			"no",
+			"nO",
+			"OFF",
+			"off",
+			"oFF",
+			"0",
+			0,
+			]
+
+	assert list(testing.generate_falsy_values(["bar"])) == [
 			False,
 			"False",
 			"false",
@@ -120,13 +137,10 @@ def test_generate_falsy():
 			"oFF",
 			'0',
 			0,
+			"bar",
 			]
 
-	assert list(testing.generate_falsy_values(["bar"])) == [
-			False, "False", "false", "falSE", 'n', 'N', "NO", "no", "nO", "OFF", "off", "oFF", '0', 0, "bar"
-			]
-
-	assert list(testing.generate_falsy_values(ratio=.3)) == ['0', "no", "False", False]
+	assert list(testing.generate_falsy_values(ratio=0.3)) == ["0", "no", "False", False]
 
 
 @not_pypy("Success")

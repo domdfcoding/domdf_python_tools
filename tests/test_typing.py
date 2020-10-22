@@ -33,7 +33,7 @@ from domdf_python_tools.typing import PathLike, check_membership
 				("abc", Tuple[int, float, str]),
 				(1234, Dict[int, float]),
 				(12.34, Dict[int, float]),
-				]
+				],
 		)
 def test_check_membership_true(obj, type_):
 	# todo: Positions for Tuple and Dict
@@ -55,7 +55,7 @@ def test_check_membership_true(obj, type_):
 				("abc", Tuple[int, float, bytes]),
 				(1234, Dict[bytes, float]),
 				(12.34, Dict[int, str]),
-				]
+				],
 		)
 def test_check_membership_false(obj, type_):
 	# todo: Positions for Tuple and Dict
@@ -95,7 +95,7 @@ class MyPath(type(pathlib.Path())):  # type: ignore
 				MyStr("test_typing.py"),
 				MyPathLike("/home/domdf", "Python"),
 				MyPathLike(".", "test_typing.py"),
-				]
+				],
 		)
 def test_pathlike_true(obj):
 	assert check_membership(obj, PathLike)
