@@ -65,6 +65,9 @@ __all__ = [
 		"alpha_sort",
 		"as_text",
 		"word_join",
+		"TAB",
+		"CR",
+		"LF",
 		]
 
 ascii_digits = "0123456789"
@@ -537,3 +540,13 @@ def word_join(
 			return delimiter.join(words[:-1]) + f"{delimiter}{connective} {words[-1]}"
 		else:
 			return delimiter.join(words[:-1]) + f" {connective} {words[-1]}"
+
+
+#: A literal ``TAB`` (``\\t``) character for use in f-strings.
+TAB = "\t"
+
+#: The carriage return character (``\\r``) for use in f-strings.
+CR = "\r"
+
+#: The newline character (``\\n``) for use in f-strings.
+LF = "\r"

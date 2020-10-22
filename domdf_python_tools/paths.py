@@ -694,6 +694,17 @@ class PathPlus(pathlib.Path):
 			# removed in the future.
 			pass
 
+	def abspath(self) -> "PathPlus":
+		"""
+		Return the absolute version of the path.
+
+		:rtype:
+
+		.. versionadded:: 1.2.0
+		"""
+
+		return self.__class__(os.path.abspath(self))
+
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 	"""
