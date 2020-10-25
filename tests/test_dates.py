@@ -33,12 +33,14 @@ def test_utc_offset():
 
 	# Check that the correct UTC offsets are given for common timezones for today
 	assert dates.get_utc_offset("US/Pacific", today) == datetime.timedelta(-1, 61200)
-	assert dates.get_utc_offset("Europe/London", today) == datetime.timedelta(0, 3600)
+	# assert dates.get_utc_offset("Europe/London", today) == datetime.timedelta(0, 3600)  # BST
+	assert dates.get_utc_offset("Europe/London", today) == datetime.timedelta(0, 0)
 	assert dates.get_utc_offset("Africa/Algiers", today) == datetime.timedelta(0, 3600)
 
 	# Check that the correct UTC offsets are given for common timezones when ``date`` is not given
 	assert dates.get_utc_offset("US/Pacific") == datetime.timedelta(-1, 61200)
-	assert dates.get_utc_offset("Europe/London") == datetime.timedelta(0, 3600)
+	# assert dates.get_utc_offset("Europe/London") == datetime.timedelta(0, 3600)  # BST
+	assert dates.get_utc_offset("Europe/London") == datetime.timedelta(0, 0)
 	assert dates.get_utc_offset("Africa/Algiers") == datetime.timedelta(0, 3600)
 
 

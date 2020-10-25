@@ -66,6 +66,7 @@ from typing import IO, Tuple
 # this package
 from domdf_python_tools import __version__
 from domdf_python_tools.utils import deprecated
+from domdf_python_tools.words import CR
 
 __all__ = [
 		"clear",
@@ -136,10 +137,10 @@ def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bo
 	:param end: String to end with.
 	:param file: An object with a ``write(string)`` method.
 	:default file: ``sys.stdout``
-	:param flush: If true, the stream is forcibly flushed.
+	:param flush: If :py:obj:`True`, the stream is forcibly flushed.
 	"""  # noqa D400
 
-	object0 = f"\r{objects[0]}"
+	object0 = f"{CR}{objects[0]}"
 	objects = (object0, *objects[1:])
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
 
@@ -169,7 +170,7 @@ class Echo:
 	:param indent: The indentation of the dictionary of variable assignments.
 	"""
 
-	def __init__(self, indent: str = "  "):
+	def __init__(self, indent: str = " " * 2):
 		self.indent = indent
 
 		frame = inspect.currentframe()

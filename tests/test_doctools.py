@@ -353,157 +353,157 @@ def test_sphinxify_docstring():
 @prettify_docstrings
 class Klasse:
 
-	def __delattr__(self, **kwargs):  # type: ignore
+	def __delattr__(self, item):
 		...  # pragma: no cover
 
-	def __dir__(self):  # type: ignore
+	def __dir__(self):
 		...  # pragma: no cover
 
-	def __eq__(self, **kwargs):  # type: ignore
+	def __eq__(self, other):
 		...  # pragma: no cover
 
-	def __getattribute__(self, **kwargs):  # type: ignore
+	def __getattribute__(self, item):
 		...  # pragma: no cover
 
-	def __ge__(self):  # type: ignore
+	def __ge__(self, other):
 		...  # pragma: no cover
 
-	def __gt__(self):  # type: ignore
+	def __gt__(self, other):
 		...  # pragma: no cover
 
-	def __hash__(self):  # type: ignore
+	def __hash__(self):
 		...  # pragma: no cover
 
-	def __lt__(self):  # type: ignore
+	def __lt__(self, other):
 		...  # pragma: no cover
 
-	def __le__(self):  # type: ignore
+	def __le__(self, other):
 		...  # pragma: no cover
 
-	def __ne__(self, **kwargs):  # type: ignore
+	def __ne__(self, other):
 		...  # pragma: no cover
 
-	def __setattr__(self, **kwargs):  # type: ignore
+	def __setattr__(self, item, value):
 		...  # pragma: no cover
 
-	def __sizeof__(self):  # type: ignore
+	def __sizeof__(self):
 		...  # pragma: no cover
 
-	def __str__(self):  # type: ignore
+	def __str__(self):
 		...  # pragma: no cover
 
-	def __contains__(self):  # type: ignore
+	def __contains__(self, item):
 		...  # pragma: no cover
 
-	def __getitem__(self):  # type: ignore
+	def __getitem__(self, item):
 		...  # pragma: no cover
 
-	def __setitem__(self):  # type: ignore
+	def __setitem__(self, item, value):
 		...  # pragma: no cover
 
-	def __delitem__(self):  # type: ignore
+	def __delitem__(self, item):
 		...  # pragma: no cover
 
-	def __and__(self):  # type: ignore
+	def __and__(self):
 		...  # pragma: no cover
 
-	def __add__(self):  # type: ignore
+	def __add__(self, other):
 		...  # pragma: no cover
 
-	def __abs__(self):  # type: ignore
+	def __abs__(self):
 		...  # pragma: no cover
 
-	def __divmod__(self):  # type: ignore
+	def __divmod__(self, other):
 		...  # pragma: no cover
 
-	def __floordiv__(self):  # type: ignore
+	def __floordiv__(self, other):
 		...  # pragma: no cover
 
-	def __invert__(self):  # type: ignore
+	def __invert__(self):
 		...  # pragma: no cover
 
-	def __lshift__(self):  # type: ignore
+	def __lshift__(self, other):
 		...  # pragma: no cover
 
-	def __mod__(self):  # type: ignore
+	def __mod__(self, other):
 		...  # pragma: no cover
 
-	def __mul__(self):  # type: ignore
+	def __mul__(self, other):
 		...  # pragma: no cover
 
-	def __neg__(self):  # type: ignore
+	def __neg__(self):
 		...  # pragma: no cover
 
-	def __or__(self):  # type: ignore
+	def __or__(self, other):
 		...  # pragma: no cover
 
-	def __pos__(self):  # type: ignore
+	def __pos__(self):
 		...  # pragma: no cover
 
-	def __pow__(self):  # type: ignore
+	def __pow__(self, other):
 		...  # pragma: no cover
 
-	def __radd__(self):  # type: ignore
+	def __radd__(self, other):
 		...  # pragma: no cover
 
-	def __rand__(self):  # type: ignore
+	def __rand__(self, other):
 		...  # pragma: no cover
 
-	def __rdivmod__(self):  # type: ignore
+	def __rdivmod__(self, other):
 		...  # pragma: no cover
 
-	def __rfloordiv__(self):  # type: ignore
+	def __rfloordiv__(self, other):
 		...  # pragma: no cover
 
-	def __rlshift__(self):  # type: ignore
+	def __rlshift__(self, other):
 		...  # pragma: no cover
 
-	def __rmod__(self):  # type: ignore
+	def __rmod__(self, other):
 		...  # pragma: no cover
 
-	def __rmul__(self):  # type: ignore
+	def __rmul__(self, other):
 		...  # pragma: no cover
 
-	def __ror__(self):  # type: ignore
+	def __ror__(self, other):
 		...  # pragma: no cover
 
-	def __rpow__(self):  # type: ignore
+	def __rpow__(self, other):
 		...  # pragma: no cover
 
-	def __rrshift__(self):  # type: ignore
+	def __rrshift__(self, other):
 		...  # pragma: no cover
 
-	def __rshift__(self):  # type: ignore
+	def __rshift__(self, other):
 		...  # pragma: no cover
 
-	def __rsub__(self):  # type: ignore
+	def __rsub__(self, other):
 		...  # pragma: no cover
 
-	def __rtruediv__(self):  # type: ignore
+	def __rtruediv__(self, other):
 		...  # pragma: no cover
 
-	def __rxor__(self):  # type: ignore
+	def __rxor__(self, other):
 		...  # pragma: no cover
 
-	def __sub__(self):  # type: ignore
+	def __sub__(self, other):
 		...  # pragma: no cover
 
-	def __truediv__(self):  # type: ignore
+	def __truediv__(self, other):
 		...  # pragma: no cover
 
-	def __xor__(self):  # type: ignore
+	def __xor__(self, other):
 		...  # pragma: no cover
 
-	def __float__(self):  # type: ignore
+	def __float__(self):
 		...  # pragma: no cover
 
-	def __int__(self):  # type: ignore
+	def __int__(self):
 		...  # pragma: no cover
 
-	def __repr__(self):  # type: ignore
+	def __repr__(self):
 		...  # pragma: no cover
 
-	def __bool__(self):  # type: ignore
+	def __bool__(self):
 		...  # pragma: no cover
 
 
