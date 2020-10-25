@@ -525,12 +525,12 @@ class PathPlus(pathlib.Path):
 				newline = "\n"
 
 		return super().open(
-			mode,
-			buffering=buffering,
-			encoding=encoding,
-			errors=errors,
-			newline=newline,
-			)
+				mode,
+				buffering=buffering,
+				encoding=encoding,
+				errors=errors,
+				newline=newline,
+				)
 
 	def dump_json(
 			self,
@@ -700,7 +700,7 @@ class PathPlus(pathlib.Path):
 
 		:rtype:
 
-		.. versionadded:: 1.2.0
+		.. versionadded:: 1.3.0
 		"""
 
 		return self.__class__(os.path.abspath(self))
