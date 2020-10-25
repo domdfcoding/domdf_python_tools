@@ -316,7 +316,7 @@ SERIF_ITALIC_LETTERS = make_font(
 """
 Italic Serif :class:`domdf_python_tools.words.Font`
 
-This font includes and Greek letters.
+This font includes Greek letters.
 
 .. versionadded:: 0.7.0
 """
