@@ -226,7 +226,7 @@ class PageSize(BaseSize):
 		:param unit:
 		"""
 
-		width, height = convert_from((width, height), unit)  # type: ignore
+		width, height = convert_from((width, height), unit)
 		return super().__new__(cls, width, height)
 
 	@property

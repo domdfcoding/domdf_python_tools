@@ -233,7 +233,7 @@ class PathTest(unittest.TestCase):
 	def test_unlink_missing_ok(self):
 		p = PathPlus(BASE) / "fileAAA"
 		self.assertFileNotFound(p.unlink)
-		p.unlink(missing_ok=True)  # type: ignore
+		p.unlink(missing_ok=True)
 
 	def test_rmdir(self):
 		p = PathPlus(BASE) / "dirA"
@@ -541,13 +541,13 @@ class PathTest(unittest.TestCase):
 	def test_is_mount(self):
 		P = PathPlus(BASE)
 		R = PathPlus("/")  # TODO: Work out Windows.
-		self.assertFalse((P / "fileA").is_mount())  # type: ignore
-		self.assertFalse((P / "dirA").is_mount())  # type: ignore
-		self.assertFalse((P / "non-existing").is_mount())  # type: ignore
-		self.assertFalse((P / "fileA" / "bah").is_mount())  # type: ignore
-		self.assertTrue(R.is_mount())  # type: ignore
+		self.assertFalse((P / "fileA").is_mount())
+		self.assertFalse((P / "dirA").is_mount())
+		self.assertFalse((P / "non-existing").is_mount())
+		self.assertFalse((P / "fileA" / "bah").is_mount())
+		self.assertTrue(R.is_mount())
 		if support.can_symlink():
-			self.assertFalse((P / "linkA").is_mount())  # type: ignore
+			self.assertFalse((P / "linkA").is_mount())
 
 	def test_is_symlink(self):
 		P = PathPlus(BASE)

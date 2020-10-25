@@ -192,7 +192,7 @@ class Attributes:
 
 class ReprPrettyPrinter(FancyPrinter):
 
-	_dispatch = dict(FancyPrinter._dispatch)  # type: ignore
+	_dispatch = dict(FancyPrinter._dispatch)
 
 	def format_attributes(self, obj: Attributes):
 		stream = StringIO()

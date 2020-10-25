@@ -524,7 +524,7 @@ class PathPlus(pathlib.Path):
 			else:
 				newline = "\n"
 
-		return super().open(  # type: ignore  # yapf: disable
+		return super().open(
 			mode,
 			buffering=buffering,
 			encoding=encoding,

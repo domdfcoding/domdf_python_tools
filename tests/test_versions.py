@@ -175,7 +175,7 @@ def test_from_tuple(tuple_, expects):
 
 def test_too_many_values():
 	with pytest.raises(TypeError, match=".* takes from 1 to 4 positional arguments but 5 were given"):
-		Version.from_str("1.2.3.4")  # type: ignore
+		Version.from_str("1.2.3.4")
 	with pytest.raises(TypeError, match=".* takes from 1 to 4 positional arguments but 5 were given"):
 		Version(1, 2, 3, 4)  # type: ignore
 	with pytest.raises(TypeError, match=".* takes from 1 to 4 positional arguments but 5 were given"):
