@@ -228,6 +228,8 @@ class StringList(List[str]):
 		if isinstance(index, int):
 			if self and index < len(self):
 				self.pop(index)
+			if index < 0:
+				index = len(self) + index + 1
 			self.insert(index, line)
 
 		elif isinstance(index, slice):
