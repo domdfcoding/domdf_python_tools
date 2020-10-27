@@ -244,7 +244,7 @@ def _prep_for_eq(other: Union[str, float, Version], ) -> Tuple[int, ...]:
 	if isinstance(other, str):
 		return tuple(_iter_string(other))
 	elif isinstance(other, (Version, Sequence)):
-		return tuple((int(x) for x in other))
+		return tuple(int(x) for x in other)
 	elif isinstance(other, (int, float)):
 		return tuple(_iter_float(other))
 	else:  # pragma: no cover

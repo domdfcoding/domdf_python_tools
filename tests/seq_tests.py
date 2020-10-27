@@ -59,8 +59,7 @@ NEVER_EQ = _NEVER_EQ()
 # This is used for checking the constructor (here and in test_deque.py)
 def iterfunc(seqn):
 	"""Regular generator"""
-	for i in seqn:
-		yield i
+	yield from seqn
 
 
 class Sequence:
@@ -99,8 +98,7 @@ class IterGen:
 		self.i = 0
 
 	def __iter__(self):
-		for val in self.seqn:
-			yield val
+		yield from self.seqn
 
 
 class IterNextOnly:

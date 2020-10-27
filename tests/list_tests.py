@@ -599,7 +599,7 @@ class CommonTest(seq_tests.CommonTest):
 
 	def test_constructor_exception_handling(self):
 		# Bug #1242657
-		class F(object):
+		class F:
 
 			def __iter__(self):
 				raise KeyboardInterrupt
