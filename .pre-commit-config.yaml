@@ -27,7 +27,8 @@ repos:
    rev: v0.0.4
    hooks:
     - id: requirements-txt-sorter
-      args: [--allow-git]
+      args:
+       - --allow-git
     - id: check-docstring-first
       exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup|tests/.*)\.py$
     - id: bind-requirements
@@ -47,7 +48,8 @@ repos:
    rev: v2.7.3
    hooks:
     - id: pyupgrade
-      args: [--py36-plus]
+      args:
+       - --py36-plus
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
    rev: v1.1.9
@@ -56,8 +58,7 @@ repos:
     - id: forbid-crlf
 
  - repo: https://github.com/domdfcoding/yapf-isort
-   rev: v0.3.3
+   rev: v0.4.4
    hooks:
     - id: yapf-isort
       exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
-      args: [--exclude, "*.pyi", ]
