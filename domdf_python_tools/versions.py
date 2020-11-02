@@ -95,7 +95,6 @@ class Version(Tuple[int, int, int]):
 		"""
 
 		repr_fmt = '(' + ", ".join(f"{name}=%r" for name in self._fields) + ')'
-		print(repr_fmt)
 		return self.__class__.__name__ + repr_fmt % self
 
 	def __str__(self) -> str:
