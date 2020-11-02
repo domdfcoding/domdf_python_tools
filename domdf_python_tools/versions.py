@@ -25,40 +25,67 @@ NamedTuple-like class to represent a version number.
 
 # stdlib
 import re
-from typing import Generator, Sequence, Tuple, Union
+from typing import Dict, Generator, Iterable, Sequence, Tuple, Union
+
+# 3rd party
+from typing_extensions import final
 
 __all__ = ["Version"]
 
 
+@final
 class Version(Tuple[int, int, int]):
 	"""
 	NamedTuple-like class to represent a version number.
 
-	:param major: The major version number.
-	:type major: :class:`int`
-	:param minor: The minor version number.
-	:type minor: :class:`int`
-	:param patch: The patch version number.
-	:type patch: :class:`int`
+	:param major:
 
 	.. versionadded:: 0.4.4
+
+	.. versionchanged:: 1.4.0 Implemented the same interface as a :func:`collections.namedtuple`.
 	"""
 
+	__slots__ = ()
+
+	#: The major version number.
 	major: int
-	"The major version number."
 
+	#: The minor version number.
 	minor: int
-	"The minor version number."
 
+	#: The patch version number.
 	patch: int
-	"The patch number."
+
+	_fields: Tuple[str, str, str] = ("major", "minor", "patch")
+	"""
+	Tuple of strings listing the field names.
+
+	Useful for introspection and for creating new named tuple types from existing named tuples.
+
+	.. versionadded:: 1.4.0
+	"""
+
+	_field_defaults: Dict[str, int] = {"major": 0, "minor": 0, "patch": 0}
+	"""
+	Dictionary mapping field names to default values.
+
+	.. versionadded:: 1.4.0
+	"""
+
+	@property  # type: ignore
+	def major(self):
+		return self[0]
+
+	@property  # type: ignore
+	def minor(self):
+		return self[1]
+
+	@property  # type: ignore
+	def patch(self):
+		return self[2]
 
 	def __new__(cls, major=0, minor=0, patch=0) -> "Version":
 		t: "Version" = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
-
-		t.__dict__["major"] = int(major)
-		t.__dict__["minor"] = int(minor)
-		t.__dict__["patch"] = int(patch)
 
 		return t
 
@@ -67,8 +94,8 @@ class Version(Tuple[int, int, int]):
 		Return the representation of the version.
 		"""
 
-		field_names = self.__annotations__.keys()
-		repr_fmt = '(' + ", ".join(f"{name}=%r" for name in field_names) + ')'
+		repr_fmt = '(' + ", ".join(f"{name}=%r" for name in self._fields) + ')'
+		print(repr_fmt)
 		return self.__class__.__name__ + repr_fmt % self
 
 	def __str__(self) -> str:
@@ -210,6 +237,48 @@ class Version(Tuple[int, int, int]):
 		"""
 
 		return cls.from_str(str(version_float))
+
+	def _asdict(self) -> Dict[str, int]:
+		"""
+		Return a new dict which maps field names to their corresponding values.
+
+		:rtype:
+
+		.. versionadded:: 1.4.0
+		"""
+
+		return {
+				"major": self.major,
+				"minor": self.minor,
+				"patch": self.patch,
+				}
+
+	def _replace(self, **kwargs) -> "Version":
+		"""
+		Return a new instance of the named tuple replacing specified fields with new values:
+
+		:param kwargs:
+
+		:rtype:
+
+		.. versionadded:: 1.4.0
+		"""
+
+		return self.__class__(**{**self._asdict(), **kwargs})
+
+	@classmethod
+	def _make(cls, iterable: Iterable[Union[str, int]]) -> "Version":
+		"""
+		Class method that makes a new instance from an existing sequence or iterable.
+
+		:param iterable:
+
+		:rtype:
+
+		.. versionadded:: 1.4.0
+		"""
+
+		return cls(*(int(x) for x in tuple(iterable)[:3]))
 
 
 def _iter_string(version_string: str) -> Generator[int, None, None]:

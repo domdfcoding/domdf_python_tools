@@ -5,3 +5,4 @@
 .. automodule:: domdf_python_tools.versions
 	:undoc-members:
 	:special-members:
+	:private-members:
