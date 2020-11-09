@@ -112,7 +112,7 @@ class AnsiCursor:
 class AnsiFore(AnsiCodes):
 
 	_stack = fore_stack
-	_reset = ...
+	_reset: str = ...
 
 	BLACK: Colour
 	RED: Colour
