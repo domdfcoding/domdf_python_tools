@@ -78,14 +78,13 @@ General utility functions.
 import difflib
 import functools
 import inspect
-import itertools
 import sys
 import textwrap
 import typing
 import warnings
 from datetime import date
 from pprint import pformat
-from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
 import deprecation  # type: ignore

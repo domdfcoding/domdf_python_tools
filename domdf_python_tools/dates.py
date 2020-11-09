@@ -3,6 +3,14 @@
 #  dates.py
 """
 Utilities for working with dates and times.
+
+.. extras-require:: dates
+
+	pytz >=2019.1
+
+
+.. warning:: This module has not been fully tested. Use with caution.
+
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -83,7 +91,7 @@ try:
 
 	def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
 		"""
-		Returns a localized :class:`pytz.timezone` object for the given date.
+		Returns a localized ``pytz.timezone`` object for the given date.
 		If ``date`` is :py:obj:`None` then the current date is used.
 
 		:param tz: A string representing a pytz timezone
@@ -109,7 +117,7 @@ except ImportError as e:  # pragma: no cover
 Some functions in 'domdf_python_tools.dates' require pytz (https://pypi.org/project/pytz/), \
 but it could not be imported.
 
-The error was {e}.
+The error was: {e}.
 """,
 			)
 

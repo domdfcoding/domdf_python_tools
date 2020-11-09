@@ -8,7 +8,6 @@ Handy functions for testing code.
 	:__pkginfo__:
 
 .. versionadded:: 0.4.9
-
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -46,7 +45,7 @@ from _pytest.mark import MarkDecorator
 # this package
 from domdf_python_tools.doctools import PYPY
 from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.utils import Len
+from domdf_python_tools.iterative import Len
 from domdf_python_tools.versions import Version
 
 __all__ = [
@@ -65,6 +64,8 @@ __all__ = [
 		"only_pypy",
 		"pytest_report_header",
 		]
+
+MarkDecorator.__module__ = "_pytest.mark"
 
 
 def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Iterator[Any]:
