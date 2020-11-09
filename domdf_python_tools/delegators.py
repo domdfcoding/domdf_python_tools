@@ -119,10 +119,7 @@ def delegates(to: Callable) -> Callable[[_C], _C]:
 
 		elif tuple(from_params.keys()) == ("self", "args", "kwargs"):
 			f.__signature__ = from_sig.replace(  # type: ignore
-				parameters=[
-				from_params["self"],
-				*to_sig.parameters.values(),
-				]
+				parameters=[from_params["self"], *to_sig.parameters.values()]
 				)
 
 			copy_annotations(f)

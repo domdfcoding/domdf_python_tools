@@ -316,7 +316,7 @@ class PathPlus(pathlib.Path):
 		Defaults to Unix line endings (``LF``) on all platforms.
 	"""
 
-	__slots__ = ('_accessor', )
+	__slots__ = ("_accessor", )
 
 	def __new__(cls, *args, **kwargs):  # noqa D102
 		if cls is PathPlus:

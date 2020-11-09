@@ -187,7 +187,7 @@ def utc_timestamp_to_datetime(
 if sys.version_info <= (3, 7, 2):
 	MonthsType = OrderedDict
 else:
-	MonthsType = typing.OrderedDict[str, str]  # type: ignore
+	MonthsType = typing.OrderedDict[str, str]  # type: ignore  # noqa: TYP006
 
 #: Mapping of 3-character shortcodes to full month names.
 months: MonthsType = OrderedDict(

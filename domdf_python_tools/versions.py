@@ -73,18 +73,18 @@ class Version(Tuple[int, int, int]):
 	"""
 
 	@property  # type: ignore
-	def major(self):
+	def major(self):  # noqa: D102
 		return self[0]
 
 	@property  # type: ignore
-	def minor(self):
+	def minor(self):  # noqa: D102
 		return self[1]
 
 	@property  # type: ignore
-	def patch(self):
+	def patch(self):  # noqa: D102
 		return self[2]
 
-	def __new__(cls, major=0, minor=0, patch=0) -> "Version":
+	def __new__(cls, major=0, minor=0, patch=0) -> "Version":  # noqa: D102
 		t: "Version" = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
 
 		return t
@@ -254,7 +254,7 @@ class Version(Tuple[int, int, int]):
 
 	def _replace(self, **kwargs) -> "Version":
 		"""
-		Return a new instance of the named tuple replacing specified fields with new values:
+		Return a new instance of the named tuple replacing specified fields with new values.
 
 		:param kwargs:
 

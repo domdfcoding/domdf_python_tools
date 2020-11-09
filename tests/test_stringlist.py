@@ -119,15 +119,15 @@ class TestStringList:
 		assert StringList("Hello\n    World", convert_indents=True) == ["Hello", "\tWorld"]
 
 	def test_negative_getitem(self):
-		sl = StringList(['', '', "hello", "world", '', '', 'abc', "1234"])
+		sl = StringList(['', '', "hello", "world", '', '', "abc", "1234"])
 
 		assert sl[-1] == "1234"
 		sl[-1] += "5678"
-		assert sl == ['', '', "hello", "world", '', '', 'abc', "12345678"]
+		assert sl == ['', '', "hello", "world", '', '', "abc", "12345678"]
 
 		assert sl[-2] == "abc"
 		sl[-2] += "def"
-		assert sl == ['', '', "hello", "world", '', '', 'abcdef', "12345678"]
+		assert sl == ['', '', "hello", "world", '', '', "abcdef", "12345678"]
 
 	def test_indent_size(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
