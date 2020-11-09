@@ -696,6 +696,24 @@ class PathPlus(pathlib.Path):
 			# removed in the future.
 			pass
 
+		def is_relative_to(self, *other: Union[str, os.PathLike]) -> bool:
+			r"""
+			Returns whether the path is relative to another path.
+
+			:param \*other:
+
+			:rtype:
+
+			.. versionadded:: 0.3.8 for Python 3.9 and above
+			.. versionadded:: 1.4.0 for Python 3.6 and Python 3.7
+			"""
+
+			try:
+				self.relative_to(*other)
+				return True
+			except ValueError:
+				return False
+
 	def abspath(self) -> "PathPlus":
 		"""
 		Return the absolute version of the path.

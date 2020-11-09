@@ -13,6 +13,17 @@ General utility functions.
 	  Import from :mod:`domdf_python_tools.words` instead.
 	* Removed ``splitLen``.
 	  Use :func:`domdf_python_tools.utils.split_len` instead.
+
+.. versionchanged:: 1.4.0
+
+	:func:`~domdf_python_tools.iterative.chunks`,
+	:func:`~domdf_python_tools.iterative.permutations`,
+	:func:`~domdf_python_tools.iterative.split_len`,
+	:func:`~domdf_python_tools.iterative.Len`, and
+	:func:`~domdf_python_tools.iterative.double_chain`
+	moved to :func:`domdf_python_tools.iterative`.
+
+	They can still be importrd from here until version 2.0.0, but that use is deprecated.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -39,10 +50,6 @@ General utility functions.
 #  as_text from https://stackoverflow.com/a/40935194
 # 		Copyright © 2016 User3759685
 # 		Available under the MIT License
-#
-#  chunks from https://stackoverflow.com/a/312464/3092681
-# 		Copytight © 2008 Ned Batchelder
-# 		Licensed under CC-BY-SA
 #
 #  strtobool based on the "distutils" module from CPython.
 #  Some docstrings based on the Python documentation.
@@ -86,6 +93,7 @@ from packaging import version
 
 # this package
 import domdf_python_tools.words
+from domdf_python_tools import __version__, iterative
 from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
@@ -100,20 +108,15 @@ __all__ = [
 		"pyversion",
 		"SPACE_PLACEHOLDER",
 		"check_dependencies",
-		"chunks",
 		"cmp",
 		"list2str",
-		"permutations",
 		"printr",
 		"printt",
 		"stderr_writer",
 		"printe",
-		"split_len",
 		"str2tuple",
 		"strtobool",
 		"enquote_value",
-		"Len",
-		"double_chain",
 		"posargs2kwargs",
 		"convert_indents",
 		"etc",
@@ -161,18 +164,6 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	return missing_modules
 
 
-def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
-	"""
-	Yield successive n-sized chunks from l.
-
-	:param l: The objects to yield chunks from
-	:param n: The size of the chunks
-	"""
-
-	for i in range(0, len(l), n):
-		yield l[i:i + n]
-
-
 def cmp(x, y) -> int:
 	"""
 	Implementation of ``cmp`` for Python 3.
@@ -196,27 +187,6 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	"""
 
 	return sep.join([str(x) for x in the_list])
-
-
-def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
-	"""
-	Return permutations containing ``n`` items from ``data`` without any reverse duplicates.
-
-	If ``n`` is equal to or greater than the length of the data an empty list of returned.
-
-	:param data:
-	:param n:
-	"""
-
-	if n == 0:
-		raise ValueError("'n' cannot be 0")
-
-	perms = []
-	for i in itertools.permutations(data, n):
-		if i[::-1] not in perms:
-			perms.append(i)
-
-	return perms
 
 
 def printr(obj: Any, *args, **kwargs) -> None:
@@ -247,19 +217,6 @@ def stderr_writer(*args, **kwargs) -> None:
 
 
 printe = stderr_writer
-
-
-def split_len(string: str, n: int) -> List[str]:
-	"""
-	Split a string every ``n`` characters.
-
-	:param string: The string to split
-	:param n: The number of characters to split after
-
-	:return: The split string
-	"""
-
-	return [string[i:i + n] for i in range(0, len(string), n)]
 
 
 def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
@@ -322,56 +279,6 @@ def enquote_value(value: Any) -> Union[str, bool, float]:
 		return repr(value)
 	else:
 		return f"'{value}'"
-
-
-def Len(obj: Any, start: int = 0, step: int = 1) -> range:
-	"""
-	Shorthand for ``range(len(obj))``.
-
-	Returns an object that produces a sequence of integers from start (inclusive)
-	to len(obj) (exclusive) by step.
-
-	:param obj: The object to iterate over the length of.
-	:param start: The start value of the range.
-	:param step: The step of the range.
-
-	.. versionadded:: 0.4.7
-	"""
-
-	return range(start, len(obj), step)
-
-
-def double_chain(iterable: Iterable[Iterable]):
-	"""
-	Flatten a list of lists of lists into a single list.
-
-	Literally just:
-
-	.. code-block:: python
-
-		chain.from_iterable(chain.from_iterable(iterable))
-
-	Converts
-
-	.. code-block:: python
-
-		[[(1, 2), (3, 4)], [(5, 6), (7, 8)]]
-
-	to
-
-	.. code-block:: python
-
-		[1, 2, 3, 4, 5, 6, 7, 8]
-
-
-	:param iterable: The iterable to chain.
-
-	:rtype:
-
-	.. versionadded:: 0.4.7
-	"""
-
-	yield from itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))
 
 
 def posargs2kwargs(
@@ -731,3 +638,45 @@ def deprecated(
 		return _inner
 
 	return _function_wrapper
+
+
+chunks = deprecated(
+		"1.4.0",
+		"2.0.0",
+		__version__,
+		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		)(
+				iterative.chunks
+				)
+permutations = deprecated(
+		"1.4.0",
+		"2.0.0",
+		__version__,
+		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		)(
+				iterative.permutations
+				)
+split_len = deprecated(
+		"1.4.0",
+		"2.0.0",
+		__version__,
+		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		)(
+				iterative.split_len
+				)
+Len = deprecated(
+		"1.4.0",
+		"2.0.0",
+		__version__,
+		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		)(
+				iterative.Len
+				)
+double_chain = deprecated(
+		"1.4.0",
+		"2.0.0",
+		__version__,
+		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		)(
+				iterative.double_chain
+				)

@@ -29,6 +29,10 @@ Utilities for working with dates and times.
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+#  calc_easter from https://code.activestate.com/recipes/576517-calculate-easter-western-given-a-year/
+#  Copyright © 2008 Martin Diers
+#  Licensed under the MIT License
+#
 
 # stdlib
 import datetime
@@ -45,6 +49,7 @@ __all__ = [
 		"parse_month",
 		"get_month_number",
 		"check_date",
+		"calc_easter",
 		]
 
 try:
@@ -268,3 +273,24 @@ def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool
 		return True
 	except ValueError:
 		return False
+
+
+def calc_easter(year: int) -> datetime.date:
+	"""
+	Returns the date of Easter in the given year.
+
+	:param year:
+
+	.. versionadded:: 1.4.0
+	"""
+
+	a = year % 19
+	b = year // 100
+	c = year % 100
+	d = (19 * a + b - b // 4 - ((b - (b + 8) // 25 + 1) // 3) + 15) % 30
+	e = (32 + 2 * (b % 4) + 2 * (c // 4) - d - (c % 4)) % 7
+	f = d + e - 7 * ((a + 11 * d + 22 * e) // 451) + 114
+	month = f // 31
+	day = f % 31 + 1
+
+	return datetime.date(year, month, day)

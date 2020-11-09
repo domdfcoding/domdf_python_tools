@@ -8,6 +8,7 @@ Test functions in dates.py
 
 # stdlib
 import datetime
+from datetime import date
 
 # 3rd party
 import pytest
@@ -15,6 +16,7 @@ import pytz
 
 # this package
 from domdf_python_tools import dates
+from domdf_python_tools.dates import calc_easter
 from domdf_python_tools.testing import count
 
 test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
@@ -249,3 +251,34 @@ def test_check_date():
 					assert not dates.check_date(month.capitalize()[:i], day)
 
 				assert not dates.check_date(month, day)
+
+
+@pytest.mark.parametrize(
+		"date",
+		[
+				date(2000, 4, 23),
+				date(2001, 4, 15),
+				date(2002, 3, 31),
+				date(2003, 4, 20),
+				date(2004, 4, 11),
+				date(2005, 3, 27),
+				date(2006, 4, 16),
+				date(2007, 4, 8),
+				date(2008, 3, 23),
+				date(2009, 4, 12),
+				date(2010, 4, 4),
+				date(2011, 4, 24),
+				date(2012, 4, 8),
+				date(2013, 3, 31),
+				date(2014, 4, 20),
+				date(2015, 4, 5),
+				date(2016, 3, 27),
+				date(2017, 4, 16),
+				date(2018, 4, 1),
+				date(2019, 4, 21),
+				date(2020, 4, 12),
+				date(2021, 4, 4),
+				]
+		)
+def test_calc_easter(date):
+	assert calc_easter(date.year) == date

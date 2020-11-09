@@ -60,12 +60,6 @@ def test_check_dependencies(capsys):
 	assert missing_deps == []
 
 
-def test_chunks():
-	assert isinstance(utils.chunks(list(range(100)), 5), types.GeneratorType)
-	assert list(utils.chunks(list(range(100)), 5))[0] == [0, 1, 2, 3, 4]
-	assert list(utils.chunks(['a', 'b', 'c'], 1)) == [['a'], ['b'], ['c']]
-
-
 class TestList2Str:
 
 	@pytest.mark.parametrize(
@@ -95,60 +89,6 @@ class TestList2Str:
 		str_representation = utils.list2str(value, sep=';')
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
-
-
-def test_permutations():
-	data = ["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"]
-
-	assert utils.permutations(data, 1) == [(x, ) for x in data]
-
-	assert utils.permutations(data, 2) == [
-			("egg and bacon", "egg sausage and bacon"),
-			("egg and bacon", "egg and spam"),
-			("egg and bacon", "egg bacon and spam"),
-			("egg sausage and bacon", "egg and spam"),
-			("egg sausage and bacon", "egg bacon and spam"),
-			("egg and spam", "egg bacon and spam"),
-			]
-
-	assert utils.permutations(data, 3) == [
-			("egg and bacon", "egg sausage and bacon", "egg and spam"),
-			("egg and bacon", "egg sausage and bacon", "egg bacon and spam"),
-			("egg and bacon", "egg and spam", "egg sausage and bacon"),
-			("egg and bacon", "egg and spam", "egg bacon and spam"),
-			("egg and bacon", "egg bacon and spam", "egg sausage and bacon"),
-			("egg and bacon", "egg bacon and spam", "egg and spam"),
-			("egg sausage and bacon", "egg and bacon", "egg and spam"),
-			("egg sausage and bacon", "egg and bacon", "egg bacon and spam"),
-			("egg sausage and bacon", "egg and spam", "egg bacon and spam"),
-			("egg sausage and bacon", "egg bacon and spam", "egg and spam"),
-			("egg and spam", "egg and bacon", "egg bacon and spam"),
-			("egg and spam", "egg sausage and bacon", "egg bacon and spam"),
-			]
-
-	assert utils.permutations(data, 4) == [
-			("egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"),
-			("egg and bacon", "egg sausage and bacon", "egg bacon and spam", "egg and spam"),
-			("egg and bacon", "egg and spam", "egg sausage and bacon", "egg bacon and spam"),
-			("egg and bacon", "egg and spam", "egg bacon and spam", "egg sausage and bacon"),
-			("egg and bacon", "egg bacon and spam", "egg sausage and bacon", "egg and spam"),
-			("egg and bacon", "egg bacon and spam", "egg and spam", "egg sausage and bacon"),
-			("egg sausage and bacon", "egg and bacon", "egg and spam", "egg bacon and spam"),
-			("egg sausage and bacon", "egg and bacon", "egg bacon and spam", "egg and spam"),
-			("egg sausage and bacon", "egg and spam", "egg and bacon", "egg bacon and spam"),
-			("egg sausage and bacon", "egg bacon and spam", "egg and bacon", "egg and spam"),
-			("egg and spam", "egg and bacon", "egg sausage and bacon", "egg bacon and spam"),
-			("egg and spam", "egg sausage and bacon", "egg and bacon", "egg bacon and spam"),
-			]
-
-	assert utils.permutations(data, 5) == []
-	assert utils.permutations(data, 6) == []
-	assert utils.permutations(data, 10) == []
-	assert utils.permutations(data, 30) == []
-	assert utils.permutations(data, 100) == []
-
-	with pytest.raises(ValueError, match="'n' cannot be 0"):
-		utils.permutations(data, 0)
 
 
 class CustomRepr:
@@ -231,10 +171,6 @@ def test_stderr_writer(obj, expects, capsys):
 	captured = capsys.readouterr()
 	stderr = captured.err.split("\n")
 	assert re.match(expects, stderr[0])
-
-
-def test_split_len():
-	assert utils.split_len("Spam Spam Spam Spam Spam Spam Spam Spam ", 5) == ["Spam "] * 8
 
 
 class TestStr2Tuple:
@@ -335,34 +271,6 @@ def test_cmp():
 
 	assert isinstance(utils.cmp(20, 20), int)
 	assert utils.cmp(20, 20) == 0
-
-
-@pytest.mark.parametrize(
-		"value, expects",
-		[
-				([[(1, 2), (3, 4)], [(5, 6), (7, 8)]], [1, 2, 3, 4, 5, 6, 7, 8]),
-				([[(1, 2), (3, 4)], ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
-				([((1, 2), (3, 4)), [(5, 6), (7, 8)]], [1, 2, 3, 4, 5, 6, 7, 8]),
-				([((1, 2), (3, 4)), ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
-				((((1, 2), (3, 4)), ((5, 6), (7, 8))), [1, 2, 3, 4, 5, 6, 7, 8]),
-				((("12", "34"), ("56", "78")), ["1", "2", "3", "4", "5", "6", "7", "8"]),
-				]
-		)
-def test_double_chain(value, expects):
-	assert list(utils.double_chain(value)) == expects
-
-
-def test_len(capsys):
-	assert list(utils.Len("Hello")) == [0, 1, 2, 3, 4]
-	assert list(utils.Len("Hello World")) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-	for val in utils.Len("Hello World"):
-		print(val)
-
-	captured = capsys.readouterr()
-	assert captured.out.splitlines() == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-
-	assert utils.Len("Hello") == range(5)
 
 
 def demo_function(arg1, arg2, arg3):
