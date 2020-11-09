@@ -151,7 +151,7 @@ def double_chain(iterable: Iterable[Iterable]):
 	yield from itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))
 
 
-def flatten(iterable: Iterable, primitives: Tuple[Type] = (str, int, float)):
+def flatten(iterable: Iterable, primitives: Tuple[Type, ...] = (str, int, float)):
 	"""
 	Flattens a mixed list of primitive types and iterables of those types into a single list,
 	regardless of nesting.
@@ -171,7 +171,7 @@ def flatten(iterable: Iterable, primitives: Tuple[Type] = (str, int, float)):
 			raise NotImplementedError
 
 
-Branch = Union[List[str], List["Branch"]]
+Branch = Union[Sequence[str], Sequence[Union[Sequence[str], Sequence]]]
 
 
 def make_tree(tree: Branch) -> Iterator[str]:

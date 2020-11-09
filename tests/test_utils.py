@@ -42,7 +42,7 @@ def test_check_dependencies(capsys):
 	missing_deps = utils.check_dependencies(deps)
 	captured = capsys.readouterr()
 	stdout = captured.out.split("\n")
-	assert stdout[0] == "The following modules are missing."
+	assert stdout[0] == "The following modules are missing:"
 	assert stdout[1] == "['madeup_module']"
 	assert stdout[2] == "Please check the documentation."
 	assert stdout[3] == ''
@@ -333,28 +333,47 @@ class TestHead:
 		assert isinstance(pandas.DataFrame, HasHead)
 		assert isinstance(pandas.Series, HasHead)
 
-	def test_namedtuple(self):
-		foo = namedtuple("foo", "a, b, c, d, e, f, g, h, i, j, k, l, m")
-		assert head(
-				foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
-				) == "foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, ...)"
-		assert head(
-				foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13
-				) == "foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, k=11, l=12, m=13)"
+	foo = namedtuple("foo", "a, b, c, d, e, f, g, h, i, j, k, l, m")
 
-	def test_tuple(self):
-		assert head((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...)"
-		assert head(
-				(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-				13,
-				) == "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"
+	@pytest.mark.parametrize(
+			"args, expects",
+			[
+					((foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), ),
+						"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, ...)"),
+					((foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13),
+						"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, k=11, l=12, m=13)"),
+					]
+			)
+	def test_namedtuple(self, args, expects):
+		assert head(*args) == expects
 
-	def test_list(self):
-		assert head([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]"
-		assert head(
-				[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-				13,
-				) == "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"
+	@pytest.mark.parametrize(
+			"args, expects",
+			[
+					(((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), ), "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...)"),
+					((
+							(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+							13,
+							),
+						"(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"),
+					]
+			)
+	def test_tuple(self, args, expects):
+		assert head(*args) == expects
+
+	@pytest.mark.parametrize(
+			"args, expects",
+			[
+					(([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], ), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]"),
+					((
+							[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+							13,
+							),
+						"[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"),
+					]
+			)
+	def test_list(self, args, expects):
+		assert head(*args) == expects
 
 	def test_data_frame(self):
 		pandas = pytest.importorskip("pandas")
@@ -436,7 +455,7 @@ def test_deprecation():
 
 
 def test_diff(file_regression: FileRegressionFixture):
-	data_dir = PathPlus(__file__).parent / "test_diff"
+	data_dir = PathPlus(__file__).parent / "test_diff_"
 	original = data_dir / "original"
 	modified = data_dir / "modified"
 

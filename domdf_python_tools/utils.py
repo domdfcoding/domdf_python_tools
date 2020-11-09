@@ -23,7 +23,7 @@ General utility functions.
 	:func:`~domdf_python_tools.iterative.double_chain`
 	moved to :func:`domdf_python_tools.iterative`.
 
-	They can still be importrd from here until version 2.0.0, but that use is deprecated.
+	They can still be imported from here until version 2.0.0, but that use is deprecated.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -130,38 +130,6 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 
 #: The ``␣`` character.
 SPACE_PLACEHOLDER = '␣'
-
-
-def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
-	"""
-	Check whether one or more dependencies are available to be imported.
-
-	:param dependencies: The list of dependencies to check the availability of.
-	:param prt: Whether the status should be printed to the terminal.
-
-	:return: A list of any missing modules.
-	"""
-
-	# stdlib
-	from pkgutil import iter_modules
-
-	modules = {x[1] for x in iter_modules()}
-	missing_modules = []
-
-	for requirement in dependencies:
-		if requirement not in modules:
-			missing_modules.append(requirement)
-
-	if prt:
-		if len(missing_modules) == 0:
-			print("All modules installed")
-		else:
-			print("The following modules are missing.")
-			print(missing_modules)
-			print("Please check the documentation.")
-		print('')
-
-	return missing_modules
 
 
 def cmp(x, y) -> int:
@@ -641,42 +609,80 @@ def deprecated(
 
 
 chunks = deprecated(
-		"1.4.0",
-		"2.0.0",
-		__version__,
-		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.iterative' instead.",
 		)(
 				iterative.chunks
 				)
 permutations = deprecated(
-		"1.4.0",
-		"2.0.0",
-		__version__,
-		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.iterative' instead.",
 		)(
 				iterative.permutations
 				)
 split_len = deprecated(
-		"1.4.0",
-		"2.0.0",
-		__version__,
-		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.iterative' instead.",
 		)(
 				iterative.split_len
 				)
 Len = deprecated(
-		"1.4.0",
-		"2.0.0",
-		__version__,
-		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.iterative' instead.",
 		)(
 				iterative.Len
 				)
 double_chain = deprecated(
-		"1.4.0",
-		"2.0.0",
-		__version__,
-		"Import from :mod:`domdf_python_tools.iterative` instead.",
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from 'domdf_python_tools.iterative' instead.",
 		)(
 				iterative.double_chain
 				)
+
+
+@deprecated(
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from :mod:`packing_tape.requirements` instead.",
+		)
+def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
+	"""
+	Check whether one or more dependencies are available to be imported.
+
+	:param dependencies: The list of dependencies to check the availability of.
+	:param prt: Whether the status should be printed to the terminal.
+
+	:return: A list of any missing modules.
+	"""
+
+	# stdlib
+	from pkgutil import iter_modules
+
+	modules = {x[1] for x in iter_modules()}
+	missing_modules = []
+
+	for requirement in dependencies:
+		if requirement not in modules:
+			missing_modules.append(requirement)
+
+	if prt:
+		if len(missing_modules) == 0:
+			print("All modules installed")
+		else:
+			print("The following modules are missing:")
+			print(missing_modules)
+			print("Please check the documentation.")
+		print('')
+
+	return missing_modules

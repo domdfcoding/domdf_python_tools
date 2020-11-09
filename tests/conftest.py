@@ -1,6 +1,8 @@
+# stdlib
 import os
 from pathlib import Path
 
+# 3rd party
 import pytest
 
 pytest_plugins = ("domdf_python_tools.testing", )

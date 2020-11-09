@@ -59,6 +59,7 @@ tox_testenv_extras: all
 
 intersphinx_mapping:
  - "'pandas': ('https://pandas.pydata.org/docs/', None)"
+ - "'consolekit': ('https://consolekit.readthedocs.io/en/latest/', None)"
 
 mypy_deps:
  - pprint36

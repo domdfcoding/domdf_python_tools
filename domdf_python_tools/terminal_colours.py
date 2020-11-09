@@ -6,6 +6,8 @@ Functions for adding colours to terminal print statements.
 
 This module generates ANSI character codes to printing colors to terminals.
 See: http://en.wikipedia.org/wiki/ANSI_escape_code
+
+.. deprecated:: Use :mod:`consolekit.terminal_colours` instead.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
