@@ -143,3 +143,5 @@ autodoc_default_options = {
 		"show-inheritance": None,
 		'exclude-members': ','.join(autodoc_exclude_members),
 		}
+
+manpages_url = "https://manpages.debian.org/{path}"
