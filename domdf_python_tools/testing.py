@@ -44,8 +44,8 @@ from _pytest.mark import MarkDecorator
 
 # this package
 from domdf_python_tools.doctools import PYPY
-from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.iterative import Len
+from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.versions import Version
 
 __all__ = [
