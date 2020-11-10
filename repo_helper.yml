@@ -67,5 +67,3 @@ intersphinx_mapping:
 
 mypy_deps:
  - pprint36
-
-use_experimental_backend: true
