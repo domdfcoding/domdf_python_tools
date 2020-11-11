@@ -19,7 +19,6 @@ import stat
 import sys
 import unittest
 from test import support  # type: ignore
-from test.support import TESTFN  # type: ignore
 from typing import Set
 from unittest import mock
 
@@ -36,6 +35,13 @@ try:
 	import pwd
 except ImportError:
 	grp = pwd = None  # type: ignore
+
+if sys.version_info[:2] >= (3, 10):
+	# stdlib
+	from test.support.os_helper import TESTFN
+else:
+	# stdlib
+	from test.support import TESTFN
 
 # Make sure any symbolic links in the base test path are resolved.
 BASE = os.path.realpath(TESTFN)
