@@ -75,6 +75,7 @@ General utility functions.
 #
 
 # stdlib
+import difflib
 import functools
 import inspect
 import sys
@@ -92,6 +93,7 @@ from packaging import version
 # this package
 import domdf_python_tools.words
 from domdf_python_tools import __version__, iterative
+from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
 if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
@@ -606,9 +608,23 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	return missing_modules
 
 
+@deprecated(
+		deprecated_in="1.4.0",
+		removed_in="2.0.0",
+		current_version=__version__,
+		details="Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.",
+		)
 def coloured_diff(
-		*args,
-		**kwargs,
+		a: typing.Sequence[str],
+		b: typing.Sequence[str],
+		fromfile: str = '',
+		tofile: str = '',
+		fromfiledate: str = '',
+		tofiledate: str = '',
+		n: int = 3,
+		lineterm: str = '\n',
+		removed_colour: Colour = Fore.RED,
+		added_colour: Colour = Fore.GREEN,
 		) -> str:
 	r"""
 	Compare two sequences of lines; generate the delta as a unified diff.
@@ -656,23 +672,24 @@ def coloured_diff(
 	:param tofiledate:
 	:param n:
 	:param lineterm:
-	:param removed_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were removed.
-	:param added_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were added.
-
-	.. versionadded:: 0.3.0
-
-	.. deprecated:: 1.4.0
-
-		Will be removed in versiion 2.0.0. Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.
+	:param removed_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were removed.
+	:param added_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were added.
 	"""
 
-	# 3rd party
-	import consolekit.utils
+	# this package
+	from domdf_python_tools.stringlist import StringList
 
-	warnings.warn(
-			"domdf_python_tools.utils.coloured_diff is deprecated since v1.4.0 and will be removed in v2.0.0. "
-			"Import from consolekit.utils (v0.3.0 or later) instead.",
-			DeprecationWarning,
-			)
+	buf = StringList()
+	diff = difflib.unified_diff(a, b, fromfile, tofile, fromfiledate, tofiledate, n, lineterm)
 
-	return consolekit.utils.coloured_diff(*args, **kwargs)
+	for line in diff:
+		if line.startswith('+'):
+			buf.append(added_colour(line))
+		elif line.startswith('-'):
+			buf.append(removed_colour(line))
+		else:
+			buf.append(line)
+
+	buf.blankline(ensure_single=True)
+
+	return str(buf)
