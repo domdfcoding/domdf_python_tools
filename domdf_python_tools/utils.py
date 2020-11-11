@@ -276,7 +276,7 @@ def posargs2kwargs(
 	return kwargs
 
 
-def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = " ") -> str:
+def convert_indents(text: str, tab_width: int = 4, from_: str = '\t', to: str = ' ') -> str:
 	r"""
 	Convert indentation at the start of lines in ``text`` from tabs to spaces.
 
@@ -299,7 +299,7 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = "\t", to: str = 
 
 		output.append(f"{tab * indent_count}{line}")
 
-	return "\n".join(output)
+	return '\n'.join(output)
 
 
 class _Etcetera(str):
@@ -451,7 +451,7 @@ def deprecated(
 		existing_docstring = function.__doc__ or ''
 
 		# split docstring at first occurrence of newline
-		string_list = existing_docstring.split("\n", 1)
+		string_list = existing_docstring.split('\n', 1)
 
 		if should_warn:
 			# The various parts of this decorator being optional makes for
@@ -495,7 +495,7 @@ def deprecated(
 				string_list[1] = textwrap.dedent(string_list[1])
 
 				# we need another newline
-				string_list.insert(loc, "\n")
+				string_list.insert(loc, '\n')
 
 				# change the message_location if we add to end of docstring
 				# do this always if not "top"

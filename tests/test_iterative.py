@@ -90,7 +90,7 @@ def test_len(capsys):
 		print(val)
 
 	captured = capsys.readouterr()
-	assert captured.out.splitlines() == ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+	assert captured.out.splitlines() == ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', "10"]
 
 	assert Len("Hello") == range(5)
 
@@ -103,7 +103,7 @@ def test_len(capsys):
 				([((1, 2), (3, 4)), [(5, 6), (7, 8)]], [1, 2, 3, 4, 5, 6, 7, 8]),
 				([((1, 2), (3, 4)), ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
 				((((1, 2), (3, 4)), ((5, 6), (7, 8))), [1, 2, 3, 4, 5, 6, 7, 8]),
-				((("12", "34"), ("56", "78")), ["1", "2", "3", "4", "5", "6", "7", "8"]),
+				((("12", "34"), ("56", "78")), ['1', '2', '3', '4', '5', '6', '7', '8']),
 				]
 		)
 def test_double_chain(value, expects):
@@ -116,7 +116,7 @@ def check_file_regression(data, file_regression: FileRegressionFixture, extensio
 
 def test_make_tree(file_regression: FileRegressionFixture):
 	check_file_regression(
-			"\n".join(
+			'\n'.join(
 					make_tree([
 							"apeye>=0.3.0",
 							[

@@ -102,14 +102,14 @@ class Version(Tuple[int, int, int]):
 		Return version as a string.
 		"""
 
-		return "v" + ".".join(str(x) for x in self)  # pylint: disable=not-an-iterable
+		return 'v' + '.'.join(str(x) for x in self)  # pylint: disable=not-an-iterable
 
 	def __float__(self) -> float:
 		"""
 		Return the major and minor version number as a float.
 		"""
 
-		return float(".".join(str(x) for x in self[:2]))
+		return float('.'.join(str(x) for x in self[:2]))
 
 	def __int__(self) -> int:
 		"""

@@ -358,7 +358,7 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 0.3.8
 		"""
 
-		with self.open("w", encoding=encoding, errors=errors) as fp:
+		with self.open('w', encoding=encoding, errors=errors) as fp:
 			clean_writer(string, fp)
 
 	def maybe_make(
@@ -411,7 +411,7 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 0.3.8
 		"""
 
-		with self.open("a", encoding=encoding, errors=errors) as fp:
+		with self.open('a', encoding=encoding, errors=errors) as fp:
 			fp.write(string)
 
 	def write_text(
@@ -450,7 +450,7 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 0.5.0
 		"""  # noqa D400
 
-		return self.write_clean("\n".join(data), encoding=encoding, errors=errors)
+		return self.write_clean('\n'.join(data), encoding=encoding, errors=errors)
 
 	def read_text(
 			self,
@@ -487,11 +487,11 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 0.5.0
 		"""  # noqa D400
 
-		return self.read_text(encoding=encoding, errors=errors).split("\n")
+		return self.read_text(encoding=encoding, errors=errors).split('\n')
 
 	def open(  # type: ignore  # noqa A003
 		self,
-		mode: str = "r",
+		mode: str = 'r',
 		buffering: int = -1,
 		encoding: Optional[str] = "UTF-8",
 		errors: Optional[str] = None,
@@ -524,7 +524,7 @@ class PathPlus(pathlib.Path):
 			if 'r' in mode:
 				newline = None
 			else:
-				newline = "\n"
+				newline = '\n'
 
 		return super().open(
 				mode,

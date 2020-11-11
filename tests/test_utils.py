@@ -41,7 +41,7 @@ def test_check_dependencies(capsys):
 
 	missing_deps = utils.check_dependencies(deps)
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout[0] == "The following modules are missing:"
 	assert stdout[1] == "['madeup_module']"
 	assert stdout[2] == "Please check the documentation."
@@ -52,7 +52,7 @@ def test_check_dependencies(capsys):
 
 	missing_deps = utils.check_dependencies(["pytest"])
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout[0] == "All modules installed"
 	assert stdout[1] == ''
 	assert isinstance(missing_deps, list)
@@ -131,7 +131,7 @@ def test_printr(obj, expects, capsys):
 	utils.printr(obj)
 
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert re.match(expects, stdout[0])
 
 
@@ -150,7 +150,7 @@ def test_printt(obj, expects, capsys):
 	utils.printt(obj)
 
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout[0] == expects
 
 
@@ -169,7 +169,7 @@ def test_stderr_writer(obj, expects, capsys):
 	utils.stderr_writer(obj)
 
 	captured = capsys.readouterr()
-	stderr = captured.err.split("\n")
+	stderr = captured.err.split('\n')
 	assert re.match(expects, stderr[0])
 
 
@@ -299,14 +299,14 @@ def test_convert_indents():
 	# TODO: test 'to'
 
 	assert utils.convert_indents("hello world") == "hello world"
-	assert utils.convert_indents("	hello world") == "    hello world"
-	assert utils.convert_indents("		hello world") == "        hello world"
-	assert utils.convert_indents("	    hello world") == "        hello world"
+	assert utils.convert_indents("\thello world") == "    hello world"
+	assert utils.convert_indents("\t\thello world") == "        hello world"
+	assert utils.convert_indents("\t    hello world") == "        hello world"
 
 	assert utils.convert_indents("hello world", tab_width=2) == "hello world"
-	assert utils.convert_indents("	hello world", tab_width=2) == "  hello world"
-	assert utils.convert_indents("		hello world", tab_width=2) == "    hello world"
-	assert utils.convert_indents("	    hello world", tab_width=2) == "      hello world"
+	assert utils.convert_indents("\thello world", tab_width=2) == "  hello world"
+	assert utils.convert_indents("\t\thello world", tab_width=2) == "    hello world"
+	assert utils.convert_indents("\t    hello world", tab_width=2) == "      hello world"
 
 	assert utils.convert_indents("hello world", from_="    ") == "hello world"
 	assert utils.convert_indents("    hello world", from_="    ") == "    hello world"
@@ -421,7 +421,7 @@ def test_deprecation():
 
 		return args, kwargs
 
-	@deprecated(deprecated_in="1", removed_in="3", current_version="2", details="use 'bar' instead.")
+	@deprecated(deprecated_in='1', removed_in='3', current_version='2', details="use 'bar' instead.")
 	def deprecated_func(*args, **kwargs):
 		"""
 		A deprecated function.
@@ -430,16 +430,16 @@ def test_deprecation():
 		return args, kwargs
 
 	deprecated_alias = deprecated(
-		deprecated_in="1",
-		removed_in="3",
-		current_version="2",
+		deprecated_in='1',
+		removed_in='3',
+		current_version='2',
 		details="use 'bar' instead.",
 		name="deprecated_alias",
 		)(func)  # yapf: disable
 
 	with pytest.warns(DeprecationWarning) as record:
-		assert deprecated_func(1, a_list=["a", "b"]) == ((1, ), {"a_list": ["a", "b"]})
-		assert deprecated_alias(1, a_list=["a", "b"]) == ((1, ), {"a_list": ["a", "b"]})
+		assert deprecated_func(1, a_list=['a', 'b']) == ((1, ), {"a_list": ['a', 'b']})
+		assert deprecated_alias(1, a_list=['a', 'b']) == ((1, ), {"a_list": ['a', 'b']})
 
 	assert len(record) == 2
 	assert record[0].message.args == (  # type: ignore

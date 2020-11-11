@@ -92,7 +92,7 @@ class NamedListTest:
 		print(self.shopping_list)
 
 		captured = capsys.readouterr()
-		stdout = captured.out.split("\n")
+		stdout = captured.out.split('\n')
 
 		assert stdout[0] == self.cls_str
 		assert str(type(self.shopping_list)) == self.cls_str

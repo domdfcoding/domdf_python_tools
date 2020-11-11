@@ -48,7 +48,7 @@ class Indent:
 	:param type: The indent character.
 	"""
 
-	def __init__(self, size: int = 0, type: str = "\t"):  # noqa A002  # pylint: disable=redefined-builtin
+	def __init__(self, size: int = 0, type: str = '\t'):  # noqa A002  # pylint: disable=redefined-builtin
 		self.size = int(size)
 		self.type = str(type)
 
@@ -134,7 +134,7 @@ class StringList(List[str]):
 
 	def __init__(self, iterable: Iterable[String] = (), convert_indents: bool = False) -> None:
 		if isinstance(iterable, str):
-			iterable = iterable.split("\n")
+			iterable = iterable.split('\n')
 
 		self.indent = Indent()
 		self.convert_indents = convert_indents
@@ -142,10 +142,10 @@ class StringList(List[str]):
 
 	def _make_line(self, line: str) -> str:
 		if not str(self.indent_type).strip(" \t") and self.convert_indents:
-			if self.indent_type == "\t":
-				line = convert_indents(line, tab_width=1, from_="    ", to="\t")
+			if self.indent_type == '\t':
+				line = convert_indents(line, tab_width=1, from_="    ", to='\t')
 			else:  # pragma: no cover
-				line = convert_indents(line, tab_width=1, from_="\t", to=self.indent_type)
+				line = convert_indents(line, tab_width=1, from_='\t', to=self.indent_type)
 
 		return f"{self.indent}{line}".rstrip()
 
@@ -156,7 +156,7 @@ class StringList(List[str]):
 		:param line:
 		"""
 
-		for inner_line in str(line).split("\n"):
+		for inner_line in str(line).split('\n'):
 			super().append(self._make_line(inner_line))
 
 	def extend(self, iterable: Iterable[String]) -> None:
@@ -199,9 +199,9 @@ class StringList(List[str]):
 		lines: List[str]
 
 		if index < 0 or index > len(self):
-			lines = str(line).split("\n")
+			lines = str(line).split('\n')
 		else:
-			lines = cast(list, reversed(str(line).split("\n")))
+			lines = cast(list, reversed(str(line).split('\n')))
 
 		for inner_line in lines:
 			super().insert(index, self._make_line(inner_line))
@@ -278,7 +278,7 @@ class StringList(List[str]):
 
 		self.indent.size = int(size)
 
-	def set_indent_type(self, indent_type: str = "\t"):
+	def set_indent_type(self, indent_type: str = '\t'):
 		"""
 		Sets the type of the indent to insert at the beginning of new lines.
 
@@ -340,7 +340,7 @@ class StringList(List[str]):
 		Returns the :class:`~domdf_python_tools.stringlist.StringList` as a string.
 		"""
 
-		return "\n".join(self)
+		return '\n'.join(self)
 
 	def __eq__(self, other) -> bool:
 		"""
@@ -398,7 +398,7 @@ class StringList(List[str]):
 			self.indent_size = original_indent_size
 
 	@contextmanager
-	def with_indent_type(self, indent_type: str = "\t"):
+	def with_indent_type(self, indent_type: str = '\t'):
 		"""
 		Context manager to temporarily use a different indent type.
 

@@ -71,12 +71,12 @@ def test_get_words_list():
 
 def test_font():
 	assert DOUBLESTRUCK_LETTERS("Hello World") == "ℍ𝕖𝕝𝕝𝕠 𝕎𝕠𝕣𝕝𝕕"
-	assert DOUBLESTRUCK_LETTERS["A"] == "𝔸"
-	assert DOUBLESTRUCK_LETTERS.get("A") == "𝔸"
+	assert DOUBLESTRUCK_LETTERS['A'] == '𝔸'
+	assert DOUBLESTRUCK_LETTERS.get('A') == '𝔸'
 
-	assert DOUBLESTRUCK_LETTERS["-"] == "-"
-	assert DOUBLESTRUCK_LETTERS.get("-") == "-"
-	assert DOUBLESTRUCK_LETTERS.get("-", "Default") == "Default"
+	assert DOUBLESTRUCK_LETTERS['-'] == '-'
+	assert DOUBLESTRUCK_LETTERS.get('-') == '-'
+	assert DOUBLESTRUCK_LETTERS.get('-', "Default") == "Default"
 
 
 def test_alpha_sort():
@@ -87,9 +87,9 @@ def test_alpha_sort():
 	assert alpha_sort(["apple", "_hello", "world"], alphabet, reverse=True) == ["world", "apple", "_hello"]
 
 	with pytest.raises(ValueError, match="The character '☃' was not found in the alphabet."):
-		alpha_sort(["apple", "_hello", "world", "☃"], alphabet)
+		alpha_sort(["apple", "_hello", "world", '☃'], alphabet)
 
-	assert alpha_sort(["apple", "_hello", "world", "☃"], alphabet + "☃") == ["_hello", "apple", "world", "☃"]
+	assert alpha_sort(["apple", "_hello", "world", '☃'], alphabet + '☃') == ["_hello", "apple", "world", '☃']
 
 
 @pytest.mark.parametrize(

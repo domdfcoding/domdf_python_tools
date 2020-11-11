@@ -595,7 +595,7 @@ mappingproxy(OrderedDict([
 		keys = [Unorderable() for i in range(n)]
 		random.shuffle(keys)
 		skeys = sorted(keys, key=id)
-		clean = lambda s: s.replace(' ', '').replace("\n", '')
+		clean = lambda s: s.replace(' ', '').replace('\n', '')
 
 		assert clean(FancyPrinter().pformat(set(keys))) == '{' + ','.join(map(repr, skeys)) + ",}"
 		assert clean(FancyPrinter().pformat(frozenset(keys))) == "frozenset({" + ','.join(map(repr, skeys)) + ",})"
@@ -710,7 +710,7 @@ mappingproxy(OrderedDict([
   ],
  ]"""
 		# An unwrappable string is formatted as its repr
-		unwrappable = "x" * 100
+		unwrappable = 'x' * 100
 		assert FancyPrinter(width=80).pformat(unwrappable) == repr(unwrappable)
 		assert FancyPrinter().pformat('') == "''"
 		# Check that the pprint is a usable repr
@@ -948,7 +948,7 @@ deque([('brown', 2),
 						20,
 						str(
 								StringList([
-										"{",
+										'{',
 										" 1: 'the quick '",
 										"    'brown fox '",
 										"    'jumped over a '",
@@ -976,7 +976,7 @@ class DottedPrettyPrinter(FancyPrinter):
 
 def test_simple_repr(file_regression: FileRegressionFixture):
 
-	@simple_repr("a", "b", "c", "d", width=10)
+	@simple_repr('a', 'b', 'c', 'd', width=10)
 	class F:
 		a = "apple"
 		b = "banana"

@@ -16,10 +16,10 @@ class TestStringList:
 		assert not StringList([])
 		assert not StringList(())
 
-		assert StringList([1]) == ["1"]
-		assert StringList(["1"]) == ["1"]
-		assert StringList("1") == ["1"]
-		assert StringList("1\n") == ["1", '']
+		assert StringList([1]) == ['1']
+		assert StringList(['1']) == ['1']
+		assert StringList('1') == ['1']
+		assert StringList("1\n") == ['1', '']
 
 		with pytest.raises(TypeError, match="'int' object is not iterable"):
 			StringList(1)  # type: ignore
@@ -95,7 +95,7 @@ class TestStringList:
 		sl.blankline(ensure_single=True)
 		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
-		sl.append("\t")
+		sl.append('\t')
 		sl.blankline(ensure_single=True)
 		assert sl == ['', '', "hello", "world", '', '', '', "1234", '']
 
@@ -152,29 +152,29 @@ class TestStringList:
 	def test_indent_type(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
-		assert sl.indent_type == "\t"
+		assert sl.indent_type == '\t'
 
 		with pytest.raises(ValueError, match="'type' cannot an empty string."):
 			sl.indent_type = ''
 
-		assert sl.indent_type == "\t"
+		assert sl.indent_type == '\t'
 
-		sl.indent_type = " "
-		assert sl.indent_type == " "
+		sl.indent_type = ' '
+		assert sl.indent_type == ' '
 
-		sl.set_indent_type("\t")
-		assert sl.indent_type == "\t"
+		sl.set_indent_type('\t')
+		assert sl.indent_type == '\t'
 
-		sl.set_indent_type(" ")
-		assert sl.indent_type == " "
+		sl.set_indent_type(' ')
+		assert sl.indent_type == ' '
 
 		with pytest.raises(ValueError, match="'type' cannot an empty string."):
 			sl.set_indent_type('')
 
-		assert sl.indent_type == " "
+		assert sl.indent_type == ' '
 
 		sl.set_indent_type()
-		assert sl.indent_type == "\t"
+		assert sl.indent_type == '\t'
 
 	def test_indent(self):
 		sl = StringList()
@@ -193,11 +193,11 @@ class TestStringList:
 		expected_list = [
 				"class Foo:",
 				'',
-				"	def bar(self, listicle: List[Item]):",
-				"		...",
+				"\tdef bar(self, listicle: List[Item]):",
+				"\t\t...",
 				'',
-				"	def __repr__(self) -> str:",
-				'		return "Foo()"',
+				"\tdef __repr__(self) -> str:",
+				'\t\treturn "Foo()"',
 				'',
 				]
 
@@ -237,13 +237,13 @@ class TestStringList:
 		sl.append("class Foo:")
 		sl.blankline(True)
 
-		with sl.with_indent("\t", 1):
+		with sl.with_indent('\t', 1):
 			sl.append("def bar(self, listicle: List[Item]):")
-			with sl.with_indent("\t", 2):
+			with sl.with_indent('\t', 2):
 				sl.append("...")
 			sl.blankline(True)
 			sl.append("def __repr__(self) -> str:")
-			with sl.with_indent("\t", 2):
+			with sl.with_indent('\t', 2):
 				sl.append('return "Foo()"')
 			sl.blankline(True)
 
@@ -430,7 +430,7 @@ class TestIndent:
 	def test_creation(self):
 		indent = Indent()
 		assert indent.size == 0
-		assert indent.type == "\t"
+		assert indent.type == '\t'
 
 		indent = Indent(3, "    ")
 		assert indent.size == 3
@@ -447,7 +447,7 @@ class TestIndent:
 		indent.size = 1
 		assert indent.size == 1
 
-		indent.size = "2"  # type: ignore
+		indent.size = '2'  # type: ignore
 		assert indent.size == 2
 
 		indent.size = 3.0  # type: ignore
@@ -459,11 +459,11 @@ class TestIndent:
 		indent.type = "    "
 		assert indent.type == "    "
 
-		indent.type = " "
-		assert indent.type == " "
+		indent.type = ' '
+		assert indent.type == ' '
 
 		indent.type = 1  # type: ignore
-		assert indent.type == "1"
+		assert indent.type == '1'
 
 		indent.type = ">>> "
 		assert indent.type == ">>> "
@@ -473,7 +473,7 @@ class TestIndent:
 
 	def test_str(self):
 		assert str(Indent()) == ''
-		assert str(Indent(1)) == "\t"
+		assert str(Indent(1)) == '\t'
 		assert str(Indent(5)) == "\t\t\t\t\t"
 		assert str(Indent(type="    ")) == ''
 		assert str(Indent(1, type="    ")) == "    "
@@ -493,16 +493,16 @@ class TestIndent:
 
 	def test_eq(self):
 		assert Indent() == Indent()
-		assert Indent() == (0, "\t")
+		assert Indent() == (0, '\t')
 		assert Indent() == ''
 
 		assert Indent(1, "    ") == Indent(1, "    ")
 		assert Indent(1, "    ") == (1, "    ")
 		assert Indent(1, "    ") == "    "
 
-		assert Indent(2, "\t") == Indent(2, "\t")
-		assert Indent(2, "\t") == (2, "\t")
-		assert Indent(2, "\t") == "\t\t"
+		assert Indent(2, '\t') == Indent(2, '\t')
+		assert Indent(2, '\t') == (2, '\t')
+		assert Indent(2, '\t') == "\t\t"
 
 		assert Indent() != 1
 

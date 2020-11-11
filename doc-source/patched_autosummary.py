@@ -26,10 +26,10 @@ class PatchedAutosummary(Autosummary):
 
 
 def setup(app: Sphinx) -> Dict[str, Any]:
-	app.setup_extension('sphinx.ext.autosummary')
-	app.add_directive('autosummary', PatchedAutosummary, override=True)
+	app.setup_extension("sphinx.ext.autosummary")
+	app.add_directive("autosummary", PatchedAutosummary, override=True)
 
 	return {
-			'version': f"{sphinx.__display_version__}-patched-autosummary-0",
-			'parallel_read_safe': True,
+			"version": f"{sphinx.__display_version__}-patched-autosummary-0",
+			"parallel_read_safe": True,
 			}

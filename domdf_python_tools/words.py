@@ -500,7 +500,7 @@ def word_join(
 		iterable: Iterable[str],
 		use_repr: bool = False,
 		oxford: bool = False,
-		delimiter: str = ",",
+		delimiter: str = ',',
 		connective: str = "and",
 		) -> str:
 	"""
@@ -540,21 +540,21 @@ def word_join(
 			return delimiter.join(words[:-1]) + f" {connective} {words[-1]}"
 
 
-TAB = "\t"
+TAB = '\t'
 """
 A literal ``TAB`` (``\\t``) character for use in f-strings.
 
 .. versionadded:: 1.3.0
 """
 
-CR = "\r"
+CR = '\r'
 """
 The carriage return character (``\\r``) for use in f-strings.
 
 .. versionadded:: 1.3.0
 """
 
-LF = "\r"
+LF = '\r'
 """
 The newline character (``\\n``) for use in f-strings.
 

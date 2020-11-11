@@ -9,7 +9,7 @@ import pytest
 # this package
 from domdf_python_tools.import_tools import discover
 
-sys.path.append(".")
+sys.path.append('.')
 sys.path.append("tests")
 
 # 3rd party
@@ -87,7 +87,7 @@ def raises_attribute_error(obj, **kwargs):
 				raises_attribute_error([1, 2, 3], id="list"),
 				raises_attribute_error((1, 2, 3), id="tuple"),
 				raises_attribute_error({1, 2, 3}, id="set"),
-				raises_attribute_error({"a": 1, "b": 2, "c": 3}, id="dictionary"),
+				raises_attribute_error({'a': 1, 'b': 2, 'c': 3}, id="dictionary"),
 				pytest.param(HasPath, haspath_error, id="HasPath"),
 				],
 		)

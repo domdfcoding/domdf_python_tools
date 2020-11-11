@@ -94,7 +94,7 @@ class MyPath(type(pathlib.Path())):  # type: ignore
 				MyStr("/home/domdf/Python"),
 				MyStr("test_typing.py"),
 				MyPathLike("/home/domdf", "Python"),
-				MyPathLike(".", "test_typing.py"),
+				MyPathLike('.', "test_typing.py"),
 				],
 		)
 def test_pathlike_true(obj):
@@ -108,7 +108,7 @@ def test_pathlike_true(obj):
 				[1, 2, 3, 4, 5],
 				{1, 2, 3, 4, 5},
 				(1, 2, 3, 4, 5),
-				{"a": 1, "b": 2},
+				{'a': 1, 'b': 2},
 				]
 		)
 def test_pathlike_false(obj):

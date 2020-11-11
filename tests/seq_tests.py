@@ -58,12 +58,17 @@ NEVER_EQ = _NEVER_EQ()
 # Various iterables
 # This is used for checking the constructor (here and in test_deque.py)
 def iterfunc(seqn):
-	"""Regular generator"""
+	"""
+	Regular generator.
+	"""
+
 	yield from seqn
 
 
 class Sequence:
-	"""Sequence using __getitem__"""
+	"""
+	Sequence using ``__getitem__``.
+	"""
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -73,7 +78,9 @@ class Sequence:
 
 
 class IterFunc:
-	"""Sequence using iterator protocol"""
+	"""
+	Sequence using iterator protocol,
+	"""
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -91,7 +98,7 @@ class IterFunc:
 
 
 class IterGen:
-	"""Sequence using iterator protocol defined with a generator"""
+	"Sequence using iterator protocol defined with a generator"
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -102,7 +109,7 @@ class IterGen:
 
 
 class IterNextOnly:
-	"""Missing __getitem__ and __iter__"""
+	"Missing __getitem__ and __iter__"
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -117,7 +124,7 @@ class IterNextOnly:
 
 
 class IterNoNext:
-	"""Iterator missing __next__()"""
+	"Iterator missing __next__()"
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -128,7 +135,7 @@ class IterNoNext:
 
 
 class IterGenExc:
-	"""Test propagation of exceptions"""
+	"Test propagation of exceptions"
 
 	def __init__(self, seqn):
 		self.seqn = seqn
@@ -142,7 +149,7 @@ class IterGenExc:
 
 
 class IterFuncStop:
-	"""Test immediate stop"""
+	"Test immediate stop"
 
 	def __init__(self, seqn):
 		pass
@@ -155,7 +162,7 @@ class IterFuncStop:
 
 
 def itermulti(seqn):
-	"""Test multiple tiers of iterators"""
+	"Test multiple tiers of iterators"
 	return chain(map(lambda x: x, iterfunc(IterGen(Sequence(seqn)))))
 
 

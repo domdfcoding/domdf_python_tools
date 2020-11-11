@@ -88,7 +88,7 @@ def clear() -> None:
 	if os.name == "nt":  # pragma: no cover (!Windows)
 		os.system("cls")  # nosec: B607,B605
 	else:  # pragma: no cover (!Linux)
-		print("\033c", end='')
+		print("\u001bc", end='')
 
 
 def br() -> None:
@@ -170,7 +170,7 @@ class Echo:
 	:param indent: The indentation of the dictionary of variable assignments.
 	"""
 
-	def __init__(self, indent: str = " " * 2):
+	def __init__(self, indent: str = ' ' * 2):
 		self.indent = indent
 
 		frame = inspect.currentframe()

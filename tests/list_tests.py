@@ -532,7 +532,7 @@ class CommonTest(seq_tests.CommonTest):
 
 	def test_slice(self):
 		u = self.type2test("spam")
-		u[:2] = "h"
+		u[:2] = 'h'
 		assert u == list("ham")
 
 	def test_iadd(self):

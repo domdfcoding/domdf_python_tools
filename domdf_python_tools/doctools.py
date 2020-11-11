@@ -37,7 +37,7 @@ from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
-		"F",
+		'F',
 		"deindent_string",
 		"document_object_from_another",
 		"append_doctring_from_another",
@@ -65,9 +65,9 @@ def deindent_string(string: Optional[str]) -> str:
 		# Short circuit if empty string or None
 		return ''
 
-	split_string = string.split("\n")
+	split_string = string.split('\n')
 	deindented_string = [line.lstrip("\t ") for line in split_string]
-	return "\n".join(deindented_string)
+	return '\n'.join(deindented_string)
 
 
 # Functions that do the work

@@ -257,10 +257,10 @@ def test_document_object_from_another():
 def test_append_doctring_from_another():
 
 	def funB():
-		"""Hello"""
+		"Hello"  # noqa: Q002
 
 	def funC():
-		"""World"""
+		"World"  # noqa: Q002
 
 	def funD():
 		pass

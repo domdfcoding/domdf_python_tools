@@ -69,15 +69,15 @@ def test_generate_truthy():
 			"True",
 			"true",
 			"tRUe",
-			"y",
-			"Y",
+			'y',
+			'Y',
 			"YES",
 			"yes",
 			"Yes",
 			"yEs",
 			"ON",
 			"on",
-			"1",
+			'1',
 			1,
 			]
 
@@ -86,20 +86,20 @@ def test_generate_truthy():
 			"True",
 			"true",
 			"tRUe",
-			"y",
-			"Y",
+			'y',
+			'Y',
 			"YES",
 			"yes",
 			"Yes",
 			"yEs",
 			"ON",
 			"on",
-			"1",
+			'1',
 			1,
 			"bar",
 			]
 
-	assert list(testing.generate_truthy_values(ratio=0.3)) == ["1", "yes", "True", True]
+	assert list(testing.generate_truthy_values(ratio=0.3)) == ['1', "yes", "True", True]
 
 
 def test_generate_falsy():
@@ -110,15 +110,15 @@ def test_generate_falsy():
 			"False",
 			"false",
 			"falSE",
-			"n",
-			"N",
+			'n',
+			'N',
 			"NO",
 			"no",
 			"nO",
 			"OFF",
 			"off",
 			"oFF",
-			"0",
+			'0',
 			0,
 			]
 
@@ -140,7 +140,7 @@ def test_generate_falsy():
 			"bar",
 			]
 
-	assert list(testing.generate_falsy_values(ratio=0.3)) == ["0", "no", "False", False]
+	assert list(testing.generate_falsy_values(ratio=0.3)) == ['0', "no", "False", False]
 
 
 @not_pypy("Success")

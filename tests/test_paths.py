@@ -225,15 +225,15 @@ def test_clean_writer():
 	with TemporaryDirectory() as tmpdir:
 		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
 
-		test_string = "\n".join([
+		test_string = '\n'.join([
 				"Top line",
 				"    ",
 				"Line with whitespace   ",
-				"Line with tabs				   ",
+				"Line with tabs\t\t\t\t   ",
 				"No newline at end of file",
 				])
 
-		with tempfile.open("w") as fp:
+		with tempfile.open('w') as fp:
 			clean_writer(test_string, fp)
 
 		assert tempfile.read_text() == """Top line
@@ -243,15 +243,15 @@ Line with tabs
 No newline at end of file
 """
 		# Again with lots of newlines
-		test_string = "\n".join([
+		test_string = '\n'.join([
 				"Top line",
 				"    ",
 				"Line with whitespace   ",
-				"Line with tabs				   ",
+				"Line with tabs\t\t\t\t   ",
 				"Too many newlines\n\n\n\n\n\n\n",
 				])
 
-		with tempfile.open("w") as fp:
+		with tempfile.open('w') as fp:
 			clean_writer(test_string, fp)
 
 		assert tempfile.read_text() == """Top line
@@ -268,7 +268,7 @@ Too many newlines
 				"Top line",
 				"    ",
 				"Line with whitespace   ",
-				"Line with tabs				   ",
+				"Line with tabs\t\t\t\t   ",
 				"No newline at end of file",
 				], [
 						"Top line",
@@ -282,7 +282,7 @@ Too many newlines
 					"Top line",
 					"    ",
 					"Line with whitespace   ",
-					"Line with tabs				   ",
+					"Line with tabs\t\t\t\t   ",
 					"Too many newlines\n\n\n\n\n\n\n"
 					], [
 							"Top line",
@@ -297,8 +297,8 @@ def test_pathplus_write_clean(input_string, output_string):
 	with TemporaryDirectory() as tmpdir:
 		tempfile = PathPlus(tmpdir) / "tmpfile.txt"
 
-		tempfile.write_clean("\n".join(input_string))
-		assert tempfile.read_text() == "\n".join(output_string)
+		tempfile.write_clean('\n'.join(input_string))
+		assert tempfile.read_text() == '\n'.join(output_string)
 
 
 @not_pypy()
@@ -346,27 +346,27 @@ def test_copytree():
 
 		(srcdir / "root.txt").touch()
 
-		(srcdir / "a").mkdir()
-		(srcdir / "a" / "a.txt").touch()
-		(srcdir / "b").mkdir()
-		(srcdir / "b" / "b.txt").touch()
-		(srcdir / "c").mkdir()
-		(srcdir / "c" / "c.txt").touch()
+		(srcdir / 'a').mkdir()
+		(srcdir / 'a' / "a.txt").touch()
+		(srcdir / 'b').mkdir()
+		(srcdir / 'b' / "b.txt").touch()
+		(srcdir / 'c').mkdir()
+		(srcdir / 'c' / "c.txt").touch()
 
 		assert (srcdir / "root.txt").exists()
 		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / "a").exists()
-		assert (srcdir / "a").is_dir()
-		assert (srcdir / "a" / "a.txt").exists()
-		assert (srcdir / "a" / "a.txt").is_file()
-		assert (srcdir / "b").exists()
-		assert (srcdir / "b").is_dir()
-		assert (srcdir / "b" / "b.txt").exists()
-		assert (srcdir / "b" / "b.txt").is_file()
-		assert (srcdir / "c").exists()
-		assert (srcdir / "c").is_dir()
-		assert (srcdir / "c" / "c.txt").exists()
-		assert (srcdir / "c" / "c.txt").is_file()
+		assert (srcdir / 'a').exists()
+		assert (srcdir / 'a').is_dir()
+		assert (srcdir / 'a' / "a.txt").exists()
+		assert (srcdir / 'a' / "a.txt").is_file()
+		assert (srcdir / 'b').exists()
+		assert (srcdir / 'b').is_dir()
+		assert (srcdir / 'b' / "b.txt").exists()
+		assert (srcdir / 'b' / "b.txt").is_file()
+		assert (srcdir / 'c').exists()
+		assert (srcdir / 'c').is_dir()
+		assert (srcdir / 'c' / "c.txt").exists()
+		assert (srcdir / 'c' / "c.txt").is_file()
 
 		destdir = tmpdir_p / "dest"
 		destdir.mkdir()
@@ -377,18 +377,18 @@ def test_copytree():
 
 		assert (destdir / "root.txt").exists()
 		assert (destdir / "root.txt").is_file()
-		assert (destdir / "a").exists()
-		assert (destdir / "a").is_dir()
-		assert (destdir / "a" / "a.txt").exists()
-		assert (destdir / "a" / "a.txt").is_file()
-		assert (destdir / "b").exists()
-		assert (destdir / "b").is_dir()
-		assert (destdir / "b" / "b.txt").exists()
-		assert (destdir / "b" / "b.txt").is_file()
-		assert (destdir / "c").exists()
-		assert (destdir / "c").is_dir()
-		assert (destdir / "c" / "c.txt").exists()
-		assert (destdir / "c" / "c.txt").is_file()
+		assert (destdir / 'a').exists()
+		assert (destdir / 'a').is_dir()
+		assert (destdir / 'a' / "a.txt").exists()
+		assert (destdir / 'a' / "a.txt").is_file()
+		assert (destdir / 'b').exists()
+		assert (destdir / 'b').is_dir()
+		assert (destdir / 'b' / "b.txt").exists()
+		assert (destdir / 'b' / "b.txt").is_file()
+		assert (destdir / 'c').exists()
+		assert (destdir / 'c').is_dir()
+		assert (destdir / 'c' / "c.txt").exists()
+		assert (destdir / 'c' / "c.txt").is_file()
 
 
 def test_copytree_exists():
@@ -399,27 +399,27 @@ def test_copytree_exists():
 		srcdir.mkdir()
 
 		(srcdir / "root.txt").touch()
-		(srcdir / "a").mkdir()
-		(srcdir / "a" / "a.txt").touch()
-		(srcdir / "b").mkdir()
-		(srcdir / "b" / "b.txt").touch()
-		(srcdir / "c").mkdir()
-		(srcdir / "c" / "c.txt").touch()
+		(srcdir / 'a').mkdir()
+		(srcdir / 'a' / "a.txt").touch()
+		(srcdir / 'b').mkdir()
+		(srcdir / 'b' / "b.txt").touch()
+		(srcdir / 'c').mkdir()
+		(srcdir / 'c' / "c.txt").touch()
 
 		assert (srcdir / "root.txt").exists()
 		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / "a").exists()
-		assert (srcdir / "a").is_dir()
-		assert (srcdir / "a" / "a.txt").exists()
-		assert (srcdir / "a" / "a.txt").is_file()
-		assert (srcdir / "b").exists()
-		assert (srcdir / "b").is_dir()
-		assert (srcdir / "b" / "b.txt").exists()
-		assert (srcdir / "b" / "b.txt").is_file()
-		assert (srcdir / "c").exists()
-		assert (srcdir / "c").is_dir()
-		assert (srcdir / "c" / "c.txt").exists()
-		assert (srcdir / "c" / "c.txt").is_file()
+		assert (srcdir / 'a').exists()
+		assert (srcdir / 'a').is_dir()
+		assert (srcdir / 'a' / "a.txt").exists()
+		assert (srcdir / 'a' / "a.txt").is_file()
+		assert (srcdir / 'b').exists()
+		assert (srcdir / 'b').is_dir()
+		assert (srcdir / 'b' / "b.txt").exists()
+		assert (srcdir / 'b' / "b.txt").is_file()
+		assert (srcdir / 'c').exists()
+		assert (srcdir / 'c').is_dir()
+		assert (srcdir / 'c' / "c.txt").exists()
+		assert (srcdir / 'c' / "c.txt").is_file()
 
 		destdir = tmpdir_p / "dest"
 		destdir.mkdir()
@@ -430,18 +430,18 @@ def test_copytree_exists():
 
 		assert (destdir / "root.txt").exists()
 		assert (destdir / "root.txt").is_file()
-		assert (destdir / "a").exists()
-		assert (destdir / "a").is_dir()
-		assert (destdir / "a" / "a.txt").exists()
-		assert (destdir / "a" / "a.txt").is_file()
-		assert (destdir / "b").exists()
-		assert (destdir / "b").is_dir()
-		assert (destdir / "b" / "b.txt").exists()
-		assert (destdir / "b" / "b.txt").is_file()
-		assert (destdir / "c").exists()
-		assert (destdir / "c").is_dir()
-		assert (destdir / "c" / "c.txt").exists()
-		assert (destdir / "c" / "c.txt").is_file()
+		assert (destdir / 'a').exists()
+		assert (destdir / 'a').is_dir()
+		assert (destdir / 'a' / "a.txt").exists()
+		assert (destdir / 'a' / "a.txt").is_file()
+		assert (destdir / 'b').exists()
+		assert (destdir / 'b').is_dir()
+		assert (destdir / 'b' / "b.txt").exists()
+		assert (destdir / 'b' / "b.txt").is_file()
+		assert (destdir / 'c').exists()
+		assert (destdir / 'c').is_dir()
+		assert (destdir / 'c' / "c.txt").exists()
+		assert (destdir / 'c' / "c.txt").is_file()
 
 
 @pytest.mark.xfail(
@@ -456,27 +456,27 @@ def test_copytree_exists_stdlib():
 		srcdir.mkdir()
 
 		(srcdir / "root.txt").touch()
-		(srcdir / "a").mkdir()
-		(srcdir / "a" / "a.txt").touch()
-		(srcdir / "b").mkdir()
-		(srcdir / "b" / "b.txt").touch()
-		(srcdir / "c").mkdir()
-		(srcdir / "c" / "c.txt").touch()
+		(srcdir / 'a').mkdir()
+		(srcdir / 'a' / "a.txt").touch()
+		(srcdir / 'b').mkdir()
+		(srcdir / 'b' / "b.txt").touch()
+		(srcdir / 'c').mkdir()
+		(srcdir / 'c' / "c.txt").touch()
 
 		assert (srcdir / "root.txt").exists()
 		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / "a").exists()
-		assert (srcdir / "a").is_dir()
-		assert (srcdir / "a" / "a.txt").exists()
-		assert (srcdir / "a" / "a.txt").is_file()
-		assert (srcdir / "b").exists()
-		assert (srcdir / "b").is_dir()
-		assert (srcdir / "b" / "b.txt").exists()
-		assert (srcdir / "b" / "b.txt").is_file()
-		assert (srcdir / "c").exists()
-		assert (srcdir / "c").is_dir()
-		assert (srcdir / "c" / "c.txt").exists()
-		assert (srcdir / "c" / "c.txt").is_file()
+		assert (srcdir / 'a').exists()
+		assert (srcdir / 'a').is_dir()
+		assert (srcdir / 'a' / "a.txt").exists()
+		assert (srcdir / 'a' / "a.txt").is_file()
+		assert (srcdir / 'b').exists()
+		assert (srcdir / 'b').is_dir()
+		assert (srcdir / 'b' / "b.txt").exists()
+		assert (srcdir / 'b' / "b.txt").is_file()
+		assert (srcdir / 'c').exists()
+		assert (srcdir / 'c').is_dir()
+		assert (srcdir / 'c' / "c.txt").exists()
+		assert (srcdir / 'c' / "c.txt").is_file()
 
 		destdir = tmpdir_p / "dest"
 		destdir.mkdir()
@@ -494,7 +494,7 @@ def test_write_lines():
 		contents = [
 				"this",
 				"is",
-				"a",
+				'a',
 				"list",
 				"of",
 				"words",
@@ -547,7 +547,7 @@ def test_read_lines(tmpdir):
 	assert tmp_file.read_lines() == [
 			"this",
 			"is",
-			"a",
+			'a',
 			"list",
 			"of",
 			"words",

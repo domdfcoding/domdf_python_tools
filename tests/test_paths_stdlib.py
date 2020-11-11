@@ -43,7 +43,7 @@ else:
 
 
 @pytest.fixture()
-def umask_0():
+def _umask_0():
 	old_mask = os.umask(0)
 	try:
 		yield
@@ -521,7 +521,7 @@ def test_is_file(BASE):
 @only_posix
 def test_is_mount(BASE):
 	P = PathPlus(BASE)
-	R = PathPlus("/")  # TODO: Work out Windows.
+	R = PathPlus('/')  # TODO: Work out Windows.
 	assert not ((P / "fileA").is_mount())
 	assert not ((P / "dirA").is_mount())
 	assert not ((P / "non-existing").is_mount())
@@ -628,8 +628,9 @@ def test_glob_empty_pattern(tmp_pathplus):
 		list(p.glob(''))
 
 
+@pytest.mark.usefixtures("_umask_0")
 @only_posix
-def test_open_mode(umask_0, BASE):
+def test_open_mode(BASE):
 
 	p = PathPlus(BASE)
 	with (p / "new_file").open("wb"):
