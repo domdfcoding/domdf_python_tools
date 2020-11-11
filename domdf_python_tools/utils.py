@@ -459,19 +459,21 @@ def deprecated(
 			# makes for a nicely constructed sentence with or without any
 			# of the parts.
 
-			# If removed_in is a date, use "removed on"
-			# If removed_in is a version, use "removed in"
-			parts = {
-					"deprecated_in":
-							f" {deprecated_in}" if deprecated_in else '',
-					"removed_in":
-							f"\n   This will be removed {'on' if isinstance(removed_in, date) else 'in'} {removed_in}."
-							if removed_in else '',
-					"details":
-							f" {details}" if details else ''
-					}
+			parts = {"deprecated_in": '', "removed_in": '', "details": ''}
 
-			deprecation_note = (".. deprecated::{deprecated_in}{removed_in}{details}".format(**parts))
+			if deprecated_in:
+				parts["deprecated_in"] = f" {deprecated_in}"
+			if removed_in:
+				# If removed_in is a date, use "removed on"
+				# If removed_in is a version, use "removed in"
+				if isinstance(removed_in, date):
+					parts["removed_in"] = f"\n   This will be removed on {removed_in}."
+				else:
+					parts["removed_in"] = f"\n   This will be removed in {removed_in}."
+			if details:
+				parts["details"] = f" {details}"
+
+			deprecation_note = (".. deprecated::{deprecated_in}{removed_in}{details}".format_map(parts))
 
 			# default location for insertion of deprecation note
 			loc = 1

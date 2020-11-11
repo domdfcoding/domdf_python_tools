@@ -254,10 +254,8 @@ def make_font(
 	"""  # noqa D400
 
 	font = Font({
-			**{char: unichar
-				for char, unichar in zip(ascii_uppercase, uppers)},
-			**{char: unichar
-				for char, unichar in zip(ascii_lowercase, lowers)},
+			**dict(zip(ascii_uppercase, uppers)),
+			**dict(zip(ascii_lowercase, lowers)),
 			})
 
 	if digits:
