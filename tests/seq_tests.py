@@ -18,8 +18,8 @@ from typing import List
 import pytest
 
 # this package
+from domdf_python_tools.iterative import Len
 from domdf_python_tools.testing import not_pypy
-from domdf_python_tools.utils import Len
 
 
 class _ALWAYS_EQ:

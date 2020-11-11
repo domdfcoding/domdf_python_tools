@@ -24,7 +24,7 @@ from domdf_python_tools.doctools import (
 		operator_docstrings,
 		prettify_docstrings
 		)
-from domdf_python_tools.testing import max_version
+from domdf_python_tools.testing import PEP_563, max_version
 
 # TODO: test sphinxification of docstrings
 
@@ -221,7 +221,16 @@ def test_decorators():
 	# Functions
 	assert undocumented_function.__doc__ == documented_function.__doc__
 	assert undocumented_function.__name__ == "undocumented_function"
-	assert undocumented_function.__annotations__ == {'a': float, 'b': float, 'c': float, 'd': int, "return": float}
+
+	if PEP_563:
+		assert undocumented_function.__annotations__ == {
+				'a': "float", 'b': "float", 'c': "float", 'd': "int", "return": "float"
+				}
+	else:
+		assert undocumented_function.__annotations__ == {
+				'a': float, 'b': float, 'c': float, 'd': int, "return": float
+				}
+
 	assert partially_documented_function.__doc__.startswith(
 			"This function works like ``documented_function`` except it returns the result telepathically.",
 			)

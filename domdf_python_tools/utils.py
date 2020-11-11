@@ -86,7 +86,6 @@ from pprint import pformat
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 # 3rd party
-import consolekit.utils
 import deprecation  # type: ignore
 from packaging import version
 
@@ -605,11 +604,73 @@ def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[st
 	return missing_modules
 
 
-coloured_diff = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.",
-		)(
-				consolekit.utils.coloured_diff
-				)
+def coloured_diff(
+		*args,
+		**kwargs,
+		) -> str:
+	r"""
+	Compare two sequences of lines; generate the delta as a unified diff.
+
+	Unified diffs are a compact way of showing line changes and a few
+	lines of context. The number of context lines is set by ``n`` which
+	defaults to three.
+
+	By default, the diff control lines (those with ``---``, ``+++``, or ``@@``)
+	are created with a trailing newline. This is helpful so that inputs
+	created from ``file.readlines()`` result in diffs that are suitable for
+	``file.writelines()`` since both the inputs and outputs have trailing
+	newlines.
+
+	For inputs that do not have trailing newlines, set the lineterm
+	argument to ``''`` so that the output will be uniformly newline free.
+
+	The unidiff format normally has a header for filenames and modification
+	times. Any or all of these may be specified using strings for
+	``fromfile``, ``tofile``, ``fromfiledate``, and ``tofiledate``.
+	The modification times are normally expressed in the ISO 8601 format.
+
+	**Example:**
+
+	>>> for line in coloured_diff('one two three four'.split(),
+	...             'zero one tree four'.split(), 'Original', 'Current',
+	...             '2005-01-26 23:30:50', '2010-04-02 10:20:52',
+	...             lineterm=''):
+	...     print(line)                 # doctest: +NORMALIZE_WHITESPACE
+	--- Original        2005-01-26 23:30:50
+	+++ Current         2010-04-02 10:20:52
+	@@ -1,4 +1,4 @@
+	+zero
+	one
+	-two
+	-three
+	+tree
+	four
+
+	:param a:
+	:param b:
+	:param fromfile:
+	:param tofile:
+	:param fromfiledate:
+	:param tofiledate:
+	:param n:
+	:param lineterm:
+	:param removed_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were removed.
+	:param added_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were added.
+
+	.. versionadded:: 0.3.0
+
+	.. deprecated:: 1.4.0
+
+		Will be removed in versiion 2.0.0. Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.
+	"""
+
+	# 3rd party
+	import consolekit.utils
+
+	warnings.warn(
+			"domdf_python_tools.utils.coloured_diff is deprecated since v1.4.0 and will be removed in v2.0.0. "
+			"Import from consolekit.utils (v0.3.0 or later) instead.",
+			DeprecationWarning,
+			)
+
+	return consolekit.utils.coloured_diff(*args, **kwargs)
