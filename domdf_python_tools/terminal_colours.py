@@ -64,29 +64,29 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #  Distributed under the BSD 3-Clause license.
 #
 
-
+# 3rd party
 from consolekit.terminal_colours import (
-	CSI,
-	OSC,
-	BEL,
-	code_to_chars,
-	set_title,
-	clear_line,
-	Colour,
-	AnsiCodes,
-	AnsiCursor,
-	AnsiFore,
-	AnsiBack,
-	AnsiStyle,
-	Fore,
-	Back,
-	Style,
-	Cursor,
-	strip_ansi,
-	fore_stack,
-	back_stack,
-	style_stack,
-	)
+		BEL,
+		CSI,
+		OSC,
+		AnsiBack,
+		AnsiCodes,
+		AnsiCursor,
+		AnsiFore,
+		AnsiStyle,
+		Back,
+		Colour,
+		Cursor,
+		Fore,
+		Style,
+		back_stack,
+		clear_line,
+		code_to_chars,
+		fore_stack,
+		set_title,
+		strip_ansi,
+		style_stack
+		)
 
 __all__ = [
 		"CSI",

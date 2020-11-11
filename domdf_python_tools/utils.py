@@ -610,4 +610,6 @@ coloured_diff = deprecated(
 		removed_in="2.0.0",
 		current_version=__version__,
 		details="Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.",
-		)(consolekit.utils.coloured_diff)
+		)(
+				consolekit.utils.coloured_diff
+				)
