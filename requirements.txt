@@ -5,3 +5,4 @@ importlib-resources>=3.0.0; python_version < "3.7"
 packaging>=20.4
 pydash>=4.7.4
 typing-extensions>=3.7.4.3
+consolekit>=0.3.0
