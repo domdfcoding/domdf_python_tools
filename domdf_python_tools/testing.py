@@ -36,7 +36,7 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 from textwrap import dedent
-from typing import Any, Callable, Iterator, List, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, Iterator, List, Optional, Sequence, Tuple, Union, cast
 
 # 3rd party
 import pytest  # nodep
@@ -302,7 +302,7 @@ def platform_boolean_factory(
 		condition: bool,
 		platform: str,
 		versionadded: Optional[str] = None,
-		) -> Tuple[Callable[[str], MarkDecorator], Callable[[str], MarkDecorator]]:
+		) -> Tuple[Callable[..., MarkDecorator], Callable[..., MarkDecorator]]:
 	"""
 	Factory function to return decorators such as :func:`~.not_pypy` and :func:`~.only_windows`.
 
@@ -357,12 +357,12 @@ not_macos, only_macos = platform_boolean_factory(
 		)
 
 not_docker, only_docker = platform_boolean_factory(condition=is_docker(), platform="Docker", versionadded="1.5.0")
-not_docker.__doc__ = not_docker.__doc__.replace("the current platform is", "running on")
-only_docker.__doc__ = only_docker.__doc__.replace("the current platform is", "running on")
+not_docker.__doc__ = cast(str, not_docker.__doc__).replace("the current platform is", "running on")
+only_docker.__doc__ = cast(str, only_docker.__doc__).replace("the current platform is", "running on")
 
 not_pypy, only_pypy = platform_boolean_factory(condition=PYPY, platform="Docker", versionadded="0.9.0")
-not_pypy.__doc__ = not_pypy.__doc__.replace("current platform", "current Python implementation")
-only_pypy.__doc__ = only_pypy.__doc__.replace("current platform", "current Python implementation")
+not_pypy.__doc__ = cast(str, not_pypy.__doc__).replace("current platform", "current Python implementation")
+only_pypy.__doc__ = cast(str, only_pypy.__doc__).replace("current platform", "current Python implementation")
 
 
 @pytest.fixture()

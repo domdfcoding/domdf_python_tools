@@ -12,12 +12,11 @@ import pathlib
 import platform
 import re
 import sys
-import types
 from collections import namedtuple
 
 # 3rd party
 import pytest
-from deprecation import fail_if_not_removed
+from deprecation import fail_if_not_removed  # type: ignore
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
