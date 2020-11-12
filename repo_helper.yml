@@ -30,9 +30,6 @@ short_desc: 'Helpful functions for Python 🐍 🛠️'
 
 classifiers:
  - 'Development Status :: 4 - Beta'
-# - "Development Status :: 5 - Production/Stable"
-# - "Development Status :: 6 - Mature"
-# - "Development Status :: 7 - Inactive"
  - 'Intended Audience :: Developers'
  - 'Topic :: Software Development :: Libraries :: Python Modules'
 
@@ -41,6 +38,8 @@ extras_require:
    - pytz>=2019.1
   testing:
    - pytest>=6.0.0
+   - pytest-regressions>=2.0.2
+   - jaraco.docker>=2.0
 
 keywords:
  - utilities

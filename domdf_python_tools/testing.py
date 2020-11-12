@@ -35,16 +35,21 @@ import random
 import sys
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Iterator, List, Optional, Sequence, Tuple, Union
+from textwrap import dedent
+from typing import Any, Callable, Iterator, List, Optional, Sequence, Tuple, Union
 
 # 3rd party
 import pytest  # nodep
 from _pytest.mark import MarkDecorator  # nodep
+from jaraco.docker import is_docker  # type: ignore  # nodep
+from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 
 # this package
 from domdf_python_tools.doctools import PYPY
 from domdf_python_tools.iterative import Len
 from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.stringlist import StringList
+from domdf_python_tools.typing import PathLike
 from domdf_python_tools.versions import Version
 
 __all__ = [
@@ -63,6 +68,13 @@ __all__ = [
 		"only_pypy",
 		"pytest_report_header",
 		"PEP_563",
+		"platform_boolean_factory",
+		"not_macos",
+		"only_macos",
+		"not_docker",
+		"only_docker",
+		"check_file_regression",
+		"check_file_output",
 		]
 
 MarkDecorator.__module__ = "_pytest.mark"
@@ -286,64 +298,71 @@ def max_version(
 	return pytest.mark.skipif(condition=sys.version_info[:3] > version_, reason=reason)
 
 
-def not_windows(reason: str = "Not required on Windows.", ) -> MarkDecorator:
+def platform_boolean_factory(
+		condition: bool,
+		platform: str,
+		versionadded: Optional[str] = None,
+		) -> Tuple[Callable[[str], MarkDecorator], Callable[[str], MarkDecorator]]:
 	"""
-	Factory function to return a ``@pytest.mark.skipif`` decorator that will
-	skip a test if the current platform is Windows.
+	Factory function to return decorators such as :func:`~.not_pypy` and :func:`~.only_windows`.
 
-	:param reason: The reason to display when skipping.
+	:param condition: Should evaluate to :py:obj:`True` if the test should be skipped.
+	:param platform:
+	:param versionadded:
 
-	:rtype:
+	:return: 2-element tuple of ``not_function``, ``only_function``.
 
-	.. versionadded:: 0.9.0
-	"""  # noqa D400
-
-	return pytest.mark.skipif(condition=sys.platform == "win32", reason=reason)
-
-
-def only_windows(reason: str = "Only required on Windows.", ) -> MarkDecorator:
+	.. versionadded: 1.5.0
 	"""
-	Factory function to return a ``@pytest.mark.skipif`` decorator that will
-	skip a test if the current platform is **not** Windows.
 
-	:param reason: The reason to display when skipping.
+	default_reason = "{} required on Windows"
 
-	:rtype:
+	def not_function(reason: str = default_reason.format("Not")) -> MarkDecorator:
+		return pytest.mark.skipif(condition=condition, reason=reason)
 
-	.. versionadded:: 0.9.0
-	"""  # noqa D400
+	def only_function(reason: str = default_reason.format("Only")) -> MarkDecorator:
+		return pytest.mark.skipif(condition=not condition, reason=reason)
 
-	return pytest.mark.skipif(condition=sys.platform != "win32", reason=reason)
+	docstring = dedent(
+			"""\
+Factory function to return a ``@pytest.mark.skipif`` decorator that will
+skip a test {why} the current platform is {platform}.
+
+:param reason: The reason to display when skipping.
+"""
+			)
+
+	if versionadded:
+		docstring += f"\n\n:rtype:\n\n.. versionadded:: {versionadded}"
+
+	not_function.__name__ = f"not_{platform.lower()}"
+	not_function.__doc__ = docstring.format(why="if", platform=platform)
+
+	only_function.__name__ = f"only_{platform.lower()}"
+	only_function.__doc__ = docstring.format(why="unless", platform=platform)
+
+	return not_function, only_function
 
 
-def not_pypy(reason: str = "Not required on PyPy.") -> MarkDecorator:
-	"""
-	Factory function to return a ``@pytest.mark.skipif`` decorator that will
-	skip a test if the current Python implementation is PyPy.
+not_windows, only_windows = platform_boolean_factory(
+		condition=sys.platform == "win32",
+		platform="Windows",
+		versionadded="0.9.0",
+		)
 
-	:param reason: The reason to display when skipping.
+not_macos, only_macos = platform_boolean_factory(
+		condition=sys.platform == "darwin",
+		platform="macOS",
+		versionadded="1.5.0",
+		)
 
-	:rtype:
+not_docker, only_docker = platform_boolean_factory(condition=is_docker(), platform="Docker", versionadded="1.5.0")
+not_docker.__doc__ = not_docker.__doc__.replace("the current platform is", "running on")
+only_docker.__doc__ = only_docker.__doc__.replace("the current platform is", "running on")
 
-	.. versionadded:: 0.9.0
-	"""  # noqa D400
-
-	return pytest.mark.skipif(condition=PYPY, reason=reason)
-
-
-def only_pypy(reason: str = "Only required on PyPy.") -> MarkDecorator:
-	"""
-	Factory function to return a ``@pytest.mark.skipif`` decorator that will
-	skip a test if the current Python implementation is not PyPy.
-
-	:param reason: The reason to display when skipping.
-
-	:rtype:
-
-	.. versionadded:: 0.9.0
-	"""  # noqa D400
-
-	return pytest.mark.skipif(condition=not PYPY, reason=reason)
+not_pypy, only_pypy = platform_boolean_factory(condition=PYPY, platform="Docker", versionadded="0.9.0")
+not_pypy.__doc__ = not_pypy.__doc__.replace("current platform", "current Python implementation")
+only_pypy.__doc__ = only_pypy.__doc__.replace("current platform", "current Python implementation")
 
 
 @pytest.fixture()
@@ -388,3 +407,56 @@ PEP_563: bool = (sys.version_info[:2] >= (3, 10))
 
 .. versionadded:: 1.4.2
 """
+
+
+def check_file_regression(
+		data: Union[str, StringList],
+		file_regression: FileRegressionFixture,
+		extension: str = ".txt",
+		**kwargs,
+		):
+	r"""
+	Check the given data against that in the reference file.
+
+	:param data:
+	:param file_regression: The file regression fixture for the test.
+	:param extension: The extension of the reference file.
+	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
+
+	.. versionadded:: 1.5.0
+	"""
+
+	if isinstance(data, StringList):
+		data = str(data)
+
+	file_regression.check(data, encoding="UTF-8", extension=extension, **kwargs)
+
+	return True
+
+
+def check_file_output(
+		filename: PathLike,
+		file_regression: FileRegressionFixture,
+		extension: Optional[str] = None,
+		**kwargs,
+		):
+	r"""
+	Check the content of the given file against the reference file.
+
+	:param filename:
+	:param file_regression: The file regression fixture for the test.
+	:param extension: The extension of the reference file.
+	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
+
+	.. versionadded:: 1.5.0
+	"""
+
+	filename = PathPlus(filename)
+
+	data = filename.read_text(encoding="UTF-8")
+	extension = extension or filename.suffix
+
+	if extension == ".py":
+		extension = "._py_"
+
+	return check_file_regression(data, file_regression, extension, **kwargs)

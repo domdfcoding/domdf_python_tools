@@ -2,6 +2,7 @@
 import platform
 import random
 import re
+import sys
 
 # 3rd party
 from _pytest.mark import Mark, MarkDecorator
@@ -9,7 +10,7 @@ from _pytest.mark import Mark, MarkDecorator
 # this package
 from domdf_python_tools import testing
 from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.testing import not_pypy
+from domdf_python_tools.testing import not_macos, not_pypy, not_windows, only_macos, only_pypy, only_windows
 from domdf_python_tools.utils import strtobool
 
 
@@ -146,6 +147,36 @@ def test_generate_falsy():
 @not_pypy("Success")
 def test_not_pypy():
 	if platform.python_implementation() == "PyPy":
+		assert False  # noqa: PT015
+
+
+@only_pypy("Success")
+def test_only_pypy():
+	if platform.python_implementation() != "PyPy":
+		assert False  # noqa: PT015
+
+
+@not_windows("Success")
+def test_not_windows():
+	if sys.platform == "win32":
+		assert False  # noqa: PT015
+
+
+@only_windows("Success")
+def test_only_windows():
+	if sys.platform != "win32":
+		assert False  # noqa: PT015
+
+
+@not_macos("Success")
+def test_not_macos():
+	if sys.platform == "darwin":
+		assert False  # noqa: PT015
+
+
+@only_macos("Success")
+def test_only_macos():
+	if sys.platform != "darwin":
 		assert False  # noqa: PT015
 
 
