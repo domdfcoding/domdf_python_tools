@@ -29,7 +29,7 @@ A list of strings that represent lines in a multiline string.
 
 # stdlib
 from contextlib import contextmanager
-from typing import Any, Iterable, Iterator, List, Tuple, Union, cast, overload
+from typing import Any, Iterable, Iterator, List, Tuple, TypeVar, Union, cast, overload
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
@@ -37,6 +37,8 @@ from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
 __all__ = ["Indent", "StringList", "DelimitedList"]
+
+_S = TypeVar("_S")
 
 
 @prettify_docstrings
@@ -420,7 +422,7 @@ class StringList(List[str]):
 			self.indent_type = original_indent_type
 
 
-class DelimitedList(List[str]):
+class DelimitedList(List[_S]):
 	"""
 	Subclass of :class:`list` that supports custom delimiters in format strings.
 
