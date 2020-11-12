@@ -17,12 +17,13 @@ from collections import namedtuple
 
 # 3rd party
 import pytest
+from deprecation import fail_if_not_removed
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools import utils
 from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.testing import testing_boolean_values
+from domdf_python_tools.testing import check_file_regression, testing_boolean_values
 from domdf_python_tools.typing import HasHead
 from domdf_python_tools.utils import coloured_diff, deprecated, head
 
@@ -31,15 +32,20 @@ def test_pyversion():
 	assert isinstance(utils.pyversion, int)
 
 
+@fail_if_not_removed
 def test_check_dependencies(capsys):
 	deps = ["pytest", "domdf_python_tools", "madeup_module"]
 
-	missing_deps = utils.check_dependencies(deps, False)
+	with pytest.deprecated_call() as record:
+		missing_deps = utils.check_dependencies(deps, False)
+	assert len(record) == 1
 	assert isinstance(missing_deps, list)
 	assert len(missing_deps) == 1
 	assert missing_deps == ["madeup_module"]
 
-	missing_deps = utils.check_dependencies(deps)
+	with pytest.deprecated_call() as record:
+		missing_deps = utils.check_dependencies(deps)
+	assert len(record) == 1
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
 	assert stdout[0] == "The following modules are missing:"
@@ -50,7 +56,9 @@ def test_check_dependencies(capsys):
 	assert len(missing_deps) == 1
 	assert missing_deps == ["madeup_module"]
 
-	missing_deps = utils.check_dependencies(["pytest"])
+	with pytest.deprecated_call() as record:
+		missing_deps = utils.check_dependencies(["pytest"])
+	assert len(record) == 1
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
 	assert stdout[0] == "All modules installed"
@@ -469,4 +477,4 @@ def test_diff(file_regression: FileRegressionFixture):
 			lineterm='',
 			)
 
-	file_regression.check(diff, encoding="UTF-8", extension=".txt")
+	check_file_regression(diff, file_regression)

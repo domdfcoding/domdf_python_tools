@@ -16,6 +16,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools.iterative import Len, chunks, double_chain, flatten, make_tree, permutations, split_len
+from domdf_python_tools.testing import check_file_regression
 
 
 def test_chunks():
@@ -108,10 +109,6 @@ def test_len(capsys):
 		)
 def test_double_chain(value, expects):
 	assert list(double_chain(value)) == expects
-
-
-def check_file_regression(data, file_regression: FileRegressionFixture, extension=".txt"):
-	file_regression.check(data, encoding="UTF-8", extension=extension)
 
 
 def test_make_tree(file_regression: FileRegressionFixture):
