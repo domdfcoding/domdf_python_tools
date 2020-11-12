@@ -31,5 +31,7 @@ __version__ = "1.4.1"
 repo_root = pathlib.Path(__file__).parent
 install_requires = (repo_root / "requirements.txt").read_text(encoding="utf-8").split('\n')
 extras_require = {
-		'dates': ['pytz>=2019.1'], 'testing': ['pytest>=6.0.0'], 'all': ['pytest>=6.0.0', 'pytz>=2019.1']
+		'dates': ['pytz>=2019.1'],
+		'testing': ['pytest>=6.0.0', 'pytest-regressions>=2.0.2', 'jaraco.docker>=2.0'],
+		'all': ['jaraco.docker>=2.0', 'pytest-regressions>=2.0.2', 'pytest>=6.0.0', 'pytz>=2019.1']
 		}
