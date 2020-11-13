@@ -31,6 +31,7 @@ Handy functions for testing code.
 # stdlib
 import datetime
 import itertools
+import os
 import random
 import sys
 from functools import lru_cache
@@ -389,6 +390,12 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 	"""  # noqa: D400
 
 	return PathPlus(tmp_path)
+
+
+@pytest.fixture()
+def original_datadir(request) -> Path:
+	# Work around pycharm confusing datadir with test file.
+	return Path(os.path.splitext(request.module.__file__)[0] + '_')
 
 
 def pytest_report_header(config, startdir):
