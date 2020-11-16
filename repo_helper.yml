@@ -39,7 +39,6 @@ extras_require:
   testing:
    - pytest>=6.0.0
    - pytest-regressions>=2.0.2
-   - jaraco.docker>=2.0
 
 conda_extras:
  - dates

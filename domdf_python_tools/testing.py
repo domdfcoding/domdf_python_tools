@@ -27,6 +27,26 @@ Handy functions for testing code.
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #
+#  is_docker based on https://github.com/jaraco/jaraco.docker
+#  Copyright Jason R. Coombs
+#  |  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  |  of this software and associated documentation files (the "Software"), to deal
+#  |  in the Software without restriction, including without limitation the rights
+#  |  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  |  copies of the Software, and to permit persons to whom the Software is
+#  |  furnished to do so, subject to the following conditions:
+#  |
+#  |  The above copyright notice and this permission notice shall be included in all
+#  |  copies or substantial portions of the Software.
+#  |
+#  |  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#  |  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#  |  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#  |  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  |  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+#  |  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+#  |  OR OTHER DEALINGS IN THE SOFTWARE.
+#
 
 # stdlib
 import datetime
@@ -42,7 +62,6 @@ from typing import Any, Callable, Iterator, List, Optional, Sequence, Tuple, Uni
 # 3rd party
 import pytest  # nodep
 from _pytest.mark import MarkDecorator  # nodep
-from jaraco.docker import is_docker  # type: ignore  # nodep
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 
 # this package
@@ -356,6 +375,31 @@ not_macos, only_macos = platform_boolean_factory(
 		platform="macOS",
 		versionadded="1.5.0",
 		)
+
+
+def is_docker():
+	"""
+	Is this current environment running in docker?
+
+	>>> type(is_docker())
+	<class 'bool'>
+
+	.. versionadded:: 0.6.0
+	"""
+
+	if os.path.exists("/.dockerenv"):
+		return True
+
+	cgroup = PathPlus("/proc/self/cgroup")
+
+	if cgroup.is_file():
+		try:
+			return any("docker" in line for line in cgroup.read_lines())
+		except FileNotFoundError:
+			return False
+
+	return False
+
 
 not_docker, only_docker = platform_boolean_factory(condition=is_docker(), platform="Docker", versionadded="1.5.0")
 not_docker.__doc__ = cast(str, not_docker.__doc__).replace("the current platform is", "running on")

@@ -26,7 +26,7 @@ all_requirements = (repo_root / "requirements.txt").read_text(encoding="utf-8").
 
 # TODO: entry_points, manifest
 
-for requires in {'dates': ['pytz>=2019.1'], 'testing': ['pytest>=6.0.0', 'pytest-regressions>=2.0.2', 'jaraco.docker>=2.0'], 'all': ['jaraco.docker>=2.0', 'pytest-regressions>=2.0.2', 'pytest>=6.0.0', 'pytz>=2019.1']}.values():
+for requires in {'dates': ['pytz>=2019.1'], 'testing': ['pytest>=6.0.0', 'pytest-regressions>=2.0.2'], 'all': ['pytest-regressions>=2.0.2', 'pytest>=6.0.0', 'pytz>=2019.1']}.values():
 	all_requirements += requires
 
 all_requirements = {x.replace(" ", '') for x in set(all_requirements)}
