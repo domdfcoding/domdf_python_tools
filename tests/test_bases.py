@@ -9,14 +9,13 @@ Test functions in bases.py
 # stdlib
 import copy
 import pickle  # nosec: B101
-import sys
+from numbers import Number, Real
 
 # 3rd party
 import pytest
 
 # this package
-from domdf_python_tools.bases import Dictable, NamedList, UserList, namedlist
-from domdf_python_tools.utils import printr, printt
+from domdf_python_tools.bases import Dictable, UserFloat
 
 
 class Person(Dictable):
@@ -94,3 +93,184 @@ class TestDictable:
 		child = Child("Bob", 12, "Big School")
 		assert person == child
 		assert "School" not in person.__dict__
+
+
+seven = UserFloat(7)
+
+
+class TestUserFloat:
+
+	def test_creation(self):
+		assert isinstance(seven, Real)
+		assert isinstance(seven, Number)
+
+		assert seven == 7
+		assert seven == 7.0
+
+	def test_as_integer_ratio(self):
+		assert seven.as_integer_ratio() == (7, 1)
+		assert seven.as_integer_ratio() == 7.0.as_integer_ratio()
+
+	def test_hex(self):
+		assert seven.hex() == "0x1.c000000000000p+2"
+		assert seven.hex() == 7.0.hex()
+
+	def test_is_integer(self):
+		assert seven.is_integer()
+		assert seven.is_integer() == 7.0.is_integer()
+
+	def test_add(self):
+		assert isinstance(seven + 7, UserFloat)
+		assert seven + 7 == UserFloat(14)
+		assert seven + 7 == 14
+		assert seven + 7 == 14.0
+
+	def test_radd(self):
+		assert isinstance(7 + seven, UserFloat)
+		assert 7 + seven == UserFloat(14)
+		assert 7 + seven == 14
+		assert 7 + seven == 14.0
+
+	def test_sub(self):
+		assert isinstance(seven - 3, UserFloat)
+		assert seven - 3 == UserFloat(4)
+		assert seven - 3 == 4
+		assert seven - 3 == 4.0
+
+	def test_rsub(self):
+		assert isinstance(3 - seven, UserFloat)
+		assert 3 - seven == UserFloat(-4)
+		assert 3 - seven == -UserFloat(4)
+		assert 3 - seven == -4
+		assert 3 - seven == -4.0
+
+	def test_mul(self):
+		assert isinstance(seven * 3, UserFloat)
+		assert seven * 3 == UserFloat(21)
+		assert seven * 3 == 21
+		assert seven * 3 == 21.0
+
+	def test_rmul(self):
+		assert isinstance(3 * seven, UserFloat)
+		assert 3 * seven == UserFloat(21)
+		assert 3 * seven == UserFloat(21)
+		assert 3 * seven == 21
+		assert 3 * seven == 21.0
+
+	def test_div(self):
+		assert isinstance(seven / 3, UserFloat)
+		assert seven / 3 == UserFloat(7 / 3)
+		assert seven / 3 == 7 / 3
+
+	def test_rdiv(self):
+		assert isinstance(3 / seven, UserFloat)
+		assert 3 / seven == UserFloat(3 / 7)
+		assert 3 / seven == UserFloat(3 / 7)
+		assert 3 / seven == 3 / 7
+
+	def test_floordiv(self):
+		assert isinstance(seven // 3, UserFloat)
+		assert seven // 3 == UserFloat(2)
+		assert seven // 3 == 2
+		assert seven // 3 == 2.0
+
+	def test_rfloordiv(self):
+		assert isinstance(21 // seven, UserFloat)
+		assert 21 // seven == UserFloat(3)
+		assert 21 // seven == 3
+
+	def test_mod(self):
+		assert isinstance(seven % 3, UserFloat)
+		assert seven % 3 == UserFloat(1)
+		assert seven % 3 == 1.0
+		assert seven % 3 == 1
+
+	def test_rmod(self):
+		assert isinstance(20 % seven, UserFloat)
+		assert 20 % seven == UserFloat(6)
+		assert 20 % seven == 6.0
+		assert 20 % seven == 6
+
+	def test_pow(self):
+		assert isinstance(seven**3, UserFloat)
+		assert seven**3 == UserFloat(343)
+		assert seven**3 == 343.0
+		assert seven**3 == 343
+
+	def test_rpow(self):
+		assert isinstance(3**seven, UserFloat)
+		assert 3**seven == UserFloat(2187)
+		assert 3**seven == 2187.0
+		assert 3**seven == 2187
+
+	def test_round(self):
+		assert isinstance(round(seven), int)
+		assert round(seven) == 7
+		assert isinstance(round(UserFloat(7.5)), int)
+		assert round(UserFloat(7.5)) == 8
+
+	def test_repr_str_int(self):
+		assert repr(seven) == "7.0"
+		assert str(seven) == "7.0"
+		assert int(seven) == 7
+		assert isinstance(int(seven), int)
+
+	def test_lt(self):
+		assert seven < 8
+		assert seven < 8.0
+		assert seven < UserFloat(8)
+
+	def test_le(self):
+		assert seven <= 8
+		assert seven <= 8.0
+		assert seven <= UserFloat(8)
+		assert seven <= 7
+		assert seven <= 7.0
+		assert seven <= UserFloat(7)
+
+	def test_gt(self):
+		assert seven > 6
+		assert seven > 6.0
+		assert seven > UserFloat(6)
+
+	def test_ge(self):
+		assert seven >= 6
+		assert seven >= 6.0
+		assert seven >= UserFloat(6)
+		assert seven >= 7
+		assert seven >= 7.0
+		assert seven >= UserFloat(7)
+
+	def test_pos(self):
+		assert isinstance(+seven, UserFloat)
+		assert +seven == seven
+		assert +seven == 7
+		assert +seven == 7.0
+
+	def test_neg(self):
+		assert isinstance(-seven, UserFloat)
+		assert -seven == UserFloat(-7)
+		assert -seven == -7
+		assert -seven == -7.0
+
+	def test_abs(self):
+		assert isinstance(abs(+seven), UserFloat)
+		assert abs(+seven) == seven
+		assert abs(+seven) == 7
+		assert abs(+seven) == 7.0
+
+		assert isinstance(abs(-seven), UserFloat)
+		assert abs(-seven) == UserFloat(7)
+		assert abs(-seven) == 7
+		assert abs(-seven) == 7.0
+
+	def test_ne(self):
+		assert seven != UserFloat(8)
+		assert seven != 8
+		assert seven != 8.0
+
+	def test_hash(self):
+		assert hash(seven) == hash(UserFloat(7))
+		assert hash(seven) != hash(UserFloat(8))
+		assert hash(seven) == hash(7)
+		assert hash(seven) != hash(8)

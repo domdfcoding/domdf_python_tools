@@ -32,6 +32,7 @@ Useful base classes.
 
 # stdlib
 from abc import abstractmethod
+from numbers import Real
 from pprint import pformat
 from typing import (
 		Any,
@@ -41,6 +42,8 @@ from typing import (
 		List,
 		MutableSequence,
 		Optional,
+		SupportsFloat,
+		SupportsRound,
 		Tuple,
 		Type,
 		TypeVar,
@@ -50,11 +53,12 @@ from typing import (
 
 # 3rd party
 import pydash  # type: ignore
+from typing_extensions import Protocol
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
 
-__all__ = ["Dictable", "NamedList", "namedlist", "UserList"]
+__all__ = ["Dictable", "NamedList", "namedlist", "UserList", "UserFloat"]
 
 _V = TypeVar("_V")
 
@@ -351,6 +355,165 @@ class UserList(MutableSequence[_T]):
 			self.data.extend(other.data)
 		else:
 			self.data.extend(other)
+
+
+class _SupportsIndex(Protocol):
+
+	def __index__(self) -> int:
+		...
+
+
+_F = TypeVar("_F", bound="UserFloat")
+
+
+@prettify_docstrings
+class UserFloat(Real, SupportsRound):
+	"""
+	Class that simulates a float.
+
+	:param value: Values to initialise the :class:`~domdf_python_tools.bases.UserFloat` with.
+
+	.. versionadded:: 1.6.0
+	"""
+
+	def __init__(self, value: Union[SupportsFloat, _SupportsIndex, str, bytes, bytearray] = 0.0):
+		self._value = (float(value), )
+
+	def as_integer_ratio(self) -> Tuple[int, int]:
+		return float(self).as_integer_ratio()
+
+	def hex(self) -> str:
+		return float(self).hex()
+
+	def is_integer(self) -> bool:
+		return float(self).is_integer()
+
+	@classmethod
+	def fromhex(cls: Type[_F], __s: str) -> _F:
+		return cls(float.fromhex(__s))
+
+	def __add__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__add__(other))
+
+	def __sub__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__sub__(other))
+
+	def __mul__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__mul__(other))
+
+	def __floordiv__(self: _F, other: float) -> _F:  # type: ignore
+		return self.__class__(float(self).__floordiv__(other))
+
+	def __truediv__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__truediv__(other))
+
+	def __mod__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__mod__(other))
+
+	def __divmod__(self: _F, other: float) -> Tuple[_F, _F]:
+		return tuple(self.__class__(x) for x in float(self).__divmod__(other))  # type: ignore
+
+	def __pow__(self: _F, other: float, mod=None) -> _F:
+		return self.__class__(float(self).__pow__(other, mod))
+
+	def __radd__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__radd__(other))
+
+	def __rsub__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__rsub__(other))
+
+	def __rmul__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__rmul__(other))
+
+	def __rfloordiv__(self: _F, other: float) -> _F:  # type: ignore
+		return self.__class__(float(self).__rfloordiv__(other))
+
+	def __rtruediv__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__rtruediv__(other))
+
+	def __rmod__(self: _F, other: float) -> _F:
+		return self.__class__(float(self).__rmod__(other))
+
+	def __rdivmod__(self: _F, other: float) -> Tuple[_F, _F]:
+		return tuple(self.__class__(x) for x in float(self).__rdivmod__(other))  # type: ignore
+
+	def __rpow__(self: _F, other: float, mod=None) -> _F:
+		return self.__class__(float(self).__rpow__(other, mod))
+
+	def __getnewargs__(self) -> Tuple[float]:
+		return self._value
+
+	def __trunc__(self) -> int:
+		return float(self).__trunc__()
+
+	def __round__(self, ndigits: Optional[int] = None) -> Union[int, float]:  # type: ignore
+		return float(self).__round__(ndigits)
+
+	def __eq__(self, other: object) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value == other._value
+		else:
+			return float(self).__eq__(other)
+
+	def __ne__(self, other: object) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value != other._value
+		else:
+			return float(self).__ne__(other)
+
+	def __lt__(self, other: Union[float, "UserFloat"]) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value < other._value
+		else:
+			return float(self).__lt__(other)
+
+	def __le__(self, other: Union[float, "UserFloat"]) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value <= other._value
+		else:
+			return float(self).__le__(other)
+
+	def __gt__(self, other: Union[float, "UserFloat"]) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value > other._value
+		else:
+			return float(self).__gt__(other)
+
+	def __ge__(self, other: Union[float, "UserFloat"]) -> bool:
+		if isinstance(other, UserFloat):
+			return self._value >= other._value
+		else:
+			return float(self).__ge__(other)
+
+	def __neg__(self: _F) -> _F:
+		return self.__class__(float(self).__neg__())
+
+	def __pos__(self: _F) -> _F:
+		return self.__class__(float(self).__pos__())
+
+	def __str__(self) -> str:
+		return str(float(self))
+
+	def __int__(self) -> int:
+		return int(float(self))
+
+	def __float__(self) -> float:
+		return self._value[0]
+
+	def __abs__(self: _F) -> _F:
+		return self.__class__(float(self).__abs__())
+
+	def __hash__(self) -> int:
+		return float(self).__hash__()
+
+	def __repr__(self) -> str:
+		return str(self)
+
+	def __ceil__(self):
+		raise NotImplementedError
+
+	def __floor__(self):
+		raise NotImplementedError
 
 
 @prettify_docstrings
