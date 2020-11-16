@@ -12,6 +12,8 @@ import pickle  # nosec: B101
 from numbers import Number, Real
 
 # 3rd party
+from typing import no_type_check
+
 import pytest
 
 # this package
@@ -203,6 +205,7 @@ class TestUserFloat:
 		assert 3**seven == 2187.0
 		assert 3**seven == 2187
 
+	@no_type_check
 	def test_round(self):
 		assert isinstance(round(seven), int)
 		assert round(seven) == 7
@@ -274,3 +277,8 @@ class TestUserFloat:
 		assert hash(seven) != hash(UserFloat(8))
 		assert hash(seven) == hash(7)
 		assert hash(seven) != hash(8)
+
+	def test_isinstance(self):
+		assert isinstance(seven, UserFloat)
+		assert not isinstance(seven, float)
+		assert not isinstance(7, UserFloat)

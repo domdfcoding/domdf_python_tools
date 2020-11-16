@@ -367,7 +367,7 @@ _F = TypeVar("_F", bound="UserFloat")
 
 
 @prettify_docstrings
-class UserFloat(Real, SupportsRound):
+class UserFloat(Real):
 	"""
 	Class that simulates a float.
 
@@ -450,37 +450,37 @@ class UserFloat(Real, SupportsRound):
 		return float(self).__round__(ndigits)
 
 	def __eq__(self, other: object) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value == other._value
 		else:
 			return float(self).__eq__(other)
 
 	def __ne__(self, other: object) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value != other._value
 		else:
 			return float(self).__ne__(other)
 
 	def __lt__(self, other: Union[float, "UserFloat"]) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value < other._value
 		else:
 			return float(self).__lt__(other)
 
 	def __le__(self, other: Union[float, "UserFloat"]) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value <= other._value
 		else:
 			return float(self).__le__(other)
 
 	def __gt__(self, other: Union[float, "UserFloat"]) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value > other._value
 		else:
 			return float(self).__gt__(other)
 
 	def __ge__(self, other: Union[float, "UserFloat"]) -> bool:
-		if isinstance(other, UserFloat):
+		if isinstance(other, UserFloat) and not isinstance(other, float):
 			return self._value >= other._value
 		else:
 			return float(self).__ge__(other)
