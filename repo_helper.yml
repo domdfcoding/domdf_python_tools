@@ -23,7 +23,7 @@ tests_dir: "tests"
 copyright_years: "2019-2020"
 author: "Dominic Davis-Foster"
 email: "dominic@davis-foster.co.uk"
-version: "1.5.0"
+version: "1.6.0"
 username: "domdfcoding"
 license: 'LGPLv3+'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
