@@ -425,7 +425,7 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 
 		pytest_plugins = ("domdf_python_tools.testing", )
 
-		def my_test(tmp_pathplus: PathPlus):
+		def test_something(tmp_pathplus: PathPlus):
 			assert True
 
 	:rtype:
@@ -439,7 +439,7 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 @pytest.fixture()
 def original_datadir(request) -> Path:
 	# Work around pycharm confusing datadir with test file.
-	return Path(os.path.splitext(request.module.__file__)[0] + '_')
+	return PathPlus(os.path.splitext(request.module.__file__)[0] + '_')
 
 
 def pytest_report_header(config, startdir):
@@ -454,7 +454,7 @@ def pytest_report_header(config, startdir):
 
 PEP_563: bool = (sys.version_info[:2] >= (3, 10))
 """
-:py:obj:`True` if the current Python version implements :pep:`563` -- Postponed Evaluation of Annotations
+:py:obj:`True` if the current Python version implements :pep:`563` -- Postponed Evaluation of Annotations.
 
 .. versionadded:: 1.4.2
 """

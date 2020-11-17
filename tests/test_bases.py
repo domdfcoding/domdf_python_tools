@@ -10,10 +10,9 @@ Test functions in bases.py
 import copy
 import pickle  # nosec: B101
 from numbers import Number, Real
-
-# 3rd party
 from typing import no_type_check
 
+# 3rd party
 import pytest
 
 # this package

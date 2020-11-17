@@ -65,3 +65,6 @@ intersphinx_mapping:
 
 mypy_deps:
  - pprint36
+
+extra_sphinx_extensions:
+ - sphinx_autofixture
