@@ -149,7 +149,7 @@ def delete(filename: PathLike, **kwargs):
 	os.remove(os.path.join(os.getcwd(), filename), **kwargs)
 
 
-def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, exist_ok: bool = False):
+def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False):
 	"""
 	Create a directory at the given path, but only if the directory does not already exist.
 
@@ -164,18 +164,18 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False, ex
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 	:no-default parents:
-	:param exist_ok: If :py:obj:`False` (the default), a :class:`FileExistsError` is raised if the
-		target directory already exists. If :py:obj:`True`, :class:`FileExistsError` exceptions
-		will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
-		component is not an existing non-directory file.
-	:no-default exist_ok:
+
+	.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
+
 	"""
 
 	if not isinstance(directory, pathlib.Path):
 		directory = pathlib.Path(directory)
 
-	if not directory.exists():
-		directory.mkdir(mode, parents, exist_ok)
+	try:
+		directory.mkdir(mode, parents, exist_ok=True)
+	except FileExistsError:
+		pass
 
 
 def parent_path(path: PathLike) -> pathlib.Path:
@@ -365,7 +365,6 @@ class PathPlus(pathlib.Path):
 			self,
 			mode: int = 0o777,
 			parents: bool = False,
-			exist_ok: bool = False,
 			):
 		"""
 		Create a directory at this path, but only if the directory does not already exist.
@@ -380,18 +379,18 @@ class PathPlus(pathlib.Path):
 			If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 		:no-default parents:
-		:param exist_ok: If :py:obj:`False` (the default), a :class:`FileExistsError` is raised if the
-			target directory already exists. If :py:obj:`True`, :class:`FileExistsError` exceptions
-			will be ignored (same behavior as the POSIX mkdir -p command), but only if the last path
-			component is not an existing non-directory file.
-		:no-default exist_ok:
 
 		:rtype:
 
 		.. versionadded:: 0.3.8
+
+		.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
 		"""
 
-		maybe_make(self, mode=mode, parents=parents, exist_ok=exist_ok)
+		try:
+			self.mkdir(mode, parents, exist_ok=True)
+		except FileExistsError:
+			pass
 
 	def append_text(
 			self,
