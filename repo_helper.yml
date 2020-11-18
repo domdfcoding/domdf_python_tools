@@ -67,5 +67,7 @@ mypy_deps:
 extra_sphinx_extensions:
  - sphinx_autofixture
 
-exclude_files:
- - tox
+tox_unmanaged:
+ - testenv
+
+tox_testenv_extras: all
