@@ -8,9 +8,6 @@ Utilities for working with dates and times.
 
 	pytz >=2019.1
 
-
-.. warning:: This module has not been fully tested. Use with caution.
-
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -47,6 +44,7 @@ import datetime
 import sys
 import typing
 from collections import OrderedDict
+from types import ModuleType
 from typing import Optional, Union
 
 __all__ = [
@@ -59,67 +57,6 @@ __all__ = [
 		"check_date",
 		"calc_easter",
 		]
-
-try:
-
-	# 3rd party
-	import pytz
-
-	def get_utc_offset(
-			tz: Union[datetime.tzinfo, str],
-			date: Optional[datetime.datetime] = None,
-			) -> Optional[datetime.timedelta]:
-		"""
-		Returns the offset between UTC and the requested timezone on the given date.
-		If ``date`` is :py:obj:`None` then the current date is used.
-
-		:param tz: ``pytz.timezone`` or a string representing the timezone
-		:param date: The date to obtain the UTC offset for
-		"""
-
-		if date is None:
-			date = datetime.datetime.utcnow()
-
-		timezone: Optional[datetime.tzinfo]
-
-		if isinstance(tz, str):
-			timezone = get_timezone(tz, date)
-		else:
-			timezone = tz  # pragma: no cover (hard to test)
-
-		return date.replace(tzinfo=pytz.utc).astimezone(timezone).utcoffset()
-
-	def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
-		"""
-		Returns a localized ``pytz.timezone`` object for the given date.
-		If ``date`` is :py:obj:`None` then the current date is used.
-
-		:param tz: A string representing a pytz timezone
-		:param date: The date to obtain the timezone for
-		"""
-
-		if date is None:
-			date = datetime.datetime.utcnow()  # pragma: no cover (hard to test)
-
-		d = date.replace(tzinfo=None)
-
-		return pytz.timezone(tz).localize(d).tzinfo
-
-	__all__.extend(["get_utc_offset", "get_timezone"])
-
-except ImportError as e:  # pragma: no cover
-
-	# stdlib
-	import warnings
-
-	warnings.warn(
-			f"""\
-Some functions in 'domdf_python_tools.dates' require pytz (https://pypi.org/project/pytz/), \
-but it could not be imported.
-
-The error was: {e}.
-""",
-			)
 
 
 def current_tzinfo() -> Optional[datetime.tzinfo]:
@@ -192,9 +129,9 @@ def utc_timestamp_to_datetime(
 	return new_datetime.astimezone(output_tz)
 
 
-if sys.version_info <= (3, 7, 2):
+if sys.version_info <= (3, 7, 2):  # pragma: no cover (py37+)
 	MonthsType = OrderedDict
-else:
+else:  # pragma: no cover (<py37)
 	MonthsType = typing.OrderedDict[str, str]  # type: ignore  # noqa: TYP006
 
 #: Mapping of 3-character shortcodes to full month names.
@@ -302,3 +239,82 @@ def calc_easter(year: int) -> datetime.date:
 	day = f % 31 + 1
 
 	return datetime.date(year, month, day)
+
+
+def get_utc_offset(
+		tz: Union[datetime.tzinfo, str],
+		date: Optional[datetime.datetime] = None,
+		) -> Optional[datetime.timedelta]:
+	"""
+	Returns the offset between UTC and the requested timezone on the given date.
+	If ``date`` is :py:obj:`None` then the current date is used.
+
+	:param tz: ``pytz.timezone`` or a string representing the timezone
+	:param date: The date to obtain the UTC offset for
+	"""
+
+	if date is None:
+		date = datetime.datetime.utcnow()
+
+	timezone: Optional[datetime.tzinfo]
+
+	if isinstance(tz, str):
+		timezone = get_timezone(tz, date)
+	else:
+		timezone = tz  # pragma: no cover (hard to test)
+
+	return date.replace(tzinfo=pytz.utc).astimezone(timezone).utcoffset()
+
+
+def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
+	"""
+	Returns a localized ``pytz.timezone`` object for the given date.
+	If ``date`` is :py:obj:`None` then the current date is used.
+
+	:param tz: A string representing a pytz timezone
+	:param date: The date to obtain the timezone for
+	"""
+
+	if date is None:
+		date = datetime.datetime.utcnow()  # pragma: no cover (hard to test)
+
+	d = date.replace(tzinfo=None)
+
+	return pytz.timezone(tz).localize(d).tzinfo
+
+
+_pytz_functions = ["get_utc_offset", "get_timezone"]
+
+try:
+
+	# 3rd party
+	import pytz
+
+	__all__.extend(_pytz_functions)
+
+except ImportError as e:
+
+	if __name__ == "__main__":
+
+		import warnings
+		from domdf_python_tools.words import word_join
+
+		warnings.warn(f"""\
+		'{word_join(_pytz_functions)}' require pytz (https://pypi.org/project/pytz/), but it could not be imported.
+
+		The error was: {e}.
+		""")
+
+	else:
+		_actual_module = sys.modules[__name__]
+
+		class SelfWrapper(ModuleType):
+			def __getattr__(self, name):
+				if name in _pytz_functions:
+					raise ImportError(
+							f"{name!r} requires pytz (https://pypi.org/project/pytz/), but it could not be imported."
+							)
+				else:
+					return getattr(_actual_module, name)
+
+		sys.modules[__name__] = SelfWrapper(__name__)

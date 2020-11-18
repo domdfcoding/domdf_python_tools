@@ -56,8 +56,6 @@ sphinx_conf_preamble:
 sphinx_conf_epilogue:
  - manpages_url = "https://manpages.debian.org/{path}"
 
-tox_testenv_extras: all
-
 intersphinx_mapping:
  - "'pandas': ('https://pandas.pydata.org/docs/', None)"
  - "'consolekit': ('https://consolekit.readthedocs.io/en/latest/', None)"
@@ -68,3 +66,6 @@ mypy_deps:
 
 extra_sphinx_extensions:
  - sphinx_autofixture
+
+exclude_files:
+ - tox
