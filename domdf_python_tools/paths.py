@@ -68,12 +68,16 @@ __all__ = [
 		"WindowsPathPlus",
 		"in_directory",
 		"_P",
+		"traverse_to_file",
 		]
 
 newline_default = object()
-_P = TypeVar("_P", bound=pathlib.PurePath)
+
+_P = TypeVar("_P", bound=pathlib.Path)
 """
 .. versionadded:: 0.11.0
+
+.. versionchanged:: 1.7.0  Now bound to :class:`pathlib.Path`.
 """
 
 
@@ -768,3 +772,28 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 		"""
 
 		raise NotImplementedError("Path.is_mount() is unsupported on this system")
+
+
+def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) -> _P:
+	r"""
+	Traverse the parents of the given directory until the desired file is found.
+
+	:param base_directory: The directory to start searching from
+	:param \*filename: The filename(s) to search for
+	:param height: The maximum height to traverse to.
+
+	.. versionadded:: 1.6.0
+	"""
+
+	if not filename:
+		raise TypeError("traverse_to_file expected 2 or more arguments, got 1")
+
+	for level, directory in enumerate((base_directory, *base_directory.parents)):
+		if height > 0 and ((level - 1) > height):
+			break
+
+		for file in filename:
+			if (directory / file).is_file():
+				return directory
+
+	raise FileNotFoundError(f"'{filename[0]!s}' not found in {base_directory}")
