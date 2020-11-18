@@ -15,7 +15,7 @@ Functions for paths and files.
 #  Parts of the docstrings and the PathPlus class based on the Python 3.8.2 Documentation
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
-#  Copyright © 2000 BeOpen.com . All rights reserved.
+#  Copyright © 2000 BeOpen.com. All rights reserved.
 #  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #

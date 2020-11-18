@@ -1,10 +1,9 @@
 #  Adapted from https://github.com/python/cpython/blob/master/Lib/test/test_pathlib.py
-#
 #  Licensed under the Python Software Foundation License Version 2.
 #  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
-#  Copyright © 2000 BeOpen.com . All rights reserved.
-#  Copyright © 1995-2000 Corporation for National Research Initiatives . All rights reserved.
-#  Copyright © 1991-1995 Stichting Mathematisch Centrum . All rights reserved.
+#  Copyright © 2000 BeOpen.com. All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #
 
 # stdlib
