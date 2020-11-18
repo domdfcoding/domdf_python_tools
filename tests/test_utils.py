@@ -466,7 +466,8 @@ def test_diff(file_regression: FileRegressionFixture):
 	original = data_dir / "original"
 	modified = data_dir / "modified"
 
-	diff = coloured_diff(
+	diff = pytest.deprecated_call(
+			coloured_diff,
 			original.read_lines(),
 			modified.read_lines(),
 			fromfile="original_file.txt",
