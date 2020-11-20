@@ -39,6 +39,7 @@ from domdf_python_tools.utils import convert_indents
 __all__ = ["Indent", "StringList", "DelimitedList"]
 
 _S = TypeVar("_S")
+_SL = TypeVar("_SL", bound="StringList")
 
 
 @prettify_docstrings
@@ -172,11 +173,13 @@ class StringList(List[str]):
 		for line in iterable:
 			self.append(line)
 
-	def copy(self) -> "StringList":
+	def copy(self: _SL) -> _SL:
 		"""
 		Returns a shallow copy of the :class:`~domdf_python_tools.stringlist.StringList`.
 
 		Equivalent to ``a[:]``.
+
+		:rtype: :class:`~domdf_python_tools.stringlist.StringList`
 		"""
 
 		return self.__class__(super().copy())
@@ -246,17 +249,26 @@ class StringList(List[str]):
 		...  # pragma: no cover
 
 	@overload
-	def __getitem__(self, index: slice) -> List[str]:
+	def __getitem__(self: _SL, index: slice) -> _SL:
 		...  # pragma: no cover
 
-	def __getitem__(self, index: Union[int, slice]) -> Union[str, List[str]]:
-		"""
+	def __getitem__(self: _SL, index: Union[int, slice]) -> Union[str, _SL]:
+		r"""
 		Returns the line with the given index.
 
 		:param index:
+
+		:rtype: :py:obj:`~typing.Union`\[:class:`str`, :class:`~domdf_python_tools.stringlist.StringList`\]
+
+		.. versionchanged:: 1.8.0
+
+			Now returns a :class:`~domdf_python_tools.stringlist.StringList` when ``index`` is a :class:`slice`.
 		"""
 
-		return super().__getitem__(index)
+		if isinstance(index, slice):
+			return self.__class__(super().__getitem__(index))
+		else:
+			return super().__getitem__(index)
 
 	def blankline(self, ensure_single: bool = False):
 		"""
