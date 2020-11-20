@@ -13,7 +13,6 @@ jobs:
     runs-on: "windows-2019"
     env:
       USING_COVERAGE: '3.6,3.7,3.8,3.9'
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
 
     strategy:
       fail-fast: False
