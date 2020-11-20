@@ -135,6 +135,6 @@ jobs:
 
       - name: Build and deploy 📦
         run: |
-          bash .ci/travis_deploy_conda.sh
+          bash .ci/actions_deploy_conda.sh
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
