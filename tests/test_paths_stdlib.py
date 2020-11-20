@@ -550,18 +550,6 @@ def test_is_fifo_false(BASE):
 	assert not ((P / "fileA" / "bah").is_fifo())
 
 
-@pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="os.mkfifo() required")
-def test_is_fifo_true(BASE):
-	P = PathPlus(BASE) / "myfifo"
-	try:
-		os.mkfifo(str(P))
-	except PermissionError as e:
-		pytest.skip("os.mkfifo(): %s" % e)
-	assert (P.is_fifo())
-	assert not (P.is_socket())
-	assert not (P.is_file())
-
-
 def test_is_socket_false(BASE):
 	P = PathPlus(BASE)
 	assert not (P / "fileA").is_socket()
