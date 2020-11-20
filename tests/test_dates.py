@@ -18,12 +18,11 @@ from domdf_python_tools import dates
 from domdf_python_tools.dates import calc_easter
 from domdf_python_tools.testing import count
 
-
 # TODO: travis matrix to test without pytz installed
 # TODO: test get_timezone
 
-
 try:
+	# 3rd party
 	import pytz
 
 	test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
@@ -58,7 +57,6 @@ try:
 				}
 		assert dates.get_utc_offset("Africa/Algiers") == datetime.timedelta(0, 3600)
 
-
 	def test_converting_timezone():
 		# No matter what timezone we convert to the timestamp should be the same
 		for tz in pytz.all_timezones:
@@ -73,7 +71,6 @@ try:
 			if dates.get_utc_offset(tz, today):  # otherwise the timezone stayed as UTC
 				assert today.astimezone(dates.get_timezone(tz, today)).hour != today.hour
 
-
 	def test_utc_timestamp_to_datetime():
 		# Going from a datetime object to timezone and back should give us the same object
 		for tz in pytz.all_timezones:
@@ -85,7 +82,6 @@ try:
 			tzinfo = dates.get_timezone(tz, today)
 			dt = today.astimezone(tzinfo)
 			assert dates.utc_timestamp_to_datetime(dt.timestamp(), tzinfo) == dt
-
 
 	def test_set_timezone():
 		# Setting the timezone should change the timestamp
@@ -142,19 +138,24 @@ try:
 				as_seconds = dates.set_timezone(test_date, target_tz).timestamp() + offset.total_seconds()
 				assert as_seconds == test_date.timestamp()
 
-
 except ImportError:
 
 	def test_utc_offset_no_pytz():
-		with pytest.raises(ImportError, match="'get_utc_offset' requires pytz \(.*\), but it could not be imported"):
+		with pytest.raises(
+				ImportError,
+				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
+				):
 			dates.get_utc_offset
 
-		with pytest.raises(ImportError, match="'get_utc_offset' requires pytz \(.*\), but it could not be imported"):
+		with pytest.raises(
+				ImportError,
+				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
+				):
+			# this package
 			from domdf_python_tools.dates import get_utc_offset
 
 
 # TODO: Finish
-
 
 months = [
 		"January",

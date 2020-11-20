@@ -296,19 +296,25 @@ except ImportError as e:
 
 	if __name__ == "__main__":
 
+		# stdlib
 		import warnings
+
+		# this package
 		from domdf_python_tools.words import word_join
 
-		warnings.warn(f"""\
+		warnings.warn(
+				f"""\
 		'{word_join(_pytz_functions)}' require pytz (https://pypi.org/project/pytz/), but it could not be imported.
 
 		The error was: {e}.
-		""")
+		"""
+				)
 
 	else:
 		_actual_module = sys.modules[__name__]
 
 		class SelfWrapper(ModuleType):
+
 			def __getattr__(self, name):
 				if name in _pytz_functions:
 					raise ImportError(
