@@ -13,6 +13,7 @@ jobs:
     runs-on: "ubuntu-18.04"
     env:
       USING_COVERAGE: '3.6,3.7,3.8,pypy3,3.9'
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
 
     strategy:
       fail-fast: False
@@ -32,7 +33,7 @@ jobs:
           python -m site
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade tox tox-gh-actions virtualenv
-          python -m pip install --upgrade coveralls coverage_pyver_pragma
+          python -m pip install --upgrade coverage_pyver_pragma
 
       - name: "Run Tests for Python ${{ matrix.python-version }}"
         run: "python -m tox"
@@ -44,7 +45,7 @@ jobs:
           path: .coverage
 
 
-  coverage:
+  Coverage:
     needs: tests
     runs-on: "ubuntu-18.04"
     steps:
@@ -87,7 +88,7 @@ jobs:
         run: |
           coveralls
 
-  deploy:
+  Deploy:
     needs: tests
 
     runs-on: "ubuntu-18.04"
@@ -119,7 +120,8 @@ jobs:
           skip_existing: true
 
 
-  conda:
+
+  Conda:
     needs: deploy
     runs-on: "ubuntu-18.04"
     steps:
@@ -131,5 +133,9 @@ jobs:
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
           bash miniconda.sh -b -p $HOME/miniconda
           chmod +x .ci/actions_deploy_conda.sh
+
+      - name: Build and deploy 📦
+        run: |
+          bash .ci/travis_deploy_conda.sh
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}

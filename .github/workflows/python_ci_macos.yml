@@ -13,6 +13,7 @@ jobs:
     runs-on: "macos-latest"
     env:
       USING_COVERAGE: '3.6,3.7,3.8,pypy3,3.9'
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
 
     strategy:
       fail-fast: False
