@@ -7,77 +7,20 @@ dist: focal
 cache: pip
 python:
   - '3.6'
-  - '3.7'
-  - '3.8'
-  - 'pypy3'
-  - '3.9'
-  - '3.10-dev'
-
 arch:
-  - amd64
   - arm64
 install:
 
   - pip install --upgrade pip
   - pip install tox tox-travis
-  - pip install coveralls coverage_pyver_pragma
 
 script:
   - tox -vv
-after_success:
-  - coveralls
-
 
 stages:
   - test
-  - deploy_pypi
   - deploy_conda
 
 jobs:
   allow_failures:
     - arch: arm64
-    - python: ['3.10-dev']
-
-  exclude:
-    - python: '3.7'
-      arch: arm64
-    - python: '3.8'
-      arch: arm64
-    - python: 'pypy3'
-      arch: arm64
-    - python: '3.9'
-      arch: arm64
-    - python: '3.10-dev'
-      arch: arm64
-
-  include:
-    - stage: test
-      dist: bionic
-      python: 3.8
-
-    - stage: deploy_pypi
-      python: "3.6"
-      script: skip
-      deploy:
-        on:
-          tags: true
-          repo: domdfcoding/domdf_python_tools
-        provider: pypi
-        username: "DomDF"
-        password:
-          secure: GQVX7JKDfUWcHQzjmZ8yadF4eIM/AUaXu/Zl8U2hwhB6NavbzUayvMXalT+pfgZ6NaWFMPZOETlxv5d+hf98Io/5HIV4i1KB98ze90KXpUU2Icz7IdxWDWGhc36Vkhb7hU0HUfXLu8WxcxQCJB3t7uIB9SO36dh/cMayW5YvBy3HhluaTvgLax4nOJYjN/FJCgs9kTCBYrjJzheS0pgj37bXZCrB06H0bsxgnbaAiL8FiG6tgJLABDLfqPhtJgVRhtdYeuqGv31/OV0vkj1zG6bExp9ENQ4/5L7FijLRznW+DnsRJt6BdTBtxNxK+v1ZccTdVJzTzhoUH/TbXdI+qtBeatTYz880du7TujKoxfFxGZ9+bSaYURaClMHn7/Ndj7ioj5f51jLf8+BCEk3cWEfUL7yeKF6RBWLww6cFKQ9yDNOiXgrsndz6Oh535LV28rKXS1qeGBppMAv09RmR/YfHu+XMp5yWa+vDwjmrQDH7qEkA3wYYMfMRnwi9+LrOHtS7IqFkgbAXZPmh3C0X1UEqD4cuARcyD9FRU2PAXM1tBprxEFi1L/sv4O8KRP+I3jXXsBHTmzbWWVqXiySGOlX6R9vOma35WS3mkllS/Oz7IyhUtONrwpaLHnuBLKMgi+RnsoEYgLx6KgSXVSQ0JUZq8cP2yewC8nx626w675w=
-        distributions: "sdist bdist_wheel"
-        skip_existing: true
-    - stage: deploy_conda
-      python: "3.6"
-      addons:
-        apt:
-          update: true
-      install:
-        - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-        - bash miniconda.sh -b -p $HOME/miniconda
-        - chmod +x .ci/travis_deploy_conda.sh
-      script: skip
-      deploy:
-        provider: script
-        script: .ci/travis_deploy_conda.sh || return 1;

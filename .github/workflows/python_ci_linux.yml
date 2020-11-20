@@ -105,17 +105,17 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade tox
 
-      - name: Build source distribution 📦
+      - name: Build distributions 📦
         run: |
           tox -e build
-          rm dist/*.whl
+
 
       - name: Upload distribution 📦 to PyPI
         if: startsWith(github.ref, 'refs/tags/')
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
-          password: ${{ secrets.pypi_password }}
+          password: ${{ secrets.PYPI_TOKEN }}
           skip_existing: true
 
 
@@ -135,12 +135,20 @@ jobs:
       - name: Install dependencies 🔧
         run: |
           python -m pip install --upgrade pip setuptools wheel
+          python -m pip install --upgrade repo_helper
+
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
           bash miniconda.sh -b -p $HOME/miniconda
-          chmod +x .ci/actions_deploy_conda.sh
 
-      - name: Build and deploy 📦
+      - name: Build Conda 📦
         run: |
+          chmod +x .ci/actions_build_conda.sh
+          bash .ci/actions_build_conda.sh
+
+      - name: Deploy Conda 🚀
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          chmod +x .ci/actions_deploy_conda.sh
           bash .ci/actions_deploy_conda.sh
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}

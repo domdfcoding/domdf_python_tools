@@ -71,3 +71,5 @@ tox_unmanaged:
  - testenv
 
 tox_testenv_extras: all
+
+use_travis: False
