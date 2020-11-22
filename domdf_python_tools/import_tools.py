@@ -96,6 +96,9 @@ def discover(
 	.. versionchanged:: 1.0.0
 
 		Added the ``exclude_side_effects`` parameter.
+	
+	.. TODO:: raise better exception when passing a module rather than a package.
+		Or just return the contents of the module?
 	"""  # noqa D400
 
 	matching_objects = []
