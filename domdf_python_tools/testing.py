@@ -322,6 +322,8 @@ def platform_boolean_factory(
 		condition: bool,
 		platform: str,
 		versionadded: Optional[str] = None,
+		*,
+		module: Optional[str] = None,
 		) -> Tuple[Callable[..., MarkDecorator], Callable[..., MarkDecorator]]:
 	"""
 	Factory function to return decorators such as :func:`~.not_pypy` and :func:`~.only_windows`.
@@ -329,13 +331,17 @@ def platform_boolean_factory(
 	:param condition: Should evaluate to :py:obj:`True` if the test should be skipped.
 	:param platform:
 	:param versionadded:
+	:param module: The module to set the function as belonging to in ``__module__``.
 
 	:return: 2-element tuple of ``not_function``, ``only_function``.
 
 	.. versionadded: 1.5.0
+
+	.. versionchanged: 1.7.1  Added the ``module`` keyword-only argument.
 	"""
 
 	default_reason = "{} required on Windows"
+	module = module or platform_boolean_factory.__module__
 
 	def not_function(reason: str = default_reason.format("Not")) -> MarkDecorator:
 		return pytest.mark.skipif(condition=condition, reason=reason)
@@ -355,10 +361,12 @@ skip a test {why} the current platform is {platform}.
 	if versionadded:
 		docstring += f"\n\n:rtype:\n\n.. versionadded:: {versionadded}"
 
-	not_function.__name__ = f"not_{platform.lower()}"
+	not_function.__name__ = not_function.__qualname__ = f"not_{platform.lower()}"
+	not_function.__module__ = module
 	not_function.__doc__ = docstring.format(why="if", platform=platform)
 
-	only_function.__name__ = f"only_{platform.lower()}"
+	only_function.__name__ = only_function.__qualname__ = f"only_{platform.lower()}"
+	only_function.__module__ = module
 	only_function.__doc__ = docstring.format(why="unless", platform=platform)
 
 	return not_function, only_function
@@ -405,7 +413,7 @@ not_docker, only_docker = platform_boolean_factory(condition=is_docker(), platfo
 not_docker.__doc__ = cast(str, not_docker.__doc__).replace("the current platform is", "running on")
 only_docker.__doc__ = cast(str, only_docker.__doc__).replace("the current platform is", "running on")
 
-not_pypy, only_pypy = platform_boolean_factory(condition=PYPY, platform="Docker", versionadded="0.9.0")
+not_pypy, only_pypy = platform_boolean_factory(condition=PYPY, platform="PyPy", versionadded="0.9.0")
 not_pypy.__doc__ = cast(str, not_pypy.__doc__).replace("current platform", "current Python implementation")
 only_pypy.__doc__ = cast(str, only_pypy.__doc__).replace("current platform", "current Python implementation")
 
