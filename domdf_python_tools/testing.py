@@ -497,6 +497,7 @@ def check_file_output(
 		filename: PathLike,
 		file_regression: FileRegressionFixture,
 		extension: Optional[str] = None,
+		newline: Optional[str] = '\n',
 		**kwargs,
 		):
 	r"""
@@ -505,9 +506,12 @@ def check_file_output(
 	:param filename:
 	:param file_regression: The file regression fixture for the test.
 	:param extension: The extension of the reference file.
+	:param newline: Controls how universal newlines mode works. See :func:`open`.
 	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
 
 	.. versionadded:: 1.5.0
+
+	.. versionchanged:: 1.7.1  Changed the default for ``newline`` to ``'\n'``.
 	"""
 
 	filename = PathPlus(filename)
@@ -518,4 +522,4 @@ def check_file_output(
 	if extension == ".py":
 		extension = "._py_"
 
-	return check_file_regression(data, file_regression, extension, **kwargs)
+	return check_file_regression(data, file_regression, extension, newline=newline, **kwargs)
