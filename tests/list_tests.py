@@ -18,17 +18,9 @@ from typing import List, no_type_check
 import pytest
 
 # this package
-from domdf_python_tools.doctools import PYPY
 from domdf_python_tools.testing import not_pypy
 from tests import seq_tests
 from tests.seq_tests import ALWAYS_EQ, NEVER_EQ
-
-
-def flaky_pypy(func):
-	if PYPY:
-		return pytest.mark.flaky(reruns=2)(func)
-	else:
-		return func
 
 
 class CommonTest(seq_tests.CommonTest):
@@ -81,7 +73,7 @@ class CommonTest(seq_tests.CommonTest):
 		assert str(a2) == "[0, 1, 2, [...], 3]"
 		assert repr(a2) == "[0, 1, 2, [...], 3]"
 
-	@flaky_pypy
+	@not_pypy
 	def test_repr_deep(self):
 		a = self.type2test([])
 		for i in range(sys.getrecursionlimit() + 100):
