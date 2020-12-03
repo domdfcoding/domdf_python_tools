@@ -36,7 +36,7 @@ from collections import Callable
 from typing import Any, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
 
 # 3rd party
-from natsort import natsorted, ns
+from natsort import natsorted, ns  # type: ignore
 
 __all__ = [
 		"chunks",
