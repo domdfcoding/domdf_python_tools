@@ -3,8 +3,6 @@
 #  classes.py
 """
 Classes representing pagesizes.
-
-.. |AnyNumber| replace:: :py:data:`~typing.Union` [:class:`int`, :class:`float`, :class:`~decimal.Decimal`, :class:`~domdf_python_tools.pagesizes.Unit`]
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>

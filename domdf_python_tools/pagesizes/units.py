@@ -1,6 +1,9 @@
-#  !/usr/bin/env python
+#!/usr/bin/env python
 #
 #  units.py
+"""
+Provides a variety of units for use with pagesizes.
+"""
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #

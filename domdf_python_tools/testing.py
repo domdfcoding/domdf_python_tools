@@ -214,7 +214,7 @@ whitespace = " \t\n\r"
 
 
 @lru_cache(1)
-def whitespace_perms_list() -> List[str]:
+def whitespace_perms_list() -> List[str]:  # noqa: D103
 	chain = itertools.chain.from_iterable(itertools.permutations(whitespace, n) for n in Len(whitespace))
 	return list(''.join(x) for x in chain)
 
@@ -393,7 +393,7 @@ def is_docker():
 	<class 'bool'>
 
 	.. versionadded:: 0.6.0
-	"""
+	"""  # noqa: D400
 
 	if os.path.exists("/.dockerenv"):
 		return True

@@ -105,19 +105,19 @@ back_stack: List[str] = []
 style_stack: List[str] = []
 
 
-def code_to_chars(code) -> str:
+def code_to_chars(code) -> str:  # noqa: D103
 	return CSI + str(code) + 'm'
 
 
-def set_title(title: str) -> str:
+def set_title(title: str) -> str:  # noqa: D103
 	return OSC + "2;" + title + BEL
 
 
-def clear_screen(mode: int = 2) -> str:
+def clear_screen(mode: int = 2) -> str:  # noqa: D103
 	return CSI + str(mode) + 'J'
 
 
-def clear_line(mode: int = 2) -> str:
+def clear_line(mode: int = 2) -> str:  # noqa: D103
 	return CSI + str(mode) + 'K'
 
 
@@ -204,9 +204,15 @@ class AnsiCodes(ABC):
 
 
 class AnsiCursor:
+	"""
+	Provides methods to control the cursor.
+
+	.. TODO:: Add show and hide methods.
+	"""
 
 	def UP(self, n: int = 1) -> str:
 		"""
+		Moves the cursor up.
 
 		:param n:
 		"""
@@ -215,6 +221,7 @@ class AnsiCursor:
 
 	def DOWN(self, n: int = 1) -> str:
 		"""
+		Moves the cursor down.
 
 		:param n:
 		"""
@@ -223,6 +230,7 @@ class AnsiCursor:
 
 	def FORWARD(self, n: int = 1) -> str:
 		"""
+		Moves the cursor forward (right).
 
 		:param n:
 		"""
@@ -231,6 +239,7 @@ class AnsiCursor:
 
 	def BACK(self, n: int = 1) -> str:
 		"""
+		Moves the cursor back (left).
 
 		:param n:
 		"""
@@ -239,6 +248,7 @@ class AnsiCursor:
 
 	def POS(self, x: int = 1, y: int = 1) -> str:
 		"""
+		Sets the position of the cursor.
 
 		:param x:
 		:param y:

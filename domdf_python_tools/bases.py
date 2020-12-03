@@ -380,17 +380,35 @@ class UserFloat(Real):
 		self._value = (float(value), )
 
 	def as_integer_ratio(self) -> Tuple[int, int]:
+		"""
+		Returns the float as a fraction.
+		"""
+
 		return float(self).as_integer_ratio()
 
-	def hex(self) -> str:
+	def hex(self) -> str:  # noqa: A003
+		"""
+		Returns the hexadecimal (base 16) representation of the float.
+		"""
+
 		return float(self).hex()
 
 	def is_integer(self) -> bool:
+		"""
+		Returns whether the float is an integer.
+		"""
+
 		return float(self).is_integer()
 
 	@classmethod
-	def fromhex(cls: Type[_F], __s: str) -> _F:
-		return cls(float.fromhex(__s))
+	def fromhex(cls: Type[_F], string: str) -> _F:
+		"""
+		Create a floating-point number from a hexadecimal string.
+
+		:param string:
+		"""
+
+		return cls(float.fromhex(string))
 
 	def __add__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__add__(other))
