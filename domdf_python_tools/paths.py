@@ -782,7 +782,7 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 	:param \*filename: The filename(s) to search for
 	:param height: The maximum height to traverse to.
 
-	.. versionadded:: 1.6.0
+	.. versionadded:: 1.7.0
 	"""
 
 	if not filename:

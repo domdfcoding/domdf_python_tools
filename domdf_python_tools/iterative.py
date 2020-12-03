@@ -25,14 +25,18 @@ Functions for iteration, looping etc.
 #  MA 02110-1301, USA.
 #
 #  chunks from https://stackoverflow.com/a/312464/3092681
-# 		Copyright © 2008 Ned Batchelder
-# 		Licensed under CC-BY-SA
+#  Copyright © 2008 Ned Batchelder
+#  Licensed under CC-BY-SA
 #
 
 # stdlib
 import itertools
 import textwrap
-from typing import Any, Generator, Iterable, Iterator, List, Sequence, Tuple, Type, Union
+from collections import Callable
+from typing import Any, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
+
+# 3rd party
+from natsort import natsorted, ns
 
 __all__ = [
 		"chunks",
@@ -42,6 +46,8 @@ __all__ = [
 		"double_chain",
 		"flatten",
 		"make_tree",
+		"natmin",
+		"natmax",
 		]
 
 
@@ -211,3 +217,37 @@ def make_tree(tree: Branch) -> Iterator[str]:
 		elif isinstance(tree[-1], Iterable):
 			for line in make_tree(tree[-1]):
 				yield textwrap.indent(line, "    ")
+
+
+def natmin(seq: Iterable, key: Optional[Callable] = None, alg: int = ns.DEFAULT):
+	"""
+	Returns the minimum value from ``seq`` when sorted naturally.
+
+	:param seq:
+	:param key: A key used to determine how to sort each element of the iterable.
+		It is **not** applied recursively.
+		The callable should accept a single argument and return a single value.
+	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
+		For details into these options, please see the :class:`ns` class documentation.
+
+	.. versionadded:: 1.8.0
+	"""
+
+	return natsorted(seq, key=key, alg=alg)[0]
+
+
+def natmax(seq: Iterable, key: Optional[Callable] = None, alg: int = ns.DEFAULT):
+	"""
+	Returns the maximum value from ``seq`` when sorted naturally.
+
+	:param seq:
+	:param key: A key used to determine how to sort each element of the iterable.
+		It is **not** applied recursively.
+		The callable should accept a single argument and return a single value.
+	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
+		For details into these options, please see the :class:`ns` class documentation.
+
+	.. versionadded:: 1.8.0
+	"""
+
+	return natsorted(seq, key=key, alg=alg)[-1]

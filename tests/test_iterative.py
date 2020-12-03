@@ -7,6 +7,7 @@ Test functions in iterative.py
 """
 
 # stdlib
+from random import shuffle
 from types import GeneratorType
 
 # 3rd party
@@ -15,7 +16,17 @@ from pytest_regressions.data_regression import DataRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
-from domdf_python_tools.iterative import Len, chunks, double_chain, flatten, make_tree, permutations, split_len
+from domdf_python_tools.iterative import (
+		Len,
+		chunks,
+		double_chain,
+		flatten,
+		make_tree,
+		natmax,
+		natmin,
+		permutations,
+		split_len
+		)
 from domdf_python_tools.testing import check_file_regression
 
 
@@ -147,3 +158,37 @@ def test_make_tree(file_regression: FileRegressionFixture):
 		)
 def test_flatten(data, data_regression: DataRegressionFixture):
 	data_regression.check(list(flatten(data)))
+
+
+@pytest.mark.parametrize(
+		"data",
+		[
+				pytest.param([1, 3, 5, 7, 9], id="integers"),
+				pytest.param([1.2, 3.4, 5.6, 7.8, 9.0], id="floats"),
+				pytest.param(['1', '3', '5', '7', '9'], id="numerical_strings"),
+				pytest.param(["1.2", "3.4", "5.6", "7.8", "9.0"], id="float strings"),
+				pytest.param(["0.9", "0.12.4", '1', "2.5"], id="versions"),
+				]
+		)
+def test_natmin(data):
+	orig_data = data[:]
+	for _ in range(5):
+		shuffle(data)
+		assert natmin(data) == orig_data[0]
+
+
+@pytest.mark.parametrize(
+		"data",
+		[
+				pytest.param([1, 3, 5, 7, 9], id="integers"),
+				pytest.param([1.2, 3.4, 5.6, 7.8, 9.0], id="floats"),
+				pytest.param(['1', '3', '5', '7', '9'], id="numerical_strings"),
+				pytest.param(["1.2", "3.4", "5.6", "7.8", "9.0"], id="float strings"),
+				pytest.param(["0.9", "0.12.4", '1', "2.5"], id="versions"),
+				]
+		)
+def test_natmax(data):
+	orig_data = data[:]
+	for _ in range(5):
+		shuffle(data)
+		assert natmax(data) == orig_data[-1]
