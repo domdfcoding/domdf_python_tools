@@ -32,8 +32,7 @@ Functions for iteration, looping etc.
 # stdlib
 import itertools
 import textwrap
-from collections import Callable
-from typing import Any, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
+from typing import Any, Callable, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
 
 # 3rd party
 from natsort import natsorted, ns  # type: ignore
