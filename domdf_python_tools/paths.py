@@ -567,7 +567,7 @@ class PathPlus(pathlib.Path):
 			rather than :meth:`PathPlus.write_text <domdf_python_tools.paths.PathPlus.write_text>`,
 			and returns :py:obj:`None` rather than :class:`int`.
 
-		.. versionchanged:: 1.8.0
+		.. versionchanged:: 1.9.0
 
 			Added the ``compress`` keyword-only argument.
 		"""
@@ -606,7 +606,7 @@ class PathPlus(pathlib.Path):
 
 		.. versionadded:: 0.5.0
 
-		.. versionchanged:: 1.8.0
+		.. versionchanged:: 1.9.0
 
 			Added the ``compress`` keyword-only argument.
 		"""
