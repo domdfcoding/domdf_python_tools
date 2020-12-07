@@ -22,7 +22,6 @@ General utility functions.
 	:func:`~domdf_python_tools.iterative.Len`, and
 	:func:`~domdf_python_tools.iterative.double_chain`
 	moved to :func:`domdf_python_tools.iterative`.
-
 	They can still be imported from here until version 2.0.0, but that use is deprecated.
 """
 #
@@ -256,6 +255,8 @@ def posargs2kwargs(
 	"""
 	Convert the positional args in ``args`` to kwargs, based on the relative order of ``args`` and ``posarg_names``.
 
+	.. important:: Python 3.8's Positional-Only Parameters (:pep:`570`) are not supported.
+
 	:param args: List of positional arguments provided to a function.
 	:param posarg_names: Either a list of positional argument names for the function, or the function object.
 	:param kwargs: Optional mapping of keyword argument names to values.
@@ -265,8 +266,6 @@ def posargs2kwargs(
 	:return: Dictionary mapping argument names to values.
 
 	.. versionadded:: 0.4.10
-
-	.. info:: Python 3.8's Positional-Only Parameters (:pep:`570`) are not supported.
 	"""
 
 	if kwargs is None:
