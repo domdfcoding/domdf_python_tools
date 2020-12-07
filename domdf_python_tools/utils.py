@@ -22,7 +22,6 @@ General utility functions.
 	:func:`~domdf_python_tools.iterative.Len`, and
 	:func:`~domdf_python_tools.iterative.double_chain`
 	moved to :func:`domdf_python_tools.iterative`.
-
 	They can still be imported from here until version 2.0.0, but that use is deprecated.
 """
 #
@@ -93,12 +92,14 @@ from packaging import version
 # this package
 import domdf_python_tools.words
 from domdf_python_tools import __version__, iterative
-from domdf_python_tools.terminal_colours import Colour, Fore
 from domdf_python_tools.typing import HasHead, String
 
 if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
+
+	# this package
+	from domdf_python_tools.terminal_colours import Colour, Fore
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
@@ -256,6 +257,8 @@ def posargs2kwargs(
 	"""
 	Convert the positional args in ``args`` to kwargs, based on the relative order of ``args`` and ``posarg_names``.
 
+	.. important:: Python 3.8's Positional-Only Parameters (:pep:`570`) are not supported.
+
 	:param args: List of positional arguments provided to a function.
 	:param posarg_names: Either a list of positional argument names for the function, or the function object.
 	:param kwargs: Optional mapping of keyword argument names to values.
@@ -274,6 +277,8 @@ def posargs2kwargs(
 		posarg_names = inspect.getfullargspec(posarg_names).args
 
 	kwargs.update(zip(posarg_names, args))
+
+	# TODO: positional only arguments
 
 	return kwargs
 
@@ -623,8 +628,8 @@ def coloured_diff(
 		tofiledate: str = '',
 		n: int = 3,
 		lineterm: str = '\n',
-		removed_colour: Colour = Fore.RED,
-		added_colour: Colour = Fore.GREEN,
+		removed_colour: Optional["Colour"] = None,
+		added_colour: Optional["Colour"] = None,
 		) -> str:
 	r"""
 	Compare two sequences of lines; generate the delta as a unified diff.
@@ -678,6 +683,15 @@ def coloured_diff(
 
 	# this package
 	from domdf_python_tools.stringlist import StringList
+
+	with warnings.catch_warnings():
+		warnings.simplefilter("ignore", DeprecationWarning)
+
+		# this package
+		from domdf_python_tools.terminal_colours import Fore
+
+	removed_colour = removed_colour or Fore.RED
+	added_colour = added_colour or Fore.GREEN
 
 	buf = StringList()
 	diff = difflib.unified_diff(a, b, fromfile, tofile, fromfiledate, tofiledate, n, lineterm)

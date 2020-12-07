@@ -66,11 +66,12 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 
 # stdlib
 import re
+import warnings
 from abc import ABC
 from typing import List, Pattern
 
 # 3rd party
-from colorama import init  # type: ignore
+import colorama  # type: ignore
 from typing_extensions import Final
 
 __all__ = [
@@ -94,7 +95,14 @@ __all__ = [
 		"strip_ansi",
 		]
 
-init()
+warnings.warn(
+		"domdf_python_tools.terminal_colours is deprecated and will be removed in v2. "
+		"Use consolekit.terminal_colours instead.",
+		DeprecationWarning,
+		stacklevel=2,
+		)
+
+colorama.init()
 
 CSI: Final[str] = "\u001b["
 OSC: Final[str] = "\u001b]"

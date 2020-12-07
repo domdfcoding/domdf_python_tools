@@ -41,6 +41,7 @@ Functions for paths and files.
 
 # stdlib
 import contextlib
+import gzip
 import json
 import os
 import pathlib
@@ -543,9 +544,11 @@ class PathPlus(pathlib.Path):
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
 			json_library: JsonLibrary = json,  # type: ignore
+			*,
+			compress: bool = False,
 			**kwargs,
 			) -> None:
-		"""
+		r"""
 		Dump ``data`` to the file as JSON.
 
 		:param data: The object to serialise to JSON.
@@ -553,7 +556,8 @@ class PathPlus(pathlib.Path):
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
 		:default json_library: :mod:`json`
-		:param kwargs: Keyword arguments to pass to the JSON serialisation function.
+		:param compress: Whether to compress the JSON file using gzip.
+		:param \*\*kwargs: Keyword arguments to pass to the JSON serialisation function.
 
 		.. versionadded:: 0.5.0
 
@@ -562,37 +566,60 @@ class PathPlus(pathlib.Path):
 			Now uses :meth:`PathPlus.write_clean <domdf_python_tools.paths.PathPlus.write_clean>`
 			rather than :meth:`PathPlus.write_text <domdf_python_tools.paths.PathPlus.write_text>`,
 			and returns :py:obj:`None` rather than :class:`int`.
+
+		.. versionchanged:: 1.9.0
+
+			Added the ``compress`` keyword-only argument.
 		"""
 
-		return self.write_clean(
-				json_library.dumps(data, **kwargs),
-				encoding=encoding,
-				errors=errors,
-				)
+		if compress:
+			with gzip.open(self, mode="wt", encoding=encoding, errors=errors) as fp:
+				fp.write(json_library.dumps(data, **kwargs))
+
+		else:
+			self.write_clean(
+					json_library.dumps(data, **kwargs),
+					encoding=encoding,
+					errors=errors,
+					)
 
 	def load_json(
 			self,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
 			json_library: JsonLibrary = json,  # type: ignore
+			*,
+			decompress: bool = False,
 			**kwargs,
 			) -> Any:
-		"""
+		r"""
 		Load JSON data from the file.
 
 		:param encoding: The encoding to write to the file in.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
 		:default json_library: :mod:`json`
-		:param kwargs: Keyword arguments to pass to the JSON deserialisation function.
+		:param decompress: Whether to decompress the JSON file using gzip.
+			Will raise an exception if the file is not compressed.
+		:param \*\*kwargs: Keyword arguments to pass to the JSON deserialisation function.
 
 		:return: The deserialised JSON data.
 
 		.. versionadded:: 0.5.0
+
+		.. versionchanged:: 1.9.0
+
+			Added the ``compress`` keyword-only argument.
 		"""
 
+		if decompress:
+			with gzip.open(self, mode="rt", encoding=encoding, errors=errors) as fp:
+				content = fp.read()
+		else:
+			content = self.read_text(encoding=encoding, errors=errors)
+
 		return json_library.loads(
-				self.read_text(encoding=encoding, errors=errors),
+				content,
 				**kwargs,
 				)
 

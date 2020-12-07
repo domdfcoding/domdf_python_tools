@@ -580,6 +580,18 @@ def test_dump_json(tmpdir):
 """)
 
 
+def test_dump_json_gzip(tmpdir):
+	tmpdir_p = PathPlus(tmpdir)
+
+	tmp_file = tmpdir_p / "test.txt"
+
+	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34}, compress=True)
+	assert tmp_file.load_json(decompress=True) == {"key": "value", "int": 1234, "float": 12.34}
+
+	tmp_file.dump_json({"key": "value", "int": 1234, "float": 12.34}, indent=2, compress=True)
+	assert tmp_file.load_json(decompress=True) == {"key": "value", "int": 1234, "float": 12.34}
+
+
 def test_load_json(tmpdir):
 	tmpdir_p = PathPlus(tmpdir)
 
