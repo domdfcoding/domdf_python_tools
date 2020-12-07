@@ -576,11 +576,12 @@ class PathPlus(pathlib.Path):
 			with gzip.open(self, mode="wt", encoding=encoding, errors=errors) as fp:
 				fp.write(json_library.dumps(data, **kwargs))
 
-		self.write_clean(
-				json_library.dumps(data, **kwargs),
-				encoding=encoding,
-				errors=errors,
-				)
+		else:
+			self.write_clean(
+					json_library.dumps(data, **kwargs),
+					encoding=encoding,
+					errors=errors,
+					)
 
 	def load_json(
 			self,
