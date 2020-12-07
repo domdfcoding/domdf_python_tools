@@ -574,9 +574,9 @@ class PathPlus(pathlib.Path):
 
 		if compress:
 			with gzip.open(self, mode="wt", encoding=encoding, errors=errors) as fp:
-				return fp.write(json_library.dumps(data, **kwargs))
+				fp.write(json_library.dumps(data, **kwargs))
 
-		return self.write_clean(
+		self.write_clean(
 				json_library.dumps(data, **kwargs),
 				encoding=encoding,
 				errors=errors,

@@ -265,6 +265,8 @@ def posargs2kwargs(
 	:return: Dictionary mapping argument names to values.
 
 	.. versionadded:: 0.4.10
+
+	.. info:: Python 3.8's Positional-Only Parameters (:pep:`570`) are not supported.
 	"""
 
 	if kwargs is None:
@@ -274,6 +276,8 @@ def posargs2kwargs(
 		posarg_names = inspect.getfullargspec(posarg_names).args
 
 	kwargs.update(zip(posarg_names, args))
+
+	# TODO: positional only arguments
 
 	return kwargs
 
