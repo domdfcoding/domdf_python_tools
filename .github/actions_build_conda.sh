@@ -16,9 +16,8 @@ conda install anaconda-client
 conda info -a
 
 conda config --add channels domdfcoding || exit 1
-
 conda config --add channels conda-forge || exit 1
 
-conda build conda -c domdfcoding -c conda-forge --output-folder conda/dist --skip-existing
+conda build conda -c domdfcoding -c conda-forge --output-folder conda/dist --skip-existing --numpy 1.16
 
 exit 0
