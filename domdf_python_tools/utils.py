@@ -14,7 +14,7 @@ General utility functions.
 	* Removed ``splitLen``.
 	  Use :func:`domdf_python_tools.utils.split_len` instead.
 
-.. versionchanged:: 1.4.0
+.. versionchanged:: 2.0.0
 
 	:func:`~domdf_python_tools.iterative.chunks`,
 	:func:`~domdf_python_tools.iterative.permutations`,
@@ -22,7 +22,6 @@ General utility functions.
 	:func:`~domdf_python_tools.iterative.Len`, and
 	:func:`~domdf_python_tools.iterative.double_chain`
 	moved to :func:`domdf_python_tools.iterative`.
-	They can still be imported from here until version 2.0.0, but that use is deprecated.
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -74,7 +73,6 @@ General utility functions.
 #
 
 # stdlib
-import difflib
 import functools
 import inspect
 import sys
@@ -82,6 +80,7 @@ import textwrap
 import typing
 import warnings
 from datetime import date
+from math import log10
 from pprint import pformat
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
@@ -91,15 +90,11 @@ from packaging import version
 
 # this package
 import domdf_python_tools.words
-from domdf_python_tools import __version__, iterative
 from domdf_python_tools.typing import HasHead, String
 
 if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
-
-	# this package
-	from domdf_python_tools.terminal_colours import Colour, Fore
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
@@ -107,7 +102,6 @@ if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 __all__ = [
 		"pyversion",
 		"SPACE_PLACEHOLDER",
-		"check_dependencies",
 		"cmp",
 		"list2str",
 		"printr",
@@ -121,8 +115,9 @@ __all__ = [
 		"convert_indents",
 		"etc",
 		"head",
-		"coloured_diff",
 		"deprecated",
+		"magnitude",
+		"trim_precision",
 		]
 
 #: The current major python version.
@@ -533,177 +528,44 @@ def deprecated(
 	return _function_wrapper
 
 
-chunks = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.iterative' instead.",
-		)(
-				iterative.chunks
-				)
-permutations = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.iterative' instead.",
-		)(
-				iterative.permutations
-				)
-split_len = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.iterative' instead.",
-		)(
-				iterative.split_len
-				)
-Len = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.iterative' instead.",
-		)(
-				iterative.Len
-				)
-double_chain = deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from 'domdf_python_tools.iterative' instead.",
-		)(
-				iterative.double_chain
-				)
-
-
-@deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from :mod:`shippinglabel.requirements` instead.",
-		)
-def check_dependencies(dependencies: Iterable[str], prt: bool = True) -> List[str]:
+def magnitude(x: float) -> int:
 	"""
-	Check whether one or more dependencies are available to be imported.
+	Returns the magnitude of the given value.
 
-	:param dependencies: The list of dependencies to check the availability of.
-	:param prt: Whether the status should be printed to the terminal.
+	* For negative numbers the absolute magnitude is returned.
+	* For decimal numbers below ``1`` the magnitude will be negative.
 
-	:return: A list of any missing modules.
+	:param x: Numerical value to find the magnitude of.
+
+	.. versionadded:: 2.0.0
 	"""
 
-	# stdlib
-	from pkgutil import iter_modules
-
-	modules = {x[1] for x in iter_modules()}
-	missing_modules = []
-
-	for requirement in dependencies:
-		if requirement not in modules:
-			missing_modules.append(requirement)
-
-	if prt:
-		if len(missing_modules) == 0:
-			print("All modules installed")
-		else:
-			print("The following modules are missing:")
-			print(missing_modules)
-			print("Please check the documentation.")
-		print('')
-
-	return missing_modules
+	if x > 0.0:
+		return int(log10(x))
+	elif x < 0.0:
+		return int(log10(abs(x)))
+	else:
+		return 0
 
 
-@deprecated(
-		deprecated_in="1.4.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Import from :mod:`consolekit.utils` (v0.3.0 or later) instead.",
-		)
-def coloured_diff(
-		a: typing.Sequence[str],
-		b: typing.Sequence[str],
-		fromfile: str = '',
-		tofile: str = '',
-		fromfiledate: str = '',
-		tofiledate: str = '',
-		n: int = 3,
-		lineterm: str = '\n',
-		removed_colour: Optional["Colour"] = None,
-		added_colour: Optional["Colour"] = None,
-		) -> str:
-	r"""
-	Compare two sequences of lines; generate the delta as a unified diff.
+def trim_precision(value: float, precision: int = 4) -> float:
+	"""
+	Trim the precision of the given floating point value.
 
-	Unified diffs are a compact way of showing line changes and a few
-	lines of context. The number of context lines is set by ``n`` which
-	defaults to three.
+	For example, if you have the value `170.10000000000002` but really only care about it being
+	``\u2248 179.1``:
 
-	By default, the diff control lines (those with ``---``, ``+++``, or ``@@``)
-	are created with a trailing newline. This is helpful so that inputs
-	created from ``file.readlines()`` result in diffs that are suitable for
-	``file.writelines()`` since both the inputs and outputs have trailing
-	newlines.
+	.. code-block:: python
 
-	For inputs that do not have trailing newlines, set the lineterm
-	argument to ``''`` so that the output will be uniformly newline free.
+		>>> trim_precision(170.10000000000002, 2)
+		170.1
+		>>> type(trim_precision(170.10000000000002, 2))
+		<class 'float'>
 
-	The unidiff format normally has a header for filenames and modification
-	times. Any or all of these may be specified using strings for
-	``fromfile``, ``tofile``, ``fromfiledate``, and ``tofiledate``.
-	The modification times are normally expressed in the ISO 8601 format.
+	:param value:
+	:param precision: The number of decimal places to leave in the output.
 
-	**Example:**
-
-	>>> for line in coloured_diff('one two three four'.split(),
-	...             'zero one tree four'.split(), 'Original', 'Current',
-	...             '2005-01-26 23:30:50', '2010-04-02 10:20:52',
-	...             lineterm=''):
-	...     print(line)                 # doctest: +NORMALIZE_WHITESPACE
-	--- Original        2005-01-26 23:30:50
-	+++ Current         2010-04-02 10:20:52
-	@@ -1,4 +1,4 @@
-	+zero
-	one
-	-two
-	-three
-	+tree
-	four
-
-	:param a:
-	:param b:
-	:param fromfile:
-	:param tofile:
-	:param fromfiledate:
-	:param tofiledate:
-	:param n:
-	:param lineterm:
-	:param removed_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were removed.
-	:param added_colour: The :class:`~domdf_python_tools.terminal_colours.Colour` to use for lines that were added.
+	.. versionadded:: 2.0.0
 	"""
 
-	# this package
-	from domdf_python_tools.stringlist import StringList
-
-	with warnings.catch_warnings():
-		warnings.simplefilter("ignore", DeprecationWarning)
-
-		# this package
-		from domdf_python_tools.terminal_colours import Fore
-
-	removed_colour = removed_colour or Fore.RED
-	added_colour = added_colour or Fore.GREEN
-
-	buf = StringList()
-	diff = difflib.unified_diff(a, b, fromfile, tofile, fromfiledate, tofiledate, n, lineterm)
-
-	for line in diff:
-		if line.startswith('+'):
-			buf.append(added_colour(line))
-		elif line.startswith('-'):
-			buf.append(removed_colour(line))
-		else:
-			buf.append(line)
-
-	buf.blankline(ensure_single=True)
-
-	return str(buf)
+	return float(format(value, f"0.{precision}f"))

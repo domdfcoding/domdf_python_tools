@@ -16,55 +16,16 @@ from collections import namedtuple
 
 # 3rd party
 import pytest
-from deprecation import fail_if_not_removed  # type: ignore
-from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools import utils
-from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.testing import check_file_regression, testing_boolean_values
+from domdf_python_tools.testing import testing_boolean_values
 from domdf_python_tools.typing import HasHead
-from domdf_python_tools.utils import coloured_diff, deprecated, head
+from domdf_python_tools.utils import deprecated, head, trim_precision
 
 
 def test_pyversion():
 	assert isinstance(utils.pyversion, int)
-
-
-@fail_if_not_removed
-def test_check_dependencies(capsys):
-	deps = ["pytest", "domdf_python_tools", "madeup_module"]
-
-	with pytest.deprecated_call() as record:
-		missing_deps = utils.check_dependencies(deps, False)
-	assert len(record) == 1
-	assert isinstance(missing_deps, list)
-	assert len(missing_deps) == 1
-	assert missing_deps == ["madeup_module"]
-
-	with pytest.deprecated_call() as record:
-		missing_deps = utils.check_dependencies(deps)
-	assert len(record) == 1
-	captured = capsys.readouterr()
-	stdout = captured.out.split('\n')
-	assert stdout[0] == "The following modules are missing:"
-	assert stdout[1] == "['madeup_module']"
-	assert stdout[2] == "Please check the documentation."
-	assert stdout[3] == ''
-	assert isinstance(missing_deps, list)
-	assert len(missing_deps) == 1
-	assert missing_deps == ["madeup_module"]
-
-	with pytest.deprecated_call() as record:
-		missing_deps = utils.check_dependencies(["pytest"])
-	assert len(record) == 1
-	captured = capsys.readouterr()
-	stdout = captured.out.split('\n')
-	assert stdout[0] == "All modules installed"
-	assert stdout[1] == ''
-	assert isinstance(missing_deps, list)
-	assert len(missing_deps) == 0
-	assert missing_deps == []
 
 
 class TestList2Str:
@@ -461,20 +422,19 @@ def test_deprecation():
 	assert ".. deprecated::" not in func.__doc__  # type: ignore
 
 
-def test_diff(file_regression: FileRegressionFixture):
-	data_dir = PathPlus(__file__).parent / "test_diff_"
-	original = data_dir / "original"
-	modified = data_dir / "modified"
+def test_trim_precision():
+	assert 170.10000000000002 != 170.1
+	assert trim_precision(170.10000000000002, 1) == 170.1
+	assert trim_precision(170.10000000000002, 2) == 170.1
+	assert trim_precision(170.10000000000002, 3) == 170.1
+	assert trim_precision(170.10000000000002, 4) == 170.1
+	assert trim_precision(170.10000000000002, 5) == 170.1
+	assert trim_precision(170.10000000000002) == 170.1
 
-	diff = pytest.deprecated_call(
-			coloured_diff,
-			original.read_lines(),
-			modified.read_lines(),
-			fromfile="original_file.txt",
-			tofile="modified_file.txt",
-			fromfiledate="(original)",
-			tofiledate="(modified)",
-			lineterm='',
-			)
-
-	check_file_regression(diff, file_regression)
+	assert 170.15800000000002 != 170.158
+	assert trim_precision(170.15800000000002, 1) == 170.2
+	assert trim_precision(170.15800000000002, 2) == 170.16
+	assert trim_precision(170.15800000000002, 3) == 170.158
+	assert trim_precision(170.15800000000002, 4) == 170.158
+	assert trim_precision(170.15800000000002, 5) == 170.158
+	assert trim_precision(170.15800000000002) == 170.158

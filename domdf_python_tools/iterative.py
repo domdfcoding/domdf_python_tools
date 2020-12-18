@@ -32,10 +32,14 @@ Functions for iteration, looping etc.
 # stdlib
 import itertools
 import textwrap
+from operator import itemgetter
 from typing import Any, Callable, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
 
 # 3rd party
 from natsort import natsorted, ns  # type: ignore
+
+# this package
+from domdf_python_tools.utils import magnitude
 
 __all__ = [
 		"chunks",
@@ -47,6 +51,8 @@ __all__ = [
 		"make_tree",
 		"natmin",
 		"natmax",
+		"groupfloats",
+		"ranges_from_iterable",
 		]
 
 
@@ -250,3 +256,69 @@ def natmax(seq: Iterable, key: Optional[Callable] = None, alg: int = ns.DEFAULT)
 	"""
 
 	return natsorted(seq, key=key, alg=alg)[-1]
+
+
+_group = Tuple[float, ...]
+
+
+def groupfloats(
+		iterable: Iterable[float],
+		step: float = 1,
+		) -> Iterable[_group]:
+	"""
+	Returns an iterator over the discrete ranges of values in ``iterable``.
+
+	For example:
+
+	.. code-block:: python
+
+		>>> list(groupfloats([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05))
+		[(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
+		>>> list(groupfloats([1, 2, 3, 4, 5, 7, 8, 9, 10]))
+		[(1, 2, 3, 4, 5), (7, 8, 9, 10)]
+
+	:param iterable:
+	:param step: The step between values in ``iterable``.
+
+	.. seealso::
+
+		:func:`~.ranges_from_iterable`, which returns an iterator over the min and max values for each range.
+
+	.. versionadded:: 2.0.0
+	"""
+
+	# Based on https://stackoverflow.com/a/4629241
+	# By user97370
+	# CC BY-SA 4.0
+
+	modifier = 1 / 10**magnitude(step)
+
+	a: float
+	b: Iterable[_group]
+
+	def key(pair):
+		return (pair[1] * modifier) - ((pair[0] * modifier) * step)
+
+	for a, b in itertools.groupby(enumerate(iterable), key=key):
+		yield tuple(map(itemgetter(1), list(b)))
+
+
+def ranges_from_iterable(iterable: Iterable[float], step: float = 1) -> Iterable[Tuple[float, float]]:
+	"""
+	Returns an iterator over the minimum and maximum values for each discrete ranges of values in ``iterable``.
+
+	For example:
+
+	.. code-block:: python
+
+		>>> list(ranges_from_iterable([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05))
+		[(170.0, 170.15), (171.05, 171.2)]
+		>>> list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10]))
+		[(1, 5), (7, 10)]
+
+	:param iterable:
+	:param step: The step between values in ``iterable``.
+	"""
+
+	for group in groupfloats(iterable, step):
+		yield group[0], group[-1]

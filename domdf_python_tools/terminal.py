@@ -3,6 +3,11 @@
 #  terminal.py
 """
 Useful functions for terminal-based programs.
+
+.. versionchanged:: 2.0.0
+
+	:func:`domdf_python_tools.terminal.get_terminal_size` was removed.
+	Use :func:`shutil.get_terminal_size` instead.
 """
 #
 #  Copyright © 2014-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -59,13 +64,11 @@ Useful functions for terminal-based programs.
 import inspect
 import os
 import pprint
-import shutil
 import textwrap
-from typing import IO, Tuple
+from shutil import get_terminal_size
+from typing import IO
 
 # this package
-from domdf_python_tools import __version__
-from domdf_python_tools.utils import deprecated
 from domdf_python_tools.words import CR
 
 __all__ = [
@@ -143,24 +146,6 @@ def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bo
 	object0 = f"{CR}{objects[0]}"
 	objects = (object0, *objects[1:])
 	print(*objects, sep=sep, end=end, file=file, flush=flush)
-
-
-@deprecated(
-		deprecated_in="1.0.0",
-		removed_in="2.0.0",
-		current_version=__version__,
-		details="Use :func:`shutil.get_terminal_size` instead.",
-		)
-def get_terminal_size() -> Tuple[int, int]:  # pragma: no cover
-	"""
-	Get width and height of console.
-
-	Works on Linux, macOS, Windows, and Cygwin.
-
-	:return: Screen width and screen height.
-	"""
-
-	return shutil.get_terminal_size((80, 25))
 
 
 class Echo:

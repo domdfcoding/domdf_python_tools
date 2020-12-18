@@ -9,6 +9,7 @@ Test functions in iterative.py
 # stdlib
 from random import shuffle
 from types import GeneratorType
+from typing import List, Tuple
 
 # 3rd party
 import pytest
@@ -21,10 +22,12 @@ from domdf_python_tools.iterative import (
 		chunks,
 		double_chain,
 		flatten,
+		groupfloats,
 		make_tree,
 		natmax,
 		natmin,
 		permutations,
+		ranges_from_iterable,
 		split_len
 		)
 from domdf_python_tools.testing import check_file_regression
@@ -192,3 +195,33 @@ def test_natmax(data):
 	for _ in range(5):
 		shuffle(data)
 		assert natmax(data) == orig_data[-1]
+
+
+def test_groupfloats():
+	expects: List[Tuple[float, ...]] = [(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
+	assert list(groupfloats([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05)) == expects
+
+	trim_precision = lambda f: float(f"{f:0.4f}")
+
+	expects = [(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
+	values = list(
+			map(
+					trim_precision,
+					[170.0, 170.05, 170.10000000000002, 170.15, 171.05, 171.10000000000002, 171.15, 171.2]
+					)
+			)
+
+	assert list(groupfloats(values, step=0.05)) == expects
+
+	expects = [(1, 2, 3, 4, 5), (7, 8, 9, 10)]
+	assert list(groupfloats([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
+
+
+def test_ranges_from_iterable():
+	expects = [(170.0, 170.15), (171.05, 171.2)]
+	assert list(
+			ranges_from_iterable([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05)
+			) == expects
+
+	expects = [(1, 5), (7, 10)]
+	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
