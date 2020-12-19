@@ -614,12 +614,12 @@ class Lineup(UserList[_T]):
 
 		return self
 
-	def sort(
+	def sort(  # type: ignore
 			self: _LU,
 			*,
 			key=None,
 			reverse: bool = False,
-			) -> _LU:  # type: ignore
+			) -> _LU:
 		"""
 		Sort the list in ascending order and return the self.
 
@@ -635,39 +635,39 @@ class Lineup(UserList[_T]):
 		super().sort(key=key, reverse=reverse)
 		return self
 
-	def reverse(self: _LU, ) -> _LU:  # type: ignore
+	def reverse(self: _LU) -> _LU:  # type: ignore  # noqa: D102
 		super().reverse()
 		return self
 
-	def append(
+	def append(  # type: ignore  # noqa: D102
 			self: _LU,
 			item: _T,
-			) -> _LU:  # type: ignore
+			) -> _LU:
 		super().append(item)
 		return self
 
-	def extend(
+	def extend(  # type: ignore# noqa: D102
 			self: _LU,
 			other: Iterable[_T],
-			) -> _LU:  # type: ignore
+			) -> _LU:
 		super().extend(other)
 		return self
 
-	def insert(
+	def insert(  # type: ignore  # noqa: D102
 			self: _LU,
 			i: int,
 			item: _T,
-			) -> _LU:  # type: ignore
+			) -> _LU:
 		super().insert(i, item)
 		return self
 
-	def remove(
+	def remove(  # type: ignore  # noqa: D102
 			self: _LU,
 			item: _T,
-			) -> _LU:  # type: ignore
+			) -> _LU:
 		super().remove(item)
 		return self
 
-	def clear(self: _LU, ) -> _LU:  # type: ignore
+	def clear(self: _LU) -> _LU:  # type: ignore  # noqa: D102
 		super().clear()
 		return self
