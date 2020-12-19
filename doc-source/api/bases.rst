@@ -6,6 +6,16 @@
 	:autosummary-members:
 	:no-members:
 
+Type Variables
+------------------
+
+.. autotypevar:: domdf_python_tools.bases._F
+.. autotypevar:: domdf_python_tools.bases._LU
+.. autotypevar:: domdf_python_tools.bases._S
+.. autotypevar:: domdf_python_tools.bases._T
+.. autotypevar:: domdf_python_tools.bases._V
+
+
 Dictable
 ---------
 
@@ -58,3 +68,18 @@ This avoids any potential issues with `mypy <http://mypy-lang.org/>`_
 .. autoclass:: domdf_python_tools.bases.NamedList
 
 .. autofunction:: domdf_python_tools.bases.namedlist
+
+
+UserFloat
+------------
+
+.. autoclass:: domdf_python_tools.bases.UserFloat
+	:inherited-members:
+	:special-members:
+	:exclude-members: __ceil__,__floor__,conjugate,imag,real
+
+
+Lineup
+---------
+
+.. autoclass:: domdf_python_tools.bases.Lineup
