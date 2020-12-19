@@ -1,5 +1,13 @@
 ---
 modname: domdf_python_tools
+copyright_years: "2019-2020"
+author: "Dominic Davis-Foster"
+email: "dominic@davis-foster.co.uk"
+version: "1.9.0"
+username: "domdfcoding"
+license: 'LGPLv3+'
+short_desc: 'Helpful functions for Python 🐍 🛠️'
+
 conda_channels:
  - domdfcoding
  - conda-forge
@@ -10,20 +18,9 @@ python_versions:
  - 3.6
  - 3.7
  - 3.8
- - pypy3
  - 3.9
  - 3.10-dev
-
-# directory that contains tests
-tests_dir: "tests"
-
-copyright_years: "2019-2020"
-author: "Dominic Davis-Foster"
-email: "dominic@davis-foster.co.uk"
-version: "1.9.0"
-username: "domdfcoding"
-license: 'LGPLv3+'
-short_desc: 'Helpful functions for Python 🐍 🛠️'
+ - pypy3
 
 classifiers:
  - 'Development Status :: 4 - Beta'
