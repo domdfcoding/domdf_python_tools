@@ -82,6 +82,7 @@ __all__ = [
 		"count",
 		"min_version",
 		"max_version",
+		"only_version",
 		"not_windows",
 		"only_windows",
 		"not_pypy",
@@ -316,6 +317,31 @@ def max_version(
 		reason = f"Not needed after Python {version_}."
 
 	return pytest.mark.skipif(condition=sys.version_info[:3] > version_, reason=reason)
+
+
+def only_version(
+		version: Union[str, float, Tuple[int]],
+		reason: Optional[str] = None,
+		) -> MarkDecorator:
+	"""
+	Factory function to return a ``@pytest.mark.skipif`` decorator that will
+	skip a test if the current Python version not the required one.
+
+	:param version: The version number to compare to :py:data:`sys.version_info`.
+	:param reason: The reason to display when skipping.
+	:default reason: :file:`'Not needed on Python {<version>}.'`
+
+	:rtype:
+
+	.. versionadded:: 2.0.0
+	"""  # noqa D400
+
+	version_ = _make_version(version)
+
+	if reason is None:
+		reason = f"Not needed on Python {version_}."
+
+	return pytest.mark.skipif(condition=sys.version_info[:2] != version_[:2], reason=reason)
 
 
 def platform_boolean_factory(

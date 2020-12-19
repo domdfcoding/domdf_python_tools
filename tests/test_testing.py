@@ -19,6 +19,7 @@ from domdf_python_tools.testing import (
 		not_windows,
 		only_macos,
 		only_pypy,
+		only_version,
 		only_windows
 		)
 from domdf_python_tools.utils import strtobool
@@ -152,6 +153,22 @@ def test_generate_falsy():
 			]
 
 	assert list(testing.generate_falsy_values(ratio=0.3)) == ['0', "no", "False", False]
+
+
+@pytest.mark.parametrize(
+		"py_version",
+		[
+				pytest.param((3, 4), marks=only_version(3.4, "Success")),
+				pytest.param((3, 5), marks=only_version(3.5, "Success")),
+				pytest.param((3, 6), marks=only_version(3.6, "Success")),
+				pytest.param((3, 8), marks=only_version(3.8, "Success")),
+				pytest.param((3, 9), marks=only_version(3.9, "Success")),
+				pytest.param((3, 10), marks=only_version(3.10, "Success")),
+				]
+		)
+def test_only_version(py_version):
+	if sys.version_info[:2] != py_version:
+		assert False  # noqa: PT015
 
 
 @not_pypy("Success")
