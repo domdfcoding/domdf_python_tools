@@ -31,6 +31,7 @@ from domdf_python_tools.iterative import (
 		split_len
 		)
 from domdf_python_tools.testing import check_file_regression
+from domdf_python_tools.utils import trim_precision
 
 
 def test_chunks():
@@ -201,15 +202,9 @@ def test_groupfloats():
 	expects: List[Tuple[float, ...]] = [(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
 	assert list(groupfloats([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05)) == expects
 
-	trim_precision = lambda f: float(f"{f:0.4f}")
-
 	expects = [(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
-	values = list(
-			map(
-					trim_precision,
-					[170.0, 170.05, 170.10000000000002, 170.15, 171.05, 171.10000000000002, 171.15, 171.2]
-					)
-			)
+	values = [170.0, 170.05, 170.10000000000002, 170.15, 171.05, 171.10000000000002, 171.15, 171.2]
+	values = list(map(lambda v: trim_precision(v, 4), values))
 
 	assert list(groupfloats(values, step=0.05)) == expects
 
