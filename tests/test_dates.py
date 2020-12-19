@@ -83,11 +83,10 @@ try:
 			dt = today.astimezone(tzinfo)
 			assert dates.utc_timestamp_to_datetime(dt.timestamp(), tzinfo) == dt
 
+	@pytest.mark.xfail()
 	def test_set_timezone():
 		# Setting the timezone should change the timestamp
 		for tz in pytz.all_timezones:
-
-			print(today)
 
 			if dates.get_utc_offset(tz, today):  # otherwise the timezone stayed as UTC
 				# ensure timestamp did change
