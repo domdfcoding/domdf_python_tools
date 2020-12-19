@@ -12,7 +12,7 @@
 from typing import Sequence, Type, no_type_check
 
 # this package
-from domdf_python_tools.bases import UserList
+from domdf_python_tools.bases import Lineup, UserList
 from domdf_python_tools.testing import not_pypy
 from tests import list_tests
 
@@ -78,3 +78,31 @@ class TestUserList(TestList):
 		assert u2 == list("spameggs")
 		u2 = u.__radd__(UserList("spam"))
 		assert u2 == list("spameggs")
+
+
+class TestLineup(TestList):
+	type2test: Type[Lineup] = Lineup
+
+	def test_replace(self):
+		u = self.type2test([-2, -1, 0, 1, 2])
+
+		u.replace(2, 3)
+		assert u[-1] == 3
+
+	def test_fluent(self):
+		u = self.type2test([2, 1, 0, -1, -2])
+
+		assert u.sort() is u
+		assert u == [-2, -1, 0, 1, 2]
+
+		assert u.replace(2, 3) is u
+		assert u == [-2, -1, 0, 1, 3]
+
+		assert u.reverse() is u
+		assert u == [3, 1, 0, -1, -2]
+
+		assert u.append(4) is u
+		assert u == [3, 1, 0, -1, -2, 4]
+
+		assert u.insert(0, -3) is u
+		assert u == [-3, 3, 1, 0, -1, -2, 4]

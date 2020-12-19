@@ -58,8 +58,24 @@ from typing_extensions import Protocol
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
 
-__all__ = ["Dictable", "NamedList", "namedlist", "UserList", "UserFloat"]
+__all__ = [
+		"Dictable",
+		"NamedList",
+		"namedlist",
+		"UserList",
+		"UserFloat",
+		"Lineup",
+		"_V",
+		"_LU",
+		"_T",
+		"_S",
+		"_F",
+		]
 
+_F = TypeVar("_F", bound="UserFloat")
+_LU = TypeVar("_LU", bound="Lineup")
+_S = TypeVar("_S", bound="UserList")
+_T = TypeVar("_T")
 _V = TypeVar("_V")
 
 
@@ -108,10 +124,6 @@ class Dictable(Iterable[Tuple[str, _V]]):
 			return pydash.predicates.is_match(other.__dict__, self.__dict__)
 
 		return NotImplemented
-
-
-_T = TypeVar("_T")
-_S = TypeVar("_S", bound="UserList")
 
 
 @prettify_docstrings
@@ -363,9 +375,6 @@ class _SupportsIndex(Protocol):
 		...
 
 
-_F = TypeVar("_F", bound="UserFloat")
-
-
 @prettify_docstrings
 class UserFloat(Real):
 	"""
@@ -462,6 +471,10 @@ class UserFloat(Real):
 		return self._value
 
 	def __trunc__(self) -> int:
+		"""
+		Truncates the float to an integer.
+		"""
+
 		return float(self).__trunc__()
 
 	def __round__(self, ndigits: Optional[int] = None) -> Union[int, float]:  # type: ignore
@@ -533,6 +546,22 @@ class UserFloat(Real):
 	def __floor__(self):
 		raise NotImplementedError
 
+	def __bool__(self) -> bool:
+		"""
+		Return ``self != 0``.
+		"""
+
+		return super().__bool__()
+
+	def __complex__(self) -> complex:
+		"""
+		Returrn :func:`complex(self) <complex>``.
+
+		``complex(self) == complex(float(self), 0)``
+		"""
+
+		return super().__complex__()
+
 
 @prettify_docstrings
 class NamedList(UserList[_T]):
@@ -566,3 +595,79 @@ def namedlist(name: str = "NamedList") -> Type[NamedList]:
 	cls.__name__ = name
 
 	return cls
+
+
+class Lineup(UserList[_T]):
+	"""
+	List-like type with fluent methods and some star players.
+	"""
+
+	def replace(self: _LU, what: _T, with_: _T) -> _LU:
+		r"""
+		Replace the first instance of ``what`` with ``with_``.
+
+		:param what: The object to find and replace.
+		:param with\_: The new value for the position in the list.
+		"""
+
+		self[self.index(what)] = with_
+
+		return self
+
+	def sort(
+			self: _LU,
+			*,
+			key=None,
+			reverse: bool = False,
+			) -> _LU:  # type: ignore
+		"""
+		Sort the list in ascending order and return the self.
+
+		The sort is in-place (i.e. the list itself is modified) and stable (i.e. the
+		order of two equal elements is maintained).
+
+		If a key function is given, apply it once to each list item and sort them,
+		ascending or descending, according to their function values.
+
+		The reverse flag can be set to sort in descending order.
+		"""
+
+		super().sort(key=key, reverse=reverse)
+		return self
+
+	def reverse(self: _LU, ) -> _LU:  # type: ignore
+		super().reverse()
+		return self
+
+	def append(
+			self: _LU,
+			item: _T,
+			) -> _LU:  # type: ignore
+		super().append(item)
+		return self
+
+	def extend(
+			self: _LU,
+			other: Iterable[_T],
+			) -> _LU:  # type: ignore
+		super().extend(other)
+		return self
+
+	def insert(
+			self: _LU,
+			i: int,
+			item: _T,
+			) -> _LU:  # type: ignore
+		super().insert(i, item)
+		return self
+
+	def remove(
+			self: _LU,
+			item: _T,
+			) -> _LU:  # type: ignore
+		super().remove(item)
+		return self
+
+	def clear(self: _LU, ) -> _LU:  # type: ignore
+		super().clear()
+		return self
