@@ -87,6 +87,8 @@ try:
 		# Setting the timezone should change the timestamp
 		for tz in pytz.all_timezones:
 
+			print(today)
+
 			if dates.get_utc_offset(tz, today):  # otherwise the timezone stayed as UTC
 				# ensure timestamp did change
 				target_tz = dates.get_timezone(tz, today)
