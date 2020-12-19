@@ -5,12 +5,22 @@ import re
 import sys
 
 # 3rd party
+import pytest
 from _pytest.mark import Mark, MarkDecorator
+from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from domdf_python_tools import testing
 from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.testing import not_macos, not_pypy, not_windows, only_macos, only_pypy, only_windows
+from domdf_python_tools.testing import (
+		check_file_output,
+		not_macos,
+		not_pypy,
+		not_windows,
+		only_macos,
+		only_pypy,
+		only_windows
+		)
 from domdf_python_tools.utils import strtobool
 
 
@@ -186,3 +196,11 @@ pytest_plugins = ("domdf_python_tools.testing", )
 def test_tmp_pathplus(tmp_pathplus):
 	assert isinstance(tmp_pathplus, PathPlus)
 	assert tmp_pathplus.exists()
+
+
+def test_check_file_output(tmp_pathplus, file_regression: FileRegressionFixture):
+	with pytest.raises(FileNotFoundError, match="No such file or directory: '.*'"):
+		check_file_output(tmp_pathplus / "file.txt", file_regression)
+
+	(tmp_pathplus / "file.txt").write_text("Success!")
+	check_file_output(tmp_pathplus / "file.txt", file_regression)
