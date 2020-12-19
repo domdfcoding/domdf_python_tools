@@ -286,8 +286,8 @@ operator_docstrings = {
 base_int_docstrings = {
 		# "__bool__": "Return ``self != 0`.",  # TODO
 		# __ceil__
-		"__float__": "Return :func:`float(self) <float>`.",  # __floor__
-		"__int__": "Return :func:`int(self) <int>`.",  # __round__
+		"__float__": "Return :class:`float(self) <float>`.",  # __floor__
+		"__int__": "Return :class:`int(self) <int>`.",  # __round__
 		}
 
 new_return_types = {
