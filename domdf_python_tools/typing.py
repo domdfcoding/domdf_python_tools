@@ -192,11 +192,11 @@ class String(Protocol):
 @runtime_checkable
 class HasHead(Protocol):
 	"""
-	.. versionadded:: 0.8.0
-
 	:class:`typing.Protocol` for classes that have a ``head`` method.
 
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
+
+	.. versionadded:: 0.8.0
 	"""  # noqa D400
 
 	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
