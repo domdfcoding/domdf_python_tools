@@ -600,7 +600,7 @@ class Plural(functools.partial):
 		def __init__(self, singular: str, plural: str):
 			pass
 
-		def __call__(self, n: int) -> str:
+		def __call__(self, n: int) -> str:  # type: ignore
 			"""
 			Returns either the singular or plural form of the word depending on the value of ``n``.
 
@@ -613,13 +613,13 @@ class Plural(functools.partial):
 			super().__init__(ngettext, singular, plural)
 	else:
 
-		def __new__(cls, singular: str, plural: str):
-			return super().__new__(cls, ngettext, singular, plural)
+		def __new__(cls, singular: str, plural: str):  # noqa: D102
+			return functools.partial.__new__(cls, ngettext, singular, plural)  # type: ignore
 
 	@recursive_repr()
 	def __repr__(self):
 		qualname = type(self).__qualname__
-		args = []
+		args: List[str] = []
 		args.extend(repr(x) for x in self.args)
 		args.extend(f"{k}={v!r}" for (k, v) in self.keywords.items())
 		return f"{qualname}({', '.join(args)})"
