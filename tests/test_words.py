@@ -11,7 +11,7 @@ import pytest
 from domdf_python_tools import words
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.stringlist import StringList
-from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, alpha_sort, get_random_word, get_words_list
+from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, Plural, alpha_sort, get_random_word, get_words_list
 
 
 @pytest.mark.parametrize(
@@ -145,3 +145,23 @@ def test_as_text(value, expects):
 		)
 def test_word_join(args, kwargs, expects):
 	assert words.word_join(*args, **kwargs) == expects
+
+
+def test_plural():
+	cow = Plural("cow", "cows")
+	glass = Plural("glass", "glasses")
+
+	n = 1
+	assert f"The farmer has {n} {cow(n)}." == "The farmer has 1 cow."
+	assert f"The bar has {n} {glass(n)}." == "The bar has 1 glass."
+
+	n = 2
+	assert f"The farmer has {n} {cow(n)}." == "The farmer has 2 cows."
+	assert f"The bar has {n} {glass(n)}." == "The bar has 2 glasses."
+
+	n = 3
+	assert f"The farmer has {n} {cow(n)}." == "The farmer has 3 cows."
+	assert f"The bar has {n} {glass(n)}." == "The bar has 3 glasses."
+
+	assert repr(cow) == "Plural('cow', 'cows')"
+	assert repr(glass) == "Plural('glass', 'glasses')"

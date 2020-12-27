@@ -35,8 +35,11 @@ Functions for working with (English) words.
 
 # stdlib
 import functools
+import platform
 import random
 import re
+from gettext import ngettext
+from reprlib import recursive_repr
 from string import ascii_lowercase, ascii_uppercase
 from typing import Any, Dict, Iterable, List, Optional
 
@@ -68,7 +71,11 @@ __all__ = [
 		"TAB",
 		"CR",
 		"LF",
+		"Plural",
 		]
+
+# this package
+from domdf_python_tools.doctools import prettify_docstrings
 
 ascii_digits = "0123456789"
 """
@@ -560,3 +567,59 @@ The newline character (``\\n``) for use in f-strings.
 
 .. versionadded:: 1.3.0
 """
+
+_docs = domdf_python_tools.__docs
+
+
+@prettify_docstrings
+class Plural(functools.partial):
+	"""
+	Represents a word as its singular and plural.
+
+	.. versionadded:: 2.0.0
+
+	:param singular: The singular form of the word.
+	:param plural: The plural form of the word.
+
+	.. code-block:: python
+
+		>>> cow = Plural("cow", "cows")
+		>>> n = 1
+		>>> print(f"The farmer has {n} {cow(n)}.")
+		The farmer has 1 cow.
+		>>> n = 2
+		>>> print(f"The farmer has {n} {cow(n)}.")
+		The farmer has 2 cows.
+		>>> n = 3
+		>>> print(f"The farmer has {n} {cow(n)}.")
+		The farmer has 3 cows.
+	"""
+
+	if _docs:  # pragma: no cover
+
+		def __init__(self, singular: str, plural: str):
+			pass
+
+		def __call__(self, n: int) -> str:
+			"""
+			Returns either the singular or plural form of the word depending on the value of ``n``.
+
+			:param n:
+			"""
+
+	if platform.python_implementation() == "PyPy":
+
+		def __init__(self, singular: str, plural: str):
+			super().__init__(ngettext, singular, plural)
+	else:
+
+		def __new__(cls, singular: str, plural: str):
+			return super().__new__(cls, ngettext, singular, plural)
+
+	@recursive_repr()
+	def __repr__(self):
+		qualname = type(self).__qualname__
+		args = []
+		args.extend(repr(x) for x in self.args)
+		args.extend(f"{k}={v!r}" for (k, v) in self.keywords.items())
+		return f"{qualname}({', '.join(args)})"

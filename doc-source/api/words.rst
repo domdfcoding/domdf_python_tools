@@ -65,3 +65,5 @@
 .. autofunction:: domdf_python_tools.words.as_text
 
 .. autofunction:: domdf_python_tools.words.word_join
+
+.. autoclass:: domdf_python_tools.words.Plural
