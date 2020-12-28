@@ -160,19 +160,21 @@ def parse_month(month: Union[str, int]) -> str:
 	:return: The full name of the month
 	"""
 
+	error_text = f"The given month ({month!r}) is not recognised."
+
 	try:
 		month = int(month)
 	except ValueError:
 		try:
 			return months[month.capitalize()[:3]]  # type: ignore
 		except KeyError:
-			raise ValueError("Unrecognised month value")
+			raise ValueError(error_text)
 
 	# Only get here if first try succeeded
 	if 0 < month <= 12:
 		return list(months.values())[month - 1]
 	else:
-		raise ValueError("Unrecognised month value")
+		raise ValueError(error_text)
 
 
 def get_month_number(month: Union[str, int]) -> int:
@@ -189,7 +191,7 @@ def get_month_number(month: Union[str, int]) -> int:
 		if 0 < month <= 12:
 			return month
 		else:
-			raise ValueError("The given month is not recognised.")
+			raise ValueError(f"The given month ({month!r}) is not recognised.")
 	else:
 		month = parse_month(month)
 		return list(months.values()).index(month) + 1
@@ -198,14 +200,15 @@ def get_month_number(month: Union[str, int]) -> int:
 def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool:
 	"""
 	Returns :py:obj:`True` if the day number is valid for the given month.
-	Note that this will return :py:obj:`True` for the 29th Feb. If you don't
-	want this behaviour set ``leap_year`` to :py:obj:`False`.
+
+	.. note::
+
+		This function will return :py:obj:`True` for the 29th Feb.
+		If you don't want this behaviour set ``leap_year`` to :py:obj:`False`.
 
 	:param month: The month to test.
 	:param day: The day number to test.
 	:param leap_year: Whether to return :py:obj:`True` for 29th Feb.
-
-	:return: :py:obj:`True` if the date is valid.
 	"""
 
 	# Ensure day is an integer

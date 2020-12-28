@@ -8,6 +8,7 @@ Test functions in dates.py
 
 # stdlib
 import datetime
+import re
 from datetime import date
 
 # 3rd party
@@ -187,7 +188,7 @@ def test_parse_month():
 		assert dates.parse_month(month_idx) == month
 
 	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
-		with pytest.raises(ValueError, match="Unrecognised month value"):
+		with pytest.raises(ValueError, match=fr"The given month \({value!r}\) is not recognised."):
 			dates.parse_month(value)  # type: ignore
 
 
@@ -211,17 +212,17 @@ def test_get_month_number_from_no(count):
 @pytest.mark.parametrize(
 		"value, match",
 		[
-				(0, "The given month is not recognised."),
-				(-1, "The given month is not recognised."),
-				(13, "The given month is not recognised."),
-				("abc", "Unrecognised month value"),
-				('0', "Unrecognised month value"),
-				("-1", "Unrecognised month value"),
-				("13", "Unrecognised month value"),
+				(0, "The given month (0) is not recognised."),
+				(-1, "The given month (-1) is not recognised."),
+				(13, "The given month (13) is not recognised."),
+				("abc", "The given month ('abc') is not recognised."),
+				('0', "The given month ('0') is not recognised."),
+				("-1", "The given month ('-1') is not recognised."),
+				("13", "The given month ('13') is not recognised."),
 				]
 		)
 def test_get_month_number_errors(value, match):
-	with pytest.raises(ValueError, match=match):
+	with pytest.raises(ValueError, match=re.escape(match)):
 		dates.get_month_number(value)
 
 
