@@ -56,6 +56,8 @@ __all__ = [
 		"get_month_number",
 		"check_date",
 		"calc_easter",
+		"month_short_names",
+		"month_full_names",
 		]
 
 
@@ -149,6 +151,20 @@ months: MonthsType = OrderedDict(
 		Nov="November",
 		Dec="December",
 		)
+
+month_short_names = tuple(months.keys())
+"""
+List of the short names for months in the Gregorian calendar.
+
+.. versionadded:: 2.0.0
+"""
+
+month_full_names = tuple(months.values())
+"""
+List of the full names for months in the Gregorian calendar.
+
+.. versionadded:: 2.0.0
+"""
 
 
 def parse_month(month: Union[str, int]) -> str:

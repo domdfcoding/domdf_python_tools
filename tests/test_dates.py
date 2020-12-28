@@ -7,9 +7,8 @@ Test functions in dates.py
 """
 
 # stdlib
-import datetime
 import re
-from datetime import date
+from datetime import date, datetime, timedelta
 
 # 3rd party
 import pytest
@@ -19,44 +18,43 @@ from domdf_python_tools import dates
 from domdf_python_tools.dates import calc_easter
 from domdf_python_tools.testing import count
 
-# TODO: travis matrix to test without pytz installed
 # TODO: test get_timezone
 
 try:
 	# 3rd party
 	import pytz
 
-	test_date = datetime.datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
-	today = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
+	test_date = datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
+	today = datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
 
 	def test_utc_offset():
 		# Check that the correct UTC offsets are given for common timezones
-		assert dates.get_utc_offset("US/Pacific", test_date) == datetime.timedelta(-1, 61200)
-		assert dates.get_utc_offset("Europe/London", test_date) == datetime.timedelta(0, 3600)
-		assert dates.get_utc_offset("Africa/Algiers", test_date) == datetime.timedelta(0, 3600)
+		assert dates.get_utc_offset("US/Pacific", test_date) == timedelta(-1, 61200)
+		assert dates.get_utc_offset("Europe/London", test_date) == timedelta(0, 3600)
+		assert dates.get_utc_offset("Africa/Algiers", test_date) == timedelta(0, 3600)
 		# TODO: Finish
 
 		# Check that the correct UTC offsets are given for common timezones for today
 		assert dates.get_utc_offset("US/Pacific", today) in {
-				datetime.timedelta(-1, 57600),
-				datetime.timedelta(-1, 61200),
+				timedelta(-1, 57600),
+				timedelta(-1, 61200),
 				}
 		assert dates.get_utc_offset("Europe/London", today) in {
-				datetime.timedelta(0, 3600),  # BST
-				datetime.timedelta(0, 0),
+				timedelta(0, 3600),  # BST
+				timedelta(0, 0),
 				}
-		assert dates.get_utc_offset("Africa/Algiers", today) == datetime.timedelta(0, 3600)
+		assert dates.get_utc_offset("Africa/Algiers", today) == timedelta(0, 3600)
 
 		# Check that the correct UTC offsets are given for common timezones when ``date`` is not given
 		assert dates.get_utc_offset("US/Pacific") in {
-				datetime.timedelta(-1, 57600),
-				datetime.timedelta(-1, 61200),
+				timedelta(-1, 57600),
+				timedelta(-1, 61200),
 				}
 		assert dates.get_utc_offset("Europe/London") in {
-				datetime.timedelta(0, 3600),  # BST
-				datetime.timedelta(0, 0),
+				timedelta(0, 3600),  # BST
+				timedelta(0, 0),
 				}
-		assert dates.get_utc_offset("Africa/Algiers") == datetime.timedelta(0, 3600)
+		assert dates.get_utc_offset("Africa/Algiers") == timedelta(0, 3600)
 
 	def test_converting_timezone():
 		# No matter what timezone we convert to the timestamp should be the same
