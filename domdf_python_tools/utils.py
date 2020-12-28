@@ -81,7 +81,7 @@ from pprint import pformat
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 # 3rd party
-from deprecation_alias import deprecated  # type: ignore  # TODO
+from deprecation_alias import deprecated
 
 # this package
 import domdf_python_tools.words
