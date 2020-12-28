@@ -53,10 +53,10 @@ from typing import (
 
 # 3rd party
 import pydash  # type: ignore
-from typing_extensions import Protocol
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
+from domdf_python_tools.typing import SupportsIndex
 
 __all__ = [
 		"Dictable",
@@ -369,12 +369,6 @@ class UserList(MutableSequence[_T]):
 			self.data.extend(other)
 
 
-class _SupportsIndex(Protocol):
-
-	def __index__(self) -> int:
-		...
-
-
 @prettify_docstrings
 class UserFloat(Real):
 	"""
@@ -385,7 +379,7 @@ class UserFloat(Real):
 	.. versionadded:: 1.6.0
 	"""
 
-	def __init__(self, value: Union[SupportsFloat, _SupportsIndex, str, bytes, bytearray] = 0.0):
+	def __init__(self, value: Union[SupportsFloat, SupportsIndex, str, bytes, bytearray] = 0.0):
 		self._value = (float(value), )
 
 	def as_integer_ratio(self) -> Tuple[int, int]:

@@ -1,6 +1,7 @@
 coverage>=5.1
 coverage-pyver-pragma>=0.0.6
 faker>=4.1.2
+flake8>=3.8.4
 iniconfig!=1.1.0,>=1.0.1
 pandas>=1.0.0; implementation_name == "cpython" and python_version < "3.10"
 pytest>=6.0.0

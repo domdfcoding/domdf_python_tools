@@ -294,8 +294,8 @@ def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[
 	:param date: The date to obtain the timezone for
 	"""
 
-	if date is None:
-		date = datetime.datetime.utcnow()  # pragma: no cover (hard to test)
+	if date is None:  # pragma: no cover (hard to test)
+		date = datetime.datetime.utcnow()
 
 	d = date.replace(tzinfo=None)
 

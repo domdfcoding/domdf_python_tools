@@ -623,7 +623,7 @@ class PathPlus(pathlib.Path):
 				**kwargs,
 				)
 
-	if sys.version_info < (3, 7):
+	if sys.version_info < (3, 7):  # pragma: no cover (<py37)
 
 		def is_mount(self) -> bool:
 			"""
@@ -652,7 +652,7 @@ class PathPlus(pathlib.Path):
 			parent_ino = parent.stat().st_ino
 			return ino == parent_ino
 
-	if sys.version_info < (3, 8):
+	if sys.version_info < (3, 8):  # pragma: no cover (<py38)
 
 		def rename(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
 			"""
@@ -710,7 +710,7 @@ class PathPlus(pathlib.Path):
 				if not missing_ok:
 					raise
 
-	if sys.version_info < (3, 9):
+	if sys.version_info < (3, 9):  # pragma: no cover (<py39)
 
 		def __enter__(self):
 			return self

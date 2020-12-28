@@ -5,9 +5,10 @@ from contextlib import contextmanager
 
 # 3rd party
 import pytest
+from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
-from domdf_python_tools.import_tools import discover
+from domdf_python_tools.import_tools import discover, discover_entry_points
 
 sys.path.append('.')
 sys.path.append("tests")
@@ -94,3 +95,12 @@ def raises_attribute_error(obj, **kwargs):
 def test_discover_errors(obj, expects):
 	with expects:
 		discover(obj)
+
+
+def test_discover_entry_points(data_regression: DataRegressionFixture):
+
+	entry_points = [
+			f.__name__
+			for f in discover_entry_points("flake8.extension", lambda f: f.__name__.startswith("break"))
+			]
+	data_regression.check(entry_points)

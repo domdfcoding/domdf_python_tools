@@ -72,6 +72,7 @@ __all__ = [
 		"HasHead",
 		"String",
 		"FrameOrSeries",
+		"SupportsIndex",
 		]
 
 #: Type hint for objects that represent filesystem paths.
@@ -218,3 +219,14 @@ class HasHead(Protocol):
 #
 # 	def __lt__(self, other: Any) -> bool:
 # 		...  # pragma: no cover
+
+
+class SupportsIndex(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that support ``__index__``.
+
+	.. versionadded:: 2.0.0
+	"""
+
+	def __index__(self) -> int:  # pragma: no cover
+		...
