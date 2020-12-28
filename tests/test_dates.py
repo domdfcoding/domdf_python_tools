@@ -15,7 +15,7 @@ import pytest
 
 # this package
 from domdf_python_tools import dates
-from domdf_python_tools.dates import calc_easter
+from domdf_python_tools.dates import calc_easter, month_full_names
 from domdf_python_tools.testing import count
 
 # TODO: test get_timezone
@@ -157,24 +157,9 @@ except ImportError:
 
 # TODO: Finish
 
-months = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-		]
-
 
 def test_parse_month():
-	for month_idx, month in enumerate(months):
+	for month_idx, month in enumerate(month_full_names):
 
 		month_idx += 1  # to make 1-indexed
 
@@ -190,7 +175,7 @@ def test_parse_month():
 			dates.parse_month(value)  # type: ignore
 
 
-@pytest.mark.parametrize("month_idx, month", enumerate(months))
+@pytest.mark.parametrize("month_idx, month", enumerate(month_full_names))
 def test_get_month_number_from_name(month_idx, month):
 	month_idx += 1  # to make 1-indexed
 
@@ -225,7 +210,7 @@ def test_get_month_number_errors(value, match):
 
 
 def test_check_date():
-	for month_idx, month in enumerate(months):
+	for month_idx, month in enumerate(month_full_names):
 
 		month_idx += 1  # to make 1-indexed
 
