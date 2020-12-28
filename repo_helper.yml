@@ -9,7 +9,6 @@ license: 'LGPLv3+'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
 
 conda_channels:
- - domdfcoding
  - conda-forge
 
 python_deploy_version: 3.6
@@ -23,7 +22,7 @@ python_versions:
  - pypy3
 
 classifiers:
- - 'Development Status :: 4 - Beta'
+ - 'Development Status :: 5 - Production/Stable'
  - 'Intended Audience :: Developers'
  - 'Topic :: Software Development :: Libraries :: Python Modules'
 
