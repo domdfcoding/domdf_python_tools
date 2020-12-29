@@ -511,6 +511,8 @@ def check_file_regression(
 	.. versionadded:: 1.5.0
 	"""
 
+	__tracebackhide__ = True
+
 	if isinstance(data, StringList):
 		data = str(data)
 
@@ -539,6 +541,8 @@ def check_file_output(
 
 	.. versionchanged:: 1.7.1  Changed the default for ``newline`` to ``'\n'``.
 	"""
+
+	__tracebackhide__ = True
 
 	filename = PathPlus(filename)
 
