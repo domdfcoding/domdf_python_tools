@@ -141,3 +141,4 @@ autodoc_default_options = {
 		}
 
 manpages_url = "https://manpages.debian.org/{path}"
+toctree_plus_types.add("fixture")

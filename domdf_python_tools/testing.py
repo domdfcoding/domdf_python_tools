@@ -73,29 +73,32 @@ from domdf_python_tools.typing import PathLike
 from domdf_python_tools.versions import Version
 
 __all__ = [
-		"generate_truthy_values",
-		"generate_falsy_values",
-		"testing_boolean_values",
-		"whitespace",
-		"whitespace_perms_list",
-		"whitespace_perms",
+		"check_file_output",
+		"check_file_regression",
 		"count",
-		"min_version",
+		"generate_falsy_values",
+		"generate_truthy_values",
+		"is_docker",
 		"max_version",
+		"min_version",
 		"only_version",
 		"not_windows",
 		"only_windows",
 		"not_pypy",
 		"only_pypy",
-		"pytest_report_header",
-		"PEP_563",
-		"platform_boolean_factory",
 		"not_macos",
 		"only_macos",
 		"not_docker",
 		"only_docker",
-		"check_file_regression",
-		"check_file_output",
+		"pytest_report_header",
+		"PEP_563",
+		"original_datadir",
+		"platform_boolean_factory",
+		"testing_boolean_values",
+		"tmp_pathplus",
+		"whitespace",
+		"whitespace_perms",
+		"whitespace_perms_list"
 		]
 
 MarkDecorator.__module__ = "_pytest.mark"
@@ -105,7 +108,7 @@ def generate_truthy_values(extra_truthy: Sequence = (), ratio: float = 1) -> Ite
 	"""
 	Returns an iterator of strings, integers and booleans that should be considered :py:obj:`True`.
 
-	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
+	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
@@ -143,7 +146,7 @@ def generate_falsy_values(extra_falsy: Sequence = (), ratio: float = 1) -> Itera
 	"""
 	Returns an iterator of strings, integers and booleans that should be considered :py:obj:`False`.
 
-	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
+	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
 	:param extra_falsy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
@@ -189,7 +192,7 @@ def testing_boolean_values(
 	The parametrized arguments are ``boolean_string`` for the input value,
 	and ``expected_boolean`` for the expected output.
 
-	Optionally, a random selection of the values can be returned, using the ``ratio`` argument.
+	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
@@ -358,6 +361,7 @@ def platform_boolean_factory(
 	:param platform:
 	:param versionadded:
 	:param module: The module to set the function as belonging to in ``__module__``.
+		If :py:obj:`None` ``__module__`` is set to ``'domdf_python_tools.testing'``.
 
 	:return: 2-element tuple of ``not_function``, ``only_function``.
 
@@ -534,6 +538,7 @@ def check_file_output(
 	:param filename:
 	:param file_regression: The file regression fixture for the test.
 	:param extension: The extension of the reference file.
+		If :py:obj:`None` the extension is determined from ``filename``.
 	:param newline: Controls how universal newlines mode works. See :func:`open`.
 	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
 

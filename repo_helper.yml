@@ -48,6 +48,7 @@ sphinx_conf_preamble:
 
 sphinx_conf_epilogue:
  - manpages_url = "https://manpages.debian.org/{path}"
+ - toctree_plus_types.add("fixture")
 
 intersphinx_mapping:
  - "'pandas': ('https://pandas.pydata.org/docs/', None)"
