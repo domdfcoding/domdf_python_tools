@@ -416,6 +416,12 @@ class TestStringList:
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234", ''])
 		assert str(sl) == "\n\nhello\nworld\n\n\n\n1234\n"
 
+	def test_bytes(self):
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
+		assert bytes(sl) == b"\n\nhello\nworld\n\n\n\n1234"
+		sl = StringList(['', '', "hello", "world", '', '', '', "1234", ''])
+		assert bytes(sl) == b"\n\nhello\nworld\n\n\n\n1234\n"
+
 	@pytest.mark.xfail()
 	def test_pickle(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
