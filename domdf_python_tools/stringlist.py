@@ -9,7 +9,7 @@ A list of strings that represent lines in a multiline string.
 	:class:`~domdf_python_tools.typing.String` should now be imported from :mod:`domdf_python_tools.typing`.
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -355,6 +355,15 @@ class StringList(List[str]):
 		"""
 
 		return '\n'.join(self)
+
+	def __bytes__(self) -> bytes:
+		"""
+		Returns the :class:`~domdf_python_tools.stringlist.StringList` as bytes.
+
+		.. versionadded:: 2.1.0
+		"""
+
+		return str(self).encode("UTF-8")
 
 	def __eq__(self, other) -> bool:
 		"""
