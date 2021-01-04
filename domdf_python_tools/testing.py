@@ -273,7 +273,7 @@ def _make_version(version: Union[str, float, Tuple[int, ...]]) -> Version:
 
 
 def min_version(
-		version: Union[str, float, Tuple[int]],
+		version: Union[str, float, Tuple[int, ...]],
 		reason: Optional[str] = None,
 		) -> MarkDecorator:
 	"""
@@ -298,7 +298,7 @@ def min_version(
 
 
 def max_version(
-		version: Union[str, float, Tuple[int]],
+		version: Union[str, float, Tuple[int, ...]],
 		reason: Optional[str] = None,
 		) -> MarkDecorator:
 	"""
@@ -323,7 +323,7 @@ def max_version(
 
 
 def only_version(
-		version: Union[str, float, Tuple[int]],
+		version: Union[str, float, Tuple[int, ...]],
 		reason: Optional[str] = None,
 		) -> MarkDecorator:
 	"""
