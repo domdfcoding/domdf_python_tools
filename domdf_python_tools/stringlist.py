@@ -238,11 +238,11 @@ class StringList(List[str]):
 			self.insert(index, line)
 
 		elif isinstance(index, slice):
-			for line, index in zip(
+			for line, idx in zip(  # pylint: disable=redefined-argument-from-local
 				reversed(line),  # type: ignore
 				reversed(range(index.start or 0, index.stop + 1, index.step or 1)),
 				):
-				self[index] = line
+				self[idx] = line
 
 	@overload
 	def __getitem__(self, index: int) -> str:
@@ -461,4 +461,4 @@ class DelimitedList(List[_S]):
 	"""
 
 	def __format__(self, format_spec: str) -> str:
-		return format_spec.join([str(x) for x in self])
+		return format_spec.join([str(x) for x in self])  # pylint: disable=not-an-iterable

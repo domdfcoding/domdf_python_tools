@@ -145,7 +145,7 @@ except ImportError:
 				ImportError,
 				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
 				):
-			dates.get_utc_offset
+			dates.get_utc_offset  # pylint: disable=pointless-statement
 
 		with pytest.raises(
 				ImportError,

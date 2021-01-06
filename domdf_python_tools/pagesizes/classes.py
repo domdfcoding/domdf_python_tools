@@ -215,7 +215,12 @@ class PageSize(BaseSize):
 
 	__slots__: List[str] = []
 
-	def __new__(cls, width: AnyNumber, height: AnyNumber, unit: AnyNumber = pt):
+	def __new__(
+			cls,
+			width: AnyNumber,
+			height: AnyNumber,
+			unit: AnyNumber = pt,  # pylint: disable=used-before-assignment
+			):
 		"""
 		Create a new :class:`~domdf_python_tools.pagesizes.classes.PageSize` object.
 

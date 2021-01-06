@@ -66,7 +66,7 @@ if sys.version_info < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # p
 
 	_T = TypeVar("_T")
 
-	class nullcontext(ContextManager):
+	class nullcontext(ContextManager[Optional[_T]]):
 		"""
 		Context manager that does no additional processing.
 

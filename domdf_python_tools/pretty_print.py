@@ -105,18 +105,26 @@ class FancyPrinter(PrettyPrinter):
 		else:
 			the_indent = ' ' * (indent + self._indent_per_level)
 
-		if len(obj) and not self._compact:  # type: ignore
+		if obj and not self._compact:  # type: ignore
 			return f"{char}\n{the_indent}"
 		else:
 			return char
 
 	def _make_close(self, char: str, indent: int, obj):
-		if len(obj) and not self._compact:  # type: ignore
+		if obj and not self._compact:  # type: ignore
 			return f",\n{' ' * (indent + self._indent_per_level)}{char}"
 		else:
 			return char
 
-	def _pprint_dict(self, object, stream, indent, allowance, context, level):  # noqa: A002
+	def _pprint_dict(
+			self,
+			object,  # noqa: A002  # pylint: disable=redefined-builtin
+			stream,
+			indent,
+			allowance,
+			context,
+			level,
+			):
 		obj = object
 		write = stream.write
 		write(self._make_open('{', indent, obj))
@@ -124,7 +132,7 @@ class FancyPrinter(PrettyPrinter):
 		if self._indent_per_level > 1:
 			write((self._indent_per_level - 1) * ' ')
 
-		if len(obj):
+		if obj:
 			self._format_dict_items(  # type: ignore
 					obj.items(),
 					stream,
@@ -154,9 +162,10 @@ class FancyPrinter(PrettyPrinter):
 	_dispatch[tuple.__repr__] = _pprint_tuple
 
 	def _pprint_set(self, obj, stream, indent, allowance, context, level):
-		if not len(obj):
+		if not obj:
 			stream.write(repr(obj))
 			return
+
 		typ = obj.__class__
 		if typ is set:
 			stream.write(self._make_open('{', indent, obj))
@@ -165,6 +174,7 @@ class FancyPrinter(PrettyPrinter):
 			stream.write(typ.__name__ + f"({{\n{' ' * (indent + self._indent_per_level + len(typ.__name__) + 1)}")
 			endchar = f",\n{' ' * (indent + self._indent_per_level + len(typ.__name__) + 1)}}})"
 			indent += len(typ.__name__) + 1
+
 		obj = sorted(obj, key=_safe_key)
 		self._format_items(obj, stream, indent, allowance + len(endchar), context, level)
 		stream.write(endchar)
@@ -205,7 +215,7 @@ class ReprPrettyPrinter(FancyPrinter):
 		if self._indent_per_level > 1:
 			stream.write((self._indent_per_level - 1) * ' ')
 
-		if len(obj):
+		if obj:
 			self._format_attribute_items(list(obj), stream, 0, 0 + 1, context, 1)
 		stream.write(f"\n{self._indent_per_level * ' '})")
 

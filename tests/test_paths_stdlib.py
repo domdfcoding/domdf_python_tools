@@ -595,9 +595,9 @@ def test_pickling_common(BASE):
 def test_concrete_class():
 	p = PathPlus('a')
 	if os.name == "nt":
-		assert type(p) is WindowsPathPlus
+		assert type(p) is WindowsPathPlus  # pylint: disable=unidiomatic-typecheck
 	else:
-		assert type(p) is PosixPathPlus
+		assert type(p) is PosixPathPlus  # pylint: disable=unidiomatic-typecheck
 
 
 def test_unsupported_flavour():
