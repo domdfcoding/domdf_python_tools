@@ -41,8 +41,12 @@ Provides the following:
 
 # stdlib
 import sys
+from typing import TYPE_CHECKING, ContextManager, Optional, TypeVar
 
-__all__ = ["importlib_resources", "importlib_metadata"]
+# this package
+import domdf_python_tools
+
+__all__ = ["importlib_resources", "importlib_metadata", "nullcontext"]
 
 if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
 	# 3rd party
@@ -57,3 +61,45 @@ if sys.version_info[:2] < (3, 8):  # pragma: no cover (>=py38)
 else:  # pragma: no cover (<py38)
 	# stdlib
 	import importlib.metadata as importlib_metadata
+
+if sys.version_info < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (>=py37)
+
+	_T = TypeVar("_T")
+
+	class nullcontext(ContextManager):
+		"""
+		Context manager that does no additional processing.
+
+		Used as a stand-in for a normal context manager, when a particular
+		block of code is only sometimes used with a normal context manager:
+
+		.. code-block:: python
+
+			cm = optional_cm if condition else nullcontext()
+			with cm:
+				# Perform operation, using optional_cm if condition is True
+
+		.. versionadded:: 2.1.0
+
+		:param enter_result: An optional value to return when entering the context.
+		"""
+
+		#  From CPython
+		#  Licensed under the Python Software Foundation License Version 2.
+		#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+		#  Copyright © 2000 BeOpen.com. All rights reserved.
+		#  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
+		#  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
+
+		def __init__(self, enter_result: Optional[_T] = None):
+			self.enter_result: Optional[_T] = enter_result
+
+		def __enter__(self) -> Optional[_T]:
+			return self.enter_result
+
+		def __exit__(self, *excinfo):
+			pass
+
+else:  # pragma: no cover (<py37)
+	# stdlib
+	from contextlib import nullcontext
