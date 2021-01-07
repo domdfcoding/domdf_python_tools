@@ -62,6 +62,7 @@ FrameOrSeries = typing.TypeVar("FrameOrSeries", "Series", "DataFrame")
 
 __all__ = [
 		"PathLike",
+		"PathType",
 		"AnyNumber",
 		"check_membership",
 		"JsonLibrary",
@@ -75,8 +76,21 @@ __all__ = [
 		"SupportsIndex",
 		]
 
-#: Type hint for objects that represent filesystem paths.
 PathLike = Union[str, pathlib.Path, os.PathLike]
+"""
+Type hint for objects that represent filesystem paths.
+
+.. seealso:: :py:obj:`domdf_python_tools.typing.PathType`
+"""
+
+PathType = typing.TypeVar("PathType", str, pathlib.Path, os.PathLike)
+"""
+Type variable for objects that represent filesystem paths.
+
+.. versionadded:: 2.2.0
+
+.. seealso:: :py:obj:`domdf_python_tools.typing.PathLike`
+"""
 
 AnyNumber = Union[float, int, Decimal]
 """
@@ -93,7 +107,8 @@ def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 	Check if the type of ``obj`` is one of the types in a :py:data:`typing.Union`, :class:`typing.Sequence` etc.
 
 	:param obj: The object to check the type of
-	:param type\_: A :class:`~typing.Type` that has members, such as a List, Union or Sequence.
+	:param type\_: A :class:`~typing.Type` that has members,
+		such as a :class:`typing.List`, :py:data:`typing.Union` or :py:class:`typing.Sequence`.
 	"""
 
 	return isinstance(obj, type_.__args__)  # type: ignore
