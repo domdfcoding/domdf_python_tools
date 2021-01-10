@@ -115,7 +115,7 @@ class Unorderable:
 # Class Orderable is orderable with any type
 class Orderable:
 
-	def __init__(self, hash):  # noqa A002  # pylint: disable=redefined-builtin
+	def __init__(self, hash):  # noqa: A002  # pylint: disable=redefined-builtin
 		self._hash = hash
 
 	def __lt__(self, other):

@@ -51,7 +51,7 @@ class Indent:
 	:param type: The indent character.
 	"""
 
-	def __init__(self, size: int = 0, type: str = '\t'):  # noqa A002  # pylint: disable=redefined-builtin
+	def __init__(self, size: int = 0, type: str = '\t'):  # noqa: A002  # pylint: disable=redefined-builtin
 		self.size = int(size)
 		self.type = str(type)
 
@@ -75,7 +75,7 @@ class Indent:
 	def size(self, size: int) -> None:
 		self._size = int(size)
 
-	@property  # noqa: A002,A003
+	@property  # noqa: A002,A003  # pylint: disable=redefined-builtin
 	def type(self) -> str:  # noqa: A002,A003  # pylint: disable=redefined-builtin
 		"""
 		The indent character.
@@ -84,7 +84,7 @@ class Indent:
 		return self._type
 
 	@type.setter  # noqa: A002,A003  # pylint: disable=redefined-builtin
-	def type(self, type: str) -> None:  # noqa A002  # pylint: disable=redefined-builtin
+	def type(self, type: str) -> None:  # noqa: A002  # pylint: disable=redefined-builtin
 		if not str(type):
 			raise ValueError("'type' cannot an empty string.")
 

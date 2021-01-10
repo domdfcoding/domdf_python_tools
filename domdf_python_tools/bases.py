@@ -640,7 +640,7 @@ class Lineup(UserList[_T]):
 		super().append(item)
 		return self
 
-	def extend(  # type: ignore# noqa: D102
+	def extend(  # type: ignore  # noqa: D102
 			self: _LU,
 			other: Iterable[_T],
 			) -> _LU:
