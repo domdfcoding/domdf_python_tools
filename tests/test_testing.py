@@ -1,4 +1,5 @@
 # stdlib
+import datetime
 import platform
 import random
 import re
@@ -20,7 +21,8 @@ from domdf_python_tools.testing import (
 		only_macos,
 		only_pypy,
 		only_version,
-		only_windows
+		only_windows,
+		with_fixed_datetime
 		)
 from domdf_python_tools.utils import strtobool
 
@@ -221,3 +223,43 @@ def test_check_file_output(tmp_pathplus, file_regression: FileRegressionFixture)
 
 	(tmp_pathplus / "file.txt").write_text("Success!")
 	check_file_output(tmp_pathplus / "file.txt", file_regression)
+
+
+def test_fixed_datetime(fixed_datetime):
+	assert datetime.datetime.today() == datetime.datetime(2020, 10, 13)
+	assert datetime.datetime.now() == datetime.datetime(2020, 10, 13, 2, 20)
+
+	assert datetime.datetime.__name__ == "datetime"
+	assert datetime.datetime.__qualname__ == "datetime"
+	assert datetime.datetime.__module__ == "datetime"
+
+	assert datetime.date.today() == datetime.date(2020, 10, 13)
+
+	assert datetime.date.__name__ == "date"
+	assert datetime.date.__qualname__ == "date"
+	assert datetime.date.__module__ == "datetime"
+
+
+@pytest.mark.parametrize(
+		"fake_datetime, expected_date",
+		[
+				pytest.param(datetime.datetime(2020, 10, 13, 2, 20), datetime.datetime(2020, 10, 13), id='0'),
+				pytest.param(datetime.datetime(2020, 7, 4, 10, 00), datetime.datetime(2020, 7, 4), id='1'),
+				]
+		)
+def test_with_fixed_datetime(fake_datetime, expected_date):
+
+	with with_fixed_datetime(fake_datetime):
+		assert datetime.datetime.today() == expected_date
+		assert datetime.datetime.now() == fake_datetime
+
+		assert datetime.datetime.__name__ == "datetime"
+		assert datetime.datetime.__qualname__ == "datetime"
+		assert datetime.datetime.__module__ == "datetime"
+
+		assert datetime.date.today() == expected_date
+		assert isinstance(datetime.date.today(), datetime.date)
+
+		assert datetime.date.__name__ == "date"
+		assert datetime.date.__qualname__ == "date"
+		assert datetime.date.__module__ == "datetime"

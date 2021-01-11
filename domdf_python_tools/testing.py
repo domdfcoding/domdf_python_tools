@@ -54,6 +54,7 @@ import itertools
 import os
 import random
 import sys
+from contextlib import contextmanager
 from functools import lru_cache
 from pathlib import Path
 from textwrap import dedent
@@ -62,6 +63,7 @@ from typing import Any, Callable, Iterator, List, Optional, Sequence, Tuple, Uni
 # 3rd party
 import pytest  # nodep
 from _pytest.mark import MarkDecorator  # nodep
+from pytest import MonkeyPatch  # nodep
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 
 # this package
@@ -98,7 +100,9 @@ __all__ = [
 		"tmp_pathplus",
 		"whitespace",
 		"whitespace_perms",
-		"whitespace_perms_list"
+		"whitespace_perms_list",
+		"fixed_datetime",
+		"with_fixed_datetime",
 		]
 
 MarkDecorator.__module__ = "_pytest.mark"
@@ -558,3 +562,89 @@ def check_file_output(
 		extension = "._py_"
 
 	return check_file_regression(data, file_regression, extension, newline=newline, **kwargs)
+
+
+@pytest.fixture()
+def fixed_datetime(monkeypatch):
+	"""
+	Pytest fixture to pretend the current datetime is 2:20 AM on 13th October 2020.
+
+	.. versionadded:: 2.2.0
+
+	.. seealso:: The :func:`with_fixed_datetime` contextmanager.
+
+	.. attention::
+
+		The monkeypatching only works when datetime is used and imported like:
+
+		.. code-block:: python
+
+			import datetime
+			print(datetime.datetime.now())
+
+		Using ``from datetime import datetime`` won't work.
+	"""
+
+	with with_fixed_datetime(datetime.datetime(2020, 10, 13, 2, 20)):
+		yield
+
+
+@contextmanager
+def with_fixed_datetime(fixed_datetime: datetime.datetime):
+	"""
+	Context manager to set a fixed datetime for the duration of the ``with`` block.
+
+	.. versionadded:: 2.2.0
+
+	:param fixed_datetime:
+
+	.. seealso:: The :fixture:`fixed_datetime` fixture.
+
+	.. attention::
+
+		The monkeypatching only works when datetime is used and imported like:
+
+		.. code-block:: python
+
+			import datetime
+			print(datetime.datetime.now())
+
+		Using ``from datetime import datetime`` won't work.
+	"""
+
+	class D(datetime.date):
+
+		@classmethod
+		def today(cls):
+			return datetime.date(
+					fixed_datetime.year,
+					fixed_datetime.month,
+					fixed_datetime.day,
+					)
+
+	class DT(datetime.datetime):
+
+		@classmethod
+		def today(cls):
+			return datetime.datetime(
+					fixed_datetime.year,
+					fixed_datetime.month,
+					fixed_datetime.day,
+					)
+
+		@classmethod
+		def now(cls, tz=None):
+			return datetime.datetime.fromtimestamp(fixed_datetime.timestamp())
+
+	D.__name__ = "date"
+	D.__qualname__ = "date"
+	DT.__qualname__ = "datetime"
+	DT.__name__ = "datetime"
+	D.__module__ = "datetime"
+	DT.__module__ = "datetime"
+
+	with MonkeyPatch.context() as monkeypatch:
+		monkeypatch.setattr(datetime, "date", D)
+		monkeypatch.setattr(datetime, "datetime", DT)
+
+		yield
