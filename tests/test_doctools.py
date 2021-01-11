@@ -346,7 +346,7 @@ def test_sphinxify_docstring():
 
 		:return: pi
 		:rtype: float
-		""" # noqa SXL001
+		"""  # noqa SXL001
 
 		return math.pi
 
