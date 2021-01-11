@@ -257,7 +257,7 @@ def test_with_fixed_datetime(fake_datetime, expected_date):
 		assert datetime.datetime.__qualname__ == "datetime"
 		assert datetime.datetime.__module__ == "datetime"
 
-		assert datetime.date.today() == expected_date
+		assert datetime.date.today() == expected_date.date()
 		assert isinstance(datetime.date.today(), datetime.date)
 
 		assert datetime.date.__name__ == "date"
