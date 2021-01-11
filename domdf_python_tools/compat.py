@@ -57,7 +57,7 @@ else:  # pragma: no cover (<py37)
 
 if sys.version_info[:2] < (3, 8):  # pragma: no cover (>=py38)
 	# 3rd party
-	import importlib_metadata  # type: ignore
+	import importlib_metadata
 else:  # pragma: no cover (<py38)
 	# stdlib
 	import importlib.metadata as importlib_metadata

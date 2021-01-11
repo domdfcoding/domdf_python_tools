@@ -389,7 +389,7 @@ class UserFloat(Real):
 
 		return float(self).as_integer_ratio()
 
-	def hex(self) -> str:  # noqa: A003
+	def hex(self) -> str:  # noqa: A003  # pylint: disable=redefined-builtin
 		"""
 		Returns the hexadecimal (base 16) representation of the float.
 		"""
