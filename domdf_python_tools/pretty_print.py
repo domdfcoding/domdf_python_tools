@@ -44,10 +44,14 @@ try:  # pragma: no cover
 	from pprint36 import PrettyPrinter
 	from pprint36._pprint import _safe_key  # type: ignore
 
+	supports_sort_dicts = True
+
 except ImportError:
 
 	# stdlib
 	from pprint import PrettyPrinter, _safe_key  # type: ignore
+
+	supports_sort_dicts = sys.version_info >= (3, 8)
 
 __all__ = ["FancyPrinter", "simple_repr"]
 
@@ -63,7 +67,8 @@ class FancyPrinter(PrettyPrinter):
 		output stream available at construction will be used.
 	:param compact: If :py:obj:`True`, several items will be combined in one line.
 	:param sort_dicts: If :py:obj:`True`, dict keys are sorted.
-		Only takes effect on Python 3.8 and later, or if ``pprint36`` is installed.
+		Only takes effect on Python 3.8 and later,
+		or if `pprint36 <https://pypi.org/project/pprint36/>`_ is installed.
 	"""
 
 	def __init__(
@@ -76,13 +81,14 @@ class FancyPrinter(PrettyPrinter):
 			compact: bool = False,
 			sort_dicts: bool = True,
 			):
-		if sys.version_info < (3, 8):
+		if supports_sort_dicts:
 			super().__init__(
 					indent=indent,
 					width=width,
 					depth=depth,
 					stream=stream,
 					compact=compact,
+					sort_dicts=sort_dicts,
 					)
 		else:
 			super().__init__(
@@ -91,7 +97,6 @@ class FancyPrinter(PrettyPrinter):
 					depth=depth,
 					stream=stream,
 					compact=compact,
-					sort_dicts=sort_dicts,
 					)
 
 	_dispatch: MutableMapping[Callable, Callable]
