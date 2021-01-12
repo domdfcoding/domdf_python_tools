@@ -14,16 +14,17 @@ from pytest_regressions.file_regression import FileRegressionFixture
 from domdf_python_tools import testing
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import (
-		check_file_output,
-		not_macos,
-		not_pypy,
-		not_windows,
-		only_macos,
-		only_pypy,
-		only_version,
-		only_windows,
-		with_fixed_datetime
-		)
+	check_file_output,
+	min_version, not_macos,
+	not_pypy,
+	not_windows,
+	only_macos,
+	only_pypy,
+	only_version,
+	only_windows,
+	with_fixed_datetime,
+	)
+from domdf_python_tools.testing.selectors import _make_version
 from domdf_python_tools.utils import strtobool
 
 
@@ -263,3 +264,8 @@ def test_with_fixed_datetime(fake_datetime, expected_date):
 		assert datetime.date.__name__ == "date"
 		assert datetime.date.__qualname__ == "date"
 		assert datetime.date.__module__ == "datetime"
+
+
+@min_version((3, 4), reason="Failure")
+def test_min_version():
+	pass
