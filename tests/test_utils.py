@@ -21,7 +21,7 @@ import pytest
 from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
 from domdf_python_tools.typing import HasHead
-from domdf_python_tools.utils import deprecated, head, trim_precision
+from domdf_python_tools.utils import head, trim_precision
 
 
 def test_pyversion():

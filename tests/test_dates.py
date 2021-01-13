@@ -151,8 +151,9 @@ except ImportError:
 				ImportError,
 				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
 				):
+
 			# this package
-			from domdf_python_tools.dates import get_utc_offset
+			from domdf_python_tools.dates import get_utc_offset  # noqa: F401
 
 
 # TODO: Finish

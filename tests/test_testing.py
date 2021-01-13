@@ -25,7 +25,6 @@ from domdf_python_tools.testing import (
 		only_windows,
 		with_fixed_datetime
 		)
-from domdf_python_tools.testing.selectors import _make_version
 from domdf_python_tools.utils import strtobool
 
 

@@ -43,7 +43,6 @@ from typing import (
 		MutableSequence,
 		Optional,
 		SupportsFloat,
-		SupportsRound,
 		Tuple,
 		Type,
 		TypeVar,

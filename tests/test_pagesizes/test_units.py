@@ -1,7 +1,7 @@
 # stdlib
 import re
 from operator import floordiv, truediv
-from typing import Iterable, List, Union
+from typing import List, Union
 
 # 3rd party
 import pytest
