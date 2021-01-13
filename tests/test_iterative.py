@@ -21,6 +21,7 @@ from domdf_python_tools.iterative import (
 		Len,
 		chunks,
 		double_chain,
+		extend,
 		flatten,
 		groupfloats,
 		make_tree,
@@ -220,3 +221,23 @@ def test_ranges_from_iterable():
 
 	expects = [(1, 5), (7, 10)]
 	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
+
+
+def _extend_param(sequence, expects):
+	return pytest.param(sequence, expects, id=sequence)
+
+
+@pytest.mark.parametrize(
+		"sequence, expects",
+		[
+				_extend_param('a', "aaaa"),
+				_extend_param("ab", "abab"),
+				_extend_param("abc", "abca"),
+				_extend_param("abcd", "abcd"),
+				_extend_param("abcde", "abcde"),
+				pytest.param(('a', 'b', 'c', 'd', 'e'), "abcde", id="tuple"),
+				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
+				]
+		)
+def test_extend(sequence, expects):
+	assert ''.join(extend(sequence, 4)) == expects

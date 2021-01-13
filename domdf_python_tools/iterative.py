@@ -33,7 +33,20 @@ Functions for iteration, looping etc.
 import itertools
 import textwrap
 from operator import itemgetter
-from typing import Any, Callable, Generator, Iterable, Iterator, List, Optional, Sequence, Tuple, Type, Union
+from typing import (
+		Any,
+		Callable,
+		Generator,
+		Iterable,
+		Iterator,
+		List,
+		Optional,
+		Sequence,
+		Tuple,
+		Type,
+		TypeVar,
+		Union
+		)
 
 # 3rd party
 from natsort import natsorted, ns  # type: ignore
@@ -53,7 +66,10 @@ __all__ = [
 		"natmax",
 		"groupfloats",
 		"ranges_from_iterable",
+		"extend",
 		]
+
+_T = TypeVar("_T")
 
 
 def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
@@ -322,3 +338,22 @@ def ranges_from_iterable(iterable: Iterable[float], step: float = 1) -> Iterable
 
 	for group in groupfloats(iterable, step):
 		yield group[0], group[-1]
+
+
+def extend(sequence: Iterable[_T], minsize: int) -> List[_T]:
+	"""
+	Extend ``sequence`` by repetition until it is at least as long as ``minsize``.
+
+	.. versionadded:: 2.3.0
+
+	:param sequence:
+	:param minsize:
+	"""
+
+	output = list(sequence)
+	cycle = itertools.cycle(output)
+
+	while len(output) < minsize:
+		output.append(next(cycle))
+
+	return output
