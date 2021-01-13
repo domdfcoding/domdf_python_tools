@@ -139,6 +139,19 @@ Installation
 .. end installation
 
 
+Highlights
+---------------
+
+.. api-highlights::
+	:module: domdf_python_tools
+	:colours: blue,green,red,orange
+
+	.stringlist.StringList
+	.testing.check_file_regression
+	.paths.PathPlus
+	.iterative.groupfloats
+	.words.Plural
+
 
 .. toctree::
 	:hidden:
