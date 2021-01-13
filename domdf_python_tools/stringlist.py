@@ -135,7 +135,12 @@ class StringList(List[str]):
 	Can only be used when the indent is ``'\\t'`` or ``'␣'``.
 	"""
 
-	def __init__(self, iterable: Iterable[String] = (), convert_indents: bool = False) -> None:
+	def __init__(
+			self,
+			iterable: Iterable[String] = (),
+			convert_indents: bool = False,
+			) -> None:
+
 		if isinstance(iterable, str):
 			iterable = iterable.split('\n')
 

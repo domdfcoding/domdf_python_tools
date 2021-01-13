@@ -46,6 +46,7 @@ from typing import Any, Dict, Iterable, List, Optional
 # this package
 import domdf_python_tools
 from domdf_python_tools.compat import importlib_resources
+from domdf_python_tools.doctools import prettify_docstrings
 
 __all__ = [
 		"greek_uppercase",
@@ -73,9 +74,6 @@ __all__ = [
 		"LF",
 		"Plural",
 		]
-
-# this package
-from domdf_python_tools.doctools import prettify_docstrings
 
 ascii_digits = "0123456789"
 """
