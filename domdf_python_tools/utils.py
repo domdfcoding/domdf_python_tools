@@ -57,28 +57,13 @@ General utility functions.
 #  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
 #
-#  deprecated based on https://github.com/briancurtin/deprecation
-#  Modified to only change the docstring of the wrapper and not the original function.
-#  |  Licensed under the Apache License, Version 2.0 (the "License"); you may
-#  |  not use this file except in compliance with the License. You may obtain
-#  |  a copy of the License at
-#  |
-#  |      http://www.apache.org/licenses/LICENSE-2.0
-#  |
-#  |  Unless required by applicable law or agreed to in writing, software
-#  |  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#  |  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#  |  License for the specific language governing permissions and limitations
-#  |  under the License.
-#
 
 # stdlib
 import inspect
 import sys
-import typing
 from math import log10
 from pprint import pformat
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 # 3rd party
 from deprecation_alias import deprecated
@@ -88,7 +73,7 @@ import domdf_python_tools.words
 from domdf_python_tools import __version__
 from domdf_python_tools.typing import HasHead, String
 
-if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
+if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
 

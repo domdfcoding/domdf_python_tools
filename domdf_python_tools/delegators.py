@@ -41,12 +41,11 @@ Decorators for functions that delegate parts of their functionality to other fun
 
 # stdlib
 import inspect
-import typing
-from typing import Callable
+from typing import Callable, TypeVar, get_type_hints
 
 __all__ = ["delegate_kwargs", "delegates"]
 
-_C = typing.TypeVar("_C", bound="Callable")
+_C = TypeVar("_C", bound="Callable")
 
 
 def delegate_kwargs(to: Callable, *except_):
@@ -67,8 +66,8 @@ def delegate_kwargs(to: Callable, *except_):
 
 		to_sig = inspect.signature(to_f)
 		from_sig = inspect.signature(from_f)
-		to_annotations = typing.get_type_hints(to_f)
-		from_annotations = typing.get_type_hints(from_f)
+		to_annotations = get_type_hints(to_f)
+		from_annotations = get_type_hints(from_f)
 		to_params = {k: v for k, v in to_sig.parameters.items() if k not in except_}
 		from_params = dict(from_sig.parameters)
 

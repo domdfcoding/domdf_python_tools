@@ -42,7 +42,7 @@ import pathlib
 import typing
 from decimal import Decimal
 from json import JSONDecoder, JSONEncoder
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, Union
 
 # 3rd party
 from typing_extensions import Protocol, runtime_checkable
@@ -50,7 +50,7 @@ from typing_extensions import Protocol, runtime_checkable
 # this package
 import domdf_python_tools
 
-if typing.TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
+if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
 	from pandas import DataFrame, Series  # type: ignore
 
