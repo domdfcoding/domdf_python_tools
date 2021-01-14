@@ -61,8 +61,6 @@ def tmp_pathplus(tmp_path: Path) -> PathPlus:
 		def test_something(tmp_pathplus: PathPlus):
 			assert True
 
-	:rtype:
-
 	.. versionadded:: 0.10.0
 	"""  # noqa: D400
 

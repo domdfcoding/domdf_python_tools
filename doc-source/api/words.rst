@@ -7,6 +7,10 @@
 
 .. automodulesumm:: domdf_python_tools.words
 
+.. autovariable:: domdf_python_tools.words.CR
+.. autovariable:: domdf_python_tools.words.LF
+.. autovariable:: domdf_python_tools.words.TAB
+
 .. autovariable:: domdf_python_tools.words.ascii_digits
 .. autovariable:: domdf_python_tools.words.greek_uppercase
 .. autovariable:: domdf_python_tools.words.greek_lowercase

@@ -59,13 +59,11 @@ def testing_boolean_values(
 
 	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
+	.. versionadded:: 0.4.9
+
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param extra_falsy: Additional values that should be considered :py:obj:`False`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
-
-	:rtype:
-
-	.. versionadded:: 0.4.9
 	"""  # noqa D400
 
 	truthy = generate_truthy_values(extra_truthy, ratio)
@@ -89,11 +87,9 @@ def whitespace_perms(ratio: float = 0.5) -> MarkDecorator:
 
 	The single parametrized argument is ``char``.
 
-	:param ratio: The ratio of the number of permutations to select to the total number of permutations.
-
-	:rtype:
-
 	.. versionadded:: 0.4.9
+
+	:param ratio: The ratio of the number of permutations to select to the total number of permutations.
 	"""  # noqa D400
 
 	perms = whitespace_perms_list()
@@ -107,13 +103,11 @@ def count(stop: int, start: int = 0, step: int = 1) -> MarkDecorator:
 
 	The single parametrized argument is ``count``.
 
+	.. versionadded:: 0.4.9
+
 	:param stop: The stop value passed to :class:`range`.
 	:param start: The start value passed to :class:`range`.
 	:param step: The step passed to :class:`range`.
-
-	:rtype:
-
-	.. versionadded:: 0.4.9
 	"""  # noqa D400
 
 	return pytest.mark.parametrize("count", range(start, stop, step))

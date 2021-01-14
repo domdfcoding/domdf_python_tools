@@ -12,7 +12,7 @@ General utility functions.
 	* Removed ``as_text`` and ``word_join``.
 	  Import from :mod:`domdf_python_tools.words` instead.
 	* Removed ``splitLen``.
-	  Use :func:`domdf_python_tools.utils.split_len` instead.
+	  Use :func:`domdf_python_tools.iterative.split_len` instead.
 
 .. versionchanged:: 2.0.0
 
@@ -235,6 +235,8 @@ def posargs2kwargs(
 
 	.. important:: Python 3.8's Positional-Only Parameters (:pep:`570`) are not supported.
 
+	.. versionadded:: 0.4.10
+
 	:param args: List of positional arguments provided to a function.
 	:param posarg_names: Either a list of positional argument names for the function, or the function object.
 	:param kwargs: Optional mapping of keyword argument names to values.
@@ -242,8 +244,6 @@ def posargs2kwargs(
 	:default kwargs: ``{}``
 
 	:return: Dictionary mapping argument names to values.
-
-	.. versionadded:: 0.4.10
 	"""
 
 	if kwargs is None:
@@ -306,10 +306,10 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 	"""
 	Returns the head of the given object.
 
+	.. versionadded:: 0.8.0
+
 	:param obj:
 	:param n: Show the first ``n`` items of ``obj``.
-
-	.. versionadded:: 0.8.0
 
 	.. seealso:: :func:`textwrap.shorten`, which truncates a string to fit within a given number of characters.
 	"""
@@ -354,9 +354,9 @@ def magnitude(x: float) -> int:
 	* For negative numbers the absolute magnitude is returned.
 	* For decimal numbers below ``1`` the magnitude will be negative.
 
-	:param x: Numerical value to find the magnitude of.
-
 	.. versionadded:: 2.0.0
+
+	:param x: Numerical value to find the magnitude of.
 	"""
 
 	if x > 0.0:
@@ -381,10 +381,10 @@ def trim_precision(value: float, precision: int = 4) -> float:
 		>>> type(trim_precision(170.10000000000002, 2))
 		<class 'float'>
 
+	.. versionadded:: 2.0.0
+
 	:param value:
 	:param precision: The number of decimal places to leave in the output.
-
-	.. versionadded:: 2.0.0
 	"""
 
 	return float(format(value, f"0.{precision}f"))

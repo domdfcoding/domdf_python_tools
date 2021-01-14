@@ -22,6 +22,8 @@ from domdf_python_tools.iterative import (
 		chunks,
 		double_chain,
 		extend,
+		extend_with,
+		extend_with_none,
 		flatten,
 		groupfloats,
 		make_tree,
@@ -241,3 +243,32 @@ def _extend_param(sequence, expects):
 		)
 def test_extend(sequence, expects):
 	assert ''.join(extend(sequence, 4)) == expects
+
+
+@pytest.mark.parametrize(
+		"sequence, expects",
+		[
+				_extend_param('a', "azzz"),
+				_extend_param("ab", "abzz"),
+				_extend_param("abc", "abcz"),
+				_extend_param("abcd", "abcd"),
+				_extend_param("abcde", "abcde"),
+				pytest.param(('a', 'b', 'c', 'd', 'e'), "abcde", id="tuple"),
+				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
+				]
+		)
+def test_extend_with(sequence, expects):
+	assert ''.join(extend_with(sequence, 4, 'z')) == expects
+
+
+def test_extend_with_none():
+	expects = ('a', 'b', 'c', 'd', 'e', 'f', 'g', None, None, None)
+	assert tuple(extend_with("abcdefg", 10, None)) == expects
+
+	expects = ('a', 'b', 'c', 'd', 'e', 'f', 'g', None, None, None)
+	assert tuple(extend_with_none("abcdefg", 10)) == expects
+
+
+def test_extend_with_int():
+	expects = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 0, 0, 0)
+	assert tuple(extend_with("abcdefg", 10, 0)) == expects

@@ -132,12 +132,12 @@ class UserList(MutableSequence[_T]):
 
 	Class that simulates a list. The instance’s contents are kept in a regular list,
 	which is accessible via the :attr:`~.UserList.data` attribute of UserList instances.
-	The instance’s contents are initially set to a copy of list, defaulting to the
-	empty list ``[]``.
+	The instance’s contents are initially set to a copy of list, defaulting to the empty list ``[]``.
+
+	.. versionadded:: 0.10.0
 
 	:param initlist: Values to initialise the :class:`~domdf_python_tools.bases.UserList` with.
 	:default initlist: ``[]``
-
 
 	.. admonition:: Subclassing requirements
 
@@ -150,8 +150,6 @@ class UserList(MutableSequence[_T]):
 		If a derived class does not wish to comply with this requirement, all of the special
 		methods supported by this class will need to be overridden; please consult the
 		sources for information about the methods which need to be provided in that case.
-
-	.. versionadded:: 0.10.0
 	"""
 
 	#: A real list object used to store the contents of the :class:`~domdf_python_tools.bases.UserList`.
@@ -371,11 +369,11 @@ class UserList(MutableSequence[_T]):
 @prettify_docstrings
 class UserFloat(Real):
 	"""
-	Class that simulates a float.
-
-	:param value: Values to initialise the :class:`~domdf_python_tools.bases.UserFloat` with.
+	Class which simulates a float.
 
 	.. versionadded:: 1.6.0
+
+	:param value: Values to initialise the :class:`~domdf_python_tools.bases.UserFloat` with.
 	"""
 
 	def __init__(self, value: Union[SupportsFloat, SupportsIndex, str, bytes, bytearray] = 0.0):
@@ -471,6 +469,16 @@ class UserFloat(Real):
 		return float(self).__trunc__()
 
 	def __round__(self, ndigits: Optional[int] = None) -> Union[int, float]:  # type: ignore
+		"""
+		Round the :class:`~.UserFloat` to ``ndigits`` decimal places, defaulting to ``0``.
+
+		If ``ndigits`` is omitted or :py:obj:`None`, returns an :class:`int`,
+		otherwise returns a :class:`float`.
+		Rounds half toward even.
+
+		:param ndigits:
+		"""
+
 		return float(self).__round__(ndigits)
 
 	def __eq__(self, other: object) -> bool:
@@ -548,9 +556,11 @@ class UserFloat(Real):
 
 	def __complex__(self) -> complex:
 		"""
-		Returrn :func:`complex(self) <complex>``.
+		Return :class:`complex(self) <complex>`.
 
-		``complex(self) == complex(float(self), 0)``
+		.. code-block:: python
+
+			complex(self) == complex(float(self), 0)
 		"""
 
 		return super().__complex__()

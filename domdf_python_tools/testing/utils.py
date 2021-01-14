@@ -168,12 +168,10 @@ def generate_truthy_values(
 
 	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
+	.. versionadded:: 0.4.9
+
 	:param extra_truthy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
-
-	:rtype:
-
-	.. versionadded:: 0.4.9
 	"""
 
 	truthy_values = [
@@ -206,12 +204,10 @@ def generate_falsy_values(extra_falsy: Sequence = (), ratio: float = 1) -> Itera
 
 	Optionally, a random selection of the values can be returned using the ``ratio`` argument.
 
+	.. versionadded:: 0.4.9
+
 	:param extra_falsy: Additional values that should be considered :py:obj:`True`.
 	:param ratio: The ratio of the number of values to select to the total number of values.
-
-	:rtype:
-
-	.. versionadded:: 0.4.9
 	"""
 
 	falsy_values = [

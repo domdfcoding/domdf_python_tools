@@ -148,14 +148,14 @@ def discover_entry_points(
 	"""
 	Returns a list of entry points in the given category, optionally filtered by ``match_func``.
 
+	.. versionadded:: 1.1.0
+
 	:param group_name: The entry point group name, e.g. ``'entry_points'``.
 	:param match_func: Function taking an object and returning :py:obj:`True`
 		if the object is to be included in the output.
 	:default match_func: :py:obj:`None`, which includes all objects.
 
 	:return: List of matching objects.
-
-	.. versionadded:: 1.1.0
 	"""
 
 	matching_objects = []

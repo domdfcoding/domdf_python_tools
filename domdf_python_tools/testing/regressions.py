@@ -51,12 +51,12 @@ def check_file_regression(
 	r"""
 	Check the given data against that in the reference file.
 
+	.. versionadded:: 1.5.0
+
 	:param data:
 	:param file_regression: The file regression fixture for the test.
 	:param extension: The extension of the reference file.
 	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
-
-	.. versionadded:: 1.5.0
 	"""
 
 	__tracebackhide__ = True
@@ -79,14 +79,14 @@ def check_file_output(
 	r"""
 	Check the content of the given file against the reference file.
 
+	.. versionadded:: 1.5.0
+
 	:param filename:
 	:param file_regression: The file regression fixture for the test.
 	:param extension: The extension of the reference file.
 		If :py:obj:`None` the extension is determined from ``filename``.
 	:param newline: Controls how universal newlines mode works. See :func:`open`.
 	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
-
-	.. versionadded:: 1.5.0
 
 	.. versionchanged:: 1.7.1  Changed the default for ``newline`` to ``'\n'``.
 	"""

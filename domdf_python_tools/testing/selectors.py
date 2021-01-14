@@ -75,13 +75,11 @@ def min_version(
 	Factory function to return a ``@pytest.mark.skipif`` decorator that will
 	skip a test if the current Python version is less than the required one.
 
+	.. versionadded:: 0.9.0
+
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
 	:default reason: :file:`'Requires Python {<version>} or greater.'`
-
-	:rtype:
-
-	.. versionadded:: 0.9.0
 	"""  # noqa D400
 
 	version_ = _make_version(version)
@@ -100,13 +98,11 @@ def max_version(
 	Factory function to return a ``@pytest.mark.skipif`` decorator that will
 	skip a test if the current Python version is greater than the required one.
 
+	.. versionadded:: 0.9.0
+
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
 	:default reason: :file:`'Not needed after Python {<version>}.'`
-
-	:rtype:
-
-	.. versionadded:: 0.9.0
 	"""  # noqa D400
 
 	version_ = _make_version(version)
@@ -125,13 +121,11 @@ def only_version(
 	Factory function to return a ``@pytest.mark.skipif`` decorator that will
 	skip a test if the current Python version not the required one.
 
+	.. versionadded:: 2.0.0
+
 	:param version: The version number to compare to :py:data:`sys.version_info`.
 	:param reason: The reason to display when skipping.
 	:default reason: :file:`'Not needed on Python {<version>}.'`
-
-	:rtype:
-
-	.. versionadded:: 2.0.0
 	"""  # noqa D400
 
 	version_ = _make_version(version)

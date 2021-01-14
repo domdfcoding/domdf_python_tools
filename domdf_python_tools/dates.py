@@ -243,9 +243,9 @@ def calc_easter(year: int) -> datetime.date:
 	"""
 	Returns the date of Easter in the given year.
 
-	:param year:
-
 	.. versionadded:: 1.4.0
+
+	:param year:
 	"""
 
 	a = year % 19

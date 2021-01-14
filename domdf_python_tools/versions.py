@@ -38,9 +38,9 @@ class Version(Tuple[int, int, int]):
 	"""
 	NamedTuple-like class to represent a version number.
 
-	:param major:
-
 	.. versionadded:: 0.4.4
+
+	:param major:
 
 	.. versionchanged:: 1.4.0 Implemented the same interface as a :func:`collections.namedtuple`.
 	"""
@@ -241,8 +241,6 @@ class Version(Tuple[int, int, int]):
 		"""
 		Return a new dict which maps field names to their corresponding values.
 
-		:rtype:
-
 		.. versionadded:: 1.4.0
 		"""
 
@@ -256,11 +254,9 @@ class Version(Tuple[int, int, int]):
 		"""
 		Return a new instance of the named tuple replacing specified fields with new values.
 
-		:param kwargs:
-
-		:rtype:
-
 		.. versionadded:: 1.4.0
+
+		:param kwargs:
 		"""
 
 		return self.__class__(**{**self._asdict(), **kwargs})
@@ -270,11 +266,9 @@ class Version(Tuple[int, int, int]):
 		"""
 		Class method that makes a new instance from an existing sequence or iterable.
 
-		:param iterable:
-
-		:rtype:
-
 		.. versionadded:: 1.4.0
+
+		:param iterable:
 		"""
 
 		return cls(*(int(x) for x in tuple(iterable)[:3]))

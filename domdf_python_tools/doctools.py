@@ -307,15 +307,13 @@ new_return_types = {
 
 def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 	"""
-	Perform the actual prettification for :func`~.prettify_docstrings`.
+	Perform the actual prettifying for :func`~.prettify_docstrings`.
+
+	.. versionadded:: 0.8.0
 
 	:param obj:
 	:param base:
 	:param new_docstrings:
-
-	:rtype:
-
-	.. versionadded:: 0.8.0
 	"""
 
 	for attr_name in new_docstrings:
@@ -349,11 +347,9 @@ def prettify_docstrings(obj: Type) -> Type:
 	"""
 	Decorator to prettify the default :class:`object` docstrings for use in Sphinx documentation.
 
-	:param obj: The object to prettify the method docstrings for.
-
-	:rtype:
-
 	.. versionadded:: 0.8.0
+
+	:param obj: The object to prettify the method docstrings for.
 	"""
 
 	repr_docstring = f"Return a string representation of the :class:`~{obj.__module__}.{obj.__name__}`."

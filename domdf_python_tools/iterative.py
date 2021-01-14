@@ -33,20 +33,7 @@ Functions for iteration, looping etc.
 import itertools
 import textwrap
 from operator import itemgetter
-from typing import (
-		Any,
-		Callable,
-		Generator,
-		Iterable,
-		Iterator,
-		List,
-		Optional,
-		Sequence,
-		Tuple,
-		Type,
-		TypeVar,
-		Union
-		)
+from typing import Any, Callable, Iterable, Iterator, List, Optional, Sequence, Sized, Tuple, Type, TypeVar, Union
 
 # 3rd party
 from natsort import natsorted, ns  # type: ignore
@@ -67,17 +54,21 @@ __all__ = [
 		"groupfloats",
 		"ranges_from_iterable",
 		"extend",
+		"extend_with",
+		"extend_with_none",
 		]
 
 _T = TypeVar("_T")
 
 
-def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
+def chunks(l: Sequence[_T], n: int) -> Iterator[Sequence[_T]]:
 	"""
-	Yield successive n-sized chunks from l.
+	Yield successive ``n``-sized chunks from ``l``.
 
-	:param l: The objects to yield chunks from
-	:param n: The size of the chunks
+	:param l: The objects to yield chunks from.
+	:param n: The size of the chunks.
+
+	:rtype:
 
 	.. versionchanged:: 1.4.0 Moved from :mod:`domdf_python_tools.utils`
 	"""
@@ -86,7 +77,7 @@ def chunks(l: Sequence[Any], n: int) -> Generator[Any, None, None]:
 		yield l[i:i + n]
 
 
-def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
+def permutations(data: Iterable[_T], n: int = 2) -> List[Tuple[_T, ...]]:
 	"""
 	Return permutations containing ``n`` items from ``data`` without any reverse duplicates.
 
@@ -95,7 +86,11 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 	:param data:
 	:param n:
 
+	:rtype:
+
 	.. versionchanged:: 1.4.0 Moved from :mod:`domdf_python_tools.utils`
+
+	.. seealso:: :func:`itertools.permutations` and :func:`itertools.combinations`
 	"""
 
 	if n == 0:
@@ -111,9 +106,9 @@ def permutations(data: Iterable[Any], n: int = 2) -> List[Tuple[Any, ...]]:
 
 def split_len(string: str, n: int) -> List[str]:
 	"""
-	Split a string every ``n`` characters.
+	Split ``string`` every ``n`` characters.
 
-	:param string: The string to split
+	:param string:
 	:param n: The number of characters to split after
 
 	:return: The split string
@@ -124,18 +119,20 @@ def split_len(string: str, n: int) -> List[str]:
 	return [string[i:i + n] for i in range(0, len(string), n)]
 
 
-def Len(obj: Any, start: int = 0, step: int = 1) -> range:
+def Len(obj: Sized, start: int = 0, step: int = 1) -> range:
 	"""
 	Shorthand for ``range(len(obj))``.
 
-	Returns an object that produces a sequence of integers from start (inclusive)
-	to len(obj) (exclusive) by step.
+	Returns an object that produces a sequence of integers from ``start`` (inclusive)
+	to :func:`len(obj) <len>` (exclusive) by ``step``.
+
+	.. versionadded:: 0.4.7
 
 	:param obj: The object to iterate over the length of.
 	:param start: The start value of the range.
 	:param step: The step of the range.
 
-	.. versionadded:: 0.4.7
+	:rtype:
 
 	.. versionchanged:: 1.4.0 Moved from :mod:`domdf_python_tools.utils`
 	"""
@@ -143,7 +140,7 @@ def Len(obj: Any, start: int = 0, step: int = 1) -> range:
 	return range(start, len(obj), step)
 
 
-def double_chain(iterable: Iterable[Iterable]):
+def double_chain(iterable: Iterable[Iterable[Iterable[_T]]]) -> Iterator[_T]:
 	"""
 	Flatten a list of lists of lists into a single list.
 
@@ -165,28 +162,27 @@ def double_chain(iterable: Iterable[Iterable]):
 
 		[1, 2, 3, 4, 5, 6, 7, 8]
 
+	.. versionadded:: 0.4.7
 
 	:param iterable: The iterable to chain.
 
 	:rtype:
 
-	.. versionadded:: 0.4.7
-
 	.. versionchanged:: 1.4.0 Moved from :mod:`domdf_python_tools.utils`
 	"""
 
-	yield from itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))
+	return itertools.chain.from_iterable(itertools.chain.from_iterable(iterable))
 
 
-def flatten(iterable: Iterable, primitives: Tuple[Type, ...] = (str, int, float)):
+def flatten(iterable: Iterable[_T], primitives: Tuple[Type, ...] = (str, int, float)) -> Iterator[_T]:
 	"""
 	Flattens a mixed list of primitive types and iterables of those types into a single list,
 	regardless of nesting.
 
+	.. versionadded:: 1.4.0
+
 	:param iterable:
 	:param primitives: The primitive types to allow.
-
-	.. versionadded:: 1.4.0
 	"""  # noqa: D400
 
 	for item in iterable:
@@ -206,9 +202,9 @@ def make_tree(tree: Branch) -> Iterator[str]:
 	Returns the string representation of a mixed list of strings and lists of strings,
 	similar to :manpage:`tree(1)`.
 
-	:param tree:
-
 	.. versionadded:: 1.4.0
+
+	:param tree:
 	"""  # noqa: D400
 
 	last_string = 0
@@ -240,35 +236,33 @@ def make_tree(tree: Branch) -> Iterator[str]:
 				yield textwrap.indent(line, "    ")
 
 
-def natmin(seq: Iterable, key: Optional[Callable] = None, alg: int = ns.DEFAULT):
+def natmin(seq: Iterable[_T], key: Optional[Callable[[Any], Any]] = None, alg: int = ns.DEFAULT) -> _T:
 	"""
 	Returns the minimum value from ``seq`` when sorted naturally.
+
+	.. versionadded:: 1.8.0
 
 	:param seq:
 	:param key: A key used to determine how to sort each element of the iterable.
 		It is **not** applied recursively.
 		The callable should accept a single argument and return a single value.
 	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
-		For details into these options, please see the :class:`ns` class documentation.
-
-	.. versionadded:: 1.8.0
 	"""
 
 	return natsorted(seq, key=key, alg=alg)[0]
 
 
-def natmax(seq: Iterable, key: Optional[Callable] = None, alg: int = ns.DEFAULT):
+def natmax(seq: Iterable[_T], key: Optional[Callable[[Any], Any]] = None, alg: int = ns.DEFAULT) -> _T:
 	"""
 	Returns the maximum value from ``seq`` when sorted naturally.
+
+	.. versionadded:: 1.8.0
 
 	:param seq:
 	:param key: A key used to determine how to sort each element of the iterable.
 		It is **not** applied recursively.
 		The callable should accept a single argument and return a single value.
 	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
-		For details into these options, please see the :class:`ns` class documentation.
-
-	.. versionadded:: 1.8.0
 	"""
 
 	return natsorted(seq, key=key, alg=alg)[-1]
@@ -293,14 +287,16 @@ def groupfloats(
 		>>> list(groupfloats([1, 2, 3, 4, 5, 7, 8, 9, 10]))
 		[(1, 2, 3, 4, 5), (7, 8, 9, 10)]
 
+	.. versionadded:: 2.0.0
+
 	:param iterable:
 	:param step: The step between values in ``iterable``.
+
+	:rtype:
 
 	.. seealso::
 
 		:func:`~.ranges_from_iterable`, which returns an iterator over the min and max values for each range.
-
-	.. versionadded:: 2.0.0
 	"""
 
 	# Based on https://stackoverflow.com/a/4629241
@@ -348,6 +344,10 @@ def extend(sequence: Iterable[_T], minsize: int) -> List[_T]:
 
 	:param sequence:
 	:param minsize:
+
+	:rtype:
+
+	.. seealso:: :func:`~.extend_with` and :func:`~.extend_with_none`
 	"""
 
 	output = list(sequence)
@@ -357,3 +357,46 @@ def extend(sequence: Iterable[_T], minsize: int) -> List[_T]:
 		output.append(next(cycle))
 
 	return output
+
+
+def extend_with(sequence: Iterable[_T], minsize: int, with_: _T) -> List[_T]:
+	r"""
+	Extend ``sequence`` by adding ``with\_`` to the right hand end until it is at least as long as ``minsize``.
+
+	.. versionadded:: 2.3.0
+
+	:param sequence:
+	:param minsize:
+	:param with\_:
+
+	:rtype:
+
+	.. seealso:: :func:`~.extend` and :func:`~.extend_with_none`
+	"""
+
+	output = list(sequence)
+
+	while len(output) < minsize:
+		output.append(with_)
+
+	return output
+
+
+def extend_with_none(sequence: Iterable[_T], minsize: int) -> Sequence[Optional[_T]]:
+	r"""
+	Extend ``sequence`` by adding :py:obj:`None` to the right hand end until it is at least as long as ``minsize``.
+
+	.. versionadded:: 2.3.0
+
+	:param sequence:
+	:param minsize:
+
+	:rtype:
+
+	.. seealso:: :func:`~.extend` and :func:`~.extend_with`
+	"""
+
+	output: Sequence[Optional[_T]] = list(sequence)
+	filler: Sequence[Optional[_T]] = [None] * max(0, minsize - len(output))
+
+	return tuple((*output, *filler))

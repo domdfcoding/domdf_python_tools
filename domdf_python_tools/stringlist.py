@@ -36,7 +36,7 @@ from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
-__all__ = ["Indent", "StringList", "DelimitedList"]
+__all__ = ["Indent", "StringList", "DelimitedList", "_SL"]
 
 _S = TypeVar("_S")
 _SL = TypeVar("_SL", bound="StringList")
@@ -454,7 +454,7 @@ class DelimitedList(List[_S]):
 
 	**Example:**
 
-	.. code-block::
+	.. code-block:: python
 
 		>>> l = DelimitedList([1, 2, 3, 4, 5])
 		>>> format(l, ", ")

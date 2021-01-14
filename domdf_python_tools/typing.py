@@ -57,6 +57,9 @@ if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
 
+	JSONDecoder.__module__ = "json"
+	JSONEncoder.__module__ = "json"
+
 #: .. versionadded:: 1.0.0
 FrameOrSeries = typing.TypeVar("FrameOrSeries", "Series", "DataFrame")
 

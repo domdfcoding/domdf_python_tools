@@ -338,8 +338,6 @@ class PathPlus(pathlib.Path):
 		"""
 		Make the file executable.
 
-		:rtype:
-
 		.. versionadded:: 0.3.8
 		"""
 
@@ -354,13 +352,11 @@ class PathPlus(pathlib.Path):
 		"""
 		Write to the file without trailing whitespace, and with a newline at the end of the file.
 
+		.. versionadded:: 0.3.8
+
 		:param string:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
-
-		:rtype:
-
-		.. versionadded:: 0.3.8
 		"""
 
 		with self.open('w', encoding=encoding, errors=errors) as fp:
@@ -374,10 +370,7 @@ class PathPlus(pathlib.Path):
 		"""
 		Create a directory at this path, but only if the directory does not already exist.
 
-		.. note::
-
-			This will fail silently if a file with the same name already exists.
-			This appears to be due to the behaviour of :func:`os.mkdir`.
+		.. versionadded:: 0.3.8
 
 		:param mode: Combined with the process’ umask value to determine the file mode and access flags
 		:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`FileNotFoundError`.
@@ -385,11 +378,13 @@ class PathPlus(pathlib.Path):
 			default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
 		:no-default parents:
 
-		:rtype:
-
-		.. versionadded:: 0.3.8
-
 		.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
+
+		.. note::
+
+			This will fail silently if a file with the same name already exists.
+			This appears to be due to the behaviour of :func:`os.mkdir`.
+
 		"""
 
 		try:
@@ -406,13 +401,11 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file in text mode, append the given string to it, and close the file.
 
+		.. versionadded:: 0.3.8
+
 		:param string:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
-
-		:rtype:
-
-		.. versionadded:: 0.3.8
 		"""
 
 		with self.open('a', encoding=encoding, errors=errors) as fp:
@@ -427,13 +420,11 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file in text mode, write to it, and close the file.
 
+		.. versionadded:: 0.3.8
+
 		:param data:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
-
-		:rtype:
-
-		.. versionadded:: 0.3.8
 		"""
 
 		return super().write_text(data, encoding=encoding, errors=errors)
@@ -447,12 +438,12 @@ class PathPlus(pathlib.Path):
 		"""
 		Write the given list of lines to the file without trailing whitespace.
 
+		.. versionadded:: 0.5.0
+
 		:param data:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
-
-		.. versionadded:: 0.5.0
-		"""  # noqa D400
+		"""
 
 		return self.write_clean('\n'.join(data), encoding=encoding, errors=errors)
 
@@ -464,12 +455,12 @@ class PathPlus(pathlib.Path):
 		"""
 		Open the file in text mode, read it, and close the file.
 
+		.. versionadded:: 0.3.8
+
 		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:return: The content of the file.
-
-		.. versionadded:: 0.3.8
 		"""
 
 		return super().read_text(encoding=encoding, errors=errors)
@@ -483,12 +474,12 @@ class PathPlus(pathlib.Path):
 		Open the file in text mode, return a list containing the lines in the file,
 		and close the file.
 
+		.. versionadded:: 0.5.0
+
 		:param encoding: The encoding to write to the file in.
 		:param errors:
 
 		:return: The content of the file.
-
-		.. versionadded:: 0.5.0
 		"""  # noqa D400
 
 		return self.read_text(encoding=encoding, errors=errors).split('\n')
@@ -505,6 +496,8 @@ class PathPlus(pathlib.Path):
 		Open the file pointed by this path and return a file object, as
 		the built-in :func:`open` function does.
 
+		.. versionadded:: 0.3.8
+
 		:param mode: The mode to open the file in.
 		:default mode: ``'r'`` (read only)
 		:param buffering:
@@ -513,7 +506,7 @@ class PathPlus(pathlib.Path):
 		:param newline:
 		:default newline: `universal newlines <https://docs.python.org/3/glossary.html#term-universal-newlines>`__ for reading, Unix line endings (``LF``) for writing.
 
-		.. versionadded:: 0.3.8
+		:rtype:
 
 		.. versionchanged:: 0.5.1
 
@@ -551,6 +544,8 @@ class PathPlus(pathlib.Path):
 		r"""
 		Dump ``data`` to the file as JSON.
 
+		.. versionadded:: 0.5.0
+
 		:param data: The object to serialise to JSON.
 		:param encoding: The encoding to write to the file in.
 		:param errors:
@@ -559,7 +554,7 @@ class PathPlus(pathlib.Path):
 		:param compress: Whether to compress the JSON file using gzip.
 		:param \*\*kwargs: Keyword arguments to pass to the JSON serialisation function.
 
-		.. versionadded:: 0.5.0
+		:rtype:
 
 		.. versionchanged:: 1.0.0
 
@@ -595,6 +590,8 @@ class PathPlus(pathlib.Path):
 		r"""
 		Load JSON data from the file.
 
+		.. versionadded:: 0.5.0
+
 		:param encoding: The encoding to write to the file in.
 		:param errors:
 		:param json_library: The JSON serialisation library to use.
@@ -604,8 +601,6 @@ class PathPlus(pathlib.Path):
 		:param \*\*kwargs: Keyword arguments to pass to the JSON deserialisation function.
 
 		:return: The deserialised JSON data.
-
-		.. versionadded:: 0.5.0
 
 		.. versionchanged:: 1.9.0
 
@@ -628,8 +623,6 @@ class PathPlus(pathlib.Path):
 		def is_mount(self) -> bool:
 			"""
 			Check if this path is a POSIX mount point.
-
-			:rtype:
 
 			.. versionadded:: 0.3.8 for Python 3.7 and above
 			.. versionadded:: 0.11.0 for Python 3.6
@@ -662,12 +655,12 @@ class PathPlus(pathlib.Path):
 			interpreted relative to the current working directory, *not* the
 			directory of the Path object.
 
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+
 			:param target:
 
 			:returns: The new Path instance pointing to the target path.
-
-			.. versionadded:: 0.3.8 for Python 3.8 and above
-			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
 			"""
 
 			self._accessor.rename(self, target)  # type: ignore
