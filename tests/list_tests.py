@@ -73,7 +73,7 @@ class CommonTest(seq_tests.CommonTest):
 		assert str(a2) == "[0, 1, 2, [...], 3]"
 		assert repr(a2) == "[0, 1, 2, [...], 3]"
 
-	@not_pypy
+	@not_pypy()
 	def test_repr_deep(self):
 		a = self.type2test([])
 		for i in range(sys.getrecursionlimit() + 100):
