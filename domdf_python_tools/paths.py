@@ -41,6 +41,7 @@ Functions for paths and files.
 
 # stdlib
 import contextlib
+import fnmatch
 import gzip
 import json
 import os
@@ -48,7 +49,8 @@ import pathlib
 import shutil
 import stat
 import sys
-from typing import IO, Any, Callable, Iterable, List, Optional, TypeVar, Union
+from collections import deque
+from typing import IO, Any, Callable, Iterable, Iterator, List, Optional, TypeVar, Union
 
 # this package
 from domdf_python_tools.typing import JsonLibrary, PathLike
@@ -69,7 +71,10 @@ __all__ = [
 		"WindowsPathPlus",
 		"in_directory",
 		"_P",
+		"_PP",
 		"traverse_to_file",
+		"matchglob",
+		"unwanted_dirs",
 		]
 
 newline_default = object()
@@ -79,6 +84,18 @@ _P = TypeVar("_P", bound=pathlib.Path)
 .. versionadded:: 0.11.0
 
 .. versionchanged:: 1.7.0  Now bound to :class:`pathlib.Path`.
+"""
+
+_PP = TypeVar("_PP", bound="PathPlus")
+"""
+.. versionadded:: 2.3.0
+"""
+
+unwanted_dirs = (".git", "venv", ".venv", ".mypy_cache", "__pycache__", ".pytest_cache", ".tox", ".tox4")
+"""
+A list of directories which will likely be unwanted when searching directory trees for files.
+
+.. versionadded:: 2.3.0
 """
 
 
@@ -167,7 +184,7 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False):
 	:param mode: Combined with the process’ umask value to determine the file mode and access flags
 	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`FileNotFoundError`.
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
-		default permissions without taking mode into account (mimicking the POSIX mkdir -p command).
+		default permissions without taking mode into account (mimicking the POSIX ``mkdir -p`` command).
 	:no-default parents:
 
 	.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
@@ -308,17 +325,15 @@ class PathPlus(pathlib.Path):
 	"""
 	Subclass of :class:`pathlib.Path` with additional methods and a default encoding of UTF-8.
 
-	Path represents a filesystem path but unlike PurePath, also offers
-	methods to do system calls on path objects. Depending on your system,
-	instantiating a Path will return either a PosixPath or a WindowsPath
-	object. You can also instantiate a PosixPath or WindowsPath directly,
-	but cannot instantiate a WindowsPath on a POSIX system or vice versa.
+	Path represents a filesystem path but unlike :class:`~.PurePath`, also offers
+	methods to do system calls on path objects.
+	Depending on your system, instantiating a :class:`~.PathPlus` will return
+	either a :class:`~.PosixPathPlus` or a :class:`~.WindowsPathPlus`. object.
+	You can also instantiate a :class:`PosixPath` or :class:`WindowsPath` directly,
+	but cannot instantiate a :class:`WindowsPath` on a POSIX system or vice versa.
 
 	.. versionadded:: 0.3.8
-
-	.. versionchanged:: 0.5.1
-
-		Defaults to Unix line endings (``LF``) on all platforms.
+	.. versionchanged:: 0.5.1  Defaults to Unix line endings (``LF``) on all platforms.
 	"""
 
 	__slots__ = ("_accessor", )
@@ -380,7 +395,7 @@ class PathPlus(pathlib.Path):
 
 		.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
 
-		.. note::
+		.. attention::
 
 			This will fail silently if a file with the same name already exists.
 			This appears to be due to the behaviour of :func:`os.mkdir`.
@@ -562,9 +577,7 @@ class PathPlus(pathlib.Path):
 			rather than :meth:`PathPlus.write_text <domdf_python_tools.paths.PathPlus.write_text>`,
 			and returns :py:obj:`None` rather than :class:`int`.
 
-		.. versionchanged:: 1.9.0
-
-			Added the ``compress`` keyword-only argument.
+		.. versionchanged:: 1.9.0  Added the ``compress`` keyword-only argument.
 		"""
 
 		if compress:
@@ -602,9 +615,7 @@ class PathPlus(pathlib.Path):
 
 		:return: The deserialised JSON data.
 
-		.. versionchanged:: 1.9.0
-
-			Added the ``compress`` keyword-only argument.
+		.. versionchanged:: 1.9.0  Added the ``compress`` keyword-only argument.
 		"""
 
 		if decompress:
@@ -676,12 +687,12 @@ class PathPlus(pathlib.Path):
 
 			Returns the new Path instance pointing to the target path.
 
+			.. versionadded:: 0.3.8 for Python 3.8 and above
+			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
+
 			:param target:
 
 			:returns: The new Path instance pointing to the target path.
-
-			.. versionadded:: 0.3.8 for Python 3.8 and above
-			.. versionadded:: 0.11.0 for Python 3.6 and Python 3.7
 			"""
 
 			self._accessor.replace(self, target)  # type: ignore
@@ -723,12 +734,10 @@ class PathPlus(pathlib.Path):
 			r"""
 			Returns whether the path is relative to another path.
 
-			:param \*other:
-
-			:rtype:
-
 			.. versionadded:: 0.3.8 for Python 3.9 and above
 			.. versionadded:: 1.4.0 for Python 3.6 and Python 3.7
+
+			:param \*other:
 			"""
 
 			try:
@@ -741,19 +750,54 @@ class PathPlus(pathlib.Path):
 		"""
 		Return the absolute version of the path.
 
-		:rtype:
-
 		.. versionadded:: 1.3.0
 		"""
 
 		return self.__class__(os.path.abspath(self))
+
+	def iterchildren(
+			self: _PP,
+			exclude_dirs: Optional[Iterable[str]] = unwanted_dirs,
+			match: Optional[str] = None,
+			) -> Iterator[_PP]:
+		"""
+		Returns an iterator over all children (files and directories) of the current path object.
+
+		.. versionadded:: 2.3.0
+
+		:param exclude_dirs: A list of directory names which should be excluded from the output,
+			together with their children.
+		:param match: A pattern to match filenames against.
+			The pattern should be in the format taken by :func:`~.matchglob`.
+		"""
+
+		if not self.is_dir():
+			return
+
+		if exclude_dirs is None:
+			exclude_dirs = ()
+
+		if match and not os.path.isabs(match):
+			match = (self / match).as_posix()
+
+		file: _PP
+		for file in self.iterdir():  # type: ignore
+			parts = file.parts
+			if any(d in parts for d in exclude_dirs):
+				continue
+
+			if file.is_dir():
+				yield from file.iterchildren(exclude_dirs, match)
+
+			if match is None or (match is not None and matchglob(file, match)):
+				yield file
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 	"""
 	:class:`~.PathPlus` subclass for non-Windows systems.
 
-	On a POSIX system, instantiating a PathPlus object should return an instance of this class.
+	On a POSIX system, instantiating a :class:`~.PathPlus` object should return an instance of this class.
 
 	.. versionadded:: 0.3.8
 	"""
@@ -765,7 +809,7 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 	"""
 	:class:`~.PathPlus` subclass for Windows systems.
 
-	On a Windows system, instantiating a PathPlus object should return an instance of this class.
+	On a Windows system, instantiating a :class:`~.PathPlus`  object should return an instance of this class.
 
 	.. versionadded:: 0.3.8
 	"""
@@ -798,11 +842,11 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 	r"""
 	Traverse the parents of the given directory until the desired file is found.
 
+	.. versionadded:: 1.7.0
+
 	:param base_directory: The directory to start searching from
 	:param \*filename: The filename(s) to search for
 	:param height: The maximum height to traverse to.
-
-	.. versionadded:: 1.7.0
 	"""
 
 	if not filename:
@@ -817,3 +861,60 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 				return directory
 
 	raise FileNotFoundError(f"'{filename[0]!s}' not found in {base_directory}")
+
+
+def matchglob(filename: PathLike, pattern):
+	"""
+	Given a filename and a glob pattern, return whether the filename matches the glob.
+
+	.. versionadded:: 2.3.0
+
+	:param filename:
+	:param pattern: A pattern structured like a filesystem path, where each element consists of the glob syntax.
+		Each element is matched by :mod:`fnmatch`.
+		The special element ``**`` matches zero or more files or directories.
+
+	.. seealso::
+
+		:wikipedia:`Glob (programming)#Syntax` on Wikipedia
+	"""
+
+	filename = PathPlus(filename)
+
+	pattern_parts = deque(pathlib.PurePath(pattern).parts)
+	filename_parts = deque(filename.parts)
+
+	if not pattern_parts[-1]:
+		pattern_parts.pop()
+
+	while True:
+		if not pattern_parts and not filename_parts:
+			return True
+
+		pattern_part = pattern_parts.popleft()
+
+		if pattern_part == "**" and not filename_parts:
+			return True
+		else:
+			filename_part = filename_parts.popleft()
+
+		if pattern_part == "**":
+			if not pattern_parts or not filename_parts:
+				return True
+
+			while pattern_part == "**":
+				pattern_part = pattern_parts.popleft()
+
+			if fnmatch.fnmatchcase(filename_part, pattern_part):
+				continue
+			else:
+				while not fnmatch.fnmatchcase(filename_part, pattern_part):
+					if not filename_parts:
+						return False
+
+					filename_part = filename_parts.popleft()
+
+		elif fnmatch.fnmatchcase(filename_part, pattern_part):
+			continue
+		else:
+			return False

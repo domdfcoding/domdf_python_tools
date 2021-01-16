@@ -18,10 +18,11 @@ from textwrap import dedent
 
 # 3rd party
 import pytest
+from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import PathPlus, clean_writer, copytree, in_directory, traverse_to_file
+from domdf_python_tools.paths import PathPlus, clean_writer, copytree, in_directory, matchglob, traverse_to_file
 from domdf_python_tools.testing import not_pypy, not_windows
 
 
@@ -659,3 +660,145 @@ def test_traverse_to_file_errors(tmp_pathplus):
 
 	with pytest.raises(TypeError, match="traverse_to_file expected 2 or more arguments, got 1"):
 		traverse_to_file(tmp_pathplus)
+
+
+def test_iterchildren(data_regression: DataRegressionFixture):
+	repo_path = PathPlus(__file__).parent.parent
+	assert repo_path.is_dir()
+
+	children = list((repo_path / "domdf_python_tools").iterchildren())
+	assert children
+	data_regression.check([p.relative_to(repo_path).as_posix() for p in children])
+
+
+def test_iterchildren_exclusions():
+	repo_path = PathPlus(__file__).parent.parent
+	assert repo_path.is_dir()
+
+	if (repo_path / "build").is_dir():
+		shutil.rmtree(repo_path / "build")
+
+	children = list(repo_path.iterchildren())
+	assert children
+	for directory in children:
+		directory = directory.relative_to(repo_path)
+		# print(directory)
+		assert directory.parts[0] not in paths.unwanted_dirs
+
+
+def test_iterchildren_match(data_regression: DataRegressionFixture):
+	repo_path = PathPlus(__file__).parent.parent
+	assert repo_path.is_dir()
+
+	children = list(repo_path.iterchildren(match="**/*.py"))
+	assert children
+	
+	child_paths = [p.relative_to(repo_path).as_posix() for p in children]
+
+	for exclude_filename in {".coverage", "pathtype_demo.py"}:
+		if exclude_filename in child_paths:
+			child_paths.remove(exclude_filename)
+
+	data_regression.check(child_paths)
+
+
+def test_iterchildren_no_exclusions(tmp_pathplus):
+	(tmp_pathplus / ".git").mkdir()
+	(tmp_pathplus / "venv").mkdir()
+	(tmp_pathplus / ".venv").mkdir()
+	(tmp_pathplus / ".tox").mkdir()
+	(tmp_pathplus / ".tox4").mkdir()
+	(tmp_pathplus / ".mypy_cache").mkdir()
+	(tmp_pathplus / ".pytest_cache").mkdir()
+	(tmp_pathplus / "normal_dir").mkdir()
+
+	children = sorted(p.relative_to(tmp_pathplus) for p in tmp_pathplus.iterchildren(None))
+	assert children == [
+			PathPlus(".git"),
+			PathPlus(".mypy_cache"),
+			PathPlus(".pytest_cache"),
+			PathPlus(".tox"),
+			PathPlus(".tox4"),
+			PathPlus(".venv"),
+			PathPlus("normal_dir"),
+			PathPlus("venv"),
+			]
+
+	children = sorted(p.relative_to(tmp_pathplus) for p in tmp_pathplus.iterchildren(()))
+	assert children == [
+			PathPlus(".git"),
+			PathPlus(".mypy_cache"),
+			PathPlus(".pytest_cache"),
+			PathPlus(".tox"),
+			PathPlus(".tox4"),
+			PathPlus(".venv"),
+			PathPlus("normal_dir"),
+			PathPlus("venv"),
+			]
+
+	children = sorted(p.relative_to(tmp_pathplus) for p in tmp_pathplus.iterchildren((".git", ".tox")))
+	assert children == [
+			PathPlus(".mypy_cache"),
+			PathPlus(".pytest_cache"),
+			PathPlus(".tox4"),
+			PathPlus(".venv"),
+			PathPlus("normal_dir"),
+			PathPlus("venv"),
+			]
+
+	children = sorted(p.relative_to(tmp_pathplus) for p in tmp_pathplus.iterchildren())
+	assert children == [
+			PathPlus("normal_dir"),
+			]
+
+
+@pytest.mark.parametrize(
+		"pattern, filename, match",
+		[
+				("domdf_python_tools/**/", "domdf_python_tools", True),
+				("domdf_python_tools/**/", "domdf_python_tools/testing/selectors.c", True),
+				("domdf_python_tools/**/*.py", "domdf_python_tools/testing/selectors.c", False),
+				("domdf_python_tools/**/*.py", "domdf_python_tools/foo/bar/baz.py", True),
+				("domdf_python_tools/**/*.py", "domdf_python_tools/words.py", True),
+				("domdf_python_tools/*.py", "domdf_python_tools/words.py", True),
+				("domdf_python_tools/**/*.py", "domdf_python_tools/testing/selectors.py", True),
+				("domdf_python_tools/**/*.py", "demo.py", False),
+				("domdf_python_tools/*.py", "demo.py", False),
+				("domdf_python_tools/[!abc].py", "domdf_python_tools/d.py", True),
+				("domdf_python_tools/[!abc].py", "domdf_python_tools/a.py", False),
+				("domdf_python_tools/[abc].py", "domdf_python_tools/d.py", False),
+				("domdf_python_tools/[abc].py", "domdf_python_tools/a.py", True),
+				("domdf_python_tools/?.py", "domdf_python_tools/a.py", True),
+				("domdf_python_tools/?.py", "domdf_python_tools/Z.py", True),
+				("domdf_python_tools/?.py", "domdf_python_tools/abc.py", False),
+				("domdf_python_tools/Law*", "domdf_python_tools/Law", True),
+				("domdf_python_tools/Law*", "domdf_python_tools/Laws", True),
+				("domdf_python_tools/Law*", "domdf_python_tools/Lawyer", True),
+				("domdf_python_tools/Law*", "domdf_python_tools/La", False),
+				("domdf_python_tools/Law*", "domdf_python_tools/aw", False),
+				("domdf_python_tools/Law*", "domdf_python_tools/GrokLaw", False),
+				("domdf_python_tools/*Law*", "domdf_python_tools/Law", True),
+				("domdf_python_tools/*Law*", "domdf_python_tools/Laws", True),
+				("domdf_python_tools/*Law*", "domdf_python_tools/Lawyer", True),
+				("domdf_python_tools/*Law*", "domdf_python_tools/La", False),
+				("domdf_python_tools/*Law*", "domdf_python_tools/aw", False),
+				("domdf_python_tools/*Law*", "domdf_python_tools/GrokLaw", True),
+				("domdf_python_tools/?at", "domdf_python_tools/Cat", True),
+				("domdf_python_tools/?at", "domdf_python_tools/cat", True),
+				("domdf_python_tools/?at", "domdf_python_tools/Bat", True),
+				("domdf_python_tools/?at", "domdf_python_tools/at", False),
+				("domdf_python_tools/[A-Z]at", "domdf_python_tools/at", False),
+				("domdf_python_tools/[A-Z]at", "domdf_python_tools/cat", False),
+				("domdf_python_tools/[A-Z]at", "domdf_python_tools/Cat", True),
+				("domdf_python_tools/Letter[!3-5]", "domdf_python_tools/Letter1", True),
+				("domdf_python_tools/Letter[!3-5]", "domdf_python_tools/Letter6", True),
+				(
+						"/home/domdf/Python/01 GitHub Repos/03 Libraries/domdf_python_tools/**/*.py",
+						"/home/domdf/Python/01 GitHub Repos/03 Libraries/domdf_python_tools/domdf_python_tools/pagesizes/units.py",
+						True
+						),
+				("domdf_python_tools/**/*.py", "domdf_python_tools/domdf_python_tools/pagesizes/units.py", True),
+				]
+		)
+def test_globpath(pattern, filename, match: bool):
+	assert matchglob(filename, pattern) is match
