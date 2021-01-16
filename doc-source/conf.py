@@ -72,6 +72,7 @@ intersphinx_mapping = {
 		"pandas": ("https://pandas.pydata.org/docs/", None),
 		"consolekit": ("https://consolekit.readthedocs.io/en/latest/", None),
 		"pytest": ("https://docs.pytest.org/en/stable", None),
+		"pytest-regressions": ("https://pytest-regressions.readthedocs.io/en/latest/", None),
 		}
 
 html_theme = "domdf_sphinx_theme"

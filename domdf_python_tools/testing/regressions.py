@@ -56,7 +56,8 @@ def check_file_regression(
 	:param data:
 	:param file_regression: The file regression fixture for the test.
 	:param extension: The extension of the reference file.
-	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
+	:param \*\*kwargs: Additional keyword arguments passed to
+		:meth:`pytest_regressions.file_regression.FileRegressionFixture.check`.
 	"""
 
 	__tracebackhide__ = True
