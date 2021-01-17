@@ -695,7 +695,7 @@ def test_iterchildren_match(data_regression: DataRegressionFixture):
 
 	child_paths = sorted(p.relative_to(repo_path).as_posix() for p in children)
 
-	for exclude_filename in {".coverage", "pathtype_demo.py", "dist", "htmlcov", "conda", ".idea", "mutdef"}:
+	for exclude_filename in {".coverage", "pathtype_demo.py", "dist", "htmlcov", "conda", ".idea", "mutdef.py"}:
 		if exclude_filename in child_paths:
 			child_paths.remove(exclude_filename)
 

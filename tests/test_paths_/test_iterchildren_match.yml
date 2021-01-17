@@ -1,5 +1,4 @@
 - .bumpversion.cfg
-- .ci
 - .dependabot
 - .github
 - .gitignore
@@ -47,7 +46,6 @@
 - domdf_python_tools/utils.py
 - domdf_python_tools/versions.py
 - domdf_python_tools/words.py
-- mutdef.py
 - pyproject.toml
 - repo_helper.yml
 - requirements.txt
