@@ -3,7 +3,6 @@
 - .dependabot
 - .github
 - .gitignore
-- .idea
 - .imgbotconfig
 - .isort.cfg
 - .pre-commit-config.yaml
@@ -15,8 +14,6 @@
 - MANIFEST.in
 - README.rst
 - __pkginfo__.py
-- conda
-- dist
 - doc-source
 - doc-source/conf.py
 - doc-source/patched_autosummary.py
@@ -50,7 +47,6 @@
 - domdf_python_tools/utils.py
 - domdf_python_tools/versions.py
 - domdf_python_tools/words.py
-- htmlcov
 - mutdef.py
 - pyproject.toml
 - repo_helper.yml
