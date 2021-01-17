@@ -668,7 +668,7 @@ def test_iterchildren(data_regression: DataRegressionFixture):
 
 	children = list((repo_path / "domdf_python_tools").iterchildren())
 	assert children
-	data_regression.check([p.relative_to(repo_path).as_posix() for p in children])
+	data_regression.check(sorted(p.relative_to(repo_path).as_posix() for p in children))
 
 
 def test_iterchildren_exclusions():
@@ -692,8 +692,8 @@ def test_iterchildren_match(data_regression: DataRegressionFixture):
 
 	children = list(repo_path.iterchildren(match="**/*.py"))
 	assert children
-	
-	child_paths = [p.relative_to(repo_path).as_posix() for p in children]
+
+	child_paths = sorted(p.relative_to(repo_path).as_posix() for p in children)
 
 	for exclude_filename in {".coverage", "pathtype_demo.py"}:
 		if exclude_filename in child_paths:
