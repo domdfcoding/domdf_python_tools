@@ -9,6 +9,7 @@ Test functions in dates.py
 # stdlib
 import re
 from datetime import date, datetime, timedelta
+from typing import Union
 
 # 3rd party
 import pytest
@@ -177,7 +178,7 @@ def test_parse_month():
 
 
 @pytest.mark.parametrize("month_idx, month", enumerate(month_full_names))
-def test_get_month_number_from_name(month_idx, month):
+def test_get_month_number_from_name(month_idx: int, month: str):
 	month_idx += 1  # to make 1-indexed
 
 	for i in range(3, len(month)):
@@ -189,7 +190,7 @@ def test_get_month_number_from_name(month_idx, month):
 
 
 @count(13, 1)
-def test_get_month_number_from_no(count):
+def test_get_month_number_from_no(count: int):
 	assert dates.get_month_number(count) == count
 
 
@@ -205,7 +206,7 @@ def test_get_month_number_from_no(count):
 				("13", "The given month ('13') is not recognised."),
 				]
 		)
-def test_get_month_number_errors(value, match):
+def test_get_month_number_errors(value: Union[str, int], match: str):
 	with pytest.raises(ValueError, match=re.escape(match)):
 		dates.get_month_number(value)
 

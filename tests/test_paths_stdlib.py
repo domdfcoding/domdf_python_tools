@@ -69,7 +69,7 @@ with_symlinks = unittest.skipIf(symlink_skip_reason, symlink_skip_reason)  # typ
 
 
 @pytest.fixture()
-def BASE(tmp_pathplus):
+def BASE(tmp_pathplus: PathPlus):
 	top_dir = tmp_pathplus
 	tmp_pathplus = top_dir / "a/b/c/d"
 	tmp_pathplus.maybe_make(parents=True)
@@ -276,7 +276,7 @@ def test_link_to_not_implemented(BASE):
 		p.link_to(q)
 
 
-def test_rename(BASE, tmp_pathplus):
+def test_rename(BASE, tmp_pathplus: PathPlus):
 	P = PathPlus(BASE)
 	p = P / "fileA"
 	size = p.stat().st_size
@@ -558,7 +558,7 @@ def test_is_socket_false(BASE):
 	assert not (P / "fileA" / "bah").is_socket()
 
 
-def test_is_block_device_false(tmp_pathplus):
+def test_is_block_device_false(tmp_pathplus: PathPlus):
 	P = tmp_pathplus.resolve() / TESTFN
 	assert not (P / "fileA").is_block_device()
 	assert not (P / "dirA").is_block_device()
@@ -566,7 +566,7 @@ def test_is_block_device_false(tmp_pathplus):
 	assert not (P / "fileA" / "bah").is_block_device()
 
 
-def test_is_char_device_false(tmp_pathplus):
+def test_is_char_device_false(tmp_pathplus: PathPlus):
 	P = tmp_pathplus.resolve() / TESTFN
 	assert not (P / "fileA").is_char_device()
 	assert not (P / "dirA").is_char_device()
@@ -609,7 +609,7 @@ def test_unsupported_flavour():
 			pathlib.WindowsPath()
 
 
-def test_glob_empty_pattern(tmp_pathplus):
+def test_glob_empty_pattern(tmp_pathplus: PathPlus):
 	p = tmp_pathplus
 	with pytest.raises(ValueError, match="Unacceptable pattern"):
 		list(p.glob(''))

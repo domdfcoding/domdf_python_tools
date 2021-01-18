@@ -612,7 +612,7 @@ def test_load_json(tmpdir):
 	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}
 
 
-def test_in_directory(tmp_pathplus):
+def test_in_directory(tmp_pathplus: PathPlus):
 	cwd = os.getcwd()
 
 	with in_directory(tmp_pathplus):
@@ -638,7 +638,7 @@ def test_in_directory(tmp_pathplus):
 				("foo/bar/baz/foo.yml", "foo/bar/baz"),
 				]
 		)
-def test_traverse_to_file(tmp_pathplus, location, expected):
+def test_traverse_to_file(tmp_pathplus: PathPlus, location: str, expected: str):
 	(tmp_pathplus / location).parent.maybe_make(parents=True)
 	(tmp_pathplus / location).touch()
 	assert traverse_to_file(tmp_pathplus / "foo" / "bar" / "baz", "foo.yml") == tmp_pathplus / expected
@@ -647,7 +647,7 @@ def test_traverse_to_file(tmp_pathplus, location, expected):
 # TODO: height
 
 
-def test_traverse_to_file_errors(tmp_pathplus):
+def test_traverse_to_file_errors(tmp_pathplus: PathPlus):
 	(tmp_pathplus / "foo/bar/baz").parent.maybe_make(parents=True)
 	if os.sep == '/':
 		with pytest.raises(FileNotFoundError, match="'foo.yml' not found in .*/foo/bar/baz"):
@@ -702,7 +702,7 @@ def test_iterchildren_match(data_regression: DataRegressionFixture):
 	data_regression.check(child_paths)
 
 
-def test_iterchildren_no_exclusions(tmp_pathplus):
+def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 	(tmp_pathplus / ".git").mkdir()
 	(tmp_pathplus / "venv").mkdir()
 	(tmp_pathplus / ".venv").mkdir()
@@ -800,5 +800,5 @@ def test_iterchildren_no_exclusions(tmp_pathplus):
 				("domdf_python_tools/**/*.py", "domdf_python_tools/domdf_python_tools/pagesizes/units.py", True),
 				]
 		)
-def test_globpath(pattern, filename, match: bool):
+def test_globpath(pattern: str, filename: str, match: bool):
 	assert matchglob(filename, pattern) is match

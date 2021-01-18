@@ -210,15 +210,12 @@ def test_only_macos():
 		assert False  # noqa: PT015
 
 
-pytest_plugins = ("domdf_python_tools.testing", )
-
-
-def test_tmp_pathplus(tmp_pathplus):
+def test_tmp_pathplus(tmp_pathplus: PathPlus):
 	assert isinstance(tmp_pathplus, PathPlus)
 	assert tmp_pathplus.exists()
 
 
-def test_check_file_output(tmp_pathplus, file_regression: FileRegressionFixture):
+def test_check_file_output(tmp_pathplus: PathPlus, file_regression: FileRegressionFixture):
 	with pytest.raises(FileNotFoundError, match="No such file or directory: '.*'"):
 		check_file_output(tmp_pathplus / "file.txt", file_regression)
 
@@ -248,7 +245,7 @@ def test_fixed_datetime(fixed_datetime):
 				pytest.param(datetime.datetime(2020, 7, 4, 10, 00), datetime.datetime(2020, 7, 4), id='1'),
 				]
 		)
-def test_with_fixed_datetime(fake_datetime, expected_date):
+def test_with_fixed_datetime(fake_datetime, expected_date: datetime.datetime):
 
 	with with_fixed_datetime(fake_datetime):
 		assert datetime.datetime.today() == expected_date

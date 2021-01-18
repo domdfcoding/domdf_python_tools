@@ -3,6 +3,7 @@ import decimal
 import pathlib
 import random
 import string
+from typing import List
 
 # 3rd party
 import pytest
@@ -24,7 +25,7 @@ from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, Plural, alpha_sort, g
 				(500, ["tuning", "knowledgestorm", "backing", "motivation", "calculated"]),
 				],
 		)
-def test_get_random_word(seed, expected_values):
+def test_get_random_word(seed: int, expected_values: List[str]):
 	random.seed(seed)
 
 	for i in range(5):
