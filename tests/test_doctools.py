@@ -16,8 +16,8 @@ import pytest
 # this package
 from domdf_python_tools import doctools
 from domdf_python_tools.bases import Dictable
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.doctools import (
-		PYPY,
 		base_int_docstrings,
 		base_new_docstrings,
 		container_docstrings,

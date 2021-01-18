@@ -690,6 +690,9 @@ def test_iterchildren_match(data_regression: DataRegressionFixture):
 	repo_path = PathPlus(__file__).parent.parent
 	assert repo_path.is_dir()
 
+	if (repo_path / "build").is_dir():
+		shutil.rmtree(repo_path / "build")
+
 	children = list(repo_path.iterchildren(match="**/*.py"))
 	assert children
 
@@ -802,3 +805,40 @@ def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 		)
 def test_globpath(pattern: str, filename: str, match: bool):
 	assert matchglob(filename, pattern) is match
+
+
+def test_abspath(tmp_pathplus: PathPlus):
+	assert (tmp_pathplus / "foo" / "bar" / "baz" / "..").abspath() == tmp_pathplus / "foo" / "bar"
+
+	file = tmp_pathplus / "foo" / "bar.py"
+	file.parent.mkdir(parents=True)
+	file.write_text("I'm the original")
+
+	link = tmp_pathplus / "baz.py"
+	os.symlink(file, link)
+
+	assert link.read_text() == "I'm the original"
+	assert link.is_symlink()
+	assert link.resolve() == file
+	assert link.abspath() == link
+
+	file.unlink()
+	file.parent.rmdir()
+
+	assert isinstance((tmp_pathplus / "foo" / "bar" / "baz" / "..").abspath(), PathPlus)
+
+
+def test_abspath_dotted(tmp_pathplus: PathPlus):
+
+	file = tmp_pathplus / "baz.py"
+	file.write_text("I'm the original")
+
+	link = tmp_pathplus / "bar" / "foo.py"
+	link.parent.mkdir(parents=True)
+
+	os.symlink(os.path.join(link.parent, "..", "baz.py"), link)
+
+	assert link.read_text() == "I'm the original"
+	assert link.is_symlink()
+	assert link.resolve() == file
+	assert link.abspath() == link

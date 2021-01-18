@@ -62,6 +62,7 @@
 - tests/mypy_test.py
 - tests/seq_tests.py
 - tests/test_bases.py
+- tests/test_compat.py
 - tests/test_dates.py
 - tests/test_delegators.py
 - tests/test_doctools.py

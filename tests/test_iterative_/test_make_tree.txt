@@ -1,9 +1,10 @@
-└── apeye>=0.3.0
-    ├── appdirs>=1.4.4
-    └── cachecontrol[filecache]>=0.12.6
-        ├── requests
-        │   ├── chardet<4,>=3.0.2
-        │   ├── idna<3,>=2.5
-        │   ├── urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
-        │   └── certifi>=2017.4.17
-        └── msgpack>=0.5.2
+├── apeye>=0.3.0
+│   ├── appdirs>=1.4.4
+│   └── cachecontrol[filecache]>=0.12.6
+│       ├── requests
+│       │   ├── chardet<4,>=3.0.2
+│       │   ├── idna<3,>=2.5
+│       │   ├── urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
+│       │   └── certifi>=2017.4.17
+│       └── msgpack>=0.5.2
+└── domdf_python_tools==2.2.0

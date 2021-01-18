@@ -6,7 +6,7 @@ from textwrap import dedent
 import pytest
 
 # this package
-from domdf_python_tools.stringlist import Indent, StringList
+from domdf_python_tools.stringlist import DelimitedList, Indent, StringList
 
 
 class TestStringList:
@@ -515,3 +515,23 @@ class TestIndent:
 	def test_pickle(self):
 		indent = Indent(2, "    ")
 		assert indent == pickle.loads(pickle.dumps(indent))  # nosec: B301
+
+
+def test_delimitedlist():
+	data = DelimitedList(['a', 'b', 'c', 'd', 'e'])
+
+	assert data.__format__(", ") == "a, b, c, d, e"
+	assert data.__format__("; ") == "a; b; c; d; e"
+	assert data.__format__(';') == "a;b;c;d;e"
+	assert data.__format__('\n') == "a\nb\nc\nd\ne"
+
+	assert f"{data:, }" == "a, b, c, d, e"
+	assert f"{data:; }" == "a; b; c; d; e"
+	assert f"{data:;}" == "a;b;c;d;e"
+	assert f"{data:\n}" == "a\nb\nc\nd\ne"
+
+	# TODO: this is a mypy issue
+	assert f"{data:, }" == "a, b, c, d, e"  # type: ignore
+	assert f"{data:; }" == "a; b; c; d; e"
+	assert f"{data:;}" == "a;b;c;d;e"  # type: ignore
+	assert f"{data:\n}" == "a\nb\nc\nd\ne"  # type: ignore

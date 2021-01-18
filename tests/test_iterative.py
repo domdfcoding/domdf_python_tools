@@ -147,7 +147,8 @@ def test_make_tree(file_regression: FileRegressionFixture):
 													],
 											"msgpack>=0.5.2",
 											],
-									]
+									],
+							"domdf_python_tools==2.2.0",
 							])
 					),
 			file_regression

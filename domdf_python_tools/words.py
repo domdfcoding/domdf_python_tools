@@ -45,7 +45,7 @@ from typing import Any, Dict, Iterable, List, Optional
 
 # this package
 import domdf_python_tools
-from domdf_python_tools.compat import importlib_resources
+from domdf_python_tools.compat import PYPY, importlib_resources
 from domdf_python_tools.doctools import prettify_docstrings
 
 __all__ = [
@@ -601,7 +601,7 @@ class Plural(functools.partial):
 			:param n:
 			"""
 
-	if platform.python_implementation() == "PyPy":
+	elif PYPY:  # pragma: no cover (!CPython)
 
 		def __init__(self, singular: str, plural: str):
 			super().__init__(ngettext, singular, plural)
