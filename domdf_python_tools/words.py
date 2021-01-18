@@ -601,7 +601,7 @@ class Plural(functools.partial):
 			:param n:
 			"""
 
-	elif PYPY:  # pragma: no cover (!CPython)
+	if PYPY:  # pragma: no cover (!CPython)
 
 		def __init__(self, singular: str, plural: str):
 			super().__init__(ngettext, singular, plural)
