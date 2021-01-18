@@ -777,7 +777,7 @@ class PathPlus(pathlib.Path):
 		if exclude_dirs is None:
 			exclude_dirs = ()
 
-		if match and not os.path.isabs(match):
+		if match and not os.path.isabs(match) and self.is_absolute():
 			match = (self / match).as_posix()
 
 		file: _PP

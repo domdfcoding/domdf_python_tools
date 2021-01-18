@@ -686,23 +686,31 @@ def test_iterchildren_exclusions():
 		assert directory.parts[0] not in paths.unwanted_dirs
 
 
-def test_iterchildren_match(data_regression: DataRegressionFixture):
+@pytest.mark.parametrize("absolute", [True, False])
+def test_iterchildren_match(data_regression: DataRegressionFixture, absolute: bool):
 	repo_path = PathPlus(__file__).parent.parent
-	assert repo_path.is_dir()
+	with in_directory(repo_path.parent):
 
-	if (repo_path / "build").is_dir():
-		shutil.rmtree(repo_path / "build")
+		assert repo_path.is_dir()
 
-	children = list(repo_path.iterchildren(match="**/*.py"))
-	assert children
+		if not absolute:
+			repo_path = repo_path.relative_to(repo_path.parent)
 
-	child_paths = sorted(p.relative_to(repo_path).as_posix() for p in children)
+		if (repo_path / "build").is_dir():
+			shutil.rmtree(repo_path / "build")
 
-	for exclude_filename in {".coverage", "pathtype_demo.py", "dist", "htmlcov", "conda", ".idea", "mutdef.py"}:
-		if exclude_filename in child_paths:
-			child_paths.remove(exclude_filename)
+		children = list(repo_path.iterchildren(match="**/*.py"))
+		assert children
 
-	data_regression.check(child_paths)
+		child_paths = sorted(p.relative_to(repo_path).as_posix() for p in children)
+
+		for exclude_filename in {
+				".coverage", "pathtype_demo.py", "dist", "htmlcov", "conda", ".idea", "mutdef.py"
+				}:
+			if exclude_filename in child_paths:
+				child_paths.remove(exclude_filename)
+
+		data_regression.check(child_paths, basename="test_iterchildren_match")
 
 
 def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
