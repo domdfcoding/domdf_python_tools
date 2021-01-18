@@ -72,3 +72,6 @@ tox_testenv_extras: all
 
 additional_ignore:
  - pathtype_demo.py
+
+exclude_files:
+ - rtfd
