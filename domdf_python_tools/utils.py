@@ -22,6 +22,12 @@ General utility functions.
 	:func:`~domdf_python_tools.iterative.Len`, and
 	:func:`~domdf_python_tools.iterative.double_chain`
 	moved to :func:`domdf_python_tools.iterative`.
+
+.. versionchanged:: 2.3.0
+
+	Removed :func:`domdf_python_tools.utils.deprecated`.
+	Use the new `deprecation-alias <https://pypi.org/project/deprecation-alias/>`_ package instead.
+
 """
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -40,10 +46,6 @@ General utility functions.
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
-#
-#  check_dependencies based on https://stackoverflow.com/a/29044693/3092681
-#  		Copyright © 2015 TehTechGuy
-# 		Licensed under CC-BY-SA
 #
 #  as_text from https://stackoverflow.com/a/40935194
 # 		Copyright © 2016 User3759685
@@ -65,12 +67,8 @@ from math import log10
 from pprint import pformat
 from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
-# 3rd party
-from deprecation_alias import deprecated
-
 # this package
 import domdf_python_tools.words
-from domdf_python_tools import __version__
 from domdf_python_tools.typing import HasHead, String
 
 if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
@@ -96,7 +94,6 @@ __all__ = [
 		"convert_indents",
 		"etc",
 		"head",
-		"deprecated",
 		"magnitude",
 		"trim_precision",
 		]
@@ -337,14 +334,6 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 
 	else:
 		return str(obj[:n]) + etc  # type: ignore
-
-
-deprecated = deprecated(
-	deprecated_in="2.0.0",
-	removed_in="2.3.0",
-	current_version=__version__,
-	details="Use the new 'deprecation-alias' package instead."
-	)(deprecated)  # yapf: disable
 
 
 def magnitude(x: float) -> int:
