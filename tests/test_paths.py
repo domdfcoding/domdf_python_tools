@@ -801,6 +801,17 @@ def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 						True
 						),
 				("domdf_python_tools/**/*.py", "domdf_python_tools/domdf_python_tools/pagesizes/units.py", True),
+				("**/*.py", ".pre-commit-config.yaml", False),
+				("**/*.yaml", ".pre-commit-config.yaml", True),
+				("./**/*.py", ".pre-commit-config.yaml", False),
+				("./**/*.yaml", ".pre-commit-config.yaml", True),
+				("foo/**/**/bar.py", "foo/bar.py", True),
+				("foo/**/**/bar.py", "foo/baz/bar.py", True),
+				("foo/**/**/bar.py", "foo/baz/baz/bar.py", True),
+				("foo/**/**", "foo/", True),
+				("foo/**/**", "foo/bar.py", True),
+				("foo/**/**", "foo/baz/bar.py", True),
+				("foo/**/**", "foo/baz/baz/bar.py", True),
 				]
 		)
 def test_globpath(pattern: str, filename: str, match: bool):

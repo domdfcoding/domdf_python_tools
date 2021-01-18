@@ -863,7 +863,7 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 	raise FileNotFoundError(f"'{filename[0]!s}' not found in {base_directory}")
 
 
-def matchglob(filename: PathLike, pattern):
+def matchglob(filename: PathLike, pattern: str):
 	"""
 	Given a filename and a glob pattern, return whether the filename matches the glob.
 
@@ -899,11 +899,18 @@ def matchglob(filename: PathLike, pattern):
 			filename_part = filename_parts.popleft()
 
 		if pattern_part == "**":
-			if not pattern_parts or not filename_parts:
+			if not pattern_parts:
 				return True
 
 			while pattern_part == "**":
+				if not pattern_parts:
+					return True
+
 				pattern_part = pattern_parts.popleft()
+
+			if pattern_parts and not filename_parts:
+				# Filename must match everything after **
+				return False
 
 			if fnmatch.fnmatchcase(filename_part, pattern_part):
 				continue
