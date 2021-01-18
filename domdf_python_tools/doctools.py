@@ -28,12 +28,12 @@ Utilities for documenting functions, classes and methods.
 
 # stdlib
 import builtins
-import platform
 from inspect import cleandoc
 from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
 # this package
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
@@ -49,7 +49,6 @@ __all__ = [
 		]
 
 F = TypeVar('F', bound=Callable[..., Any])
-PYPY = platform.python_implementation() == "PyPy"
 
 
 def deindent_string(string: Optional[str]) -> str:

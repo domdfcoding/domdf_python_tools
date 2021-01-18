@@ -38,7 +38,7 @@ import pytest  # nodep
 from _pytest.mark import MarkDecorator  # nodep
 
 # this package
-from domdf_python_tools.doctools import PYPY
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.testing.utils import is_docker
 from domdf_python_tools.versions import Version
 

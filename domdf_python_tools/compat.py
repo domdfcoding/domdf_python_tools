@@ -40,13 +40,14 @@ Provides the following:
 #
 
 # stdlib
+import platform
 import sys
 from typing import TYPE_CHECKING, ContextManager, Optional, TypeVar
 
 # this package
 import domdf_python_tools
 
-__all__ = ["importlib_resources", "importlib_metadata", "nullcontext"]
+__all__ = ["importlib_resources", "importlib_metadata", "nullcontext", "PYPY"]
 
 if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
 	# 3rd party
@@ -103,3 +104,10 @@ if sys.version_info < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # p
 else:  # pragma: no cover (<py37)
 	# stdlib
 	from contextlib import nullcontext
+
+PYPY = platform.python_implementation() == "PyPy"
+"""
+:py:obj:`True` if running on PyPy rather than CPython.
+
+.. versionadded:: 2.3.0
+"""
