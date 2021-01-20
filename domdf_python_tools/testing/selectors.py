@@ -159,7 +159,7 @@ def platform_boolean_factory(
 	.. versionchanged: 1.7.1  Added the ``module`` keyword-only argument.
 	"""
 
-	default_reason = "{} required on Windows"
+	default_reason = f"{{}} required on {platform}"
 	module = module or platform_boolean_factory.__module__
 
 	def not_function(reason: str = default_reason.format("Not")) -> MarkDecorator:
