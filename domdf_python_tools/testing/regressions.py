@@ -10,7 +10,7 @@ Regression test helpers.
 .. versionadded:: 2.2.0
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published by
@@ -87,7 +87,8 @@ def check_file_output(
 	:param extension: The extension of the reference file.
 		If :py:obj:`None` the extension is determined from ``filename``.
 	:param newline: Controls how universal newlines mode works. See :func:`open`.
-	:param \*\*kwargs: Additional keyword arguments passed to :meth:`.FileRegressionFixture.check`.
+	:param \*\*kwargs: Additional keyword arguments passed to
+		:meth:`pytest_regressions.file_regression.FileRegressionFixture.check`.
 
 	.. versionchanged:: 1.7.1  Changed the default for ``newline`` to ``'\n'``.
 	"""

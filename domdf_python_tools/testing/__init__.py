@@ -8,6 +8,12 @@ Handy functions for testing code.
 	:__pkginfo__:
 
 .. versionadded:: 0.4.9
+
+.. attention::
+
+	:mod:`domdf_python_tools.testing` is deprecated since v2.4.0 and will be removed in v3.0.0.
+	Use the new `coincidence <https://coincidence.readthedocs.io/en/latest/api/utils.html>`_ package instead,
+	which has everything this module provides, and more!
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
