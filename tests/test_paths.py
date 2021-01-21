@@ -34,136 +34,128 @@ from domdf_python_tools.paths import (
 from domdf_python_tools.testing import not_pypy, not_windows
 
 
-def test_maybe_make():
-	with TemporaryDirectory() as tmpdir:
-		test_dir = pathlib.Path(tmpdir) / "maybe_make"
+def test_maybe_make(tmp_pathplus):
+	test_dir = tmp_pathplus / "maybe_make"
 
-		assert test_dir.exists() is False
+	assert test_dir.exists() is False
 
-		# Maybe make the directory
+	# Maybe make the directory
+	paths.maybe_make(test_dir)
+
+	assert test_dir.exists()
+
+	# Maybe make the directory
+	paths.maybe_make(test_dir)
+
+	assert test_dir.exists()
+
+	# Delete the directory and replace with a file
+	test_dir.rmdir()
+	assert test_dir.exists() is False
+	test_dir.touch()
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+	paths.maybe_make(test_dir)
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+
+def test_maybe_make_pathplus(tmp_pathplus):
+	test_dir = tmp_pathplus / "maybe_make"
+
+	assert test_dir.exists() is False
+
+	# Maybe make the directory
+	test_dir.maybe_make()
+
+	assert test_dir.exists()
+
+	# Maybe make the directory
+	test_dir.maybe_make()
+
+	assert test_dir.exists()
+
+	# Delete the directory and replace with a file
+	test_dir.rmdir()
+	assert test_dir.exists() is False
+	test_dir.touch()
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+	test_dir.maybe_make()
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+
+def test_maybe_make_string(tmp_pathplus):
+	test_dir = tmp_pathplus / "maybe_make"
+
+	assert test_dir.exists() is False
+
+	# Maybe make the directory
+	paths.maybe_make(str(test_dir))
+
+	assert test_dir.exists()
+
+	# Maybe make the directory
+	paths.maybe_make(str(test_dir))
+
+	assert test_dir.exists()
+
+	# Delete the directory and replace with a file
+	test_dir.rmdir()
+	assert not test_dir.exists()
+	test_dir.touch()
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+	paths.maybe_make(str(test_dir))
+	assert test_dir.exists()
+	assert test_dir.is_file()
+
+
+def test_maybe_make_parents(tmp_pathplus):
+	test_dir = tmp_pathplus / "maybe_make" / "child1" / "child2"
+
+	assert test_dir.exists() is False
+
+	# Without parents=True should raise an error
+
+	with pytest.raises(FileNotFoundError):
 		paths.maybe_make(test_dir)
 
-		assert test_dir.exists()
+	# Maybe make the directory
+	paths.maybe_make(test_dir, parents=True)
 
-		# Maybe make the directory
-		paths.maybe_make(test_dir)
-
-		assert test_dir.exists()
-
-		# Delete the directory and replace with a file
-		test_dir.rmdir()
-		assert test_dir.exists() is False
-		test_dir.touch()
-		assert test_dir.exists()
-		assert test_dir.is_file()
-
-		paths.maybe_make(test_dir)
-		assert test_dir.exists()
-		assert test_dir.is_file()
+	assert test_dir.exists()
 
 
-def test_maybe_make_pathplus():
-	with TemporaryDirectory() as tmpdir:
-		test_dir = PathPlus(tmpdir) / "maybe_make"
+def test_maybe_make_parents_pathplus(tmp_pathplus):
+	test_dir = tmp_pathplus / "maybe_make" / "child1" / "child2"
 
-		assert test_dir.exists() is False
+	assert test_dir.exists() is False
 
-		# Maybe make the directory
+	# Without parents=True should raise an error
+
+	with pytest.raises(FileNotFoundError):
 		test_dir.maybe_make()
 
-		assert test_dir.exists()
+	# Maybe make the directory
+	test_dir.maybe_make(parents=True)
 
-		# Maybe make the directory
-		test_dir.maybe_make()
-
-		assert test_dir.exists()
-
-		# Delete the directory and replace with a file
-		test_dir.rmdir()
-		assert test_dir.exists() is False
-		test_dir.touch()
-		assert test_dir.exists()
-		assert test_dir.is_file()
-
-		test_dir.maybe_make()
-		assert test_dir.exists()
-		assert test_dir.is_file()
+	assert test_dir.exists()
 
 
-def test_maybe_make_string():
-	with TemporaryDirectory() as tmpdir:
-		test_dir = pathlib.Path(tmpdir) / "maybe_make"
+def test_parent_path(tmp_pathplus):
+	dir1 = tmp_pathplus / "dir1"
+	dir2 = dir1 / "dir2"
+	dir3 = dir2 / "dir3"
 
-		assert test_dir.exists() is False
-
-		# Maybe make the directory
-		paths.maybe_make(str(test_dir))
-
-		assert test_dir.exists()
-
-		# Maybe make the directory
-		paths.maybe_make(str(test_dir))
-
-		assert test_dir.exists()
-
-		# Delete the directory and replace with a file
-		test_dir.rmdir()
-		assert not test_dir.exists()
-		test_dir.touch()
-		assert test_dir.exists()
-		assert test_dir.is_file()
-
-		paths.maybe_make(str(test_dir))
-		assert test_dir.exists()
-		assert test_dir.is_file()
-
-
-def test_maybe_make_parents():
-	with TemporaryDirectory() as tmpdir:
-		test_dir = pathlib.Path(tmpdir) / "maybe_make" / "child1" / "child2"
-
-		assert test_dir.exists() is False
-
-		# Without parents=True should raise an error
-
-		with pytest.raises(FileNotFoundError):
-			paths.maybe_make(test_dir)
-
-		# Maybe make the directory
-		paths.maybe_make(test_dir, parents=True)
-
-		assert test_dir.exists()
-
-
-def test_maybe_make_parents_pathplus():
-	with TemporaryDirectory() as tmpdir:
-		test_dir = PathPlus(tmpdir) / "maybe_make" / "child1" / "child2"
-
-		assert test_dir.exists() is False
-
-		# Without parents=True should raise an error
-
-		with pytest.raises(FileNotFoundError):
-			test_dir.maybe_make()
-
-		# Maybe make the directory
-		test_dir.maybe_make(parents=True)
-
-		assert test_dir.exists()
-
-
-def test_parent_path():
-	with TemporaryDirectory() as tmpdir_:
-		tmpdir = pathlib.Path(tmpdir_)
-
-		dir1 = tmpdir / "dir1"
-		dir2 = dir1 / "dir2"
-		dir3 = dir2 / "dir3"
-
-		assert paths.parent_path(dir1) == tmpdir
-		assert paths.parent_path(dir2) == dir1
-		assert paths.parent_path(dir3) == dir2
-		assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
+	assert paths.parent_path(dir1) == tmp_pathplus
+	assert paths.parent_path(dir2) == dir1
+	assert paths.parent_path(dir3) == dir2
+	assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
 @not_windows("Needs special-casing for Windows")
@@ -230,40 +222,39 @@ class TestCurrentDirOperations:
 				pathlib.Path(file).unlink()
 
 
-def test_clean_writer():
-	with TemporaryDirectory() as tmpdir:
-		tempfile = pathlib.Path(tmpdir) / "tmpfile.txt"
+def test_clean_writer(tmp_pathplus):
+	tempfile = tmp_pathplus / "tmpfile.txt"
 
-		test_string = '\n'.join([
-				"Top line",
-				"    ",
-				"Line with whitespace   ",
-				"Line with tabs\t\t\t\t   ",
-				"No newline at end of file",
-				])
+	test_string = '\n'.join([
+			"Top line",
+			"    ",
+			"Line with whitespace   ",
+			"Line with tabs\t\t\t\t   ",
+			"No newline at end of file",
+			])
 
-		with tempfile.open('w') as fp:
-			clean_writer(test_string, fp)
+	with tempfile.open('w') as fp:
+		clean_writer(test_string, fp)
 
-		assert tempfile.read_text() == """Top line
+	assert tempfile.read_text() == """Top line
 
 Line with whitespace
 Line with tabs
 No newline at end of file
 """
-		# Again with lots of newlines
-		test_string = '\n'.join([
-				"Top line",
-				"    ",
-				"Line with whitespace   ",
-				"Line with tabs\t\t\t\t   ",
-				"Too many newlines\n\n\n\n\n\n\n",
-				])
+	# Again with lots of newlines
+	test_string = '\n'.join([
+			"Top line",
+			"    ",
+			"Line with whitespace   ",
+			"Line with tabs\t\t\t\t   ",
+			"Too many newlines\n\n\n\n\n\n\n",
+			])
 
-		with tempfile.open('w') as fp:
-			clean_writer(test_string, fp)
+	with tempfile.open('w') as fp:
+		clean_writer(test_string, fp)
 
-		assert tempfile.read_text() == """Top line
+	assert tempfile.read_text() == """Top line
 
 Line with whitespace
 Line with tabs
@@ -302,12 +293,11 @@ Too many newlines
 							'',
 							]), ([], [''])]
 		)
-def test_pathplus_write_clean(input_string, output_string):
-	with TemporaryDirectory() as tmpdir:
-		tempfile = PathPlus(tmpdir) / "tmpfile.txt"
+def test_pathplus_write_clean(tmp_pathplus, input_string, output_string):
+	tempfile = tmp_pathplus / "tmpfile.txt"
 
-		tempfile.write_clean('\n'.join(input_string))
-		assert tempfile.read_text() == '\n'.join(output_string)
+	tempfile.write_clean('\n'.join(input_string))
+	assert tempfile.read_text() == '\n'.join(output_string)
 
 
 @not_pypy()
@@ -346,214 +336,197 @@ def test_instantiate_wrong_platform():
 			paths.WindowsPathPlus()
 
 
-def test_copytree():
-	with TemporaryDirectory() as tmpdir:
-		tmpdir_p = pathlib.Path(tmpdir)
+def test_copytree(tmp_pathplus):
+	srcdir = tmp_pathplus / "src"
+	srcdir.mkdir()
 
-		srcdir = tmpdir_p / "src"
-		srcdir.mkdir()
+	(srcdir / "root.txt").touch()
 
-		(srcdir / "root.txt").touch()
+	(srcdir / 'a').mkdir()
+	(srcdir / 'a' / "a.txt").touch()
+	(srcdir / 'b').mkdir()
+	(srcdir / 'b' / "b.txt").touch()
+	(srcdir / 'c').mkdir()
+	(srcdir / 'c' / "c.txt").touch()
 
-		(srcdir / 'a').mkdir()
-		(srcdir / 'a' / "a.txt").touch()
-		(srcdir / 'b').mkdir()
-		(srcdir / 'b' / "b.txt").touch()
-		(srcdir / 'c').mkdir()
-		(srcdir / 'c' / "c.txt").touch()
+	assert (srcdir / "root.txt").exists()
+	assert (srcdir / "root.txt").is_file()
+	assert (srcdir / 'a').exists()
+	assert (srcdir / 'a').is_dir()
+	assert (srcdir / 'a' / "a.txt").exists()
+	assert (srcdir / 'a' / "a.txt").is_file()
+	assert (srcdir / 'b').exists()
+	assert (srcdir / 'b').is_dir()
+	assert (srcdir / 'b' / "b.txt").exists()
+	assert (srcdir / 'b' / "b.txt").is_file()
+	assert (srcdir / 'c').exists()
+	assert (srcdir / 'c').is_dir()
+	assert (srcdir / 'c' / "c.txt").exists()
+	assert (srcdir / 'c' / "c.txt").is_file()
 
-		assert (srcdir / "root.txt").exists()
-		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / 'a').exists()
-		assert (srcdir / 'a').is_dir()
-		assert (srcdir / 'a' / "a.txt").exists()
-		assert (srcdir / 'a' / "a.txt").is_file()
-		assert (srcdir / 'b').exists()
-		assert (srcdir / 'b').is_dir()
-		assert (srcdir / 'b' / "b.txt").exists()
-		assert (srcdir / 'b' / "b.txt").is_file()
-		assert (srcdir / 'c').exists()
-		assert (srcdir / 'c').is_dir()
-		assert (srcdir / 'c' / "c.txt").exists()
-		assert (srcdir / 'c' / "c.txt").is_file()
+	destdir = tmp_pathplus / "dest"
+	destdir.mkdir()
 
-		destdir = tmpdir_p / "dest"
-		destdir.mkdir()
+	copytree(srcdir, destdir)
 
-		copytree(srcdir, destdir)
+	assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
 
-		assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
-
-		assert (destdir / "root.txt").exists()
-		assert (destdir / "root.txt").is_file()
-		assert (destdir / 'a').exists()
-		assert (destdir / 'a').is_dir()
-		assert (destdir / 'a' / "a.txt").exists()
-		assert (destdir / 'a' / "a.txt").is_file()
-		assert (destdir / 'b').exists()
-		assert (destdir / 'b').is_dir()
-		assert (destdir / 'b' / "b.txt").exists()
-		assert (destdir / 'b' / "b.txt").is_file()
-		assert (destdir / 'c').exists()
-		assert (destdir / 'c').is_dir()
-		assert (destdir / 'c' / "c.txt").exists()
-		assert (destdir / 'c' / "c.txt").is_file()
+	assert (destdir / "root.txt").exists()
+	assert (destdir / "root.txt").is_file()
+	assert (destdir / 'a').exists()
+	assert (destdir / 'a').is_dir()
+	assert (destdir / 'a' / "a.txt").exists()
+	assert (destdir / 'a' / "a.txt").is_file()
+	assert (destdir / 'b').exists()
+	assert (destdir / 'b').is_dir()
+	assert (destdir / 'b' / "b.txt").exists()
+	assert (destdir / 'b' / "b.txt").is_file()
+	assert (destdir / 'c').exists()
+	assert (destdir / 'c').is_dir()
+	assert (destdir / 'c' / "c.txt").exists()
+	assert (destdir / 'c' / "c.txt").is_file()
 
 
-def test_copytree_exists():
-	with TemporaryDirectory() as tmpdir:
-		tmpdir_p = pathlib.Path(tmpdir)
+def test_copytree_exists(tmp_pathplus):
+	srcdir = tmp_pathplus / "src"
+	srcdir.mkdir()
 
-		srcdir = tmpdir_p / "src"
-		srcdir.mkdir()
+	(srcdir / "root.txt").touch()
+	(srcdir / 'a').mkdir()
+	(srcdir / 'a' / "a.txt").touch()
+	(srcdir / 'b').mkdir()
+	(srcdir / 'b' / "b.txt").touch()
+	(srcdir / 'c').mkdir()
+	(srcdir / 'c' / "c.txt").touch()
 
-		(srcdir / "root.txt").touch()
-		(srcdir / 'a').mkdir()
-		(srcdir / 'a' / "a.txt").touch()
-		(srcdir / 'b').mkdir()
-		(srcdir / 'b' / "b.txt").touch()
-		(srcdir / 'c').mkdir()
-		(srcdir / 'c' / "c.txt").touch()
+	assert (srcdir / "root.txt").exists()
+	assert (srcdir / "root.txt").is_file()
+	assert (srcdir / 'a').exists()
+	assert (srcdir / 'a').is_dir()
+	assert (srcdir / 'a' / "a.txt").exists()
+	assert (srcdir / 'a' / "a.txt").is_file()
+	assert (srcdir / 'b').exists()
+	assert (srcdir / 'b').is_dir()
+	assert (srcdir / 'b' / "b.txt").exists()
+	assert (srcdir / 'b' / "b.txt").is_file()
+	assert (srcdir / 'c').exists()
+	assert (srcdir / 'c').is_dir()
+	assert (srcdir / 'c' / "c.txt").exists()
+	assert (srcdir / 'c' / "c.txt").is_file()
 
-		assert (srcdir / "root.txt").exists()
-		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / 'a').exists()
-		assert (srcdir / 'a').is_dir()
-		assert (srcdir / 'a' / "a.txt").exists()
-		assert (srcdir / 'a' / "a.txt").is_file()
-		assert (srcdir / 'b').exists()
-		assert (srcdir / 'b').is_dir()
-		assert (srcdir / 'b' / "b.txt").exists()
-		assert (srcdir / 'b' / "b.txt").is_file()
-		assert (srcdir / 'c').exists()
-		assert (srcdir / 'c').is_dir()
-		assert (srcdir / 'c' / "c.txt").exists()
-		assert (srcdir / 'c' / "c.txt").is_file()
+	destdir = tmp_pathplus / "dest"
+	destdir.mkdir()
 
-		destdir = tmpdir_p / "dest"
-		destdir.mkdir()
+	copytree(srcdir, destdir)
 
-		copytree(srcdir, destdir)
+	assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
 
-		assert set(os.listdir(srcdir)) == set(os.listdir(destdir))
-
-		assert (destdir / "root.txt").exists()
-		assert (destdir / "root.txt").is_file()
-		assert (destdir / 'a').exists()
-		assert (destdir / 'a').is_dir()
-		assert (destdir / 'a' / "a.txt").exists()
-		assert (destdir / 'a' / "a.txt").is_file()
-		assert (destdir / 'b').exists()
-		assert (destdir / 'b').is_dir()
-		assert (destdir / 'b' / "b.txt").exists()
-		assert (destdir / 'b' / "b.txt").is_file()
-		assert (destdir / 'c').exists()
-		assert (destdir / 'c').is_dir()
-		assert (destdir / 'c' / "c.txt").exists()
-		assert (destdir / 'c' / "c.txt").is_file()
+	assert (destdir / "root.txt").exists()
+	assert (destdir / "root.txt").is_file()
+	assert (destdir / 'a').exists()
+	assert (destdir / 'a').is_dir()
+	assert (destdir / 'a' / "a.txt").exists()
+	assert (destdir / 'a' / "a.txt").is_file()
+	assert (destdir / 'b').exists()
+	assert (destdir / 'b').is_dir()
+	assert (destdir / 'b' / "b.txt").exists()
+	assert (destdir / 'b' / "b.txt").is_file()
+	assert (destdir / 'c').exists()
+	assert (destdir / 'c').is_dir()
+	assert (destdir / 'c' / "c.txt").exists()
+	assert (destdir / 'c' / "c.txt").is_file()
 
 
 @pytest.mark.xfail(
 		condition=(sys.version_info < (3, 6, 9) and platform.python_implementation() == "PyPy"),
 		reason="Fails with unrelated error on PyPy 7.1.1 / 3.6.1",
 		)
-def test_copytree_exists_stdlib():
-	with TemporaryDirectory() as tmpdir:
-		tmpdir_p = pathlib.Path(tmpdir)
+def test_copytree_exists_stdlib(tmp_pathplus):
+	srcdir = tmp_pathplus / "src"
+	srcdir.mkdir()
 
-		srcdir = tmpdir_p / "src"
-		srcdir.mkdir()
+	(srcdir / "root.txt").touch()
+	(srcdir / 'a').mkdir()
+	(srcdir / 'a' / "a.txt").touch()
+	(srcdir / 'b').mkdir()
+	(srcdir / 'b' / "b.txt").touch()
+	(srcdir / 'c').mkdir()
+	(srcdir / 'c' / "c.txt").touch()
 
-		(srcdir / "root.txt").touch()
-		(srcdir / 'a').mkdir()
-		(srcdir / 'a' / "a.txt").touch()
-		(srcdir / 'b').mkdir()
-		(srcdir / 'b' / "b.txt").touch()
-		(srcdir / 'c').mkdir()
-		(srcdir / 'c' / "c.txt").touch()
+	assert (srcdir / "root.txt").exists()
+	assert (srcdir / "root.txt").is_file()
+	assert (srcdir / 'a').exists()
+	assert (srcdir / 'a').is_dir()
+	assert (srcdir / 'a' / "a.txt").exists()
+	assert (srcdir / 'a' / "a.txt").is_file()
+	assert (srcdir / 'b').exists()
+	assert (srcdir / 'b').is_dir()
+	assert (srcdir / 'b' / "b.txt").exists()
+	assert (srcdir / 'b' / "b.txt").is_file()
+	assert (srcdir / 'c').exists()
+	assert (srcdir / 'c').is_dir()
+	assert (srcdir / 'c' / "c.txt").exists()
+	assert (srcdir / 'c' / "c.txt").is_file()
 
-		assert (srcdir / "root.txt").exists()
-		assert (srcdir / "root.txt").is_file()
-		assert (srcdir / 'a').exists()
-		assert (srcdir / 'a').is_dir()
-		assert (srcdir / 'a' / "a.txt").exists()
-		assert (srcdir / 'a' / "a.txt").is_file()
-		assert (srcdir / 'b').exists()
-		assert (srcdir / 'b').is_dir()
-		assert (srcdir / 'b' / "b.txt").exists()
-		assert (srcdir / 'b' / "b.txt").is_file()
-		assert (srcdir / 'c').exists()
-		assert (srcdir / 'c').is_dir()
-		assert (srcdir / 'c' / "c.txt").exists()
-		assert (srcdir / 'c' / "c.txt").is_file()
+	destdir = tmp_pathplus / "dest"
+	destdir.mkdir()
 
-		destdir = tmpdir_p / "dest"
-		destdir.mkdir()
-
-		with pytest.raises(FileExistsError, match=r".*[\\/]dest"):
-			shutil.copytree(srcdir, destdir)
+	with pytest.raises(FileExistsError, match=r".*[\\/]dest"):
+		shutil.copytree(srcdir, destdir)
 
 
-def test_write_lines():
-	with TemporaryDirectory() as tmpdir:
-		tmpdir_p = PathPlus(tmpdir)
+def test_write_lines(tmp_pathplus):
+	tmp_file = tmp_pathplus / "test.txt"
 
-		tmp_file = tmpdir_p / "test.txt"
+	contents = [
+			"this   ",
+			"is",
+			'a',
+			"list",
+			"of",
+			"words",
+			"to",
+			"write\t\t\t",
+			"to",
+			"the",
+			"file",
+			]
 
-		contents = [
-				"this",
-				"is",
-				'a',
-				"list",
-				"of",
-				"words",
-				"to",
-				"write",
-				"to",
-				"the",
-				"file",
-				]
+	tmp_file.write_lines(contents)
 
-		tmp_file.write_lines(contents)
-
-		assert tmp_file.read_text(
-		) == dedent("""\
-		this
-		is
-		a
-		list
-		of
-		words
-		to
-		write
-		to
-		the
-		file
-		""")
+	content = tmp_file.read_text()
+	assert content == "this\nis\na\nlist\nof\nwords\nto\nwrite\nto\nthe\nfile\n"
 
 
-def test_read_lines(tmpdir):
-	tmpdir_p = PathPlus(tmpdir)
+def test_write_lines_trailing_whitespace(tmp_pathplus: PathPlus):
+	tmp_file = tmp_pathplus / "test.txt"
 
-	tmp_file = tmpdir_p / "test.txt"
+	contents = [
+			"this   ",
+			"is",
+			'a',
+			"list",
+			"of",
+			"words",
+			"to",
+			"write\t\t\t",
+			"to",
+			"the",
+			"file",
+			]
+	tmp_file.write_lines(contents, trailing_whitespace=True)
 
-	contents = dedent("""\
-	this
-	is
-	a
-	list
-	of
-	words
-	to
-	write
-	to
-	the
-	file
-	""")
+	content = tmp_file.read_text()
+	assert content == "this   \nis\na\nlist\nof\nwords\nto\nwrite\t\t\t\nto\nthe\nfile\n"
 
+
+def test_read_lines(tmp_pathplus: PathPlus):
+	tmp_file = tmp_pathplus / "test.txt"
+
+	contents = "this\nis\na\nlist\nof\nwords\nto\nwrite\nto\nthe\nfile\n"
 	tmp_file.write_text(contents)
 
-	assert tmp_file.read_lines() == [
+	expected = [
 			"this",
 			"is",
 			'a',
@@ -567,6 +540,7 @@ def test_read_lines(tmpdir):
 			"file",
 			'',
 			]
+	assert tmp_file.read_lines() == expected
 
 
 def test_dump_json(tmpdir):

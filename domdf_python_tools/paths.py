@@ -982,9 +982,9 @@ class TemporaryPathPlus(tempfile.TemporaryDirectory):
 
 		context: ContextManager
 
-		if sys.platform == "win32":
+		if sys.platform == "win32":  # pragma: no cover (!Windows)
 			context = contextlib.suppress(PermissionError, NotADirectoryError)
-		else:
+		else:  # pragma: no cover (Windows)
 			context = nullcontext()
 
 		with context:
