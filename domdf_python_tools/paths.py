@@ -49,10 +49,12 @@ import pathlib
 import shutil
 import stat
 import sys
+import tempfile
 from collections import deque
-from typing import IO, Any, Callable, Iterable, Iterator, List, Optional, TypeVar, Union
+from typing import IO, Any, Callable, ContextManager, Iterable, Iterator, List, Optional, TypeVar, Union
 
 # this package
+from domdf_python_tools.compat import nullcontext
 from domdf_python_tools.typing import JsonLibrary, PathLike
 
 __all__ = [
@@ -75,6 +77,7 @@ __all__ = [
 		"traverse_to_file",
 		"matchglob",
 		"unwanted_dirs",
+		"TemporaryPathPlus",
 		]
 
 newline_default = object()
@@ -449,6 +452,8 @@ class PathPlus(pathlib.Path):
 			data: Iterable[str],
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
+			*,
+			trailing_whitespace: bool = False
 			) -> None:
 		"""
 		Write the given list of lines to the file without trailing whitespace.
@@ -458,9 +463,19 @@ class PathPlus(pathlib.Path):
 		:param data:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
+		:param trailing_whitespace: If :py:obj:`True` trailing whitespace is preserved.
+
+		.. versionchanged:: 2.4.0  Added the ``trailing_whitespace`` option.
 		"""
 
-		return self.write_clean('\n'.join(data), encoding=encoding, errors=errors)
+		if trailing_whitespace:
+			data = list(data)
+			if data[-1].strip():
+				data.append('')
+
+			self.write_text('\n'.join(data), encoding=encoding, errors=errors)
+		else:
+			self.write_clean('\n'.join(data), encoding=encoding, errors=errors)
 
 	def read_text(
 			self,
@@ -925,3 +940,52 @@ def matchglob(filename: PathLike, pattern: str):
 			continue
 		else:
 			return False
+
+
+class TemporaryPathPlus(tempfile.TemporaryDirectory):
+	"""
+	Securely creates a temporary directory using the same rules as :func:`tempfile.mkdtemp`.
+	The resulting object can be used as a context manager.
+	On completion of the context or destruction of the object
+	the newly created temporary directory and all its contents are removed from the filesystem.
+
+	Unlike :func:`tempfile.TemporaryDirectory` this class is based around a :class:`~.PathPlus` object.
+
+	.. versionadded:: 2.4.0
+	"""
+
+	name: PathPlus  # type: ignore
+	"""
+	The temporary directory itself.
+
+	This will be assigned to the target of the :keyword:`as` clause if the :class:`~.TemporaryPathPlus`
+	is used as a context manager.
+	"""
+
+	def __init__(
+			self,
+			suffix: Optional[str] = None,
+			prefix: Optional[str] = None,
+			dir: Optional[PathLike] = None,  # noqa: A002  # pylint: disable=redefined-builtin
+			) -> None:
+
+		super().__init__(suffix, prefix, dir)
+		self.name = PathPlus(self.name)
+
+	def cleanup(self) -> None:
+		"""
+		Cleanup the temporary directory by removing it and its contents.
+
+		If the :class:`~.TemporaryPathPlus` is used as a context manager
+		this is called when leaving the :keyword:`with` block.
+		"""
+
+		context: ContextManager
+
+		if sys.platform == "win32":
+			context = contextlib.suppress(PermissionError, NotADirectoryError)
+		else:
+			context = nullcontext()
+
+		with context:
+			super().cleanup()

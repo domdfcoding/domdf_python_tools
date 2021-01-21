@@ -22,7 +22,15 @@ from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools import paths
-from domdf_python_tools.paths import PathPlus, clean_writer, copytree, in_directory, matchglob, traverse_to_file
+from domdf_python_tools.paths import (
+		PathPlus,
+		TemporaryPathPlus,
+		clean_writer,
+		copytree,
+		in_directory,
+		matchglob,
+		traverse_to_file
+		)
 from domdf_python_tools.testing import not_pypy, not_windows
 
 
@@ -861,3 +869,16 @@ def test_abspath_dotted(tmp_pathplus: PathPlus):
 	assert link.is_symlink()
 	assert link.resolve() == file
 	assert link.abspath() == link
+
+
+def test_temporarypathplus():
+	with TemporaryPathPlus() as tmpdir:
+		assert isinstance(tmpdir, PathPlus)
+		assert tmpdir.exists()
+		assert tmpdir.is_dir()
+
+	t = TemporaryPathPlus()
+	assert isinstance(t.name, PathPlus)
+	assert t.name.exists()
+	assert t.name.is_dir()
+	t.cleanup()
