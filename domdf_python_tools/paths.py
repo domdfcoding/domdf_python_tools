@@ -774,6 +774,7 @@ class PathPlus(pathlib.Path):
 			self: _PP,
 			exclude_dirs: Optional[Iterable[str]] = unwanted_dirs,
 			match: Optional[str] = None,
+			matchcase: bool = True,
 			) -> Iterator[_PP]:
 		"""
 		Returns an iterator over all children (files and directories) of the current path object.
@@ -784,6 +785,11 @@ class PathPlus(pathlib.Path):
 			together with their children.
 		:param match: A pattern to match filenames against.
 			The pattern should be in the format taken by :func:`~.matchglob`.
+			:param matchcase: Whether the filename's case should match the pattern.
+
+		:rtype:
+
+		.. versionchanged:: 2.5.0  Added the ``matchcase`` option.
 		"""
 
 		if not self.is_dir():
@@ -801,11 +807,11 @@ class PathPlus(pathlib.Path):
 			if any(d in parts for d in exclude_dirs):
 				continue
 
+			if match is None or (match is not None and matchglob(file, match, matchcase)):
+				yield file
+
 			if file.is_dir():
 				yield from file.iterchildren(exclude_dirs, match)
-
-			if match is None or (match is not None and matchglob(file, match)):
-				yield file
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
@@ -878,7 +884,7 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 	raise FileNotFoundError(f"'{filename[0]!s}' not found in {base_directory}")
 
 
-def matchglob(filename: PathLike, pattern: str):
+def matchglob(filename: PathLike, pattern: str, matchcase: bool = True):
 	"""
 	Given a filename and a glob pattern, return whether the filename matches the glob.
 
@@ -888,11 +894,18 @@ def matchglob(filename: PathLike, pattern: str):
 	:param pattern: A pattern structured like a filesystem path, where each element consists of the glob syntax.
 		Each element is matched by :mod:`fnmatch`.
 		The special element ``**`` matches zero or more files or directories.
+	:param matchcase: Whether the filename's case should match the pattern.
+
+	:rtype:
 
 	.. seealso::
 
 		:wikipedia:`Glob (programming)#Syntax` on Wikipedia
+
+	.. versionchanged:: 2.5.0  Added the ``matchcase`` option.
 	"""
+
+	match_func = fnmatch.fnmatchcase if matchcase else fnmatch.fnmatch
 
 	filename = PathPlus(filename)
 
@@ -927,16 +940,16 @@ def matchglob(filename: PathLike, pattern: str):
 				# Filename must match everything after **
 				return False
 
-			if fnmatch.fnmatchcase(filename_part, pattern_part):
+			if match_func(filename_part, pattern_part):
 				continue
 			else:
-				while not fnmatch.fnmatchcase(filename_part, pattern_part):
+				while not match_func(filename_part, pattern_part):
 					if not filename_parts:
 						return False
 
 					filename_part = filename_parts.popleft()
 
-		elif fnmatch.fnmatchcase(filename_part, pattern_part):
+		elif match_func(filename_part, pattern_part):
 			continue
 		else:
 			return False
