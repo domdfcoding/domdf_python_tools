@@ -73,4 +73,4 @@ tox_testenv_extras: all
 additional_ignore:
  - pathtype_demo.py
 
-min_coverage: 98
+min_coverage: 96
