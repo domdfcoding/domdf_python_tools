@@ -54,21 +54,21 @@ import domdf_python_tools
 
 __all__ = ["importlib_resources", "importlib_metadata", "nullcontext", "PYPY"]
 
-if sys.version_info < (3, 7):  # pragma: no cover (>=py37)
+if sys.version_info[:2] < (3, 7):  # pragma: no cover (py37+)
 	# 3rd party
 	import importlib_resources
 else:  # pragma: no cover (<py37)
 	# stdlib
 	import importlib.resources as importlib_resources
 
-if sys.version_info[:2] < (3, 9):  # pragma: no cover (>=py39)
+if sys.version_info[:2] < (3, 9):  # pragma: no cover (py39+)
 	# 3rd party
 	import importlib_metadata
 else:  # pragma: no cover (<py39)
 	# stdlib
 	import importlib.metadata as importlib_metadata
 
-if sys.version_info < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (>=py37)
+if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (py37+)
 
 	_T = TypeVar("_T")
 
