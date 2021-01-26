@@ -168,7 +168,7 @@ def discover_entry_points_by_name(
 		) -> Dict[str, Any]:
 	"""
 	Returns a mapping of entry point names to the entry points in the given category,
-	optionally filtered by ``match_func``.
+	optionally filtered by ``name_match_func`` and ``object_match_func``.
 
 	.. versionadded:: 2.5.0
 
