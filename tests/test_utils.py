@@ -18,14 +18,28 @@ from collections import namedtuple
 import pytest
 
 # this package
-from domdf_python_tools import utils
 from domdf_python_tools.testing import testing_boolean_values
 from domdf_python_tools.typing import HasHead
-from domdf_python_tools.utils import head, trim_precision
+from domdf_python_tools.utils import (
+		cmp,
+		convert_indents,
+		double_repr_string,
+		enquote_value,
+		head,
+		list2str,
+		posargs2kwargs,
+		printr,
+		printt,
+		pyversion,
+		stderr_writer,
+		str2tuple,
+		strtobool,
+		trim_precision
+		)
 
 
 def test_pyversion():
-	assert isinstance(utils.pyversion, int)
+	assert isinstance(pyversion, int)
 
 
 class TestList2Str:
@@ -40,7 +54,7 @@ class TestList2Str:
 					],
 			)
 	def test_list2str(self, value, expects):
-		str_representation = utils.list2str(value)
+		str_representation = list2str(value)
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
 
@@ -54,7 +68,7 @@ class TestList2Str:
 					],
 			)
 	def test_list2str_semicolon(self, value, expects):
-		str_representation = utils.list2str(value, sep=';')
+		str_representation = list2str(value, sep=';')
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
 
@@ -96,7 +110,7 @@ def get_mem_addr(obj):
 				],
 		)
 def test_printr(obj, expects, capsys):
-	utils.printr(obj)
+	printr(obj)
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
@@ -115,7 +129,7 @@ def test_printr(obj, expects, capsys):
 				],
 		)
 def test_printt(obj, expects, capsys):
-	utils.printt(obj)
+	printt(obj)
 
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
@@ -134,7 +148,7 @@ def test_printt(obj, expects, capsys):
 				],
 		)
 def test_stderr_writer(obj, expects, capsys):
-	utils.stderr_writer(obj)
+	stderr_writer(obj)
 
 	captured = capsys.readouterr()
 	stderr = captured.err.split('\n')
@@ -151,8 +165,8 @@ class TestStr2Tuple:
 					],
 			)
 	def test_str2tuple(self, value, expects):
-		assert isinstance(utils.str2tuple(value), tuple)
-		assert utils.str2tuple(value) == expects
+		assert isinstance(str2tuple(value), tuple)
+		assert str2tuple(value) == expects
 
 	@pytest.mark.parametrize(
 			"value, expects",
@@ -162,15 +176,15 @@ class TestStr2Tuple:
 					],
 			)
 	def test_str2tuple_semicolon(self, value, expects):
-		assert isinstance(utils.str2tuple(value, sep=';'), tuple)
-		assert utils.str2tuple(value, sep=';') == expects
+		assert isinstance(str2tuple(value, sep=';'), tuple)
+		assert str2tuple(value, sep=';') == expects
 
 
 class TestStrToBool:
 
 	@testing_boolean_values(extra_truthy=[50, -1])
 	def test_strtobool(self, boolean_string, expected_boolean):
-		assert utils.strtobool(boolean_string) == expected_boolean
+		assert strtobool(boolean_string) == expected_boolean
 
 	@pytest.mark.parametrize(
 			"obj, expects",
@@ -185,7 +199,7 @@ class TestStrToBool:
 			)
 	def test_strtobool_errors(self, obj, expects):
 		with pytest.raises(expects):
-			utils.strtobool(obj)
+			strtobool(obj)
 
 
 @pytest.mark.parametrize(
@@ -210,7 +224,7 @@ class TestStrToBool:
 				],
 		)
 def test_enquote_value(obj, expects):
-	assert utils.enquote_value(obj) == expects
+	assert enquote_value(obj) == expects
 
 
 #
@@ -225,20 +239,20 @@ def test_enquote_value(obj, expects):
 # 		])
 # def test_enquote_value_errors(obj, expects):
 # 	with pytest.raises(expects):
-# 		utils.enquote_value(obj)
+# 		enquote_value(obj)
 
 
 def test_cmp():
-	assert isinstance(utils.cmp(5, 20), int)
-	assert utils.cmp(5, 20) < 0
-	assert utils.cmp(5, 20) == -1
+	assert isinstance(cmp(5, 20), int)
+	assert cmp(5, 20) < 0
+	assert cmp(5, 20) == -1
 
-	assert isinstance(utils.cmp(20, 5), int)
-	assert utils.cmp(20, 5) > 0
-	assert utils.cmp(20, 5) == 1
+	assert isinstance(cmp(20, 5), int)
+	assert cmp(20, 5) > 0
+	assert cmp(20, 5) == 1
 
-	assert isinstance(utils.cmp(20, 20), int)
-	assert utils.cmp(20, 20) == 0
+	assert isinstance(cmp(20, 20), int)
+	assert cmp(20, 20) == 0
 
 
 def demo_function(arg1, arg2, arg3):
@@ -259,31 +273,31 @@ def demo_function(arg1, arg2, arg3):
 				]
 		)
 def test_posargs2kwargs(args, posarg_names, kwargs, expects):
-	assert utils.posargs2kwargs(args, posarg_names, kwargs) == expects
+	assert posargs2kwargs(args, posarg_names, kwargs) == expects
 
 
 def test_convert_indents():
 
 	# TODO: test 'to'
 
-	assert utils.convert_indents("hello world") == "hello world"
-	assert utils.convert_indents("\thello world") == "    hello world"
-	assert utils.convert_indents("\t\thello world") == "        hello world"
-	assert utils.convert_indents("\t    hello world") == "        hello world"
+	assert convert_indents("hello world") == "hello world"
+	assert convert_indents("\thello world") == "    hello world"
+	assert convert_indents("\t\thello world") == "        hello world"
+	assert convert_indents("\t    hello world") == "        hello world"
 
-	assert utils.convert_indents("hello world", tab_width=2) == "hello world"
-	assert utils.convert_indents("\thello world", tab_width=2) == "  hello world"
-	assert utils.convert_indents("\t\thello world", tab_width=2) == "    hello world"
-	assert utils.convert_indents("\t    hello world", tab_width=2) == "      hello world"
+	assert convert_indents("hello world", tab_width=2) == "hello world"
+	assert convert_indents("\thello world", tab_width=2) == "  hello world"
+	assert convert_indents("\t\thello world", tab_width=2) == "    hello world"
+	assert convert_indents("\t    hello world", tab_width=2) == "      hello world"
 
-	assert utils.convert_indents("hello world", from_="    ") == "hello world"
-	assert utils.convert_indents("    hello world", from_="    ") == "    hello world"
-	assert utils.convert_indents("        hello world", from_="    ") == "        hello world"
-	assert utils.convert_indents("        hello world", from_="    ") == "        hello world"
+	assert convert_indents("hello world", from_="    ") == "hello world"
+	assert convert_indents("    hello world", from_="    ") == "    hello world"
+	assert convert_indents("        hello world", from_="    ") == "        hello world"
+	assert convert_indents("        hello world", from_="    ") == "        hello world"
 
-	assert utils.convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
-	assert utils.convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
-	assert utils.convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
+	assert convert_indents("hello world", tab_width=2, from_="    ") == "hello world"
+	assert convert_indents("    hello world", tab_width=2, from_="    ") == "  hello world"
+	assert convert_indents("        hello world", tab_width=2, from_="    ") == "    hello world"
 
 
 class TestHead:
@@ -396,3 +410,17 @@ def test_trim_precision():
 	assert trim_precision(170.15800000000002, 4) == 170.158
 	assert trim_precision(170.15800000000002, 5) == 170.158
 	assert trim_precision(170.15800000000002) == 170.158
+
+
+@pytest.mark.parametrize(
+		"value, expects",
+		[
+				("foo", '"foo"'),
+				("'foo'", "\"'foo'\""),
+				("don't", "\"don't\""),
+				("Here's a single quote \"", "\"Here's a single quote \\\"\""),
+				(enquote_value('☃'), "\"'☃'\""),
+				]
+		)
+def test_double_repr_string(value: str, expects: str):
+	assert double_repr_string(value) == expects

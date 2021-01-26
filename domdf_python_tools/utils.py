@@ -62,6 +62,7 @@ General utility functions.
 
 # stdlib
 import inspect
+import json
 import sys
 from math import log10
 from pprint import pformat
@@ -96,6 +97,7 @@ __all__ = [
 		"head",
 		"magnitude",
 		"trim_precision",
+		"double_repr_string",
 		]
 
 #: The current major python version.
@@ -377,3 +379,17 @@ def trim_precision(value: float, precision: int = 4) -> float:
 	"""
 
 	return float(format(value, f"0.{precision}f"))
+
+
+def double_repr_string(string: str):
+	"""
+	Like :func:`repr(str) <repr>`, but tries to use double quotes instead.
+
+	.. versionadded:: 2.5.0
+	"""
+
+	# figure out which quote to use; double is preferred
+	if '"' in string and "'" not in string:
+		return repr(string)
+	else:
+		return json.dumps(string, ensure_ascii=False)
