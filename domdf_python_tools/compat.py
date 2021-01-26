@@ -15,10 +15,15 @@ Provides the following:
 
 .. py:data:: importlib_metadata
 
-	`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`_ on Python 3.7 and earlier;
-	:mod:`importlib.metadata` on Python 3.8 and later.
+	`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`_ on Python 3.8 and earlier;
+	:mod:`importlib.metadata` on Python 3.9 and later.
 
 	.. versionadded:: 1.1.0
+
+	.. versionchanged:: 2.5.0
+
+		`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`_ is now used
+		on Python 3.8 in place of the stdlib version.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -56,10 +61,10 @@ else:  # pragma: no cover (<py37)
 	# stdlib
 	import importlib.resources as importlib_resources
 
-if sys.version_info[:2] < (3, 8):  # pragma: no cover (>=py38)
+if sys.version_info[:2] < (3, 9):  # pragma: no cover (>=py39)
 	# 3rd party
 	import importlib_metadata
-else:  # pragma: no cover (<py38)
+else:  # pragma: no cover (<py39)
 	# stdlib
 	import importlib.metadata as importlib_metadata
 
