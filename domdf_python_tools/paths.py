@@ -1002,3 +1002,6 @@ class TemporaryPathPlus(tempfile.TemporaryDirectory):
 
 		with context:
 			super().cleanup()
+
+	def __enter__(self) -> PathPlus:
+		return self.name
