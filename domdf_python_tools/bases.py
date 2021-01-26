@@ -198,12 +198,10 @@ class UserList(MutableSequence[_T]):
 		yield from self.data
 
 	@overload
-	def __getitem__(self, i: int) -> _T:
-		...  # pragma: no cover
+	def __getitem__(self, i: int) -> _T: ...
 
 	@overload
-	def __getitem__(self, i: slice) -> MutableSequence[_T]:
-		...  # pragma: no cover
+	def __getitem__(self, i: slice) -> MutableSequence[_T]: ...
 
 	def __getitem__(self, i: Union[int, slice]) -> Union[_T, MutableSequence[_T]]:
 		if isinstance(i, slice):
@@ -212,12 +210,10 @@ class UserList(MutableSequence[_T]):
 			return self.data[i]
 
 	@overload
-	def __setitem__(self, i: int, o: _T) -> None:
-		...  # pragma: no cover
+	def __setitem__(self, i: int, o: _T) -> None: ...
 
 	@overload
-	def __setitem__(self, i: slice, o: Iterable[_T]) -> None:
-		...  # pragma: no cover
+	def __setitem__(self, i: slice, o: Iterable[_T]) -> None: ...
 
 	def __setitem__(self, i: Union[int, slice], item: Union[_T, Iterable[_T]]) -> None:
 		self.data[i] = item  # type: ignore

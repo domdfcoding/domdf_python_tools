@@ -217,12 +217,10 @@ class StringList(List[str]):
 			super().insert(index, self._make_line(inner_line))
 
 	@overload
-	def __setitem__(self, index: int, line: String) -> None:
-		...  # pragma: no cover
+	def __setitem__(self, index: int, line: String) -> None: ...
 
 	@overload
-	def __setitem__(self, index: slice, line: Iterable[String]) -> None:
-		...  # pragma: no cover
+	def __setitem__(self, index: slice, line: Iterable[String]) -> None: ...
 
 	def __setitem__(self, index: Union[int, slice], line: Union[String, Iterable[String]]):
 		"""
@@ -250,12 +248,10 @@ class StringList(List[str]):
 				self[idx] = line
 
 	@overload
-	def __getitem__(self, index: int) -> str:
-		...  # pragma: no cover
+	def __getitem__(self, index: int) -> str: ...
 
 	@overload
-	def __getitem__(self: _SL, index: slice) -> _SL:
-		...  # pragma: no cover
+	def __getitem__(self: _SL, index: slice) -> _SL: ...
 
 	def __getitem__(self: _SL, index: Union[int, slice]) -> Union[str, _SL]:
 		r"""

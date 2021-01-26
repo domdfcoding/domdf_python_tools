@@ -204,8 +204,7 @@ class String(Protocol):
 		Moved from :mod:`domdf_python_tools.stringlist`.
 	"""
 
-	def __str__(self) -> str:
-		...  # pragma: no cover
+	def __str__(self) -> str: ...
 
 
 @runtime_checkable

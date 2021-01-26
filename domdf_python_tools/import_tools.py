@@ -64,8 +64,7 @@ def discover(
 		package: ModuleType,
 		match_func: Optional[Callable[[Any], bool]] = ...,
 		exclude_side_effects: Literal[True] = ...,
-		) -> List[Type[Any]]:
-	...  # pragma: no cover
+		) -> List[Type[Any]]: ...
 
 
 @overload
@@ -73,8 +72,7 @@ def discover(
 		package: ModuleType,
 		match_func: Optional[Callable[[Any], bool]] = ...,
 		exclude_side_effects: Literal[False] = ...,
-		) -> List[Any]:
-	...  # pragma: no cover
+		) -> List[Any]: ...
 
 
 def discover(

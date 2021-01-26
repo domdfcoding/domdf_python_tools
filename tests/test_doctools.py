@@ -362,158 +362,107 @@ def test_sphinxify_docstring():
 @prettify_docstrings
 class Klasse:
 
-	def __delattr__(self, item):
-		...  # pragma: no cover
+	def __delattr__(self, item): ...
 
-	def __dir__(self):
-		...  # pragma: no cover
+	def __dir__(self): ...
 
-	def __eq__(self, other):
-		...  # pragma: no cover
+	def __eq__(self, other): ...
 
-	def __getattribute__(self, item):
-		...  # pragma: no cover
+	def __getattribute__(self, item): ...
 
-	def __ge__(self, other):
-		...  # pragma: no cover
+	def __ge__(self, other): ...
 
-	def __gt__(self, other):
-		...  # pragma: no cover
+	def __gt__(self, other): ...
 
-	def __hash__(self):
-		...  # pragma: no cover
+	def __hash__(self): ...
 
-	def __lt__(self, other):
-		...  # pragma: no cover
+	def __lt__(self, other): ...
 
-	def __le__(self, other):
-		...  # pragma: no cover
+	def __le__(self, other): ...
 
-	def __ne__(self, other):
-		...  # pragma: no cover
+	def __ne__(self, other): ...
 
-	def __setattr__(self, item, value):
-		...  # pragma: no cover
+	def __setattr__(self, item, value): ...
 
-	def __sizeof__(self):
-		...  # pragma: no cover
+	def __sizeof__(self): ...
 
-	def __str__(self):
-		...  # pragma: no cover
+	def __str__(self): ...
 
-	def __contains__(self, item):
-		...  # pragma: no cover
+	def __contains__(self, item): ...
 
-	def __getitem__(self, item):
-		...  # pragma: no cover
+	def __getitem__(self, item): ...
 
-	def __setitem__(self, item, value):
-		...  # pragma: no cover
+	def __setitem__(self, item, value): ...
 
-	def __delitem__(self, item):
-		...  # pragma: no cover
+	def __delitem__(self, item): ...
 
-	def __and__(self):
-		...  # pragma: no cover
+	def __and__(self): ...
 
-	def __add__(self, other):
-		...  # pragma: no cover
+	def __add__(self, other): ...
 
-	def __abs__(self):
-		...  # pragma: no cover
+	def __abs__(self): ...
 
-	def __divmod__(self, other):
-		...  # pragma: no cover
+	def __divmod__(self, other): ...
 
-	def __floordiv__(self, other):
-		...  # pragma: no cover
+	def __floordiv__(self, other): ...
 
-	def __invert__(self):
-		...  # pragma: no cover
+	def __invert__(self): ...
 
-	def __lshift__(self, other):
-		...  # pragma: no cover
+	def __lshift__(self, other): ...
 
-	def __mod__(self, other):
-		...  # pragma: no cover
+	def __mod__(self, other): ...
 
-	def __mul__(self, other):
-		...  # pragma: no cover
+	def __mul__(self, other): ...
 
-	def __neg__(self):
-		...  # pragma: no cover
+	def __neg__(self): ...
 
-	def __or__(self, other):
-		...  # pragma: no cover
+	def __or__(self, other): ...
 
-	def __pos__(self):
-		...  # pragma: no cover
+	def __pos__(self): ...
 
-	def __pow__(self, other):
-		...  # pragma: no cover
+	def __pow__(self, other): ...
 
-	def __radd__(self, other):
-		...  # pragma: no cover
+	def __radd__(self, other): ...
 
-	def __rand__(self, other):
-		...  # pragma: no cover
+	def __rand__(self, other): ...
 
-	def __rdivmod__(self, other):
-		...  # pragma: no cover
+	def __rdivmod__(self, other): ...
 
-	def __rfloordiv__(self, other):
-		...  # pragma: no cover
+	def __rfloordiv__(self, other): ...
 
-	def __rlshift__(self, other):
-		...  # pragma: no cover
+	def __rlshift__(self, other): ...
 
-	def __rmod__(self, other):
-		...  # pragma: no cover
+	def __rmod__(self, other): ...
 
-	def __rmul__(self, other):
-		...  # pragma: no cover
+	def __rmul__(self, other): ...
 
-	def __ror__(self, other):
-		...  # pragma: no cover
+	def __ror__(self, other): ...
 
-	def __rpow__(self, other):
-		...  # pragma: no cover
+	def __rpow__(self, other): ...
 
-	def __rrshift__(self, other):
-		...  # pragma: no cover
+	def __rrshift__(self, other): ...
 
-	def __rshift__(self, other):
-		...  # pragma: no cover
+	def __rshift__(self, other): ...
 
-	def __rsub__(self, other):
-		...  # pragma: no cover
+	def __rsub__(self, other): ...
 
-	def __rtruediv__(self, other):
-		...  # pragma: no cover
+	def __rtruediv__(self, other): ...
 
-	def __rxor__(self, other):
-		...  # pragma: no cover
+	def __rxor__(self, other): ...
 
-	def __sub__(self, other):
-		...  # pragma: no cover
+	def __sub__(self, other): ...
 
-	def __truediv__(self, other):
-		...  # pragma: no cover
+	def __truediv__(self, other): ...
 
-	def __xor__(self, other):
-		...  # pragma: no cover
+	def __xor__(self, other): ...
 
-	def __float__(self):
-		...  # pragma: no cover
+	def __float__(self): ...
 
-	def __int__(self):
-		...  # pragma: no cover
+	def __int__(self): ...
 
-	def __repr__(self):
-		...  # pragma: no cover
+	def __repr__(self): ...
 
-	def __bool__(self):
-		...  # pragma: no cover
+	def __bool__(self): ...
 
 
 def test_prettify_docstrings():
