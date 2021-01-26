@@ -1,0 +1,2 @@
+pycodestyle.break_after_binary_operator: break_after_binary_operator
+pycodestyle.break_before_binary_operator: break_before_binary_operator

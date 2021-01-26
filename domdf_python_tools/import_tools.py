@@ -48,7 +48,7 @@ Functions for importing classes.
 import inspect
 import pkgutil
 from types import ModuleType
-from typing import Any, Callable, List, Optional, Type, overload
+from typing import Any, Callable, Dict, List, Optional, Type, overload
 
 # 3rd party
 from typing_extensions import Literal
@@ -56,7 +56,7 @@ from typing_extensions import Literal
 # this package
 from domdf_python_tools.compat import importlib_metadata
 
-__all__ = ["discover", "discover_entry_points"]
+__all__ = ["discover", "discover_entry_points", "discover_entry_points_by_name"]
 
 
 @overload
@@ -158,14 +158,41 @@ def discover_entry_points(
 	:return: List of matching objects.
 	"""
 
-	matching_objects = []
+	return list(discover_entry_points_by_name(group_name, object_match_func=match_func).values())
+
+
+def discover_entry_points_by_name(
+		group_name: str,
+		name_match_func: Optional[Callable[[Any], bool]] = None,
+		object_match_func: Optional[Callable[[Any], bool]] = None,
+		) -> Dict[str, Any]:
+	"""
+	Returns a mapping of entry point names to the entry points in the given category,
+	optionally filtered by ``match_func``.
+
+	.. versionadded:: 2.5.0
+
+	:param group_name: The entry point group name, e.g. ``'entry_points'``.
+	:param name_match_func: Function taking the entry point name and returning :py:obj:`True`
+		if the entry point is to be included in the output.
+	:default name_match_func: :py:obj:`None`, which includes all entry points.
+	:param object_match_func: Function taking an object and returning :py:obj:`True`
+		if the object is to be included in the output.
+	:default object_match_func: :py:obj:`None`, which includes all objects.
+	"""  # noqa: D400
+
+	matching_objects = {}
 
 	for entry_point in importlib_metadata.entry_points().get(group_name, ()):
-		entry_point = entry_point.load()
 
-		if match_func is not None and not match_func(entry_point):
+		if name_match_func is not None and not name_match_func(entry_point.name):
 			continue
 
-		matching_objects.append(entry_point)
+		entry_point_obj = entry_point.load()
+
+		if object_match_func is not None and not object_match_func(entry_point_obj):
+			continue
+
+		matching_objects[entry_point.name] = entry_point_obj
 
 	return matching_objects

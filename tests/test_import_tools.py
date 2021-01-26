@@ -8,7 +8,7 @@ import pytest
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
-from domdf_python_tools.import_tools import discover, discover_entry_points
+from domdf_python_tools.import_tools import discover, discover_entry_points, discover_entry_points_by_name
 
 sys.path.append('.')
 sys.path.append("tests")
@@ -98,9 +98,19 @@ def test_discover_errors(obj, expects):
 
 
 def test_discover_entry_points(data_regression: DataRegressionFixture):
+	entry_points = discover_entry_points("flake8.extension", lambda f: f.__name__.startswith("break"))
+	data_regression.check([f.__name__ for f in entry_points])
 
-	entry_points = [
-			f.__name__
-			for f in discover_entry_points("flake8.extension", lambda f: f.__name__.startswith("break"))
-			]
-	data_regression.check(entry_points)
+
+def test_discover_entry_points_by_name_object_match_func(data_regression: DataRegressionFixture):
+	entry_points = discover_entry_points_by_name(
+			"flake8.extension", object_match_func=lambda f: f.__name__.startswith("break")
+			)
+	data_regression.check({k: v.__name__ for k, v in entry_points.items()})
+
+
+def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegressionFixture):
+	entry_points = discover_entry_points_by_name(
+			"flake8.extension", name_match_func=lambda n: n.startswith("pycodestyle.")
+			)
+	data_regression.check({k: v.__name__ for k, v in entry_points.items()})
