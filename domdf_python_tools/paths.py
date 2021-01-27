@@ -51,7 +51,7 @@ import stat
 import sys
 import tempfile
 from collections import defaultdict, deque
-from typing import Dict, IO, Any, Callable, ContextManager, Iterable, Iterator, List, Optional, TypeVar, Union
+from typing import IO, Any, Callable, ContextManager, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
 
 # this package
 from domdf_python_tools.compat import nullcontext
