@@ -50,8 +50,8 @@ import shutil
 import stat
 import sys
 import tempfile
-from collections import deque
-from typing import IO, Any, Callable, ContextManager, Iterable, Iterator, List, Optional, TypeVar, Union
+from collections import defaultdict, deque
+from typing import Dict, IO, Any, Callable, ContextManager, Iterable, Iterator, List, Optional, TypeVar, Union
 
 # this package
 from domdf_python_tools.compat import nullcontext
@@ -78,6 +78,7 @@ __all__ = [
 		"matchglob",
 		"unwanted_dirs",
 		"TemporaryPathPlus",
+		"sort_paths",
 		]
 
 newline_default = object()
@@ -1005,3 +1006,33 @@ class TemporaryPathPlus(tempfile.TemporaryDirectory):
 
 	def __enter__(self) -> PathPlus:
 		return self.name
+
+
+def sort_paths(*paths: PathLike) -> List[PathPlus]:
+	"""
+	Sort the ``paths`` by directory, then by file.
+
+	:param paths:
+
+	.. versionadded:: 2.6.0
+	"""
+
+	directories: Dict[str, List[PathPlus]] = defaultdict(list)
+	local_contents: List[PathPlus] = []
+	files: List[PathPlus] = []
+
+	for obj in [PathPlus(path) for path in paths]:
+		if len(obj.parts) > 1:
+			key = obj.parts[0]
+			directories[key].append(obj)
+		else:
+			local_contents.append(obj)
+
+	# sort directories
+	directories = {directory: directories[directory] for directory in sorted(directories.keys())}
+
+	for directory, contents in directories.items():
+		contents = [path.relative_to(directory) for path in contents]
+		files.extend(PathPlus(directory) / path for path in sort_paths(*contents))
+
+	return files + sorted(local_contents)
