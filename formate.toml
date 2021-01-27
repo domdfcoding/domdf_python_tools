@@ -32,14 +32,9 @@ use_parentheses = true
 remove_redundant_aliases = true
 default_section = "THIRDPARTY"
 known_third_party = [
-    "aenum",
     "coincidence",
-    "colorama",
-    "consolekit",
     "coverage",
     "coverage_pyver_pragma",
-    "deprecation_alias",
-    "enum_tools",
     "faker",
     "flake8",
     "github",

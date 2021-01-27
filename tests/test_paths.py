@@ -29,6 +29,7 @@ from domdf_python_tools.paths import (
 		copytree,
 		in_directory,
 		matchglob,
+		sort_paths,
 		traverse_to_file
 		)
 from domdf_python_tools.testing import not_pypy, not_windows
@@ -856,3 +857,16 @@ def test_temporarypathplus():
 	assert t.name.exists()
 	assert t.name.is_dir()
 	t.cleanup()
+
+
+def test_sort_paths():
+	paths = ["foo.txt", "bar.toml", "bar.py", "baz.yaml", "fizz/buzz.c", "fizz/buzz.h"]
+	expected = [
+			PathPlus("fizz/buzz.c"),
+			PathPlus("fizz/buzz.h"),
+			PathPlus("bar.py"),
+			PathPlus("bar.toml"),
+			PathPlus("baz.yaml"),
+			PathPlus("foo.txt"),
+			]
+	assert sort_paths(*paths) == expected
