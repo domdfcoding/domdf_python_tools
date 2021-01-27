@@ -51,12 +51,17 @@ from types import ModuleType
 from typing import Any, Callable, Dict, List, Optional, Type, overload
 
 # 3rd party
-from typing_extensions import Literal
+from typing_extensions import Literal, TypedDict
 
 # this package
 from domdf_python_tools.compat import importlib_metadata
 
 __all__ = ["discover", "discover_entry_points", "discover_entry_points_by_name"]
+
+
+class _DiscoverKwargsType(TypedDict):
+	match_func: Optional[Callable[[Any], bool]]
+	exclude_side_effects: bool
 
 
 @overload
@@ -81,45 +86,66 @@ def discover(
 		exclude_side_effects: bool = True,
 		) -> List[Any]:
 	"""
-	Returns a list of objects in the given module,
-	optionally filtered by ``match_func``.
+	Returns a list of objects in the given package, optionally filtered by ``match_func``.
 
 	:param package: A Python package
 	:param match_func: Function taking an object and returning :py:obj:`True` if the object is to be included in the output.
 	:default match_func: :py:obj:`None`, which includes all objects.
 	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
 
-	:return: List of matching objects.
-
 	.. versionchanged:: 1.0.0
 
 		Added the ``exclude_side_effects`` parameter.
+	"""
 
-	.. TODO:: raise better exception when passing a module rather than a package.
-		Or just return the contents of the module?
-	"""  # noqa D400
+	kwargs: _DiscoverKwargsType = dict(exclude_side_effects=exclude_side_effects, match_func=match_func)
 
-	matching_objects = []
+	matching_objects = _discover_in_module(package, **kwargs)
 
-	for _, module_name, _ in pkgutil.walk_packages(
+	if hasattr(package, "__path__"):
 		# https://github.com/python/mypy/issues/1422
 		# Stalled PRs: https://github.com/python/mypy/pull/3527
 		#              https://github.com/python/mypy/pull/5212
-		package.__path__,  # type: ignore
-		prefix=package.__name__ + '.',
-		):
-		module = __import__(module_name, fromlist=["__trash"], level=0)
+		package_path = package.__path__  # type: ignore
 
-		# Check all the functions in that module
-		for _, imported_objects in inspect.getmembers(module, match_func):
+		for _, module_name, _ in pkgutil.walk_packages(package_path, prefix=f'{package.__name__}.'):
+			module = __import__(module_name, fromlist=["__trash"], level=0)
 
-			if exclude_side_effects:
-				if not hasattr(imported_objects, "__module__"):
-					continue
-				if imported_objects.__module__ != module.__name__:
-					continue
+			matching_objects.extend(_discover_in_module(module, **kwargs))
 
-			matching_objects.append(imported_objects)
+	return matching_objects
+
+
+def _discover_in_module(
+		module: ModuleType,
+		match_func: Optional[Callable[[Any], bool]] = None,
+		exclude_side_effects: bool = True,
+		) -> List[Any]:
+	"""
+	Returns a list of objects in the given module, optionally filtered by ``match_func``.
+
+	:param module: A Python module.
+	:param match_func: Function taking an object and returning :py:obj:`True` if the object is to be included in the output.
+	:default match_func: :py:obj:`None`, which includes all objects.
+	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
+
+	.. versionadded:: 2.6.0
+
+	.. TODO:: make this public in that version
+	"""
+
+	matching_objects = []
+
+	# Check all the functions in that module
+	for _, imported_object in inspect.getmembers(module, match_func):
+
+		if exclude_side_effects:
+			if not hasattr(imported_object, "__module__"):
+				continue
+			if imported_object.__module__ != module.__name__:
+				continue
+
+		matching_objects.append(imported_object)
 
 	return matching_objects
 

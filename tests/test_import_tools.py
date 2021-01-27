@@ -20,6 +20,7 @@ import discover_demo_module  # type: ignore  # noqa E402
 def test_discover():
 	# Alphabetical order regardless of order in the module.
 	assert discover(discover_demo_module) == [
+			discover_demo_module.foo_in_init,
 			discover_demo_module.submodule_a.bar,
 			discover_demo_module.submodule_a.foo,
 			discover_demo_module.submodule_b.Alice,
@@ -32,6 +33,7 @@ def test_discover_function_only():
 	assert discover(
 			discover_demo_module, match_func=inspect.isfunction
 			) == [
+					discover_demo_module.foo_in_init,
 					discover_demo_module.submodule_a.bar,
 					discover_demo_module.submodule_a.foo,
 					]
@@ -74,7 +76,7 @@ else:
 def raises_attribute_error(obj, **kwargs):
 	return pytest.param(
 			obj,
-			pytest.raises(AttributeError, match=f"^'{type(obj).__name__}' object has no attribute '__path__'$"),
+			pytest.raises(AttributeError, match=f"^'{type(obj).__name__}' object has no attribute '__name__'$"),
 			**kwargs,
 			)
 
