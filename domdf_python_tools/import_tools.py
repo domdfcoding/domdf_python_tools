@@ -56,7 +56,7 @@ from typing_extensions import Literal, TypedDict
 # this package
 from domdf_python_tools.compat import importlib_metadata
 
-__all__ = ["discover", "discover_entry_points", "discover_entry_points_by_name"]
+__all__ = ["discover", "discover_in_module", "discover_entry_points", "discover_entry_points_by_name"]
 
 
 class _DiscoverKwargsType(TypedDict):
@@ -100,7 +100,7 @@ def discover(
 
 	kwargs: _DiscoverKwargsType = dict(exclude_side_effects=exclude_side_effects, match_func=match_func)
 
-	matching_objects = _discover_in_module(package, **kwargs)
+	matching_objects = discover_in_module(package, **kwargs)
 
 	if hasattr(package, "__path__"):
 		# https://github.com/python/mypy/issues/1422
@@ -111,12 +111,12 @@ def discover(
 		for _, module_name, _ in pkgutil.walk_packages(package_path, prefix=f'{package.__name__}.'):
 			module = __import__(module_name, fromlist=["__trash"], level=0)
 
-			matching_objects.extend(_discover_in_module(module, **kwargs))
+			matching_objects.extend(discover_in_module(module, **kwargs))
 
 	return matching_objects
 
 
-def _discover_in_module(
+def discover_in_module(
 		module: ModuleType,
 		match_func: Optional[Callable[[Any], bool]] = None,
 		exclude_side_effects: bool = True,
@@ -130,8 +130,6 @@ def _discover_in_module(
 	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
 
 	.. versionadded:: 2.6.0
-
-	.. TODO:: make this public in that version
 	"""
 
 	matching_objects = []
