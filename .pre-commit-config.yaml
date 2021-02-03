@@ -25,7 +25,7 @@ repos:
     - id: end-of-file-fixer
 
  - repo: https://github.com/domdfcoding/pre-commit-hooks
-   rev: v0.1.6
+   rev: v0.2.0
    hooks:
     - id: requirements-txt-sorter
       args:
@@ -54,11 +54,12 @@ repos:
     - id: rst-inline-touching-normal
 
  - repo: https://github.com/asottile/pyupgrade
-   rev: v2.7.4
+   rev: v2.9.0
    hooks:
     - id: pyupgrade
       args:
        - --py36-plus
+       - --keep-runtime-typing
 
  - repo: https://github.com/Lucas-C/pre-commit-hooks
    rev: v1.1.9
@@ -67,10 +68,10 @@ repos:
     - id: forbid-crlf
 
  - repo: https://github.com/repo-helper/formate
-   rev: v0.1.0
+   rev: v0.2.5
    hooks:
     - id: formate
-      exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
+      exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.(_)?py$
 
  - repo: https://github.com/domdfcoding/dep_checker
    rev: v0.4.1
