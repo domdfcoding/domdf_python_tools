@@ -318,7 +318,7 @@ Please note our opening hours may vary due to COVID-19"""
 def test_make_sphinx_links():
 
 	original = """
-		This is a docstring that contains references to ``str``, ``int``, and ``float``
+		This is a docstring that contains references to ``str``, ``int``, ``float`` and ``None``,
 		but lacks proper references to them when rendered in Sphinx.
 
 		:return: pi
@@ -326,7 +326,7 @@ def test_make_sphinx_links():
 		"""
 
 	sphinx = """
-		This is a docstring that contains references to :class:`str`, :class:`int`, and :class:`float`
+		This is a docstring that contains references to :class:`str`, :class:`int`, :class:`float` and :py:obj:`None`,
 		but lacks proper references to them when rendered in Sphinx.
 
 		:return: pi

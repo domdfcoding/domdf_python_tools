@@ -147,8 +147,14 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 
 	working_string = f"{input_string}"
 
-	for builtin in {x for x in builtins_list if not x.startswith("__") and x != "None"}:
-		working_string = working_string.replace(f"``{builtin}``", f":class:`{builtin}`")
+	for builtin in builtins_list:
+		if builtin.startswith("__"):
+			continue
+
+		if builtin in {"None", "False", "None"}:
+			working_string = working_string.replace(f"``{builtin}``", f":py:obj:`{builtin}`")
+		else:
+			working_string = working_string.replace(f"``{builtin}``", f":class:`{builtin}`")
 
 	return working_string
 
