@@ -645,7 +645,7 @@ class PathPlus(pathlib.Path):
 				**kwargs,
 				)
 
-	if sys.version_info < (3, 7):  # pragma: no cover (<py37)
+	if sys.version_info < (3, 10):  # pragma: no cover (<py310)
 
 		def is_mount(self) -> bool:
 			"""
@@ -659,9 +659,9 @@ class PathPlus(pathlib.Path):
 			if not self.exists() or not self.is_dir():
 				return False
 
-			parent = pathlib.Path(self.parent)
+			# https://github.com/python/cpython/pull/18839/files
 			try:
-				parent_dev = parent.stat().st_dev
+				parent_dev = self.parent.stat().st_dev
 			except OSError:
 				return False
 
@@ -669,7 +669,7 @@ class PathPlus(pathlib.Path):
 			if dev != parent_dev:
 				return True
 			ino = self.stat().st_ino
-			parent_ino = parent.stat().st_ino
+			parent_ino = self.parent.stat().st_ino
 			return ino == parent_ino
 
 	if sys.version_info < (3, 8):  # pragma: no cover (<py38)
@@ -793,7 +793,7 @@ class PathPlus(pathlib.Path):
 		.. versionchanged:: 2.5.0  Added the ``matchcase`` option.
 		"""
 
-		if not self.is_dir():
+		if not self.abspath().is_dir():
 			return
 
 		if exclude_dirs is None:
