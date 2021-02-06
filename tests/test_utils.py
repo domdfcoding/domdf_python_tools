@@ -15,6 +15,7 @@ import sys
 from collections import namedtuple
 
 # 3rd party
+import click
 import pytest
 
 # this package
@@ -31,6 +32,7 @@ from domdf_python_tools.utils import (
 		printr,
 		printt,
 		pyversion,
+		redirect_output,
 		stderr_writer,
 		str2tuple,
 		strtobool,
@@ -424,3 +426,26 @@ def test_trim_precision():
 		)
 def test_double_repr_string(value: str, expects: str):
 	assert double_repr_string(value) == expects
+
+
+def test_redirect_output():
+	with redirect_output() as (stdout, stderr):
+		print("I'm going to stdout")
+		click.echo("I'm going to stderr", file=sys.stderr)
+		click.echo("I'm also going to stdout", file=stdout)
+		print("I'm also going to stderr", file=stderr)
+
+	assert stdout.getvalue() == "I'm going to stdout\nI'm also going to stdout\n"
+	assert stderr.getvalue() == "I'm going to stderr\nI'm also going to stderr\n"
+
+
+def test_redirect_output_combine():
+	with redirect_output(combine=True) as (stdout, stderr):
+		click.echo("I'm going to stdout")
+		print("I'm going to stderr", file=sys.stderr)
+		print("I'm also going to stdout", file=stdout)
+		click.echo("I'm also going to stderr", file=stderr)
+
+	expected = "I'm going to stdout\nI'm going to stderr\nI'm also going to stdout\nI'm also going to stderr\n"
+	assert stdout.getvalue() == expected
+	assert stderr.getvalue() == expected

@@ -5,10 +5,17 @@ from contextlib import contextmanager
 
 # 3rd party
 import pytest
+from coincidence import AdvancedDataRegressionFixture
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
-from domdf_python_tools.import_tools import discover, discover_entry_points, discover_entry_points_by_name
+from domdf_python_tools.import_tools import (
+		discover,
+		discover_entry_points,
+		discover_entry_points_by_name,
+		iter_submodules
+		)
+from domdf_python_tools.testing import only_version
 
 sys.path.append('.')
 sys.path.append("tests")
@@ -116,3 +123,20 @@ def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegr
 			"flake8.extension", name_match_func=lambda n: n.startswith("pycodestyle.")
 			)
 	data_regression.check({k: v.__name__ for k, v in entry_points.items()})
+
+
+@pytest.mark.parametrize(
+		"version",
+		[
+				pytest.param(3.6, marks=only_version(3.6, reason="Output differs on Python 3.6")),
+				pytest.param(3.7, marks=only_version(3.7, reason="Output differs on Python 3.7")),
+				pytest.param(3.8, marks=only_version(3.8, reason="Output differs on Python 3.8")),
+				pytest.param(3.9, marks=only_version(3.9, reason="Output differs on Python 3.9")),
+				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
+				]
+		)
+@pytest.mark.parametrize(
+		"module", ["collections", "importlib", "domdf_python_tools", "consolekit", "asyncio", "json"]
+		)
+def test_iter_submodules(version, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
+	advanced_data_regression.check(list(iter_submodules(module)))

@@ -45,18 +45,27 @@ Functions for importing classes.
 #
 
 # stdlib
+import importlib.machinery
+import importlib.util
 import inspect
 import pkgutil
 from types import ModuleType
-from typing import Any, Callable, Dict, List, Optional, Type, overload
+from typing import Any, Callable, Dict, Iterator, List, Optional, Type, overload
 
 # 3rd party
 from typing_extensions import Literal, TypedDict
 
 # this package
 from domdf_python_tools.compat import importlib_metadata
+from domdf_python_tools.paths import PathPlus
 
-__all__ = ["discover", "discover_in_module", "discover_entry_points", "discover_entry_points_by_name"]
+__all__ = [
+		"discover",
+		"discover_in_module",
+		"discover_entry_points",
+		"discover_entry_points_by_name",
+		"iter_submodules"
+		]
 
 
 class _DiscoverKwargsType(TypedDict):
@@ -218,3 +227,32 @@ def discover_entry_points_by_name(
 		matching_objects[entry_point.name] = entry_point_obj
 
 	return matching_objects
+
+
+def iter_submodules(module: str) -> Iterator[str]:
+	"""
+	Returns an iterator over the names of the submodules and subpackages of the given module.
+
+	.. versionadded:: 2.6.0
+
+	:param module:
+	"""
+
+	spec: Optional[importlib.machinery.ModuleSpec] = importlib.util.find_spec(module)
+
+	if spec is None or spec.origin is None:
+		return
+
+	yield module
+
+	if spec.submodule_search_locations is None or PathPlus(spec.origin).name != "__init__.py":
+		return
+
+	for submodule_search_path in spec.submodule_search_locations:
+		for item in PathPlus(submodule_search_path).iterdir():
+			if item.name == "__init__.py":
+				continue
+			elif item.suffix == ".py":
+				yield f"{module}.{item.stem}"
+			elif item.is_dir():
+				yield from iter_submodules(f"{module}.{item.name}")

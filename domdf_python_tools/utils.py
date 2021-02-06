@@ -61,12 +61,14 @@ General utility functions.
 #
 
 # stdlib
+import contextlib
 import inspect
 import json
 import sys
+from io import StringIO
 from math import log10
 from pprint import pformat
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple, Union
 
 # this package
 import domdf_python_tools.words
@@ -98,6 +100,7 @@ __all__ = [
 		"magnitude",
 		"trim_precision",
 		"double_repr_string",
+		"redirect_output",
 		]
 
 #: The current major python version.
@@ -393,3 +396,33 @@ def double_repr_string(string: str):
 		return repr(string)
 	else:
 		return json.dumps(string, ensure_ascii=False)
+
+
+@contextlib.contextmanager
+def redirect_output(combine: bool = False) -> Iterator[Tuple[StringIO, StringIO]]:
+	"""
+	Context manager to redirect stdout and stderr to two :class:`io.StringIO` objects.
+
+	These are assigned (as a :class:`tuple`) to the target the :keyword:`as` expression.
+
+	Example:
+
+	.. code-block:: python
+
+		with redirect_output() as (stdout, stderr):
+			...
+
+	.. versionadded:: 2.6.0
+
+	:param combine: If :py:obj:`True` ``stderr`` is combined with ``stdout``.
+	"""  # noqa: D400
+
+	if combine:
+		stdout = stderr = StringIO()
+	else:
+		stdout = StringIO()
+		stderr = StringIO()
+
+	with contextlib.redirect_stdout(stdout):
+		with contextlib.redirect_stderr(stderr):
+			yield stdout, stderr
