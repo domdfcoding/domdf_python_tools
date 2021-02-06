@@ -1,5 +1,6 @@
 click>=7.1.2
 coincidence>=0.1.0
+consolekit>=1.0.0
 coverage>=5.1
 coverage-pyver-pragma>=0.0.6
 faker>=4.1.2

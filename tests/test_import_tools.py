@@ -138,5 +138,5 @@ def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegr
 @pytest.mark.parametrize(
 		"module", ["collections", "importlib", "domdf_python_tools", "consolekit", "asyncio", "json"]
 		)
-def test_iter_submodules(version, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
-	advanced_data_regression.check(list(iter_submodules(module)))
+def test_iter_submodules(version, module: str, data_regression: DataRegressionFixture):
+	data_regression.check(list(iter_submodules(module)))
