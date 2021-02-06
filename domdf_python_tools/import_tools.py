@@ -57,7 +57,7 @@ from typing_extensions import Literal, TypedDict
 
 # this package
 from domdf_python_tools.compat import importlib_metadata
-from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.paths import PathPlus, sort_paths
 
 __all__ = [
 		"discover",
@@ -249,7 +249,7 @@ def iter_submodules(module: str) -> Iterator[str]:
 		return
 
 	for submodule_search_path in spec.submodule_search_locations:
-		for item in PathPlus(submodule_search_path).iterdir():
+		for item in sort_paths(*PathPlus(submodule_search_path).iterdir()):
 			if item.name == "__init__.py":
 				continue
 			elif item.suffix == ".py":

@@ -1,6 +1,6 @@
 - importlib
-- importlib.abc
-- importlib.util
-- importlib.machinery
 - importlib._bootstrap
 - importlib._bootstrap_external
+- importlib.abc
+- importlib.machinery
+- importlib.util

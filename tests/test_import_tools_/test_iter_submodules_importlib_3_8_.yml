@@ -1,8 +1,8 @@
 - importlib
+- importlib._bootstrap
+- importlib._bootstrap_external
 - importlib.abc
+- importlib.machinery
 - importlib.metadata
 - importlib.resources
 - importlib.util
-- importlib.machinery
-- importlib._bootstrap
-- importlib._bootstrap_external
