@@ -1,6 +1,5 @@
 - json
 - json.decoder
 - json.encoder
-- json.__pycache__
 - json.tool
 - json.scanner

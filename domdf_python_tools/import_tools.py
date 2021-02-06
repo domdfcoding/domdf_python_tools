@@ -254,5 +254,7 @@ def iter_submodules(module: str) -> Iterator[str]:
 				continue
 			elif item.suffix == ".py":
 				yield f"{module}.{item.stem}"
+			elif item.name == "__pycache__":
+				continue
 			elif item.is_dir():
-				yield from iter_submodules(f"{module}.{item.name}")
+				yield from sorted(iter_submodules(f"{module}.{item.name}"))

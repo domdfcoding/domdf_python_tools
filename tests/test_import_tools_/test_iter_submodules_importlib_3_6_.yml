@@ -1,6 +1,5 @@
 - importlib
 - importlib.abc
-- importlib.__pycache__
 - importlib.util
 - importlib.machinery
 - importlib._bootstrap

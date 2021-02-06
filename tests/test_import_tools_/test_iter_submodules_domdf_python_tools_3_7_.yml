@@ -4,10 +4,10 @@
 - domdf_python_tools.secrets
 - domdf_python_tools.dates
 - domdf_python_tools.pagesizes
-- domdf_python_tools.pagesizes.sizes
-- domdf_python_tools.pagesizes.utils
 - domdf_python_tools.pagesizes.classes
+- domdf_python_tools.pagesizes.sizes
 - domdf_python_tools.pagesizes.units
+- domdf_python_tools.pagesizes.utils
 - domdf_python_tools.delegators
 - domdf_python_tools.import_tools
 - domdf_python_tools.versions
@@ -16,9 +16,9 @@
 - domdf_python_tools.testing
 - domdf_python_tools.testing.fixtures
 - domdf_python_tools.testing.params
+- domdf_python_tools.testing.regressions
 - domdf_python_tools.testing.selectors
 - domdf_python_tools.testing.utils
-- domdf_python_tools.testing.regressions
 - domdf_python_tools.terminal
 - domdf_python_tools.typing
 - domdf_python_tools.words
