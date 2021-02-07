@@ -26,8 +26,6 @@ jobs:
 
       - name: Install dependencies 🔧
         run: |
-          which rustpython
-          echo $PATH
           python -VV
           python -m site
           python -m pip install --upgrade pip setuptools wheel
@@ -43,3 +41,10 @@ jobs:
         with:
           name: "coverage-${{ matrix.config.python-version }}"
           path: .coverage
+
+      - name: "Upload Tempdir 🚀"
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: "pytest-tempdir"
+          path: /tmp/pytest-of-runner/pytest-0
