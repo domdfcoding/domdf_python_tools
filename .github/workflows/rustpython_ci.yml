@@ -23,6 +23,7 @@ jobs:
         run: |
           git clone https://github.com/RustPython/RustPython
           cargo install --path ./RustPython
+          rm -rf ./RustPython
 
       - name: Install dependencies 🔧
         run: |
@@ -39,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: "coverage-${{ matrix.config.python-version }}"
+          name: "coverage-rustpython"
           path: .coverage
 
       - name: "Upload Tempdir 🚀"
