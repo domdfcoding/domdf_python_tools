@@ -33,10 +33,24 @@ Functions for iteration, looping etc.
 import itertools
 import textwrap
 from operator import itemgetter
-from typing import Any, Callable, Iterable, Iterator, List, Optional, Sequence, Sized, Tuple, Type, TypeVar, Union
+from typing import (
+		Any,
+		Callable,
+		Iterable,
+		Iterator,
+		List,
+		Optional,
+		Sequence,
+		Sized,
+		Tuple,
+		Type,
+		TypeVar,
+		Union,
+		cast
+		)
 
 # 3rd party
-from natsort import natsorted, ns  # type: ignore
+from natsort import natsorted, ns
 
 # this package
 from domdf_python_tools.utils import magnitude
@@ -249,7 +263,7 @@ def natmin(seq: Iterable[_T], key: Optional[Callable[[Any], Any]] = None, alg: i
 	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
 	"""
 
-	return natsorted(seq, key=key, alg=alg)[0]
+	return natsorted(seq, key=key, alg=cast(ns, alg))[0]
 
 
 def natmax(seq: Iterable[_T], key: Optional[Callable[[Any], Any]] = None, alg: int = ns.DEFAULT) -> _T:
@@ -265,7 +279,7 @@ def natmax(seq: Iterable[_T], key: Optional[Callable[[Any], Any]] = None, alg: i
 	:param alg: This option is used to control which algorithm :mod:`natsort` uses when sorting.
 	"""
 
-	return natsorted(seq, key=key, alg=alg)[-1]
+	return natsorted(seq, key=key, alg=cast(ns, alg))[-1]
 
 
 _group = Tuple[float, ...]
