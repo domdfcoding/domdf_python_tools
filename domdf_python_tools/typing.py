@@ -52,7 +52,7 @@ import domdf_python_tools
 
 if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
-	from pandas import DataFrame, Series  # type: ignore
+	from pandas import DataFrame, Series
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
@@ -217,7 +217,7 @@ class HasHead(Protocol):
 	.. versionadded:: 0.8.0
 	"""  # noqa D400
 
-	def head(self: "FrameOrSeries", n: int = 5) -> "FrameOrSeries":
+	def head(self: "HasHead", n: int = 5) -> "HasHead":
 		"""
 		Return the first n rows.
 

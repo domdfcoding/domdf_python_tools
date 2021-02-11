@@ -803,7 +803,7 @@ class PathPlus(pathlib.Path):
 			match = (self / match).as_posix()
 
 		file: _PP
-		for file in self.iterdir():  # type: ignore
+		for file in self.iterdir():
 			parts = file.parts
 			if any(d in parts for d in exclude_dirs):
 				continue

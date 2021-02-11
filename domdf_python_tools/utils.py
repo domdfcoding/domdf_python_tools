@@ -76,7 +76,7 @@ from domdf_python_tools.typing import HasHead, String
 
 if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
-	from pandas import DataFrame, Series  # type: ignore
+	from pandas import DataFrame, Series
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
@@ -290,7 +290,7 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = '\t', to: str = 
 class _Etcetera(str):
 
 	def __new__(cls):
-		return str.__new__(cls, "...")  # type: ignore
+		return str.__new__(cls, "...")
 
 	def __repr__(self) -> str:
 		return str(self)

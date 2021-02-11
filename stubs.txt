@@ -1,2 +1,5 @@
 git+https://github.com/domdfcoding/pytest-regressions-stubs
 git+https://github.com/domdfcoding/natsort-stubs
+pandas-stubs; implementation_name == "cpython" and python_version < "3.10"
+types-click
+types-pytz
