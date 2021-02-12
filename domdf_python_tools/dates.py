@@ -8,6 +8,14 @@ Utilities for working with dates and times.
 
 	pytz >=2019.1
 
+
+**Data:**
+
+.. autosummary::
+
+	~domdf_python_tools.dates.months
+
+
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>

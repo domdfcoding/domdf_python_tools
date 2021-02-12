@@ -6,12 +6,6 @@
 	:undoc-members:
 	:exclude-members: months
 
-	**Data:**
-
-	.. autosummary::
-
-		~domdf_python_tools.dates.months
-
 
 .. autovariable:: domdf_python_tools.dates.months
 	:no-value:
