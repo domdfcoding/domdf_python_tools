@@ -107,6 +107,7 @@ if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING: 
 			pass
 
 else:  # pragma: no cover (<py37)
+
 	# stdlib
 	from contextlib import nullcontext
 

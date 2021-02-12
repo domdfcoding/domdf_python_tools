@@ -423,6 +423,5 @@ def redirect_output(combine: bool = False) -> Iterator[Tuple[StringIO, StringIO]
 		stdout = StringIO()
 		stderr = StringIO()
 
-	with contextlib.redirect_stdout(stdout):
-		with contextlib.redirect_stderr(stderr):
-			yield stdout, stderr
+	with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+		yield stdout, stderr

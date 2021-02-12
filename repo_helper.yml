@@ -68,12 +68,10 @@ tox_unmanaged:
  - testenv:lint
  - flake8
 
-tox_testenv_extras: all
-
 additional_ignore:
  - pathtype_demo.py
 
+tox_testenv_extras: all
 min_coverage: 95
-
 mypy_version: "0.800"
 docs_fail_on_warning: true
