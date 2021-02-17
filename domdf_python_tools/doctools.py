@@ -28,12 +28,13 @@ Utilities for documenting functions, classes and methods.
 
 # stdlib
 import builtins
+from contextlib import suppress
 from inspect import cleandoc
 from types import MethodType
 from typing import Any, Callable, Dict, Optional, Sequence, Type, TypeVar, Union
 
 # this package
-from domdf_python_tools.compat import PYPY
+from domdf_python_tools.compat import PYPY, PYPY37
 from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
@@ -335,6 +336,13 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 			continue
 		elif PYPY and isinstance(attribute, MethodType):
 			continue  # pragma: no cover (!PyPy)
+		elif PYPY37:
+			if attribute is getattr(object, attr_name, None):
+				continue
+			elif attribute is getattr(float, attr_name, None):
+				continue
+			elif attribute is getattr(str, attr_name, None):
+				continue
 
 		if attribute is None:
 			continue
@@ -345,7 +353,8 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 
 		doc: Optional[str] = attribute.__doc__
 		if doc in {None, base_docstring}:
-			attribute.__doc__ = new_docstrings[attr_name]
+			with suppress(AttributeError, TypeError):
+				attribute.__doc__ = new_docstrings[attr_name]
 
 
 def prettify_docstrings(obj: Type) -> Type:
@@ -372,10 +381,8 @@ def prettify_docstrings(obj: Type) -> Type:
 			if "return" not in annotations or annotations["return"] is Any:
 				annotations["return"] = new_return_types[attribute]
 
-			try:
+			with suppress(AttributeError, TypeError):
 				getattr(obj, attribute).__annotations__ = annotations
-			except AttributeError:  # pragma: no cover
-				pass
 
 	if issubclass(obj, tuple) and obj.__repr__.__doc__ == "Return a nicely formatted representation string":
 		obj.__repr__.__doc__ = repr_docstring

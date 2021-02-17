@@ -15,7 +15,7 @@ from domdf_python_tools.import_tools import (
 		discover_entry_points_by_name,
 		iter_submodules
 		)
-from domdf_python_tools.testing import only_version
+from domdf_python_tools.testing import not_pypy, only_pypy, only_version
 
 sys.path.append('.')
 sys.path.append("tests")
@@ -129,14 +129,28 @@ def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegr
 		"version",
 		[
 				pytest.param(3.6, marks=only_version(3.6, reason="Output differs on Python 3.6")),
-				pytest.param(3.7, marks=only_version(3.7, reason="Output differs on Python 3.7")),
+				pytest.param(
+						3.7,
+						marks=[
+								only_version(3.7, reason="Output differs on Python 3.7"),
+								not_pypy("Output differs on PyPy")
+								]
+						),
+				pytest.param(
+						"3.7-pypy",
+						marks=[
+								only_version(3.7, reason="Output differs on Python 3.7"),
+								only_pypy("Output differs on PyPy")
+								]
+						),
 				pytest.param(3.8, marks=only_version(3.8, reason="Output differs on Python 3.8")),
 				pytest.param(3.9, marks=only_version(3.9, reason="Output differs on Python 3.9")),
 				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
 				]
 		)
 @pytest.mark.parametrize(
-		"module", ["collections", "importlib", "domdf_python_tools", "consolekit", "asyncio", "json"]
+		"module",
+		["collections", "importlib", "domdf_python_tools", "consolekit", "asyncio", "json"],
 		)
 def test_iter_submodules(version, module: str, data_regression: DataRegressionFixture):
 	data_regression.check(list(iter_submodules(module)))

@@ -52,7 +52,7 @@ from typing import TYPE_CHECKING, ContextManager, Optional, TypeVar
 # this package
 import domdf_python_tools
 
-__all__ = ["importlib_resources", "importlib_metadata", "nullcontext", "PYPY"]
+__all__ = ["importlib_resources", "importlib_metadata", "nullcontext", "PYPY", "PYPY36", "PYPY37"]
 
 if sys.version_info[:2] < (3, 7):  # pragma: no cover (py37+)
 	# 3rd party
@@ -111,9 +111,29 @@ else:  # pragma: no cover (<py37)
 	# stdlib
 	from contextlib import nullcontext
 
-PYPY = platform.python_implementation() == "PyPy"
+PYPY: bool = platform.python_implementation() == "PyPy"
 """
 :py:obj:`True` if running on PyPy rather than CPython.
 
 .. versionadded:: 2.3.0
 """
+
+PYPY36: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.6.
+
+.. versionadded:: $VERSION
+"""
+
+PYPY37: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.7.
+
+.. versionadded:: $VERSION
+"""
+
+if PYPY:
+	if sys.version_info[:2] == (3, 6):
+		PYPY36 = True
+	elif sys.version_info[:2] == (3, 7):
+		PYPY37 = True

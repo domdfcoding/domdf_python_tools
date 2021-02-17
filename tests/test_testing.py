@@ -216,7 +216,7 @@ def test_tmp_pathplus(tmp_pathplus: PathPlus):
 
 
 def test_check_file_output(tmp_pathplus: PathPlus, file_regression: FileRegressionFixture):
-	with pytest.raises(FileNotFoundError, match="No such file or directory: '.*'"):
+	with pytest.raises(FileNotFoundError, match=r"No such file or directory: ('.*'|.*PathPlus\('.*'\))"):
 		check_file_output(tmp_pathplus / "file.txt", file_regression)
 
 	(tmp_pathplus / "file.txt").write_text("Success!")
