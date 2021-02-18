@@ -122,14 +122,14 @@ PYPY36: bool = False
 """
 :py:obj:`True` if running on PyPy 3.6.
 
-.. versionadded:: $VERSION
+.. versionadded:: 2.6.0
 """
 
 PYPY37: bool = False
 """
 :py:obj:`True` if running on PyPy 3.7.
 
-.. versionadded:: $VERSION
+.. versionadded:: 2.6.0
 """
 
 if PYPY:  # pragma: no cover
