@@ -22,6 +22,7 @@ from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools import paths
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.paths import (
 		PathPlus,
 		TemporaryPathPlus,
@@ -809,6 +810,13 @@ def test_globpath(pattern: str, filename: str, match: bool):
 	assert matchglob(filename, pattern) is match
 
 
+pypy_no_symlink = pytest.mark.skipif(
+		condition=PYPY and platform.system() == "Windows",
+		reason="symlink() is not implemented for PyPy on Windows",
+		)
+
+
+@pypy_no_symlink
 def test_abspath(tmp_pathplus: PathPlus):
 	assert (tmp_pathplus / "foo" / "bar" / "baz" / "..").abspath() == tmp_pathplus / "foo" / "bar"
 
@@ -830,6 +838,7 @@ def test_abspath(tmp_pathplus: PathPlus):
 	assert isinstance((tmp_pathplus / "foo" / "bar" / "baz" / "..").abspath(), PathPlus)
 
 
+@pypy_no_symlink
 def test_abspath_dotted(tmp_pathplus: PathPlus):
 
 	file = tmp_pathplus / "baz.py"
