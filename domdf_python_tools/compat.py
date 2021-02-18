@@ -132,7 +132,7 @@ PYPY37: bool = False
 .. versionadded:: $VERSION
 """
 
-if PYPY:
+if PYPY:  # pragma: no cover
 	if sys.version_info[:2] == (3, 6):
 		PYPY36 = True
 	elif sys.version_info[:2] == (3, 7):

@@ -601,11 +601,11 @@ class Plural(functools.partial):
 			:param n:
 			"""
 
-	if PYPY:  # pragma: no cover (!CPython)
+	if PYPY:  # pragma: no cover (!PyPy)
 
 		def __init__(self, singular: str, plural: str):
 			super().__init__(ngettext, singular, plural)
-	else:
+	else:  # pragma: no cover (!CPython)
 
 		def __new__(cls, singular: str, plural: str):  # noqa: D102
 			return functools.partial.__new__(cls, ngettext, singular, plural)  # type: ignore
