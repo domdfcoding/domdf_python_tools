@@ -112,13 +112,8 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	:return: The list of words meeting the above specifiers.
 	"""  # noqa D400
 
-	# this package
-	from domdf_python_tools.paths import PathPlus
-
-	with importlib_resources.path(domdf_python_tools, "google-10000-english-no-swears.txt") as words_file_:
-		words_file = PathPlus(words_file_)
-
-	words_list: List[str] = words_file.read_text().splitlines()
+	words: str = importlib_resources.read_text("domdf_python_tools", "google-10000-english-no-swears.txt")
+	words_list: List[str] = words.splitlines()
 
 	if min_length > 0 or max_length != -1:
 		if max_length == -1:
