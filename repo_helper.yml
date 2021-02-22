@@ -76,3 +76,5 @@ tox_testenv_extras: all
 min_coverage: 95
 mypy_version: "0.800"
 docs_fail_on_warning: true
+
+requires_python: 3.6
