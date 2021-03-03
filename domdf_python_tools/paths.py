@@ -51,6 +51,7 @@ import stat
 import sys
 import tempfile
 from collections import defaultdict, deque
+from operator import methodcaller
 from typing import IO, Any, Callable, ContextManager, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
 
 # this package
@@ -1035,4 +1036,4 @@ def sort_paths(*paths: PathLike) -> List[PathPlus]:
 		contents = [path.relative_to(directory) for path in contents]
 		files.extend(PathPlus(directory) / path for path in sort_paths(*contents))
 
-	return files + sorted(local_contents)
+	return files + sorted(local_contents, key=methodcaller("as_posix"))

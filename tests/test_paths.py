@@ -869,12 +869,13 @@ def test_temporarypathplus():
 
 
 def test_sort_paths():
-	paths = ["foo.txt", "bar.toml", "bar.py", "baz.yaml", "fizz/buzz.c", "fizz/buzz.h"]
+	paths = ["foo.txt", "bar.toml", "bar.py", "baz.yaml", "baz.YAML", "fizz/buzz.c", "fizz/buzz.h"]
 	expected = [
 			PathPlus("fizz/buzz.c"),
 			PathPlus("fizz/buzz.h"),
 			PathPlus("bar.py"),
 			PathPlus("bar.toml"),
+			PathPlus("baz.YAML"),
 			PathPlus("baz.yaml"),
 			PathPlus("foo.txt"),
 			]
