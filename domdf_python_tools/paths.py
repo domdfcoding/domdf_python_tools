@@ -12,9 +12,10 @@ Functions for paths and files.
 #
 #  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
-#  Parts of the docstrings and the PathPlus class based on the Python 3.8.2 Documentation
+#  Parts of the docstrings, the PathPlus class and the DirComparator class
+#  based on Python and its Documentation
 #  Licensed under the Python Software Foundation License Version 2.
-#  Copyright © 2001-2020 Python Software Foundation. All rights reserved.
+#  Copyright © 2001-2021 Python Software Foundation. All rights reserved.
 #  Copyright © 2000 BeOpen.com. All rights reserved.
 #  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
 #  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
@@ -41,6 +42,7 @@ Functions for paths and files.
 
 # stdlib
 import contextlib
+import filecmp
 import fnmatch
 import gzip
 import json
@@ -52,7 +54,20 @@ import sys
 import tempfile
 from collections import defaultdict, deque
 from operator import methodcaller
-from typing import IO, Any, Callable, ContextManager, Dict, Iterable, Iterator, List, Optional, TypeVar, Union
+from typing import (
+		IO,
+		Any,
+		Callable,
+		ContextManager,
+		Dict,
+		Iterable,
+		Iterator,
+		List,
+		Optional,
+		Sequence,
+		TypeVar,
+		Union
+		)
 
 # this package
 from domdf_python_tools.compat import nullcontext
@@ -80,6 +95,8 @@ __all__ = [
 		"unwanted_dirs",
 		"TemporaryPathPlus",
 		"sort_paths",
+		"DirComparator",
+		"compare_dirs",
 		]
 
 newline_default = object()
@@ -330,12 +347,12 @@ class PathPlus(pathlib.Path):
 	"""
 	Subclass of :class:`pathlib.Path` with additional methods and a default encoding of UTF-8.
 
-	Path represents a filesystem path but unlike :class:`~.PurePath`, also offers
+	Path represents a filesystem path but unlike :class:`pathlib.PurePath`, also offers
 	methods to do system calls on path objects.
 	Depending on your system, instantiating a :class:`~.PathPlus` will return
 	either a :class:`~.PosixPathPlus` or a :class:`~.WindowsPathPlus`. object.
-	You can also instantiate a :class:`PosixPath` or :class:`WindowsPath` directly,
-	but cannot instantiate a :class:`WindowsPath` on a POSIX system or vice versa.
+	You can also instantiate a :class:`~.PosixPathPlus` or :class:`WindowsPath` directly,
+	but cannot instantiate a :class:`~.WindowsPathPlus` on a POSIX system or vice versa.
 
 	.. versionadded:: 0.3.8
 	.. versionchanged:: 0.5.1  Defaults to Unix line endings (``LF``) on all platforms.
@@ -1037,3 +1054,93 @@ def sort_paths(*paths: PathLike) -> List[PathPlus]:
 		files.extend(PathPlus(directory) / path for path in sort_paths(*contents))
 
 	return files + sorted(local_contents, key=methodcaller("as_posix"))
+
+
+class DirComparator(filecmp.dircmp):
+	r"""
+	Compare the content of ``a`` and ``a``.
+
+	In contrast with :class:`filecmp.dircmp`, this
+	subclass compares the content of files with the same path.
+
+	.. versionadded:: 2.7.0
+
+	:param a: The "left" directory to compare.
+	:param b: The "right" directory to compare.
+	:param ignore: A list of names to ignore.
+	:default ignore: :py:obj:`filecmp.DEFAULT_IGNORES`
+	:param hide: A list of names to hide.
+	:default hide: ``[`` :py:obj:`os.curdir`, :py:obj:`os.pardir` ``]``
+	"""
+
+	# From https://stackoverflow.com/a/24860799, public domain.
+	# Thanks Philippe
+
+	def __init__(
+			self,
+			a: PathLike,
+			b: PathLike,
+			ignore: Optional[Sequence[str]] = None,
+			hide: Optional[Sequence[str]] = None,
+			):
+		super().__init__(a, b, ignore=ignore, hide=hide)
+
+	def phase3(self) -> None:
+		# Find out differences between common files.
+		# Ensure we are using content comparison with shallow=False.
+
+		fcomp = filecmp.cmpfiles(self.left, self.right, self.common_files, shallow=False)
+		self.same_files, self.diff_files, self.funny_files = fcomp
+
+	def phase4(self) -> None:
+		# Find out differences between common subdirectories
+
+		# From https://github.com/python/cpython/pull/23424
+
+		self.subdirs = {}
+
+		for x in self.common_dirs:
+			a_x = os.path.join(self.left, x)
+			b_x = os.path.join(self.right, x)
+			self.subdirs[x] = self.__class__(a_x, b_x, self.ignore, self.hide)
+
+	_methodmap = {
+			"subdirs": phase4,
+			"same_files": phase3,
+			"diff_files": phase3,
+			"funny_files": phase3,
+			"common_dirs": filecmp.dircmp.phase2,
+			"common_files": filecmp.dircmp.phase2,
+			"common_funny": filecmp.dircmp.phase2,
+			"common": filecmp.dircmp.phase1,
+			"left_only": filecmp.dircmp.phase1,
+			"right_only": filecmp.dircmp.phase1,
+			"left_list": filecmp.dircmp.phase0,
+			"right_list": filecmp.dircmp.phase0
+			}
+
+	methodmap = _methodmap  # type: ignore
+
+
+def compare_dirs(a: PathLike, b: PathLike):
+	"""
+	Compare the content of two directory trees.
+
+	.. versionadded:: 2.7.0
+
+	:param a: The "left" directory to compare.
+	:param b: The "right" directory to compare.
+
+	:returns: :py:obj:`False` if they differ, :py:obj:`True` is they are the same.
+	"""
+
+	compared = DirComparator(a, b)
+
+	if compared.left_only or compared.right_only or compared.diff_files or compared.funny_files:
+		return False
+
+	for subdir in compared.common_dirs:
+		if not compare_dirs(os.path.join(a, subdir), os.path.join(b, subdir)):
+			return False
+
+	return True
