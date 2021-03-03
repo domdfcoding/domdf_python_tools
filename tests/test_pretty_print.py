@@ -43,16 +43,18 @@ class list_custom_repr(list):
 
 
 class tuple2(tuple):
-	pass
+	__slots__ = ()
 
 
 class tuple3(tuple):
+	__slots__ = ()
 
 	def __repr__(self):
 		return tuple.__repr__(self)
 
 
 class tuple_custom_repr(tuple):
+	__slots__ = ()
 
 	def __repr__(self):
 		return '*' * len(tuple.__repr__(self))

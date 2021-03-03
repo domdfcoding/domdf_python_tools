@@ -73,7 +73,7 @@ class MyPathLike(os.PathLike):
 
 
 class MyStr(str):
-	pass
+	__slots__ = ()
 
 
 class MyPath(type(pathlib.Path())):  # type: ignore

@@ -180,6 +180,7 @@ def itermulti(seqn):
 
 
 class LyingTuple(tuple):
+	__slots__ = ()
 
 	def __iter__(self):
 		yield 1

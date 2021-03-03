@@ -34,7 +34,7 @@ def comparator_tmpdir(tmp_pathplus):
 
 	data.caseinsensitive = os.path.normcase('A') == os.path.normcase('a')
 
-	for dir in (data.dir, data.dir_same, data.dir_diff, data.dir_ignored):
+	for dir in (data.dir, data.dir_same, data.dir_diff, data.dir_ignored):  # noqa: A001
 		shutil.rmtree(dir, True)
 		os.mkdir(dir)
 		subdir_path = os.path.join(dir, "subdir")
@@ -188,7 +188,9 @@ class TestDirComparator:
 		self._assert_report(d.report, expected_report)
 
 	def test_dircmp_subdirs_type(self, comparator_tmpdir):
-		"Check that dircmp.subdirs respects subclassing."
+		"""
+		Check that dircmp.subdirs respects subclassing.
+		"""
 
 		class MyDirCmp(DirComparator):
 			pass

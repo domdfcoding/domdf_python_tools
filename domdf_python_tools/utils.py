@@ -289,6 +289,8 @@ def convert_indents(text: str, tab_width: int = 4, from_: str = '\t', to: str = 
 
 class _Etcetera(str):
 
+	__slots__ = ()
+
 	def __new__(cls):
 		return str.__new__(cls, "...")
 
