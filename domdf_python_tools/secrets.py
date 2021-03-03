@@ -51,6 +51,8 @@ class Secret(str):
 	.. versionadded:: 0.4.6
 	"""
 
+	__slots__ = ("value", )
+
 	value: str  #: The actual value of the secret.
 
 	def __new__(cls, value) -> "Secret":  # noqa D102
