@@ -6,7 +6,19 @@ Test functions in iterative.py
 
 """
 
+#  test_count, test_count_with_stride and pickletest
+#  adapted from https://github.com/python/cpython/blob/master/Lib/test/test_itertools.py
+#  Licensed under the Python Software Foundation License Version 2.
+#  Copyright © 2001-2021 Python Software Foundation. All rights reserved.
+#  Copyright © 2000 BeOpen.com. All rights reserved.
+#  Copyright © 1995-2000 Corporation for National Research Initiatives. All rights reserved.
+#  Copyright © 1991-1995 Stichting Mathematisch Centrum. All rights reserved.
+#
+
 # stdlib
+import pickle
+import sys
+from itertools import islice
 from random import shuffle
 from types import GeneratorType
 from typing import List, Tuple
@@ -20,6 +32,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 from domdf_python_tools.iterative import (
 		Len,
 		chunks,
+		count,
 		double_chain,
 		extend,
 		extend_with,
@@ -273,3 +286,188 @@ def test_extend_with_none():
 def test_extend_with_int():
 	expects = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 0, 0, 0)
 	assert tuple(extend_with("abcdefg", 10, 0)) == expects
+
+
+def lzip(*args):
+	return list(zip(*args))
+
+
+def take(n, seq):
+	"""
+	Convenience function for partially consuming a long of infinite iterable
+	"""
+
+	return list(islice(seq, n))
+
+
+def test_count():
+	assert lzip("abc", count()) == [('a', 0), ('b', 1), ('c', 2)]
+	assert lzip("abc", count(3)) == [('a', 3), ('b', 4), ('c', 5)]
+	assert take(2, lzip("abc", count(3))) == [('a', 3), ('b', 4)]
+	assert take(2, zip("abc", count(-1))) == [('a', -1), ('b', 0)]
+	assert take(2, zip("abc", count(-3))) == [('a', -3), ('b', -2)]
+
+	with pytest.raises(TypeError, match=r"count\(\) takes from 0 to 2 positional arguments but 3 were given"):
+		count(2, 3, 4)  # type: ignore
+
+	with pytest.raises(TypeError, match="a number is required"):
+		count('a')  # type: ignore
+
+	assert take(10, count(sys.maxsize - 5)) == list(range(sys.maxsize - 5, sys.maxsize + 5))
+	assert take(10, count(-sys.maxsize - 5)) == list(range(-sys.maxsize - 5, -sys.maxsize + 5))
+	assert take(3, count(3.25)) == [3.25, 4.25, 5.25]
+	assert take(3, count(3.25 - 4j)) == [3.25 - 4j, 4.25 - 4j, 5.25 - 4j]
+
+	BIGINT = 1 << 1000
+	assert take(3, count(BIGINT)) == [BIGINT, BIGINT + 1, BIGINT + 2]
+
+	c = count(3)
+	assert repr(c) == "count(3)"
+	next(c)
+	assert repr(c) == "count(4)"
+	c = count(-9)
+	assert repr(c) == "count(-9)"
+	next(c)
+	assert next(c) == -8
+
+	assert repr(count(10.25)) == "count(10.25)"
+	assert repr(count(10.0)) == "count(10.0)"
+	assert type(next(count(10.0))) == float
+
+	for i in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 10, sys.maxsize - 5, sys.maxsize + 5):
+		# Test repr
+		r1 = repr(count(i))
+		r2 = "count(%r)".__mod__(i)
+		assert r1 == r2
+
+	# # check copy, deepcopy, pickle
+	# for value in -3, 3, sys.maxsize - 5, sys.maxsize + 5:
+	# 	c = count(value)
+	# 	assert next(copy.copy(c)) == value
+	# 	assert next(copy.deepcopy(c)) == value
+	# 	for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+	# 		pickletest(proto, count(value))
+
+	# check proper internal error handling for large "step' sizes
+	count(1, sys.maxsize + 5)
+	sys.exc_info()
+
+
+def test_count_with_stride():
+	assert lzip("abc", count(2, 3)) == [('a', 2), ('b', 5), ('c', 8)]
+	assert lzip("abc", count(start=2, step=3)) == [('a', 2), ('b', 5), ('c', 8)]
+	assert lzip("abc", count(step=-1)) == [('a', 0), ('b', -1), ('c', -2)]
+
+	with pytest.raises(TypeError, match="a number is required"):
+		count('a', 'b')  # type: ignore
+
+	with pytest.raises(TypeError, match="a number is required"):
+		count(5, 'b')  # type: ignore
+
+	assert lzip("abc", count(2, 0)) == [('a', 2), ('b', 2), ('c', 2)]
+	assert lzip("abc", count(2, 1)) == [('a', 2), ('b', 3), ('c', 4)]
+	assert lzip("abc", count(2, 3)) == [('a', 2), ('b', 5), ('c', 8)]
+	assert take(20, count(sys.maxsize - 15, 3)) == take(20, range(sys.maxsize - 15, sys.maxsize + 100, 3))
+	assert take(20, count(-sys.maxsize - 15, 3)) == take(20, range(-sys.maxsize - 15, -sys.maxsize + 100, 3))
+	assert take(3, count(10, sys.maxsize + 5)) == list(range(10, 10 + 3 * (sys.maxsize + 5), sys.maxsize + 5))
+	assert take(3, count(2, 1.25)) == [2, 3.25, 4.5]
+	assert take(3, count(2, 3.25 - 4j)) == [2, 5.25 - 4j, 8.5 - 8j]
+
+	BIGINT = 1 << 1000
+	assert take(3, count(step=BIGINT)) == [0, BIGINT, 2 * BIGINT]
+	assert repr(take(3, count(10, 2.5))) == repr([10, 12.5, 15.0])
+
+	c = count(3, 5)
+	assert repr(c) == "count(3, 5)"
+	next(c)
+	assert repr(c) == "count(8, 5)"
+	c = count(-9, 0)
+	assert repr(c) == "count(-9, 0)"
+	next(c)
+	assert repr(c) == "count(-9, 0)"
+	c = count(-9, -3)
+	assert repr(c) == "count(-9, -3)"
+	next(c)
+	assert repr(c) == "count(-12, -3)"
+	assert repr(c) == "count(-12, -3)"
+
+	assert repr(count(10.5, 1.25)) == "count(10.5, 1.25)"
+	assert repr(count(10.5, 1)) == "count(10.5)"  # suppress step=1 when it's an int
+	assert repr(count(10.5, 1.00)) == "count(10.5, 1.0)"  # do show float values like 1.0
+	assert repr(count(10, 1.00)) == "count(10, 1.0)"
+
+	c = count(10, 1.0)
+	assert type(next(c)) == int
+	assert type(next(c)) == float
+
+	for i in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 10, sys.maxsize - 5, sys.maxsize + 5):
+		for j in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 1, 10, sys.maxsize - 5, sys.maxsize + 5):
+			# Test repr
+			r1 = repr(count(i, j))
+
+			if j == 1:
+				r2 = ("count(%r)" % i)
+			else:
+				r2 = (f'count({i!r}, {j!r})')
+			assert r1 == r2
+
+			# for proto in range(pickle.HIGHEST_PROTOCOL + 1):
+			# 	pickletest(proto, count(i, j))
+
+
+def pickletest(protocol, it, stop=4, take=1, compare=None):
+	"""
+	Test that an iterator is the same after pickling, also when part-consumed
+	"""
+
+	def expand(it, i=0):
+		# Recursively expand iterables, within sensible bounds
+		if i > 10:
+			raise RuntimeError("infinite recursion encountered")
+		if isinstance(it, str):
+			return it
+		try:
+			l = list(islice(it, stop))
+		except TypeError:
+			return it  # can't expand it
+		return [expand(e, i + 1) for e in l]
+
+	# Test the initial copy against the original
+	dump = pickle.dumps(it, protocol)
+	i2 = pickle.loads(dump)
+	assert type(it) == type(i2)
+	a, b = expand(it), expand(i2)
+	assert a == b
+	if compare:
+		c = expand(compare)
+		assert a == c
+
+	# Take from the copy, and create another copy and compare them.
+	i3 = pickle.loads(dump)
+	took = 0
+	try:
+		for i in range(take):
+			next(i3)
+			took += 1
+	except StopIteration:
+		pass  # in case there is less data than 'take'
+
+	dump = pickle.dumps(i3, protocol)
+	i4 = pickle.loads(dump)
+	a, b = expand(i3), expand(i4)
+	assert a == b
+	if compare:
+		c = expand(compare[took:])
+		assert a == c
+
+
+def test_subclassing_count():
+	CountType = type(count(1))
+
+	with pytest.raises(
+			TypeError,
+			match="type 'domdf_python_tools.iterative.count' is not an acceptable base type",
+			):
+
+		class MyCount(CountType):  # type: ignore
+			pass

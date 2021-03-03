@@ -51,6 +51,7 @@ from typing import (
 
 # 3rd party
 from natsort import natsorted, ns
+from typing_extensions import final
 
 # this package
 from domdf_python_tools.utils import magnitude
@@ -70,9 +71,12 @@ __all__ = [
 		"extend",
 		"extend_with",
 		"extend_with_none",
+		"count",
+		"AnyNum",
 		]
 
 _T = TypeVar("_T")
+AnyNum = TypeVar("AnyNum", float, complex)
 
 
 def chunks(l: Sequence[_T], n: int) -> Iterator[Sequence[_T]]:
@@ -414,3 +418,69 @@ def extend_with_none(sequence: Iterable[_T], minsize: int) -> Sequence[Optional[
 	filler: Sequence[Optional[_T]] = [None] * max(0, minsize - len(output))
 
 	return tuple((*output, *filler))
+
+
+def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
+	"""
+	Make an iterator which returns evenly spaced values starting with number ``start``.
+
+	Often used as an argument to :func:`map` to generate consecutive data points.
+	Also, used with :func:`zip` to add sequence numbers.
+
+	.. versionadded:: 2.7.0
+
+	:param start:
+	:param step: The step between values.
+
+	.. seealso::
+
+		:func:`itertools.count`.
+		The difference is that this returns more exact floats, whereas the values from :func:`itertools.count` drift.
+	"""
+
+	if not isinstance(start, (int, float, complex)):
+		raise TypeError("a number is required")
+	if not isinstance(step, (int, float, complex)):
+		raise TypeError("a number is required")
+
+	# count(10) --> 10 11 12 13 14 ...
+	# count(2.5, 0.5) -> 2.5 3.0 3.5 ...
+
+	pos: int = 0
+
+	def get_next():
+		if pos:
+			return start + (step * pos)
+		else:
+			return start
+
+	@final
+	class count(Iterator[AnyNum]):
+
+		def __next__(self):
+			nonlocal pos
+
+			val = get_next()
+			pos += 1
+
+			return val
+
+		def __iter__(self):
+			return self
+
+		if isinstance(step, int) and step == 1:
+
+			def __repr__(self):
+				return f"{self.__class__.__name__}({get_next()})"
+		else:
+
+			def __repr__(self):
+				return f"{self.__class__.__name__}{get_next(), step}"
+
+		def __init_subclass__(cls, **kwargs):
+			raise TypeError("type 'domdf_python_tools.iterative.count' is not an acceptable base type")
+
+	count.__qualname__ = count.__name__ = "count"
+
+	return count()  # type: ignore
+
