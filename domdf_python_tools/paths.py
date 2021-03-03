@@ -1085,14 +1085,14 @@ class DirComparator(filecmp.dircmp):
 			):
 		super().__init__(a, b, ignore=ignore, hide=hide)
 
-	def phase3(self) -> None:
+	def phase3(self) -> None:  # noqa: D102
 		# Find out differences between common files.
 		# Ensure we are using content comparison with shallow=False.
 
 		fcomp = filecmp.cmpfiles(self.left, self.right, self.common_files, shallow=False)
 		self.same_files, self.diff_files, self.funny_files = fcomp
 
-	def phase4(self) -> None:
+	def phase4(self) -> None:  # noqa: D102
 		# Find out differences between common subdirectories
 
 		# From https://github.com/python/cpython/pull/23424
