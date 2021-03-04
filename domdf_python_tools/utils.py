@@ -64,11 +64,12 @@ General utility functions.
 import contextlib
 import inspect
 import json
+import re
 import sys
 from io import StringIO
 from math import log10
 from pprint import pformat
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, Iterator, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Union
 
 # this package
 import domdf_python_tools.words
@@ -101,6 +102,8 @@ __all__ = [
 		"trim_precision",
 		"double_repr_string",
 		"redirect_output",
+		"divide",
+		"redivide",
 		]
 
 #: The current major python version.
@@ -427,3 +430,40 @@ def redirect_output(combine: bool = False) -> Iterator[Tuple[StringIO, StringIO]
 
 	with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
 		yield stdout, stderr
+
+
+def divide(string: str, sep: str) -> Tuple[str, str]:
+	"""
+	Divide a string into two parts, about the given string.
+
+	.. versionadded:: 2.7.0
+
+	:param string:
+	:param sep:
+	"""
+
+	if sep not in string:
+		raise ValueError(f"{sep!r} not in {string!r}")
+
+	parts = string.split(sep, 1)
+	return tuple(parts)  # type: ignore
+
+
+def redivide(string: str, pat: Union[str, Pattern]) -> Tuple[str, str]:
+	"""
+	Divide a string into two parts, splitting on the given regular expression.
+
+	.. versionadded:: 2.7.0
+
+	:param string:
+	:param pat:
+	"""
+
+	if isinstance(pat, str):
+		pat = re.compile(pat)
+
+	if not pat.search(string):
+		raise ValueError(f"{pat!r} has no matches in {string!r}")
+
+	parts = pat.split(string, 1)
+	return tuple(parts)  # type: ignore

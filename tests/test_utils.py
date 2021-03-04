@@ -17,6 +17,7 @@ from collections import namedtuple
 # 3rd party
 import click
 import pytest
+from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools.testing import testing_boolean_values
@@ -24,6 +25,7 @@ from domdf_python_tools.typing import HasHead
 from domdf_python_tools.utils import (
 		cmp,
 		convert_indents,
+		divide,
 		double_repr_string,
 		enquote_value,
 		head,
@@ -33,6 +35,7 @@ from domdf_python_tools.utils import (
 		printt,
 		pyversion,
 		redirect_output,
+		redivide,
 		stderr_writer,
 		str2tuple,
 		strtobool,
@@ -449,3 +452,47 @@ def test_redirect_output_combine():
 	expected = "I'm going to stdout\nI'm going to stderr\nI'm also going to stdout\nI'm also going to stderr\n"
 	assert stdout.getvalue() == expected
 	assert stderr.getvalue() == expected
+
+
+@pytest.mark.parametrize(
+		"string, sep",
+		[
+				("hello=world", '='),
+				("hello = world", '='),
+				("hello = world", " = "),
+				("hello: world", ':'),
+				("hello: world", ": "),
+				]
+		)
+def test_divide(string: str, sep: str, data_regression: DataRegressionFixture):
+	data = dict(divide(e, sep) for e in [string, string, string])
+
+	data_regression.check(data)
+
+
+def test_divide_errors():
+	with pytest.raises(ValueError, match="'=' not in 'hello: world'"):
+		divide("hello: world", '=')
+
+
+@pytest.mark.parametrize(
+		"string, sep",
+		[
+				("hello=world", r"\s?=\s?"),
+				("hello = world", r"\s?=\s?"),
+				("hello = world", '='),
+				("hello: world", r":\s?"),
+				("hello: world", r"\s?:\s?"),
+				]
+		)
+def test_redivide(string: str, sep: str, data_regression: DataRegressionFixture):
+	data = dict(redivide(e, sep) for e in [string, string, string])
+
+	data_regression.check(data)
+
+
+def test_redivide_errors():
+	with pytest.raises(ValueError, match=r"re.compile\('='\) has no matches in 'hello: world'"):
+		redivide("hello: world", '=')
+	with pytest.raises(ValueError, match=r"re.compile\(.*\) has no matches in 'hello: world'"):
+		redivide("hello: world", r"\d")
