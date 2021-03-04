@@ -34,7 +34,7 @@ def comparator_tmpdir(tmp_pathplus):
 
 	data.caseinsensitive = os.path.normcase('A') == os.path.normcase('a')
 
-	for dir in (data.dir, data.dir_same, data.dir_diff, data.dir_ignored):  # noqa: A001
+	for dir in (data.dir, data.dir_same, data.dir_diff, data.dir_ignored):  # noqa: A001  # pylint: disable=redefined-builtin
 		shutil.rmtree(dir, True)
 		os.mkdir(dir)
 		subdir_path = os.path.join(dir, "subdir")
