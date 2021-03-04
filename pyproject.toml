@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "domdf_python_tools"
-version = "2.6.1"
+version = "2.7.0"
 description = "Helpful functions for Python\u2002🐍\u2002🛠️"
 readme = "README.rst"
 keywords = [ "utilities",]
