@@ -71,6 +71,13 @@ tox_unmanaged:
 
 additional_ignore:
  - pathtype_demo.py
+ - addedin.py
+ - demo.py
+ - frozendict.py
+ - mutdef_plugin.py
+ - mutdef.py
+ - narrows_type.py
+ - count_demo.py
 
 tox_testenv_extras: all
 min_coverage: 95
