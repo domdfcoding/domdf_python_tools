@@ -63,6 +63,7 @@ mypy_deps:
 extra_sphinx_extensions:
  - sphinx_autofixture
  - sphinx_highlights
+ - latex_toctree_sections
 
 tox_unmanaged:
  - testenv

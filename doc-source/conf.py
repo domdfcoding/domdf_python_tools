@@ -28,7 +28,7 @@ rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
 """
 
 author = "Dominic Davis-Foster"
-project = "domdf_python_tools"
+project = "domdf_python_tools".replace('_', '-')
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = __version__
 copyright = "2019-2021 Dominic Davis-Foster"  # pylint: disable=redefined-builtin
@@ -53,6 +53,7 @@ extensions = [
 		"seed_intersphinx_mapping",
 		"sphinx_autofixture",
 		"sphinx_highlights",
+		"latex_toctree_sections",
 		]
 
 sphinxemoji_style = "twemoji"
