@@ -6,28 +6,27 @@ import sphinx.directives.other
 import sphinx.writers.latex
 from docutils import nodes
 from sphinx.application import Sphinx
+from sphinx.config import Config
 
-__all__ = ["TocTreePlusDirective", "setup"]
+__all__ = ["LaTeXTranslator", "LatexTocTreeDirective", "setup"]
+
+use_bookmark = r"\usepackage{bookmark}"
+nest_bookmark_level_part = "\\bookmarksetupnext{{level=part}}\n"
 
 
 class LaTeXTranslator(sphinx.writers.latex.LaTeXTranslator):
 
 	def generate_indices(self) -> str:
 
-		lines = super().generate_indices().splitlines()
-
-		return "\n".join([
-				"\\bookmarksetupnext{{level=part}}\n",
-				*lines,
+		return '\n'.join([
+				nest_bookmark_level_part,
+				*super().generate_indices().splitlines(),
 				'',
-				"\\bookmarksetupnext{{level=part}}\n",
+				nest_bookmark_level_part,
 				])
 
-# TODO: The first section in a part has all sub sections nested under it in the sidebar,
-#  The numbering is correct, and its correct in the contents
 
-
-class TocTreePlusDirective(sphinx.directives.other.TocTree):
+class LatexTocTreeDirective(sphinx.directives.other.TocTree):
 
 	def run(self) -> List[nodes.Node]:
 
@@ -39,28 +38,43 @@ class TocTreePlusDirective(sphinx.directives.other.TocTree):
 				and self.env.docname == self.env.config.master_doc
 				):
 
-			# TODO: \setcounter{section}{0}
-			# https://tex.stackexchange.com/questions/271075/reset-counter-section-in-part
 			latex_part_node = nodes.raw(
-					text=
-					f"\\setcounter{{section}}{{0}}\n\\part{{{caption}}}\n\\setcounter{{chapter}}{{1}}",
+					text=f"\\setcounter{{section}}{{0}}\n\\part{{{caption}}}\n\\setcounter{{chapter}}{{1}}",
 					format="latex"
 					)
 			output.append(latex_part_node)
-			# self.state.nested_parse(StringList(), self.content_offset, latex_part_node)
 
 		output.extend(super().run())
+
 		return output
+
+
+def configure(app: Sphinx, config: Config):
+	"""
+	Configure the Sphinx extension.
+
+	:param app:
+	:param config:
+	"""
+
+	if not hasattr(config, "latex_elements"):
+		config.latex_elements = {}
+
+	latex_preamble = (config.latex_elements or {}).get("preamble", '')
+
+	if use_bookmark not in latex_preamble:
+		config.latex_elements["preamble"] = f"{latex_preamble}\n{use_bookmark}"
 
 
 def setup(app: Sphinx) -> Dict[str, Any]:
 	"""
-	Setup Sphinx Extension.
+	Setup Sphinx extension.
 
 	:param app:
 	"""
 
-	app.add_directive("toctree", TocTreePlusDirective, override=True)
+	app.connect("config-inited", configure)
+	app.add_directive("toctree", LatexTocTreeDirective, override=True)
 	app.set_translator("latex", LaTeXTranslator, override=True)
 
 	return {
