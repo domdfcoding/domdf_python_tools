@@ -26,7 +26,7 @@ class TocTreePlusDirective(sphinx.directives.other.TocTree):
 
 			# TODO: \setcounter{section}{0}
 			# https://tex.stackexchange.com/questions/271075/reset-counter-section-in-part
-			latex_part_node = nodes.raw(text=f"\\setcounter{{section}}{{0}}\n\\bookmarksetup{{level=0}}\n\\part{{{caption}}}\n\\setcounter{{chapter}}{{0}}", format="latex")
+			latex_part_node = nodes.raw(text=f"\\setcounter{{section}}{{0}}\n\\bookmarksetupnext{{level=0}}\n\\part{{{caption}}}\n\\setcounter{{chapter}}{{1}}", format="latex")
 			output.append(latex_part_node)
 			# self.state.nested_parse(StringList(), self.content_offset, latex_part_node)
 
