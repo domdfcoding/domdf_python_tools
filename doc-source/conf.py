@@ -147,5 +147,5 @@ manpages_url = "https://manpages.debian.org/{path}"
 toctree_plus_types.add("fixture")
 
 latex_elements = {
-		"extrapackages": ["bookmark"],
+		"preamble": r"\usepackage{bookmark}",
 		}
