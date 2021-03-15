@@ -124,7 +124,6 @@ domdf_python_tools
 	.. |pre_commit_ci| pre-commit-ci-shield::
 		:alt: pre-commit.ci status
 
-
 .. end shields
 
 
