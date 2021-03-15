@@ -333,10 +333,10 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 				attribute,
 				(WrapperDescriptorType, MethodDescriptorType, MethodWrapperType, MethodType),
 				):
-			continue
-		elif PYPY and isinstance(attribute, MethodType):
 			continue  # pragma: no cover (!PyPy)
-		elif PYPY37:
+		elif PYPY and isinstance(attribute, MethodType):
+			continue  # pragma: no cover
+		elif PYPY37:  # pragma: no cover (not (PyPy and py37))
 			if attribute is getattr(object, attr_name, None):
 				continue
 			elif attribute is getattr(float, attr_name, None):

@@ -40,6 +40,7 @@ extensions = [
 		"sphinx_toolbox.more_autodoc",
 		"sphinx_toolbox.more_autosummary",
 		"sphinx_toolbox.tweaks.param_dash",
+		"sphinx_toolbox.tweaks.latex_toc",
 		"sphinx.ext.intersphinx",
 		"sphinx.ext.mathjax",
 		"sphinxcontrib.httpdomain",
@@ -50,10 +51,10 @@ extensions = [
 		"sphinx_copybutton",
 		"sphinxcontrib.default_values",
 		"sphinxcontrib.toctree_plus",
+		"sphinx_debuginfo",
 		"seed_intersphinx_mapping",
 		"sphinx_autofixture",
 		"sphinx_highlights",
-		"latex_toctree_sections",
 		]
 
 sphinxemoji_style = "twemoji"
