@@ -21,3 +21,8 @@ Homepage = "https://github.com/domdfcoding/domdf_python_tools"
 "Issue Tracker" = "https://github.com/domdfcoding/domdf_python_tools/issues"
 "Source Code" = "https://github.com/domdfcoding/domdf_python_tools"
 Documentation = "https://domdf_python_tools.readthedocs.io/en/latest"
+
+[project.optional-dependencies]
+dates = [ "pytz>=2019.1",]
+testing = [ "pytest>=6.2.0", "pytest-regressions>=2.0.2",]
+all = [ "pytest>=6.2.0", "pytest-regressions>=2.0.2", "pytz>=2019.1",]
