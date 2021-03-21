@@ -4,7 +4,7 @@ domdf_python_tools
 
 .. start short_desc
 
-**Helpful functions for Python 🐍 🛠️**
+.. documentation-summary::
 
 .. end short_desc
 

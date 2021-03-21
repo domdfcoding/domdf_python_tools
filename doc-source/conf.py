@@ -39,6 +39,7 @@ extensions = [
 		"sphinx_toolbox",
 		"sphinx_toolbox.more_autodoc",
 		"sphinx_toolbox.more_autosummary",
+		"sphinx_toolbox.documentation_summary",
 		"sphinx_toolbox.tweaks.param_dash",
 		"sphinx_toolbox.tweaks.latex_toc",
 		"sphinx.ext.intersphinx",
@@ -116,7 +117,7 @@ add_module_names = False
 hide_none_rtype = True
 all_typevars = True
 overloads_location = "bottom"
-
+documentation_summary = "Helpful functions for Python 🐍 🛠️"
 
 autodoc_exclude_members = [   # Exclude "standard" methods.
 		"__dict__",
