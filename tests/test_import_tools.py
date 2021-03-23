@@ -5,7 +5,6 @@ from contextlib import contextmanager
 
 # 3rd party
 import pytest
-from coincidence import AdvancedDataRegressionFixture
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package

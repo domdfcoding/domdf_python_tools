@@ -48,6 +48,7 @@ Functions for importing classes.
 import importlib.machinery
 import importlib.util
 import inspect
+import itertools
 import pkgutil
 from types import ModuleType
 from typing import Any, Callable, Dict, Iterator, List, Optional, Type, overload
@@ -214,7 +215,11 @@ def discover_entry_points_by_name(
 
 	matching_objects = {}
 
-	for entry_point in importlib_metadata.entry_points().get(group_name, ()):
+	eps = itertools.chain.from_iterable(dist.entry_points for dist in importlib_metadata.distributions())
+
+	for entry_point in eps:
+		if entry_point.group != group_name:
+			continue
 
 		if name_match_func is not None and not name_match_func(entry_point.name):
 			continue
