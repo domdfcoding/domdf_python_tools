@@ -69,6 +69,7 @@ import sys
 from io import StringIO
 from math import log10
 from pprint import pformat
+from types import MethodType
 from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Union
 
 # this package
@@ -249,15 +250,28 @@ def posargs2kwargs(
 	:default kwargs: ``{}``
 
 	:return: Dictionary mapping argument names to values.
+
+	.. versionchanged:: 2.8.0
+
+		The "self" argument for bound methods is ignored.
+		For unbound methods (which are just functions) the behaviour is unchanged.
 	"""
 
 	if kwargs is None:
 		kwargs = {}
 
-	if callable(posarg_names):
+	self_arg = None
+
+	if isinstance(posarg_names, MethodType):
+		posarg_names = inspect.getfullargspec(posarg_names).args
+		self_arg = posarg_names[0]
+	elif callable(posarg_names):
 		posarg_names = inspect.getfullargspec(posarg_names).args
 
 	kwargs.update(zip(posarg_names, args))
+
+	if self_arg is not None and self_arg in kwargs:
+		del kwargs[self_arg]
 
 	# TODO: positional only arguments
 

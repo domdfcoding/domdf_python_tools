@@ -264,6 +264,9 @@ def demo_function(arg1, arg2, arg3):
 	pass
 
 
+cwd = pathlib.Path.cwd()
+
+
 @pytest.mark.parametrize(
 		"args, posarg_names, kwargs, expects",
 		[
@@ -275,6 +278,21 @@ def demo_function(arg1, arg2, arg3):
 						"arg2": 2,
 						"arg3": 3,
 						}),
+				((cwd, "wb", -1, "UTF-8"),
+					pathlib.Path.open,
+					None, {
+							"self": cwd,
+							"mode": "wb",
+							"buffering": -1,
+							"encoding": "UTF-8",
+							}),
+				((cwd, "wb", -1, "UTF-8"),
+					pathlib.Path().open,
+					None, {
+							"mode": "wb",
+							"buffering": -1,
+							"encoding": "UTF-8",
+							}),
 				]
 		)
 def test_posargs2kwargs(args, posarg_names, kwargs, expects):
