@@ -263,8 +263,7 @@ def posargs2kwargs(
 	self_arg = None
 
 	if isinstance(posarg_names, MethodType):
-		posarg_names = inspect.getfullargspec(posarg_names).args
-		self_arg = posarg_names[0]
+		self_arg, *posarg_names = inspect.getfullargspec(posarg_names).args
 	elif callable(posarg_names):
 		posarg_names = inspect.getfullargspec(posarg_names).args
 

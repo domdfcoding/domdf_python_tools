@@ -286,7 +286,7 @@ cwd = pathlib.Path.cwd()
 							"buffering": -1,
 							"encoding": "UTF-8",
 							}),
-				((cwd, "wb", -1, "UTF-8"),
+				(("wb", -1, "UTF-8"),
 					pathlib.Path().open,
 					None, {
 							"mode": "wb",
