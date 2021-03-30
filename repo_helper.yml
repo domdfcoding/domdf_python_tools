@@ -66,7 +66,6 @@ extra_sphinx_extensions:
 
 tox_unmanaged:
  - testenv
- - testenv:lint
  - flake8
 
 additional_ignore:
@@ -78,6 +77,7 @@ additional_ignore:
  - mutdef.py
  - narrows_type.py
  - count_demo.py
+ - _test_dates_fake_importerror.py.old
 
 tox_testenv_extras: all
 min_coverage: 95
