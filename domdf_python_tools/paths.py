@@ -48,6 +48,7 @@ import gzip
 import json
 import os
 import pathlib
+import platform
 import shutil
 import stat
 import sys
@@ -851,7 +852,12 @@ class PathPlus(pathlib.Path):
 		if parseresult.netloc or parseresult.params or parseresult.query or parseresult.fragment:
 			raise ValueError("Malformed file URI")
 
-		return cls(urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8"))
+		path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8")
+
+		if os.name == "nt":
+			path = path.lstrip('/')
+
+		return cls(path)
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
