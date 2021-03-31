@@ -15,6 +15,7 @@ import shutil
 import sys
 from tempfile import TemporaryDirectory
 from textwrap import dedent
+from typing import Type
 
 # 3rd party
 import pytest
@@ -880,3 +881,24 @@ def test_sort_paths():
 			PathPlus("foo.txt"),
 			]
 	assert sort_paths(*paths) == expected
+
+
+if platform.system() == "Windows":
+	_from_uri_paths = [
+			"c:/",
+			"c:/users/domdf/☃.txt",
+			"c:/a/b.c",
+			"c:/a/b%#c",
+			"c:/a/bé",
+			"//some/share/",
+			"//some/share/a/b.c",
+			"//some/share/a/b%#cé"
+			]
+else:
+	_from_uri_paths = ['/', "/home/domdf/☃.txt", "/a/b.c", "/a/b%#c"]
+
+
+@pytest.mark.parametrize("path", _from_uri_paths)
+@pytest.mark.parametrize("left_type", [pathlib.PurePath, pathlib.Path, PathPlus])
+def test_pathplus_from_uri(path: str, left_type: Type):
+	assert PathPlus.from_uri(left_type(path).as_uri()).as_posix() == path

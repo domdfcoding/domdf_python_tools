@@ -52,6 +52,7 @@ import shutil
 import stat
 import sys
 import tempfile
+import urllib.parse
 from collections import defaultdict, deque
 from operator import methodcaller
 from typing import (
@@ -65,6 +66,7 @@ from typing import (
 		List,
 		Optional,
 		Sequence,
+		Type,
 		TypeVar,
 		Union
 		)
@@ -831,6 +833,25 @@ class PathPlus(pathlib.Path):
 
 			if file.is_dir():
 				yield from file.iterchildren(exclude_dirs, match)
+
+	@classmethod
+	def from_uri(cls: Type[_PP], uri: str) -> _PP:
+		"""
+		Construct a :class:`~.PathPlus` from a ``file`` URI returned by :meth:`pathlib.PurePath.as_uri`.
+
+		.. versionadded:: 2.9.0
+
+		:param uri:
+		"""
+
+		parseresult = urllib.parse.urlparse(uri)
+
+		if parseresult.scheme != "file":
+			raise ValueError(f"Unsupported URI scheme {parseresult.scheme!r}")
+		if parseresult.netloc or parseresult.params or parseresult.query or parseresult.fragment:
+			raise ValueError("Malformed file URI")
+
+		return cls(urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8"))
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
