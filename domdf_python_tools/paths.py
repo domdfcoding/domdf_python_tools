@@ -48,7 +48,6 @@ import gzip
 import json
 import os
 import pathlib
-import platform
 import shutil
 import stat
 import sys
@@ -849,13 +848,25 @@ class PathPlus(pathlib.Path):
 
 		if parseresult.scheme != "file":
 			raise ValueError(f"Unsupported URI scheme {parseresult.scheme!r}")
-		if parseresult.netloc or parseresult.params or parseresult.query or parseresult.fragment:
+		if parseresult.params or parseresult.query or parseresult.fragment:
 			raise ValueError("Malformed file URI")
 
-		path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8")
+		if sys.platform == "win32":
 
-		if os.name == "nt":
-			path = path.lstrip('/')
+			if parseresult.netloc:
+				path = ''.join([
+						"//",
+						urllib.parse.unquote_to_bytes(parseresult.netloc).decode("UTF-8"),
+						urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8"),
+						])
+			else:
+				path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8").lstrip('/')
+
+		else:
+			if parseresult.netloc:
+				raise ValueError("Malformed file URI")
+
+			path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8")
 
 		return cls(path)
 
