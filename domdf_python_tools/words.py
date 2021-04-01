@@ -528,7 +528,7 @@ def word_join(
 	elif len(words) == 1:
 		return words[0]
 	elif len(words) == 2:
-		return " and ".join(words)
+		return f" {connective} ".join(words)
 	else:
 		if oxford:
 			return delimiter.join(words[:-1]) + f"{delimiter}{connective} {words[-1]}"
