@@ -139,6 +139,7 @@ def test_as_text(value, expects):
 					"'bob'; 'alice'; and 'fred'"),
 				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "connective": "or"},
 					"'bob', 'alice', or 'fred'"),
+				((["bob", "alice"], ), {"connective": "or"}, "bob or alice"),
 				((("bob", ), ), {"use_repr": True, "oxford": True}, "'bob'"),
 				((("bob", "alice"), ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
 				((("bob", "alice", "fred"), ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
