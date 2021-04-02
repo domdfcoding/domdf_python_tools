@@ -34,7 +34,7 @@ from domdf_python_tools.paths import (
 		sort_paths,
 		traverse_to_file
 		)
-from domdf_python_tools.testing import not_pypy, not_windows
+from domdf_python_tools.testing import not_pypy, not_windows, only_windows
 
 
 def test_maybe_make(tmp_pathplus):
@@ -161,7 +161,7 @@ def test_parent_path(tmp_pathplus):
 	assert str(paths.parent_path("spam/spam/spam")) == os.path.join("spam", "spam")
 
 
-@not_windows("Needs special-casing for Windows")
+@not_windows("Windows uses a different path structure.")
 @pytest.mark.parametrize(
 		"relto, relpath",
 		[
@@ -174,6 +174,26 @@ def test_parent_path(tmp_pathplus):
 		)
 def test_relpath(relto, relpath):
 	path = "/home/username/Documents/letter.doc"
+	assert paths.relpath(path, relative_to=relto) == pathlib.Path(relpath)
+	assert isinstance(paths.relpath(path, relative_to=relto), pathlib.Path)
+
+
+@only_windows("Windows uses a different path structure.")
+@pytest.mark.parametrize(
+		"relto, relpath",
+		[
+				("c:/users/username/Documents/games/chess.py", "c:/users/username/Documents/letter.doc"),
+				("c:/users/username/Documents", "letter.doc"),
+				(
+						pathlib.Path("c:/users/username/Documents/games/chess.py"),
+						"c:/users/username/Documents/letter.doc"
+						),
+				(pathlib.Path("c:/users/username/Documents"), "letter.doc"),
+				(None, pathlib.Path("c:/users/username/Documents/letter.doc")),
+				],
+		)
+def test_relpath_windows(relto, relpath):
+	path = "c:/users/username/Documents/letter.doc"
 	assert paths.relpath(path, relative_to=relto) == pathlib.Path(relpath)
 	assert isinstance(paths.relpath(path, relative_to=relto), pathlib.Path)
 
