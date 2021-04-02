@@ -48,7 +48,7 @@ __all__ = ["delegate_kwargs", "delegates"]
 _C = TypeVar("_C", bound="Callable")
 
 
-def delegate_kwargs(to: Callable, *except_):
+def delegate_kwargs(to: Callable, *except_: str) -> Callable[[_C], _C]:
 	r"""
 	Decorator to replace ``**kwargs`` in function signatures with the
 	parameter names from the delegated function.
@@ -61,7 +61,7 @@ def delegate_kwargs(to: Callable, *except_):
 
 	# TODO: return annotation
 
-	def _f(f: Callable):
+	def _f(f: _C) -> _C:
 		to_f, from_f = to, f
 
 		to_sig = inspect.signature(to_f)

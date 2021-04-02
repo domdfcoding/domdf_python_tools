@@ -25,12 +25,14 @@ NamedTuple-like class to represent a version number.
 
 # stdlib
 import re
-from typing import Dict, Generator, Iterable, Sequence, Tuple, Union
+from typing import Dict, Generator, Iterable, Sequence, Tuple, Type, TypeVar, Union
 
 # 3rd party
 from typing_extensions import final
 
 __all__ = ["Version"]
+
+_V = TypeVar("_V", bound="Version")
 
 
 @final
@@ -84,8 +86,8 @@ class Version(Tuple[int, int, int]):
 	def patch(self):  # noqa: D102
 		return self[2]
 
-	def __new__(cls, major=0, minor=0, patch=0) -> "Version":  # noqa: D102
-		t: "Version" = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
+	def __new__(cls: Type[_V], major=0, minor=0, patch=0) -> _V:  # noqa: D102
+		t: _V = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
 
 		return t
 
@@ -129,7 +131,7 @@ class Version(Tuple[int, int, int]):
 		"""
 		Returns whether this version is equal to the other version.
 
-		:type other: str, float, Version
+		:type other: :class:`str`, :class:`float`, :class:`~.Version`
 		"""
 
 		other = _prep_for_eq(other)
@@ -144,7 +146,7 @@ class Version(Tuple[int, int, int]):
 		"""
 		Returns whether this version is greater than the other version.
 
-		:type other: str, float, Version
+		:type other: :class:`str`, :class:`float`, :class:`~.Version`
 		"""
 
 		other = _prep_for_eq(other)
@@ -158,7 +160,7 @@ class Version(Tuple[int, int, int]):
 		"""
 		Returns whether this version is less than the other version.
 
-		:type other: str, float, Version
+		:type other: :class:`str`, :class:`float`, :class:`~.Version`
 		"""
 
 		other = _prep_for_eq(other)
@@ -172,7 +174,7 @@ class Version(Tuple[int, int, int]):
 		"""
 		Returns whether this version is greater than or equal to the other version.
 
-		:type other: str, float, Version
+		:type other: :class:`str`, :class:`float`, :class:`~.Version`
 		"""
 
 		other = _prep_for_eq(other)
@@ -186,7 +188,7 @@ class Version(Tuple[int, int, int]):
 		"""
 		Returns whether this version is less than or equal to the other version.
 
-		:type other: str, float, Version
+		:type other: :class:`str`, :class:`float`, :class:`~.Version`
 		"""
 
 		other = _prep_for_eq(other)
@@ -197,7 +199,7 @@ class Version(Tuple[int, int, int]):
 			return tuple(self)[:len(other)] <= other
 
 	@classmethod
-	def from_str(cls, version_string: str) -> "Version":
+	def from_str(cls: Type[_V], version_string: str) -> _V:
 		"""
 		Create a :class:`~.Version` from a :class:`str`.
 
@@ -209,7 +211,7 @@ class Version(Tuple[int, int, int]):
 		return cls(*_iter_string(version_string))
 
 	@classmethod
-	def from_tuple(cls, version_tuple: Tuple[Union[str, int], ...]) -> "Version":
+	def from_tuple(cls: Type[_V], version_tuple: Tuple[Union[str, int], ...]) -> _V:
 		"""
 		Create a :class:`~.Version` from a :class:`tuple`.
 
@@ -226,7 +228,7 @@ class Version(Tuple[int, int, int]):
 		return cls(*(int(x) for x in version_tuple[:3]))
 
 	@classmethod
-	def from_float(cls, version_float: float) -> "Version":
+	def from_float(cls: Type[_V], version_float: float) -> _V:
 		"""
 		Create a :class:`~.Version` from a :class:`float`.
 
@@ -250,7 +252,7 @@ class Version(Tuple[int, int, int]):
 				"patch": self.patch,
 				}
 
-	def _replace(self, **kwargs) -> "Version":
+	def _replace(self: _V, **kwargs) -> _V:
 		"""
 		Return a new instance of the named tuple replacing specified fields with new values.
 
@@ -262,7 +264,7 @@ class Version(Tuple[int, int, int]):
 		return self.__class__(**{**self._asdict(), **kwargs})
 
 	@classmethod
-	def _make(cls, iterable: Iterable[Union[str, int]]) -> "Version":
+	def _make(cls: Type[_V], iterable: Iterable[Union[str, int]]) -> _V:
 		"""
 		Class method that makes a new instance from an existing sequence or iterable.
 

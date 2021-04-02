@@ -74,7 +74,7 @@ __all__ = [
 		]
 
 
-def is_docker():
+def is_docker() -> bool:
 	"""
 	Is this current environment running in docker?
 

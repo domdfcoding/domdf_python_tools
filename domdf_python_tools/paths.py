@@ -318,7 +318,7 @@ def make_executable(filename: PathLike) -> None:
 	"""
 	Make the given file executable.
 
-	:param filename: Filename of the file to make executable
+	:param filename:
 	"""
 
 	if not isinstance(filename, pathlib.Path):
@@ -941,7 +941,7 @@ def traverse_to_file(base_directory: _P, *filename: PathLike, height: int = -1) 
 	raise FileNotFoundError(f"'{filename[0]!s}' not found in {base_directory}")
 
 
-def matchglob(filename: PathLike, pattern: str, matchcase: bool = True):
+def matchglob(filename: PathLike, pattern: str, matchcase: bool = True) -> bool:
 	"""
 	Given a filename and a glob pattern, return whether the filename matches the glob.
 

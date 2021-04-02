@@ -36,7 +36,7 @@ Functions and classes for pretty printing.
 # stdlib
 import sys
 from io import StringIO
-from typing import IO, Any, Callable, Iterator, MutableMapping, Optional, Tuple
+from typing import IO, Any, Callable, Iterator, MutableMapping, Optional, Tuple, Type, TypeVar
 
 try:  # pragma: no cover
 
@@ -54,6 +54,8 @@ except ImportError:
 	supports_sort_dicts = sys.version_info >= (3, 8)
 
 __all__ = ["FancyPrinter", "simple_repr"]
+
+_T = TypeVar("_T", bound=Type)
 
 
 class FancyPrinter(PrettyPrinter):
@@ -201,7 +203,7 @@ class Attributes:
 	def __len__(self) -> int:
 		return len(self.attributes)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return f"Attributes{self.attributes}"
 
 
@@ -263,7 +265,7 @@ def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 	:param \*\*kwargs: Keyword arguments passed on to :class:`pprint.PrettyPrinter`.
 	"""
 
-	def deco(obj):
+	def deco(obj: _T) -> _T:
 
 		def __repr__(self) -> str:
 			if kwargs:
@@ -279,7 +281,7 @@ def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 		__repr__.__name__ = "__repr__"
 		__repr__.__module__ = obj.__module__
 		__repr__.__qualname__ = f"{obj.__module__}.__repr__"
-		obj.__repr__ = __repr__
+		obj.__repr__ = __repr__  # type: ignore
 
 		return obj
 
