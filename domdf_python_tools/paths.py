@@ -665,7 +665,7 @@ class PathPlus(pathlib.Path):
 				**kwargs,
 				)
 
-	if sys.version_info < (3, 10):  # pragma: no cover (<py310)
+	if sys.version_info < (3, 10):  # pragma: no cover (py310+)
 
 		def is_mount(self) -> bool:
 			"""
@@ -692,7 +692,7 @@ class PathPlus(pathlib.Path):
 			parent_ino = self.parent.stat().st_ino
 			return ino == parent_ino
 
-	if sys.version_info < (3, 8):  # pragma: no cover (<py38)
+	if sys.version_info < (3, 8):  # pragma: no cover (py38+)
 
 		def rename(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
 			"""
@@ -750,7 +750,7 @@ class PathPlus(pathlib.Path):
 				if not missing_ok:
 					raise
 
-	if sys.version_info < (3, 9):  # pragma: no cover (<py39)
+	if sys.version_info < (3, 9):  # pragma: no cover (py39+)
 
 		def __enter__(self):
 			return self
@@ -851,7 +851,7 @@ class PathPlus(pathlib.Path):
 		if parseresult.params or parseresult.query or parseresult.fragment:
 			raise ValueError("Malformed file URI")
 
-		if sys.platform == "win32":
+		if sys.platform == "win32":  # pragma: no cover (!Windows)
 
 			if parseresult.netloc:
 				path = ''.join([
@@ -862,7 +862,7 @@ class PathPlus(pathlib.Path):
 			else:
 				path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8").lstrip('/')
 
-		else:
+		else:  # pragma: no cover (Windows)
 			if parseresult.netloc:
 				raise ValueError("Malformed file URI")
 
