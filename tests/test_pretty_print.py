@@ -22,9 +22,9 @@ from pytest_regressions.file_regression import FileRegressionFixture
 # this package
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
 from domdf_python_tools.stringlist import StringList
-# list, tuple and dict subclasses that do or don't overwrite __repr__
-from domdf_python_tools.testing import check_file_regression
+from coincidence.regressions import check_file_regression
 
+# list, tuple and dict subclasses that do or don't overwrite __repr__
 
 class list2(list):
 	pass

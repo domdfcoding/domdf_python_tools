@@ -20,7 +20,7 @@ import pytest
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
-from domdf_python_tools.testing import testing_boolean_values
+from coincidence import testing_boolean_values
 from domdf_python_tools.typing import HasHead
 from domdf_python_tools.utils import (
 		cmp,

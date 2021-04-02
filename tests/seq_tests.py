@@ -19,7 +19,7 @@ import pytest
 
 # this package
 from domdf_python_tools.iterative import Len
-from domdf_python_tools.testing import not_pypy
+from coincidence.selectors import not_pypy
 
 
 class _ALWAYS_EQ:

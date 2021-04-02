@@ -17,7 +17,7 @@ import pytest
 # this package
 from domdf_python_tools import dates
 from domdf_python_tools.dates import calc_easter, month_full_names
-from domdf_python_tools.testing import count
+from coincidence import count
 
 # TODO: test get_timezone
 

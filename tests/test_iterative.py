@@ -46,7 +46,7 @@ from domdf_python_tools.iterative import (
 		ranges_from_iterable,
 		split_len
 		)
-from domdf_python_tools.testing import check_file_regression
+from coincidence.regressions import check_file_regression
 from domdf_python_tools.utils import trim_precision
 
 

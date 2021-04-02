@@ -18,7 +18,7 @@ from typing import List, no_type_check
 import pytest
 
 # this package
-from domdf_python_tools.testing import not_pypy
+from coincidence.selectors import not_pypy
 from tests import seq_tests
 from tests.seq_tests import ALWAYS_EQ, NEVER_EQ
 

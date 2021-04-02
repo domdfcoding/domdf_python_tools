@@ -14,7 +14,7 @@ from domdf_python_tools.import_tools import (
 		discover_entry_points_by_name,
 		iter_submodules
 		)
-from domdf_python_tools.testing import not_pypy, only_pypy, only_version
+from coincidence.selectors import not_pypy, only_pypy, only_version
 
 sys.path.append('.')
 sys.path.append("tests")

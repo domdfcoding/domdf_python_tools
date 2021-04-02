@@ -30,9 +30,6 @@ classifiers:
 extras_require:
   dates:
    - pytz>=2019.1
-  testing:
-   - pytest>=6.2.0
-   - pytest-regressions>=2.0.2
 
 conda_extras:
  - dates

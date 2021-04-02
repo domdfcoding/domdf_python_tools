@@ -9,7 +9,7 @@ from faker.providers import bank, company, internet, phone_number, python  # typ
 
 # this package
 from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
-from domdf_python_tools.testing import not_windows, only_windows
+from coincidence.selectors import not_windows, only_windows
 
 fake = Faker()
 fake.add_provider(internet)

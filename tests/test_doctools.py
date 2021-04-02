@@ -24,7 +24,7 @@ from domdf_python_tools.doctools import (
 		operator_docstrings,
 		prettify_docstrings
 		)
-from domdf_python_tools.testing import PEP_563, max_version
+from coincidence import PEP_563, max_version
 
 # TODO: test sphinxification of docstrings
 

@@ -34,7 +34,7 @@ from domdf_python_tools.paths import (
 		sort_paths,
 		traverse_to_file
 		)
-from domdf_python_tools.testing import not_pypy, not_windows, only_windows
+from coincidence.selectors import not_pypy, not_windows, only_windows
 
 
 def test_maybe_make(tmp_pathplus):
