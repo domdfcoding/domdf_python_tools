@@ -149,11 +149,11 @@ Highlights
 	:colours: blue,green,red,orange
 
 	.stringlist.StringList
-	.testing.check_file_regression
 	.paths.PathPlus
 	.iterative.groupfloats
 	.words.Plural
 
+.. TODO:: Find some more highlights
 
 .. toctree::
 	:hidden:
