@@ -120,7 +120,7 @@ unwanted_dirs = (".git", ".hg", "venv", ".venv", ".mypy_cache", "__pycache__", "
 A list of directories which will likely be unwanted when searching directory trees for files.
 
 .. versionadded:: 2.3.0
-.. versionchanged:: 2.9.0  Added ``.hg`` (`mercurial <https://www.mercurial-scm.org>`_) 
+.. versionchanged:: 2.9.0  Added ``.hg`` (`mercurial <https://www.mercurial-scm.org>`_)
 """
 
 
