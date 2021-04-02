@@ -115,11 +115,12 @@ _PP = TypeVar("_PP", bound="PathPlus")
 .. versionadded:: 2.3.0
 """
 
-unwanted_dirs = (".git", "venv", ".venv", ".mypy_cache", "__pycache__", ".pytest_cache", ".tox", ".tox4")
+unwanted_dirs = (".git", ".hg", "venv", ".venv", ".mypy_cache", "__pycache__", ".pytest_cache", ".tox", ".tox4")
 """
 A list of directories which will likely be unwanted when searching directory trees for files.
 
 .. versionadded:: 2.3.0
+.. versionchanged:: 2.9.0  Added ``.hg`` (`mercurial <https://www.mercurial-scm.org>`_) 
 """
 
 
@@ -1068,9 +1069,9 @@ def sort_paths(*paths: PathLike) -> List[PathPlus]:
 	"""
 	Sort the ``paths`` by directory, then by file.
 
-	:param paths:
-
 	.. versionadded:: 2.6.0
+
+	:param paths:
 	"""
 
 	directories: Dict[str, List[PathPlus]] = defaultdict(list)
@@ -1160,7 +1161,7 @@ class DirComparator(filecmp.dircmp):
 	methodmap = _methodmap  # type: ignore
 
 
-def compare_dirs(a: PathLike, b: PathLike):
+def compare_dirs(a: PathLike, b: PathLike) -> bool:
 	"""
 	Compare the content of two directory trees.
 
