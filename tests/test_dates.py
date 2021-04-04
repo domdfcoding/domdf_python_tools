@@ -13,11 +13,11 @@ from typing import Union
 
 # 3rd party
 import pytest
+from coincidence import count
 
 # this package
 from domdf_python_tools import dates
 from domdf_python_tools.dates import calc_easter, month_full_names
-from coincidence import count
 
 # TODO: test get_timezone
 

@@ -19,6 +19,7 @@ from typing import Type
 
 # 3rd party
 import pytest
+from coincidence.selectors import not_pypy, not_windows, only_windows
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
@@ -34,7 +35,6 @@ from domdf_python_tools.paths import (
 		sort_paths,
 		traverse_to_file
 		)
-from coincidence.selectors import not_pypy, not_windows, only_windows
 
 
 def test_maybe_make(tmp_pathplus):

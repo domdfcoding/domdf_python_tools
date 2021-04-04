@@ -16,9 +16,9 @@ from typing import List, no_type_check
 
 # 3rd party
 import pytest
+from coincidence.selectors import not_pypy
 
 # this package
-from coincidence.selectors import not_pypy
 from tests import seq_tests
 from tests.seq_tests import ALWAYS_EQ, NEVER_EQ
 

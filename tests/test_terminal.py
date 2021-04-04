@@ -4,12 +4,12 @@ import re
 import sys
 
 # 3rd party
+from coincidence.selectors import not_windows, only_windows
 from faker import Faker  # type: ignore
 from faker.providers import bank, company, internet, phone_number, python  # type: ignore
 
 # this package
 from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
-from coincidence.selectors import not_windows, only_windows
 
 fake = Faker()
 fake.add_provider(internet)

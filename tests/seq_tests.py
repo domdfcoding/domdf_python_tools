@@ -16,10 +16,10 @@ from typing import List
 
 # 3rd party
 import pytest
+from coincidence.selectors import not_pypy
 
 # this package
 from domdf_python_tools.iterative import Len
-from coincidence.selectors import not_pypy
 
 
 class _ALWAYS_EQ:

@@ -17,10 +17,10 @@ from collections import namedtuple
 # 3rd party
 import click
 import pytest
+from coincidence import testing_boolean_values
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
-from coincidence import testing_boolean_values
 from domdf_python_tools.typing import HasHead
 from domdf_python_tools.utils import (
 		cmp,

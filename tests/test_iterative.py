@@ -25,6 +25,7 @@ from typing import List, Tuple
 
 # 3rd party
 import pytest
+from coincidence.regressions import check_file_regression
 from pytest_regressions.data_regression import DataRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
@@ -46,7 +47,6 @@ from domdf_python_tools.iterative import (
 		ranges_from_iterable,
 		split_len
 		)
-from coincidence.regressions import check_file_regression
 from domdf_python_tools.utils import trim_precision
 
 

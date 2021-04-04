@@ -5,6 +5,7 @@ from contextlib import contextmanager
 
 # 3rd party
 import pytest
+from coincidence.selectors import not_pypy, only_pypy, only_version
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
@@ -14,7 +15,6 @@ from domdf_python_tools.import_tools import (
 		discover_entry_points_by_name,
 		iter_submodules
 		)
-from coincidence.selectors import not_pypy, only_pypy, only_version
 
 sys.path.append('.')
 sys.path.append("tests")

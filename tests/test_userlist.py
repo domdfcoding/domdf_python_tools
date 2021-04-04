@@ -11,9 +11,11 @@
 # stdlib
 from typing import Sequence, Type, no_type_check
 
+# 3rd party
+from coincidence.selectors import not_pypy
+
 # this package
 from domdf_python_tools.bases import Lineup, UserList
-from coincidence.selectors import not_pypy
 from tests import list_tests
 
 

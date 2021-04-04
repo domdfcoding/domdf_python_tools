@@ -12,6 +12,7 @@ from typing import Iterable, NamedTuple, get_type_hints
 
 # 3rd party
 import pytest
+from coincidence import PEP_563, max_version
 
 # this package
 from domdf_python_tools import doctools
@@ -24,7 +25,6 @@ from domdf_python_tools.doctools import (
 		operator_docstrings,
 		prettify_docstrings
 		)
-from coincidence import PEP_563, max_version
 
 # TODO: test sphinxification of docstrings
 
