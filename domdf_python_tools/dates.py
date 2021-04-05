@@ -5,8 +5,7 @@
 Utilities for working with dates and times.
 
 .. extras-require:: dates
-
-	pytz >=2019.1
+	:pyproject:
 
 
 **Data:**
