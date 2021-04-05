@@ -16,11 +16,6 @@ from sphinx_pyproject import SphinxConfig
 
 config = SphinxConfig()
 
-# 3rd party
-import domdf_python_tools
-
-domdf_python_tools.__docs = True
-
 github_username = "domdfcoding"
 github_repository = "domdf_python_tools"
 author = "Dominic Davis-Foster"

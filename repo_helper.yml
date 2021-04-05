@@ -41,10 +41,6 @@ keywords:
 manifest_additional:
  - "include domdf_python_tools/google-10000-english-no-swears.txt"
 
-sphinx_conf_preamble:
- - import domdf_python_tools
- - domdf_python_tools.__docs = True
-
 sphinx_conf_epilogue:
  - manpages_url = "https://manpages.debian.org/{path}"
  - toctree_plus_types.add("fixture")
