@@ -25,7 +25,7 @@ domdf_python_tools
 	* - Activity
 	  - |commits-latest| |commits-since| |maintained| |pypi-downloads|
 	* - QA
-	  - |codefactor| |actions_flake8| |actions_mypy| |pre_commit_ci|
+	  - |codefactor| |actions_flake8| |actions_mypy|
 	* - Other
 	  - |license| |language| |requires|
 
@@ -114,10 +114,6 @@ domdf_python_tools
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Downloads
-
-.. |pre_commit_ci| image:: https://results.pre-commit.ci/badge/github/domdfcoding/domdf_python_tools/master.svg
-	:target: https://results.pre-commit.ci/latest/github/domdfcoding/domdf_python_tools/master
-	:alt: pre-commit.ci status
 
 .. end shields
 
