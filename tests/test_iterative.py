@@ -433,8 +433,8 @@ def pickletest(protocol, it, stop=4, take=1, compare=None):
 		return [expand(e, i + 1) for e in l]
 
 	# Test the initial copy against the original
-	dump = pickle.dumps(it, protocol)
-	i2 = pickle.loads(dump)
+	dump = pickle.dumps(it, protocol)  # nosec: B301
+	i2 = pickle.loads(dump)  # nosec: B301
 	assert type(it) == type(i2)
 	a, b = expand(it), expand(i2)
 	assert a == b
@@ -443,7 +443,7 @@ def pickletest(protocol, it, stop=4, take=1, compare=None):
 		assert a == c
 
 	# Take from the copy, and create another copy and compare them.
-	i3 = pickle.loads(dump)
+	i3 = pickle.loads(dump)  # nosec: B301
 	took = 0
 	try:
 		for i in range(take):
@@ -452,8 +452,8 @@ def pickletest(protocol, it, stop=4, take=1, compare=None):
 	except StopIteration:
 		pass  # in case there is less data than 'take'
 
-	dump = pickle.dumps(i3, protocol)
-	i4 = pickle.loads(dump)
+	dump = pickle.dumps(i3, protocol)  # nosec: B301
+	i4 = pickle.loads(dump)  # nosec: B301
 	a, b = expand(i3), expand(i4)
 	assert a == b
 	if compare:

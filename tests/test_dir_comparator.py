@@ -88,11 +88,11 @@ class TestDirComparator:
 		with open(os.path.join(comparator_tmpdir.dir, "file2"), 'w') as output:
 			output.write('Different contents.\n')
 
-		assert not filecmp.cmpfiles(
+		assert filecmp.cmpfiles(
 			comparator_tmpdir.dir,
 			comparator_tmpdir.dir_same,
 			["file", "file2"],
-			) == (["file"], ["file2"], []), "Comparing mismatched directories fails"
+			) != (["file"], ["file2"], []), "Comparing mismatched directories fails"
 
 	def _assert_lists(self, actual, expected):
 		"""
@@ -199,7 +199,7 @@ class TestDirComparator:
 		sub_dirs = d.subdirs
 		assert list(sub_dirs.keys()) == ["subdir"]
 		sub_dcmp = sub_dirs["subdir"]
-		assert type(sub_dcmp) == MyDirCmp
+		assert type(sub_dcmp) == MyDirCmp  # pylint: disable=unidiomatic-typecheck
 
 	def test_report_partial_closure(self, comparator_tmpdir):
 		left_dir, right_dir = comparator_tmpdir.dir, comparator_tmpdir.dir_same
