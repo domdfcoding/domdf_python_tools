@@ -39,7 +39,8 @@ from domdf_python_tools.utils import (
 		stderr_writer,
 		str2tuple,
 		strtobool,
-		trim_precision
+		trim_precision,
+		unique_sorted
 		)
 
 
@@ -514,3 +515,15 @@ def test_redivide_errors():
 		redivide("hello: world", '=')
 	with pytest.raises(ValueError, match=r"re.compile\(.*\) has no matches in 'hello: world'"):
 		redivide("hello: world", r"\d")
+
+
+@pytest.mark.parametrize(
+		"values, expected",
+		[
+				(("foo", "bar"), ["bar", "foo"]),
+				(("foo", "foo", "bar"), ["bar", "foo"]),
+				(("foo", "bar", "bar"), ["bar", "foo"]),
+				]
+		)
+def test_unique_sorted(values, expected):
+	assert unique_sorted(values) == expected

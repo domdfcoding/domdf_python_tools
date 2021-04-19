@@ -70,11 +70,25 @@ from io import StringIO
 from math import log10
 from pprint import pformat
 from types import MethodType
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, Iterator, List, Optional, Pattern, Tuple, Union
+from typing import (
+		TYPE_CHECKING,
+		Any,
+		Callable,
+		Dict,
+		Iterable,
+		Iterator,
+		List,
+		Optional,
+		Pattern,
+		Tuple,
+		TypeVar,
+		Union,
+		overload
+		)
 
 # this package
 import domdf_python_tools.words
-from domdf_python_tools.typing import HasHead, String
+from domdf_python_tools.typing import HasHead, String, SupportsLessThan
 
 if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	# 3rd party
@@ -82,6 +96,10 @@ if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 
 	Series.__module__ = "pandas"
 	DataFrame.__module__ = "pandas"
+
+_T = TypeVar("_T")
+
+SupportsLessThanT = TypeVar("SupportsLessThanT", bound=SupportsLessThan)  # noqa: Y001
 
 __all__ = [
 		"pyversion",
@@ -105,6 +123,7 @@ __all__ = [
 		"redirect_output",
 		"divide",
 		"redivide",
+		"unique_sorted",
 		]
 
 #: The current major python version.
@@ -141,7 +160,7 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 
 def printr(obj: Any, *args, **kwargs) -> None:
 	"""
-	Print the repr() of an object.
+	Print the :func:`repr` of an object.
 	"""
 
 	print(repr(obj), *args, **kwargs)
@@ -480,3 +499,44 @@ def redivide(string: str, pat: Union[str, Pattern]) -> Tuple[str, str]:
 
 	parts = pat.split(string, 1)
 	return tuple(parts)  # type: ignore
+
+
+@overload
+def unique_sorted(
+		elements: Iterable[SupportsLessThanT],
+		*,
+		key: None = ...,
+		reverse: bool = ...,
+		) -> List[SupportsLessThanT]: ...
+
+
+@overload
+def unique_sorted(
+		elements: Iterable[_T],
+		*,
+		key: Callable[[_T], SupportsLessThan],
+		reverse: bool = ...,
+		) -> List[_T]: ...
+
+
+def unique_sorted(
+		elements: Iterable,
+		*,
+		key: Optional[Callable] = None,
+		reverse: bool = False,
+		) -> List:
+	"""
+	Returns an ordered list of unique items from ``elements``.
+
+	.. versionadded:: 3.0.0
+
+	:param elements:
+	:param key: A function of one argument used to extract a comparison key from each item when sorting.
+		For example, :meth:`key=str.lower <str.lower>`.
+		The default value is :py:obj:`None`, which will compare the elements directly.
+	:param reverse: If :py:obj:`True` the list elements are sorted as if each comparison were reversed.
+
+	.. seealso:: :class:`set` and :func:`sorted`
+	"""
+
+	return sorted(set(elements), key=key, reverse=reverse)
