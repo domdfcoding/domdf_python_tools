@@ -50,10 +50,8 @@ from typing import (
 		overload
 		)
 
-# 3rd party
-import pydash  # type: ignore
-
 # this package
+from domdf_python_tools._is_match import is_match_with
 from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import SupportsIndex
 
@@ -120,7 +118,7 @@ class Dictable(Iterable[Tuple[str, _V]]):
 
 	def __eq__(self, other) -> bool:
 		if isinstance(other, self.__class__):
-			return pydash.predicates.is_match(other.__dict__, self.__dict__)
+			return is_match_with(other.__dict__, self.__dict__)
 
 		return NotImplemented
 

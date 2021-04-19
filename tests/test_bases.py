@@ -16,6 +16,7 @@ from typing import no_type_check
 import pytest
 
 # this package
+from domdf_python_tools._is_match import is_match_with
 from domdf_python_tools.bases import Dictable, UserFloat
 
 
@@ -281,3 +282,26 @@ class TestUserFloat:
 		assert isinstance(seven, UserFloat)
 		assert not isinstance(seven, float)
 		assert not isinstance(7, UserFloat)
+
+
+# From https://github.com/dgilland/pydash/blob/develop/tests/test_predicates.py
+# MIT Licensed
+
+
+@pytest.mark.parametrize(
+		"case,expected",
+		[
+				(({"name": "fred", "age": 40}, {"age": 40}), True),
+				(({"name": "fred", "age": 40}, {"age": 40, "active": True}), False),
+				(([1, 2, 3], [1, 2]), True),
+				(([1, 2, 3], [1, 2, 3, 4]), False),
+				(({}, {}), True),
+				(({'a': 1}, {}), True),
+				(([], []), True),
+				(([1], []), True),
+				(([1, 2], [2, 4]), False),
+				(([0, 1], [0, 1]), True),
+				],
+		)
+def test_is_match_with(case, expected):
+	assert is_match_with(*case) == expected
