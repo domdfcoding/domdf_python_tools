@@ -77,6 +77,10 @@ __all__ = [
 		"String",
 		"FrameOrSeries",
 		"SupportsIndex",
+		"SupportsLessThan",
+		"SupportsLessEqual",
+		"SupportsGreaterThan",
+		"SupportsGreaterEqual",
 		]
 
 PathLike = Union[str, pathlib.Path, os.PathLike]
@@ -245,5 +249,44 @@ class SupportsIndex(Protocol):
 	.. versionadded:: 2.0.0
 	"""
 
-	def __index__(self) -> int:  # pragma: no cover
-		...
+	def __index__(self) -> int: ...
+
+
+class SupportsLessThan(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that support ``__lt__``.
+
+	.. versionadded:: 3.0.0
+	"""
+
+	def __lt__(self, __other: Any) -> bool: ...
+
+
+class SupportsLessEqual(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that support ``__le__``.
+
+	.. versionadded:: 3.0.0
+	"""
+
+	def __le__(self, __other: Any) -> bool: ...
+
+
+class SupportsGreaterThan(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that support ``__gt__``.
+
+	.. versionadded:: 3.0.0
+	"""
+
+	def __gt__(self, __other: Any) -> bool: ...
+
+
+class SupportsGreaterEqual(Protocol):
+	"""
+	:class:`typing.Protocol` for classes that support ``__ge__``.
+
+	.. versionadded:: 3.0.0
+	"""
+
+	def __ge__(self, __other: Any) -> bool: ...
