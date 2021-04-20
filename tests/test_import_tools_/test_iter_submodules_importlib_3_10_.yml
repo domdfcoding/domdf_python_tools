@@ -1,8 +1,10 @@
 - importlib
 - importlib._abc
+- importlib._adapters
 - importlib._bootstrap
 - importlib._bootstrap_external
 - importlib._common
+- importlib._itertools
 - importlib.abc
 - importlib.machinery
 - importlib.metadata

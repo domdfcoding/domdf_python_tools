@@ -1,4 +1,5 @@
 - domdf_python_tools/__init__.py
+- domdf_python_tools/_is_match.py
 - domdf_python_tools/bases.py
 - domdf_python_tools/compat.py
 - domdf_python_tools/dates.py
