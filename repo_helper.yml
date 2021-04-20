@@ -5,7 +5,7 @@ author: "Dominic Davis-Foster"
 email: "dominic@davis-foster.co.uk"
 version: "2.9.0"
 username: "domdfcoding"
-license: 'LGPLv3+'
+license: 'MIT'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
 
 conda_channels:

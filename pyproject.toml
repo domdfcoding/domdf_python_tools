@@ -11,8 +11,8 @@ keywords = [ "utilities",]
 dynamic = [ "requires-python", "classifiers", "dependencies",]
 
 [[project.authors]]
-email = "dominic@davis-foster.co.uk"
 name = "Dominic Davis-Foster"
+email = "dominic@davis-foster.co.uk"
 
 
 [project.license]
@@ -32,4 +32,4 @@ all = [ "pytz>=2019.1",]
 [tool.mkrecipe]
 conda-channels = [ "conda-forge", "domdfcoding",]
 extras = [ "dates",]
-license-key = "LGPL-3.0-or-later"
+license-key = "MIT"
