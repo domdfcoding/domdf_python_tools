@@ -8,10 +8,14 @@ username: "domdfcoding"
 license: 'MIT'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
 
+python_deploy_version: 3.6
+requires_python: 3.6
+min_coverage: 95
+tox_testenv_extras: all
+docs_fail_on_warning: true
+
 conda_channels:
  - conda-forge
-
-python_deploy_version: 3.6
 
 python_versions:
  - 3.6
@@ -72,9 +76,3 @@ additional_ignore:
  - narrows_type.py
  - count_demo.py
  - _test_dates_fake_importerror.py.old
-
-tox_testenv_extras: all
-min_coverage: 95
-mypy_version: "0.800"
-docs_fail_on_warning: true
-requires_python: 3.6
