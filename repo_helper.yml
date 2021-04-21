@@ -76,3 +76,4 @@ additional_ignore:
  - narrows_type.py
  - count_demo.py
  - _test_dates_fake_importerror.py.old
+ - coverage_fixup.py
