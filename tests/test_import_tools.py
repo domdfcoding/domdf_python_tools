@@ -5,8 +5,8 @@ from contextlib import contextmanager
 
 # 3rd party
 import pytest
+from coincidence.regressions import AdvancedDataRegressionFixture
 from coincidence.selectors import not_pypy, only_pypy, only_version
-from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools.import_tools import (
@@ -105,23 +105,23 @@ def test_discover_errors(obj, expects):
 		discover(obj)
 
 
-def test_discover_entry_points(data_regression: DataRegressionFixture):
+def test_discover_entry_points(advanced_data_regression: AdvancedDataRegressionFixture):
 	entry_points = discover_entry_points("flake8.extension", lambda f: f.__name__.startswith("break"))
-	data_regression.check([f.__name__ for f in entry_points])
+	advanced_data_regression.check([f.__name__ for f in entry_points])
 
 
-def test_discover_entry_points_by_name_object_match_func(data_regression: DataRegressionFixture):
+def test_discover_entry_points_by_name_object_match_func(advanced_data_regression: AdvancedDataRegressionFixture):
 	entry_points = discover_entry_points_by_name(
 			"flake8.extension", object_match_func=lambda f: f.__name__.startswith("break")
 			)
-	data_regression.check({k: v.__name__ for k, v in entry_points.items()})
+	advanced_data_regression.check({k: v.__name__ for k, v in entry_points.items()})
 
 
-def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegressionFixture):
+def test_discover_entry_points_by_name_name_match_func(advanced_data_regression: AdvancedDataRegressionFixture):
 	entry_points = discover_entry_points_by_name(
 			"flake8.extension", name_match_func=lambda n: n.startswith("pycodestyle.")
 			)
-	data_regression.check({k: v.__name__ for k, v in entry_points.items()})
+	advanced_data_regression.check({k: v.__name__ for k, v in entry_points.items()})
 
 
 @pytest.mark.parametrize(
@@ -160,5 +160,5 @@ def test_discover_entry_points_by_name_name_match_func(data_regression: DataRegr
 				"reprlib"
 				],
 		)
-def test_iter_submodules(version, module: str, data_regression: DataRegressionFixture):
-	data_regression.check(list(iter_submodules(module)))
+def test_iter_submodules(version, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
+	advanced_data_regression.check(list(iter_submodules(module)))

@@ -17,8 +17,7 @@ from typing import no_type_check
 
 # 3rd party
 import pytest
-from coincidence.regressions import check_file_regression
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture, check_file_regression
 
 # this package
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
@@ -493,14 +492,14 @@ class TestFancyPrinter:
 				(): {},
 				}) == r"{5: [[]], 'xy\tab\n': (3,), (): {}}"
 
-	def test_ordered_dict(self, file_regression: FileRegressionFixture):
+	def test_ordered_dict(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.OrderedDict = collections.OrderedDict()
 		assert FancyPrinter(width=1).pformat(d) == "OrderedDict()"
 		d = collections.OrderedDict([])
 		assert FancyPrinter(width=1).pformat(d) == "OrderedDict()"
 		words = "the quick brown fox jumped over a lazy dog".split()
 		d = collections.OrderedDict(zip(words, itertools.count()))
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
 	def test_mapping_proxy(self):
 		words = "the quick brown fox jumped over a lazy dog".split()
@@ -547,9 +546,9 @@ mappingproxy(OrderedDict([
 		formatted = FancyPrinter().pformat(ns)
 		assert formatted == "namespace(a=1, b=2)"
 
-	def test_subclassing(self, file_regression: FileRegressionFixture):
+	def test_subclassing(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		o = {"names with spaces": "should be presented using repr()", "others.should.not.be": "like.this"}
-		check_file_regression(DottedPrettyPrinter().pformat(o), file_regression)
+		advanced_file_regression.check(DottedPrettyPrinter().pformat(o))
 
 	@pytest.mark.parametrize(
 			"value, width",
@@ -559,10 +558,10 @@ mappingproxy(OrderedDict([
 					pytest.param(set3(range(7)), 20, id="case_3"),
 					]
 			)
-	def test_set_reprs(self, value, width, file_regression: FileRegressionFixture):
+	def test_set_reprs(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
 		assert FancyPrinter().pformat(set()) == "set()"
 		assert FancyPrinter().pformat(set(range(3))) == "{0, 1, 2}"
-		check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
+		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
 
 	@pytest.mark.parametrize(
 			"value, width",
@@ -572,10 +571,10 @@ mappingproxy(OrderedDict([
 					pytest.param(frozenset3(range(7)), 20, id="case_3"),
 					]
 			)
-	def test_frozenset_reprs(self, value, width, file_regression: FileRegressionFixture):
+	def test_frozenset_reprs(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
 		assert FancyPrinter().pformat(frozenset()) == "frozenset()"
 		assert FancyPrinter().pformat(frozenset(range(3))) == "frozenset({0, 1, 2})"
-		check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
+		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
 
 	def test_depth(self):
 		nested_tuple = (1, (2, (3, (4, (5, 6)))))
@@ -855,35 +854,35 @@ mappingproxy(OrderedDict([
 					pytest.param([[[[[bytearray(range(16))]]]]], 50, id="case_12"),
 					]
 			)
-	def test_bytearray_wrap(self, value, width, file_regression: FileRegressionFixture):
-		check_file_regression(FancyPrinter(width=width).pformat(value), file_regression)
+	def test_bytearray_wrap(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
+		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
 
-	def test_default_dict(self, file_regression: FileRegressionFixture):
+	def test_default_dict(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.defaultdict = collections.defaultdict(int)
 		assert FancyPrinter(width=1).pformat(d) == "defaultdict(<class 'int'>, {})"
 		words = "the quick brown fox jumped over a lazy dog".split()
 		d = collections.defaultdict(int, zip(words, itertools.count()))
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
-	def test_counter(self, file_regression: FileRegressionFixture):
+	def test_counter(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.Counter = collections.Counter()
 		assert FancyPrinter(width=1).pformat(d) == "Counter()"
 		d = collections.Counter("senselessness")
-		check_file_regression(FancyPrinter(width=40).pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter(width=40).pformat(d))
 
-	def test_chainmap(self, file_regression: FileRegressionFixture):
+	def test_chainmap(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.ChainMap = collections.ChainMap()
 		assert FancyPrinter(width=1).pformat(d) == "ChainMap({})"
 		words = "the quick brown fox jumped over a lazy dog".split()
 		items = list(zip(words, itertools.count()))
 		d = collections.ChainMap(dict(items))
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
-	def test_chainmap_nested(self, file_regression: FileRegressionFixture):
+	def test_chainmap_nested(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		words = "the quick brown fox jumped over a lazy dog".split()
 		items = list(zip(words, itertools.count()))
 		d = collections.ChainMap(dict(items), collections.OrderedDict(items))
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
 	def test_deque(self):
 		d: collections.deque = collections.deque()
@@ -917,19 +916,19 @@ deque([('brown', 2),
        ('dog', 8)],
       maxlen=7)"""
 
-	def test_user_dict(self, file_regression: FileRegressionFixture):
+	def test_user_dict(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.UserDict = collections.UserDict()
 		assert FancyPrinter(width=1).pformat(d) == "{}"
 		words = "the quick brown fox jumped over a lazy dog".split()
 		d = collections.UserDict(zip(words, itertools.count()))  # type: ignore
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
-	def test_user_list(self, file_regression: FileRegressionFixture):
+	def test_user_list(self, advanced_file_regression: AdvancedFileRegressionFixture):
 		d: collections.UserList = collections.UserList()
 		assert FancyPrinter(width=1).pformat(d) == "[]"
 		words = "the quick brown fox jumped over a lazy dog".split()
 		d = collections.UserList(zip(words, itertools.count()))
-		check_file_regression(FancyPrinter().pformat(d), file_regression)
+		advanced_file_regression.check(FancyPrinter().pformat(d))
 
 	@pytest.mark.parametrize(
 			"value, width, expects",
@@ -974,7 +973,7 @@ class DottedPrettyPrinter(FancyPrinter):
 			return FancyPrinter.format(self, object, context, maxlevels, level)
 
 
-def test_simple_repr(file_regression: FileRegressionFixture):
+def test_simple_repr(advanced_file_regression: AdvancedFileRegressionFixture):
 
 	@simple_repr('a', 'b', 'c', 'd', width=10)
 	class F:
@@ -983,4 +982,4 @@ def test_simple_repr(file_regression: FileRegressionFixture):
 		c = "cherry"
 		d = list(range(100))
 
-	check_file_regression(repr(F()), file_regression)
+	advanced_file_regression.check(repr(F()))

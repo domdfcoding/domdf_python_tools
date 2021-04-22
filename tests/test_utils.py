@@ -18,7 +18,7 @@ from collections import namedtuple
 import click
 import pytest
 from coincidence import testing_boolean_values
-from pytest_regressions.data_regression import DataRegressionFixture
+from coincidence.regressions import AdvancedDataRegressionFixture
 
 # this package
 from domdf_python_tools.typing import HasHead
@@ -483,10 +483,10 @@ def test_redirect_output_combine():
 				("hello: world", ": "),
 				]
 		)
-def test_divide(string: str, sep: str, data_regression: DataRegressionFixture):
+def test_divide(string: str, sep: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	data = dict(divide(e, sep) for e in [string, string, string])
 
-	data_regression.check(data)
+	advanced_data_regression.check(data)
 
 
 def test_divide_errors():
@@ -504,10 +504,10 @@ def test_divide_errors():
 				("hello: world", r"\s?:\s?"),
 				]
 		)
-def test_redivide(string: str, sep: str, data_regression: DataRegressionFixture):
+def test_redivide(string: str, sep: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	data = dict(redivide(e, sep) for e in [string, string, string])
 
-	data_regression.check(data)
+	advanced_data_regression.check(data)
 
 
 def test_redivide_errors():

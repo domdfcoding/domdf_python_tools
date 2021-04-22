@@ -19,8 +19,8 @@ from typing import Type
 
 # 3rd party
 import pytest
+from coincidence.regressions import AdvancedDataRegressionFixture
 from coincidence.selectors import not_pypy, not_windows, only_windows
-from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from domdf_python_tools import paths
@@ -667,13 +667,13 @@ def test_traverse_to_file_errors(tmp_pathplus: PathPlus):
 		traverse_to_file(tmp_pathplus)
 
 
-def test_iterchildren(data_regression: DataRegressionFixture):
+def test_iterchildren(advanced_data_regression: AdvancedDataRegressionFixture):
 	repo_path = PathPlus(__file__).parent.parent
 	assert repo_path.is_dir()
 
 	children = list((repo_path / "domdf_python_tools").iterchildren())
 	assert children
-	data_regression.check(sorted(p.relative_to(repo_path).as_posix() for p in children))
+	advanced_data_regression.check(sorted(p.relative_to(repo_path).as_posix() for p in children))
 
 
 def test_iterchildren_exclusions():
@@ -692,7 +692,7 @@ def test_iterchildren_exclusions():
 
 
 @pytest.mark.parametrize("absolute", [True, False])
-def test_iterchildren_match(data_regression: DataRegressionFixture, absolute: bool):
+def test_iterchildren_match(advanced_data_regression: AdvancedDataRegressionFixture, absolute: bool):
 	repo_path = PathPlus(__file__).parent.parent
 	with in_directory(repo_path.parent):
 
@@ -715,7 +715,7 @@ def test_iterchildren_match(data_regression: DataRegressionFixture, absolute: bo
 			if exclude_filename in child_paths:
 				child_paths.remove(exclude_filename)
 
-		data_regression.check(child_paths, basename="test_iterchildren_match")
+		advanced_data_regression.check(child_paths, basename="test_iterchildren_match")
 
 
 def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):

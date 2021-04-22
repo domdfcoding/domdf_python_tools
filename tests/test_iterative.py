@@ -25,9 +25,11 @@ from typing import List, Tuple
 
 # 3rd party
 import pytest
-from coincidence.regressions import check_file_regression
-from pytest_regressions.data_regression import DataRegressionFixture
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import (
+		AdvancedDataRegressionFixture,
+		AdvancedFileRegressionFixture,
+		check_file_regression
+		)
 
 # this package
 from domdf_python_tools.iterative import (
@@ -142,7 +144,7 @@ def test_double_chain(value, expects):
 	assert list(double_chain(value)) == expects
 
 
-def test_make_tree(file_regression: FileRegressionFixture):
+def test_make_tree(advanced_file_regression: AdvancedFileRegressionFixture):
 	check_file_regression(
 			'\n'.join(
 					make_tree([
@@ -164,7 +166,7 @@ def test_make_tree(file_regression: FileRegressionFixture):
 							"domdf_python_tools==2.2.0",
 							])
 					),
-			file_regression
+			advanced_file_regression
 			)
 
 
@@ -177,8 +179,8 @@ def test_make_tree(file_regression: FileRegressionFixture):
 				["abc", "def", "ghi", "jkl", "mno", "pqr"],
 				]
 		)
-def test_flatten(data, data_regression: DataRegressionFixture):
-	data_regression.check(list(flatten(data)))
+def test_flatten(data, advanced_data_regression: AdvancedDataRegressionFixture):
+	advanced_data_regression.check(list(flatten(data)))
 
 
 @pytest.mark.parametrize(
