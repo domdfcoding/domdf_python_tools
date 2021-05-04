@@ -368,6 +368,10 @@ class PathPlus(pathlib.Path):
 	def _init(self, *args, **kwargs):
 		pass
 
+	@classmethod
+	def _from_parts(cls, args, init=True):
+		return super()._from_parts(args)  # type: ignore
+
 	def __new__(cls, *args, **kwargs):  # noqa D102
 		if cls is PathPlus:
 			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus
