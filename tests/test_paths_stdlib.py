@@ -50,22 +50,8 @@ def _umask_0():
 		os.umask(old_mask)
 
 
-def symlink_skip_reason():
-	if not pathlib.supports_symlinks:  # type: ignore
-		return "no system support for symlinks"
-
-	try:
-		with tempfile.TemporaryDirectory() as tmpdir:
-			os.symlink(__file__, os.path.join(tmpdir, "foo.py"))
-	except (OSError, NotImplementedError) as e:  # NotImplementedError is raised by PyPy
-		return str(e)
-	return None
-
-
-symlink_skip_reason = symlink_skip_reason()
 only_nt = pytest.mark.skipif(condition=os.name != "nt", reason="test requires a Windows-compatible system")
 only_posix = pytest.mark.skipif(condition=os.name == "nt", reason="test requires a POSIX-compatible system")
-with_symlinks = unittest.skipIf(symlink_skip_reason, symlink_skip_reason)  # type: ignore
 
 
 @pytest.fixture()
@@ -99,14 +85,14 @@ def BASE(tmp_pathplus: PathPlus):
 	with open(join("dirC", "dirD", "fileD"), "wb") as f:
 		f.write(b"this is file D\n")
 	os.chmod(join("dirE"), 0)
-	if not symlink_skip_reason:
-		# Relative symlinks.
-		os.symlink("fileA", join("linkA"))
-		os.symlink("non-existing", join("brokenLink"))
-		dirlink("dirB", join("linkB"))
-		dirlink(os.path.join("..", "dirB"), join("dirA", "linkC"))
-		# This one goes upwards, creating a loop.
-		dirlink(os.path.join("..", "dirB"), join("dirB", "linkD"))
+
+	# Relative symlinks.
+	os.symlink("fileA", join("linkA"))
+	os.symlink("non-existing", join("brokenLink"))
+	dirlink("dirB", join("linkB"))
+	dirlink(os.path.join("..", "dirB"), join("dirA", "linkC"))
+	# This one goes upwards, creating a loop.
+	dirlink(os.path.join("..", "dirB"), join("dirB", "linkD"))
 
 	yield tmp_pathplus
 
@@ -468,7 +454,6 @@ def test_mkdir_concurrent_parent_creation(BASE):
 		assert (p.exists())
 
 
-@with_symlinks
 def test_symlink_to(BASE):
 	P = PathPlus(BASE)
 	target = P / "fileA"
@@ -499,10 +484,10 @@ def test_is_dir(BASE):
 	assert not ((P / "fileA").is_dir())
 	assert not ((P / "non-existing").is_dir())
 	assert not ((P / "fileA" / "bah").is_dir())
-	if not symlink_skip_reason:
-		assert not ((P / "linkA").is_dir())
-		assert ((P / "linkB").is_dir())
-		assert not (P / "brokenLink").is_dir()
+
+	assert not ((P / "linkA").is_dir())
+	assert ((P / "linkB").is_dir())
+	assert not (P / "brokenLink").is_dir()
 
 
 def test_is_file(BASE):
@@ -511,10 +496,10 @@ def test_is_file(BASE):
 	assert not ((P / "dirA").is_file())
 	assert not ((P / "non-existing").is_file())
 	assert not ((P / "fileA" / "bah").is_file())
-	if not symlink_skip_reason:
-		assert ((P / "linkA").is_file())
-		assert not ((P / "linkB").is_file())
-		assert not ((P / "brokenLink").is_file())
+
+	assert ((P / "linkA").is_file())
+	assert not ((P / "linkB").is_file())
+	assert not ((P / "brokenLink").is_file())
 
 
 @only_posix
@@ -536,10 +521,10 @@ def test_is_symlink(BASE):
 	assert not ((P / "dirA").is_symlink())
 	assert not ((P / "non-existing").is_symlink())
 	assert not ((P / "fileA" / "bah").is_symlink())
-	if not symlink_skip_reason:
-		assert ((P / "linkA").is_symlink())
-		assert ((P / "linkB").is_symlink())
-		assert ((P / "brokenLink").is_symlink())
+
+	assert ((P / "linkA").is_symlink())
+	assert ((P / "linkB").is_symlink())
+	assert ((P / "brokenLink").is_symlink())
 
 
 def test_is_fifo_false(BASE):
