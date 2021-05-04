@@ -456,6 +456,10 @@ def test_mkdir_concurrent_parent_creation(BASE):
 		assert (p.exists())
 
 
+@pytest.mark.skipif(
+		PYPY and sys.platform == "win32",
+		reason="symlink() is not implemented for PyPy on Windows",
+		)
 def test_symlink_to(BASE):
 	P = PathPlus(BASE)
 	target = P / "fileA"
