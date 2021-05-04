@@ -22,6 +22,11 @@ project = config["project"]
 author = config["author"]
 documentation_summary = config.description
 
+# 3rd party
+import domdf_python_tools
+
+domdf_python_tools.__docs = True
+
 github_url = "https://github.com/{github_username}/{github_repository}".format_map(config)
 
 rst_prolog = f""".. |pkgname| replace:: domdf_python_tools
