@@ -24,6 +24,7 @@ from unittest import mock
 import pytest
 
 # this package
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.paths import PathPlus, PosixPathPlus, WindowsPathPlus
 
 try:
@@ -86,13 +87,14 @@ def BASE(tmp_pathplus: PathPlus):
 		f.write(b"this is file D\n")
 	os.chmod(join("dirE"), 0)
 
-	# Relative symlinks.
-	os.symlink("fileA", join("linkA"))
-	os.symlink("non-existing", join("brokenLink"))
-	dirlink("dirB", join("linkB"))
-	dirlink(os.path.join("..", "dirB"), join("dirA", "linkC"))
-	# This one goes upwards, creating a loop.
-	dirlink(os.path.join("..", "dirB"), join("dirB", "linkD"))
+	if not PYPY and sys.platform != "win32":
+		# Relative symlinks.
+		os.symlink("fileA", join("linkA"))
+		os.symlink("non-existing", join("brokenLink"))
+		dirlink("dirB", join("linkB"))
+		dirlink(os.path.join("..", "dirB"), join("dirA", "linkC"))
+		# This one goes upwards, creating a loop.
+		dirlink(os.path.join("..", "dirB"), join("dirB", "linkD"))
 
 	yield tmp_pathplus
 
@@ -485,9 +487,10 @@ def test_is_dir(BASE):
 	assert not ((P / "non-existing").is_dir())
 	assert not ((P / "fileA" / "bah").is_dir())
 
-	assert not ((P / "linkA").is_dir())
-	assert ((P / "linkB").is_dir())
-	assert not (P / "brokenLink").is_dir()
+	if not PYPY and sys.platform != "win32":
+		assert not ((P / "linkA").is_dir())
+		assert ((P / "linkB").is_dir())
+		assert not (P / "brokenLink").is_dir()
 
 
 def test_is_file(BASE):
@@ -497,9 +500,10 @@ def test_is_file(BASE):
 	assert not ((P / "non-existing").is_file())
 	assert not ((P / "fileA" / "bah").is_file())
 
-	assert ((P / "linkA").is_file())
-	assert not ((P / "linkB").is_file())
-	assert not ((P / "brokenLink").is_file())
+	if not PYPY and sys.platform != "win32":
+		assert ((P / "linkA").is_file())
+		assert not ((P / "linkB").is_file())
+		assert not ((P / "brokenLink").is_file())
 
 
 @only_posix
@@ -522,9 +526,10 @@ def test_is_symlink(BASE):
 	assert not ((P / "non-existing").is_symlink())
 	assert not ((P / "fileA" / "bah").is_symlink())
 
-	assert ((P / "linkA").is_symlink())
-	assert ((P / "linkB").is_symlink())
-	assert ((P / "brokenLink").is_symlink())
+	if not PYPY and sys.platform != "win32":
+		assert ((P / "linkA").is_symlink())
+		assert ((P / "linkB").is_symlink())
+		assert ((P / "brokenLink").is_symlink())
 
 
 def test_is_fifo_false(BASE):
