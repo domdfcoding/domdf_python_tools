@@ -364,7 +364,12 @@ class PathPlus(pathlib.Path):
 	.. versionchanged:: 0.5.1  Defaults to Unix line endings (``LF``) on all platforms.
 	"""
 
-	__slots__ = ("_accessor", )
+	__slots__ = ()
+	_accessor = pathlib._normal_accessor  # type: ignore
+	_closed = False
+
+	def _init(self, *args, **kwargs):
+		pass
 
 	def __new__(cls, *args, **kwargs):  # noqa D102
 		if cls is PathPlus:
@@ -749,7 +754,7 @@ class PathPlus(pathlib.Path):
 			"""
 
 			try:
-				self._accessor.unlink(self)  # type: ignore
+				self._accessor.unlink(self)
 			except FileNotFoundError:
 				if not missing_ok:
 					raise
