@@ -4,10 +4,15 @@
 - importlib._bootstrap
 - importlib._bootstrap_external
 - importlib._common
-- importlib._itertools
 - importlib.abc
 - importlib.machinery
 - importlib.metadata
+- importlib.metadata._adapters
+- importlib.metadata._collections
+- importlib.metadata._functools
+- importlib.metadata._itertools
+- importlib.metadata._meta
+- importlib.metadata._text
 - importlib.readers
 - importlib.resources
 - importlib.util
