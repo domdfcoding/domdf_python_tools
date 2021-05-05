@@ -379,7 +379,7 @@ class PathPlus(pathlib.Path):
 		if cls is PathPlus:
 			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus
 
-		self = cls._from_parts(args, init=False)  # type: ignore
+		self = cls._from_parts(args, init=False)
 		if not self._flavour.is_supported:
 			raise NotImplementedError(f"cannot instantiate {cls.__name__!r} on your system")
 
