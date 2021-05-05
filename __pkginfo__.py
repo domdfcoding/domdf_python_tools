@@ -16,7 +16,7 @@ __all__ = [
 		"extras_require",
 		]
 
-__version__ = "2.9.0"
+__version__ = "2.9.1"
 extras_require = {
 		"dates": ["pytz>=2019.1"],
 		"testing": ["pytest>=6.2.0", "pytest-regressions>=2.0.2"],
