@@ -207,13 +207,15 @@ def test_decorators():
 	assert SpamCafe.opening_hours.__doc__ == Cafe.opening_hours.__doc__
 
 	# set_opening_hours and ceil should have extra text at the beginning
-	assert SpamCafe.set_opening_hours.__doc__.startswith("I will not buy this record, it is scratched.")
+	assert SpamCafe.set_opening_hours.__doc__.startswith(  # type: ignore
+		"I will not buy this record, it is scratched."
+		)
 	assert (doctools.deindent_string(SpamCafe.set_opening_hours.__doc__
 										)).endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
 	# Dedented both strings to be sure of equivalence
-	assert SpamCafe.ceil.__doc__.startswith(
-			"I don't know why the cafe has a ceil function, but we'd better document it properly.",
-			)
+	assert SpamCafe.ceil.__doc__.startswith(  # type: ignore
+		"I don't know why the cafe has a ceil function, but we'd better document it properly.",
+		)
 	assert doctools.deindent_string(SpamCafe.ceil.__doc__
 									).rstrip().endswith(doctools.deindent_string(math.ceil.__doc__).rstrip())
 	# Dedented both strings to be sure of equivalence
@@ -231,9 +233,9 @@ def test_decorators():
 				'a': float, 'b': float, 'c': float, 'd': int, "return": float
 				}
 
-	assert partially_documented_function.__doc__.startswith(
-			"This function works like ``documented_function`` except it returns the result telepathically.",
-			)
+	assert partially_documented_function.__doc__.startswith(  # type: ignore
+		"This function works like ``documented_function`` except it returns the result telepathically.",
+		)
 	assert (doctools.deindent_string(partially_documented_function.__doc__
 										)).endswith(doctools.deindent_string(documented_function.__doc__))
 	# Dedented both strings to be sure of equivalence
@@ -500,12 +502,12 @@ def test_prettify_with_method():
 	class F(Iterable):
 		pass
 
-	assert prettify_docstrings(F).__getitem__.__doc__ != "Return ``self[key]``."
+	assert prettify_docstrings(F).__getitem__.__doc__ != "Return ``self[key]``."  # type: ignore
 
 	class G(Dictable):
 		pass
 
-	assert prettify_docstrings(G).__getitem__.__doc__ != "Return ``self[key]``."
+	assert prettify_docstrings(G).__getitem__.__doc__ != "Return ``self[key]``."  # type: ignore
 
 
 def test_prettify_namedtuple():

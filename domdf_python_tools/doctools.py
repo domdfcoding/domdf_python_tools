@@ -41,7 +41,8 @@ from domdf_python_tools.compat import PYPY, PYPY37
 from domdf_python_tools.typing import MethodDescriptorType, MethodWrapperType, WrapperDescriptorType
 
 __all__ = [
-		'F',
+		"_F",
+		"_T",
 		"deindent_string",
 		"document_object_from_another",
 		"append_doctring_from_another",
@@ -52,7 +53,8 @@ __all__ = [
 		"prettify_docstrings",
 		]
 
-F = TypeVar('F', bound=Callable[..., Any])
+_F = TypeVar("_F", bound=Callable[..., Any])
+_T = TypeVar("_T", bound=Type)
 
 
 def deindent_string(string: Optional[str]) -> str:
@@ -137,7 +139,7 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 		:class:`str`
 
 	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
-	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
+	``intersphinx_mapping`` of your Sphinx ``conf.py`` file.
 
 	:param input_string: The string to process.
 	:param builtins_list: A list of builtins to make links for.
@@ -164,21 +166,23 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 
 
 # Decorators that call the above functions
-def is_documented_by(original: F) -> Callable:
+def is_documented_by(original: Callable) -> Callable[[_F], _F]:
 	"""
 	Decorator to set the docstring of the ``target`` function to that of the ``original`` function.
 
 	This may be useful for subclasses or wrappers that use the same arguments.
+
+	:param original:
 	"""
 
-	def wrapper(target: F) -> F:
+	def wrapper(target: _F) -> _F:
 		document_object_from_another(target, original)
 		return target
 
 	return wrapper
 
 
-def append_docstring_from(original: F) -> Callable:
+def append_docstring_from(original: Callable) -> Callable[[_F], _F]:
 	"""
 	Decorator to appends the docstring from the ``original`` function to the ``target`` function.
 
@@ -187,16 +191,18 @@ def append_docstring_from(original: F) -> Callable:
 	Any indentation in either docstring is removed to
 	ensure consistent indentation between the two docstrings.
 	Bear this in mind if additional indentation is used in the docstring.
+
+	:param original:
 	"""
 
-	def wrapper(target: F) -> F:
+	def wrapper(target: _F) -> _F:
 		append_doctring_from_another(target, original)
 		return target
 
 	return wrapper
 
 
-def sphinxify_docstring() -> Callable[[F], F]:
+def sphinxify_docstring() -> Callable[[_F], _F]:
 	r"""
 	Decorator to make proper sphinx links out of double-backticked strings in the docstring.
 
@@ -216,7 +222,7 @@ def sphinxify_docstring() -> Callable[[F], F]:
 	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
 	"""  # noqa SXL001
 
-	def wrapper(target: F) -> F:
+	def wrapper(target: _F) -> _F:
 		target_doc = target.__doc__
 
 		if target_doc:
@@ -318,7 +324,7 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 	"""
 	Perform the actual prettifying for :func`~.prettify_docstrings`.
 
-	.. versionadded:: 0.8.0
+	.. versionadded:: 0.8.0 (private)
 
 	:param obj:
 	:param base:
@@ -360,7 +366,7 @@ def _do_prettify(obj: Type, base: Type, new_docstrings: Dict[str, str]):
 				attribute.__doc__ = new_docstrings[attr_name]
 
 
-def prettify_docstrings(obj: Type) -> Type:
+def prettify_docstrings(obj: _T) -> _T:
 	"""
 	Decorator to prettify the default :class:`object` docstrings for use in Sphinx documentation.
 
