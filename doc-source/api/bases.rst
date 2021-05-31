@@ -1,6 +1,9 @@
 ==================================
-:mod:`domdf_python_tools.bases`
+:mod:`~domdf_python_tools.bases`
 ==================================
+
+.. autosummary-widths:: 5/16
+	:html: 2/10
 
 .. automodule:: domdf_python_tools.bases
 	:autosummary-members:
@@ -12,8 +15,17 @@ Type Variables
 .. autotypevar:: domdf_python_tools.bases._F
 .. autotypevar:: domdf_python_tools.bases._LU
 .. autotypevar:: domdf_python_tools.bases._S
+
+.. raw:: latex
+
+	\begin{multicols}{2}
+
 .. autotypevar:: domdf_python_tools.bases._T
 .. autotypevar:: domdf_python_tools.bases._V
+
+.. raw:: latex
+
+	\end{multicols}
 
 
 Dictable
@@ -63,9 +75,11 @@ and not this:
 	...     pass
 	>>>
 
-This avoids any potential issues with `mypy <http://mypy-lang.org/>`_
+This avoids any potential issues with :github:repo:`mypy <python/mypy>`.
 
 .. autoclass:: domdf_python_tools.bases.NamedList
+	:no-autosummary:
+	:exclude-members: __repr__,__str__
 
 .. autofunction:: domdf_python_tools.bases.namedlist
 

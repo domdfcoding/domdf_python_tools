@@ -3,6 +3,17 @@
 #  doctools.py
 """
 Utilities for documenting functions, classes and methods.
+
+.. autosummary-widths:: 5/16
+
+.. automodulesumm:: domdf_python_tools.doctools
+	:autosummary-sections: Data
+
+.. autosummary-widths:: 17/32
+	:html: 4/10
+
+.. automodulesumm:: domdf_python_tools.doctools
+	:autosummary-sections: Functions
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -126,27 +137,22 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 	r"""
 	Make proper sphinx links out of double-backticked strings in docstring.
 
-	i.e.
+	i.e. :inline-code:`\`\`str\`\`` becomes  :inline-code:`:class:\`str\``
 
-	.. code-block:: rest
+	Make sure to include the following in your ``conf.py`` file for Sphinx:
 
-		``str``
+	.. code-block:: python
 
-	becomes
-
-	.. code-block:: rest
-
-		:class:`str`
-
-	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
-	``intersphinx_mapping`` of your Sphinx ``conf.py`` file.
+		intersphinx_mapping = {
+			"python": ("https://docs.python.org/3/", None),
+		}
 
 	:param input_string: The string to process.
 	:param builtins_list: A list of builtins to make links for.
 	:default builtins_list: dir(:py:obj:`builtins`)
 
 	:return: Processed string with links.
-	"""  # noqa SXL001
+	"""
 
 	if builtins_list is None:
 		builtins_list = dir(builtins)
@@ -206,20 +212,15 @@ def sphinxify_docstring() -> Callable[[_F], _F]:
 	r"""
 	Decorator to make proper sphinx links out of double-backticked strings in the docstring.
 
-	i.e.
+	i.e. :inline-code:`\`\`str\`\`` becomes  :inline-code:`:class:\`str\``
 
-	.. code-block:: rest
+	Make sure to include the following in your ``conf.py`` file for Sphinx:
 
-		``str``
+	.. code-block:: python
 
-	becomes
-
-	.. code-block:: rest
-
-		:class:`str`
-
-	Make sure to have ``'python': ('https://docs.python.org/3/', None),`` in the
-	``intersphinx_mapping`` dict of your ``conf.py`` file for Sphinx.
+		intersphinx_mapping = {
+			"python": ("https://docs.python.org/3/", None),
+		}
 	"""  # noqa SXL001
 
 	def wrapper(target: _F) -> _F:

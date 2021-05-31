@@ -6,15 +6,14 @@ Common aliases for type hinting.
 
 **Data:**
 
-.. csv-table::
-	:widths: 5, 20
+.. autosummary2::
 
-	:data:`~.PathLike`, Type hint for objects that represent filesystem paths.
-	:data:`~.AnyNumber`, Type hint for numbers.
-	:data:`~.WrapperDescriptorType`, The type of methods of some built-in data types and base classes.
-	:data:`~.MethodWrapperType`, The type of *bound* methods of some built-in data types and base classes.
-	:data:`~.MethodDescriptorType`, The type of methods of some built-in data types.
-	:data:`~.ClassMethodDescriptorType`, The type of *unbound* class methods of some built-in data types.
+	~domdf_python_tools.typing.PathLike
+	~domdf_python_tools.typing.AnyNumber
+	~domdf_python_tools.typing.WrapperDescriptorType, The type of methods of some built-in data types and base classes.
+	~domdf_python_tools.typing.MethodWrapperType, The type of *bound* methods of some built-in data types and base classes.
+	~domdf_python_tools.typing.MethodDescriptorType, The type of methods of some built-in data types.
+	~domdf_python_tools.typing.ClassMethodDescriptorType, The type of *unbound* class methods of some built-in data types.
 
 """
 #

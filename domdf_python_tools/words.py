@@ -103,8 +103,8 @@ Lowercase Greek letters.
 @functools.lru_cache()
 def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	"""
-	Returns the list of words, optionally only including those
-	whose length is between ``min_length`` and ``max_length``.
+	Returns the list of words, optionally only those whose length is between
+	``min_length`` and ``max_length``.
 
 	.. versionadded:: 0.4.5
 
@@ -182,9 +182,9 @@ class Font(Dict[str, str]):
 
 	Mapping of ASCII letters to their equivalents in the pseudo-font.
 
-	Individual characters can be converted using the :meth:`domdf_python_tools.words.Font.get`
+	Individual characters can be converted using the :meth:`Font.get <domdf_python_tools.words.Font.get>`
 	method or the ``getitem`` syntax. Entire strings can be converted by calling the
-	:class:`domdf_python_tools.words.Font` object and passing the string as the first argument.
+	:class:`~domdf_python_tools.words.Font` object and passing the string as the first argument.
 	"""
 
 	def __getitem__(self, char: str) -> str:
@@ -209,8 +209,6 @@ class Font(Dict[str, str]):
 		Returns the given text in this font.
 
 		:param text:
-
-		:return:
 		"""
 
 		return ''.join(self[char] for char in text)
@@ -245,8 +243,8 @@ def make_font(
 
 	.. versionadded:: 0.7.0
 
-	:param uppers: Iterable of uppercase letters (A-Z).
-	:param lowers: Iterable of lowercase letters (a-z).
+	:param uppers: Iterable of uppercase letters (A-Z, 26 characters).
+	:param lowers: Iterable of lowercase letters (a-z, 26 characters).
 	:param digits: Optional iterable of digits (0-9).
 	:param greek_uppers: Optional iterable of uppercase Greek letters (𝚨-𝛁).
 	:param greek_lowers: Optional iterable of lowercase Greek letters (𝛂-𝛡).
@@ -288,7 +286,7 @@ SERIF_BOLD_LETTERS = make_font(
 		greek_lowers=SERIF_BOLD_GREEK_LOWER,
 		)
 """
-Bold Serif :class:`domdf_python_tools.words.Font`.
+Bold Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes numbers and Greek letters.
 
@@ -311,7 +309,7 @@ SERIF_ITALIC_LETTERS = make_font(
 		greek_lowers=SERIF_ITALIC_GREEK_LOWER,
 		)
 """
-Italic Serif :class:`domdf_python_tools.words.Font`.
+Italic Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes Greek letters.
 
@@ -334,7 +332,7 @@ SERIF_BOLD_ITALIC_LETTERS = make_font(
 		greek_lowers=SERIF_BOLD_ITALIC_GREEK_LOWER,
 		)
 """
-Bold and Italic Serif :class:`domdf_python_tools.words.Font`.
+Bold and Italic Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes Greek letters.
 
@@ -354,7 +352,7 @@ SANS_SERIF_LETTERS = make_font(
 		digits=SANS_SERIF_DIGITS,
 		)
 """
-Normal Sans-Serif :class:`domdf_python_tools.words.Font`.
+Normal Sans-Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes numbers.
 
@@ -374,7 +372,7 @@ SANS_SERIF_BOLD_LETTERS = make_font(
 		digits=SANS_SERIF_BOLD_DIGITS,
 		)
 """
-Bold Sans-Serif :class:`domdf_python_tools.words.Font`.
+Bold Sans-Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes numbers.
 
@@ -391,7 +389,7 @@ SANS_SERIF_ITALIC_LETTERS = make_font(
 		lowers=SANS_SERIF_ITALIC_LOWER,
 		)
 """
-Italic Sans-Serif :class:`domdf_python_tools.words.Font`.
+Italic Sans-Serif :class:`~domdf_python_tools.words.Font`.
 
 .. versionadded:: 0.7.0
 """
@@ -412,7 +410,7 @@ SANS_SERIF_BOLD_ITALIC_LETTERS = make_font(
 		greek_lowers=SANS_SERIF_BOLD_ITALIC_GREEK_LOWER,
 		)
 """
-Bold and Italic Sans-Serif :class:`domdf_python_tools.words.Font`.
+Bold and Italic Sans-Serif :class:`~domdf_python_tools.words.Font`.
 
 This font includes Greek letters.
 
@@ -426,7 +424,7 @@ SCRIPT_LOWER = "𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹
 
 SCRIPT_LETTERS = make_font(SCRIPT_UPPER, SCRIPT_LOWER)
 """
-Script :class:`domdf_python_tools.words.Font`.
+Script :class:`~domdf_python_tools.words.Font`.
 
 .. versionadded:: 0.7.0
 """
@@ -438,7 +436,7 @@ FRAKTUR_LOWER = "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔�
 
 FRAKTUR_LETTERS = make_font(FRAKTUR_UPPER, FRAKTUR_LOWER)
 """
-Fraktur :class:`domdf_python_tools.words.Font`.
+Fraktur :class:`~domdf_python_tools.words.Font`.
 
 .. versionadded:: 0.7.0
 """
@@ -452,7 +450,7 @@ MONOSPACE_DIGITS = "𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿"
 
 MONOSPACE_LETTERS = make_font(MONOSPACE_UPPER, MONOSPACE_LOWER, MONOSPACE_DIGITS)
 """
-Monospace :class:`domdf_python_tools.words.Font`.
+Monospace :class:`~domdf_python_tools.words.Font`.
 
 This font includes numbers.
 
@@ -468,7 +466,7 @@ DOUBLESTRUCK_DIGITS = "𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡"
 
 DOUBLESTRUCK_LETTERS = make_font(DOUBLESTRUCK_UPPER, DOUBLESTRUCK_LOWER, DOUBLESTRUCK_DIGITS)
 """
-Doublestruck :class:`domdf_python_tools.words.Font`.
+Doublestruck :class:`~domdf_python_tools.words.Font`.
 
 This font includes numbers.
 

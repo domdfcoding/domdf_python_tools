@@ -132,17 +132,17 @@ class UserList(MutableSequence[_T]):
 	Typed version of :class:`collections.UserList`.
 
 	Class that simulates a list. The instance’s contents are kept in a regular list,
-	which is accessible via the :attr:`~.UserList.data` attribute of UserList instances.
+	which is accessible via the :attr:`~.UserList.data` attribute of :class:`~.UserList` instances.
 	The instance’s contents are initially set to a copy of list, defaulting to the empty list ``[]``.
 
 	.. versionadded:: 0.10.0
 
-	:param initlist: Values to initialise the :class:`~domdf_python_tools.bases.UserList` with.
+	:param initlist: The initial values to populate the :class:`~.UserList` with.
 	:default initlist: ``[]``
 
 	.. admonition:: Subclassing requirements
 
-		Subclasses of UserList are expected to offer a constructor which can be called with
+		Subclasses of :class:`~.UserList` are expected to offer a constructor which can be called with
 		either no arguments or one argument. List operations which return a new sequence
 		attempt to create an instance of the actual implementation class. To do so,
 		it assumes that the constructor can be called with a single parameter, which is a
@@ -370,7 +370,7 @@ class UserFloat(Real):
 
 	.. versionadded:: 1.6.0
 
-	:param value: Values to initialise the :class:`~domdf_python_tools.bases.UserFloat` with.
+	:param value: The values to initialise the :class:`~domdf_python_tools.bases.UserFloat` with.
 	"""
 
 	def __init__(self, value: Union[SupportsFloat, SupportsIndex, str, bytes, bytearray] = 0.0):
@@ -573,6 +573,8 @@ class NamedList(UserList[_T]):
 	.. versionchanged:: 0.10.0
 
 		:class:`~.NamedList` now subclasses :class:`.UserList` rather than :class:`collections.UserList`.
+
+	.. latex:clearpage::
 	"""
 
 	def __repr__(self) -> str:
@@ -600,6 +602,8 @@ def namedlist(name: str = "NamedList") -> Type[NamedList]:
 class Lineup(UserList[_T]):
 	"""
 	List-like type with fluent methods and some star players.
+
+	.. latex:vspace:: -10px
 	"""
 
 	def replace(self: _LU, what: _T, with_: _T) -> _LU:

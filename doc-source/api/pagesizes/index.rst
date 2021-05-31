@@ -1,5 +1,5 @@
 =========================================
-:mod:`domdf_python_tools.pagesizes`
+:mod:`~domdf_python_tools.pagesizes`
 =========================================
 
 .. automodule:: domdf_python_tools.pagesizes

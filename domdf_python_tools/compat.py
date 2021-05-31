@@ -1,12 +1,31 @@
 #  !/usr/bin/env python
 #
 #  compat.py
-"""
+r"""
 Cross-version compatibility helpers.
 
 .. versionadded :: 0.12.0
 
+-----
+
 Provides the following:
+
+.. autovariable:: domdf_python_tools.compat.PYPY
+	:no-value:
+
+.. raw:: latex
+
+	\begin{multicols}{2}
+
+.. autovariable:: domdf_python_tools.compat.PYPY36
+	:no-value:
+
+.. autovariable:: domdf_python_tools.compat.PYPY37
+	:no-value:
+
+.. raw:: latex
+
+	\end{multicols}
 
 .. py:data:: importlib_resources
 
@@ -22,11 +41,11 @@ Provides the following:
 
 	.. versionchanged:: 2.5.0
 
-		`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`_ is now used
+		`importlib_metadata <https://importlib-metadata.readthedocs.io/en/latest/>`__ is now used
 		on Python 3.8 in place of the stdlib version.
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -89,6 +108,11 @@ if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING: 
 				# Perform operation, using optional_cm if condition is True
 
 		.. versionadded:: 2.1.0
+
+		In Python 3.7 and above the `version from the standard library`_ is used instead of this one,
+		but the implementations are identical.
+
+		.. _version from the standard library: https://docs.python.org/3/library/contextlib.html#contextlib.nullcontext
 
 		:param enter_result: An optional value to return when entering the context.
 		"""

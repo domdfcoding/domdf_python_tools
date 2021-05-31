@@ -209,7 +209,7 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False):
 		This appears to be due to the behaviour of :func:`os.mkdir`.
 
 	:param directory: Directory to create
-	:param mode: Combined with the process’ umask value to determine the file mode and access flags
+	:param mode: Combined with the process's umask value to determine the file mode and access flags
 	:param parents: If :py:obj:`False` (the default), a missing parent raises a :class:`FileNotFoundError`.
 		If :py:obj:`True`, any missing parents of this path are created as needed; they are created with the
 		default permissions without taking mode into account (mimicking the POSIX ``mkdir -p`` command).
@@ -375,9 +375,9 @@ class PathPlus(pathlib.Path):
 	def _from_parts(cls, args, init=True):
 		return super()._from_parts(args)  # type: ignore
 
-	def __new__(cls, *args, **kwargs):  # noqa D102
+	def __new__(cls: Type[_PP], *args, **kwargs) -> _PP:  # noqa D102
 		if cls is PathPlus:
-			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus
+			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus  # type: ignore
 
 		self = cls._from_parts(args, init=False)
 		if not self._flavour.is_supported:
@@ -624,7 +624,7 @@ class PathPlus(pathlib.Path):
 
 			Now uses :meth:`PathPlus.write_clean <domdf_python_tools.paths.PathPlus.write_clean>`
 			rather than :meth:`PathPlus.write_text <domdf_python_tools.paths.PathPlus.write_text>`,
-			and returns :py:obj:`None` rather than :class:`int`.
+			and as a result returns :py:obj:`None` rather than :class:`int`.
 
 		.. versionchanged:: 1.9.0  Added the ``compress`` keyword-only argument.
 		"""
@@ -819,7 +819,7 @@ class PathPlus(pathlib.Path):
 			together with their children.
 		:param match: A pattern to match filenames against.
 			The pattern should be in the format taken by :func:`~.matchglob`.
-			:param matchcase: Whether the filename's case should match the pattern.
+		:param matchcase: Whether the filename's case should match the pattern.
 
 		:rtype:
 
@@ -903,6 +903,15 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 	On a Windows system, instantiating a :class:`~.PathPlus`  object should return an instance of this class.
 
 	.. versionadded:: 0.3.8
+
+	.. autoclasssumm:: WindowsPathPlus
+		:autosummary-sections: ;;
+
+	The following methods are unsupported on Windows:
+
+	* :meth:`~pathlib.Path.group`
+	* :meth:`~pathlib.Path.is_mount`
+	* :meth:`~pathlib.Path.owner`
 	"""
 
 	__slots__ = ()
@@ -968,11 +977,9 @@ def matchglob(filename: PathLike, pattern: str, matchcase: bool = True) -> bool:
 
 	:rtype:
 
-	.. seealso::
-
-		:wikipedia:`Glob (programming)#Syntax` on Wikipedia
-
+	.. seealso:: :wikipedia:`Glob (programming)#Syntax` on Wikipedia
 	.. versionchanged:: 2.5.0  Added the ``matchcase`` option.
+	.. latex:clearpage::
 	"""
 
 	match_func = fnmatch.fnmatchcase if matchcase else fnmatch.fnmatch
@@ -1035,6 +1042,7 @@ class TemporaryPathPlus(tempfile.TemporaryDirectory):
 	Unlike :func:`tempfile.TemporaryDirectory` this class is based around a :class:`~.PathPlus` object.
 
 	.. versionadded:: 2.4.0
+	.. autosummary-widths:: 6/16
 	"""
 
 	name: PathPlus  # type: ignore

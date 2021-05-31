@@ -110,8 +110,8 @@ def permutations(data: Iterable[_T], n: int = 2) -> List[Tuple[_T, ...]]:
 	:rtype:
 
 	.. versionchanged:: 1.4.0 Moved from :mod:`domdf_python_tools.utils`
-
 	.. seealso:: :func:`itertools.permutations` and :func:`itertools.combinations`
+	.. latex:clearpage::
 	"""
 
 	if n == 0:
@@ -171,17 +171,19 @@ def double_chain(iterable: Iterable[Iterable[Iterable[_T]]]) -> Iterator[_T]:
 
 		chain.from_iterable(chain.from_iterable(iterable))
 
-	Converts
+	.. compound::
 
-	.. code-block:: python
+		Will convert
 
-		[[(1, 2), (3, 4)], [(5, 6), (7, 8)]]
+		.. code-block:: python
 
-	to
+			[[(1, 2), (3, 4)], [(5, 6), (7, 8)]]
 
-	.. code-block:: python
+		to
 
-		[1, 2, 3, 4, 5, 6, 7, 8]
+		.. code-block:: python
+
+			[1, 2, 3, 4, 5, 6, 7, 8]
 
 	.. versionadded:: 0.4.7
 
@@ -303,7 +305,10 @@ def groupfloats(
 
 	.. code-block:: python
 
-		>>> list(groupfloats([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05))
+		>>> list(groupfloats(
+		... 	[170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2],
+		... 	step=0.05,
+		... ))
 		[(170.0, 170.05, 170.1, 170.15), (171.05, 171.1, 171.15, 171.2)]
 		>>> list(groupfloats([1, 2, 3, 4, 5, 7, 8, 9, 10]))
 		[(1, 2, 3, 4, 5), (7, 8, 9, 10)]
@@ -393,6 +398,7 @@ def extend_with(sequence: Iterable[_T], minsize: int, with_: _T) -> List[_T]:
 	:rtype:
 
 	.. seealso:: :func:`~.extend` and :func:`~.extend_with_none`
+	.. latex:clearpage::
 	"""
 
 	output = list(sequence)
@@ -428,17 +434,22 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 	Make an iterator which returns evenly spaced values starting with number ``start``.
 
 	Often used as an argument to :func:`map` to generate consecutive data points.
-	Also, used with :func:`zip` to add sequence numbers.
+	Can also be used with :func:`zip` to add sequence numbers.
 
 	.. versionadded:: 2.7.0
 
 	:param start:
 	:param step: The step between values.
 
+	:rtype:
+
 	.. seealso::
 
 		:func:`itertools.count`.
+
 		The difference is that this returns more exact floats, whereas the values from :func:`itertools.count` drift.
+
+	.. latex:clearpage::
 	"""
 
 	if not isinstance(start, (int, float, complex)):

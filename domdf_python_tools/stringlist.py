@@ -301,6 +301,8 @@ class StringList(List[str]):
 		Sets the type of the indent to insert at the beginning of new lines.
 
 		:param indent_type: The type of indent to use for new lines.
+
+		.. latex:clearpage::
 		"""
 
 		self.indent.type = str(indent_type)
@@ -460,6 +462,9 @@ class DelimitedList(List[_S]):
 		'1, 2, 3, 4, 5'
 		>>> f"Numbers: {l:, }"
 		'Numbers: 1, 2, 3, 4, 5'
+
+	.. autoclasssumm:: DelimitedList
+		:autosummary-sections: ;;
 
 	.. versionadded:: 1.1.0
 	"""

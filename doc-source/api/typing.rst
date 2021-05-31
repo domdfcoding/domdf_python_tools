@@ -1,6 +1,9 @@
 =================================
-:mod:`domdf_python_tools.typing`
+:mod:`~domdf_python_tools.typing`
 =================================
+
+.. autosummary-widths:: 11/32
+	:html: 25/100
 
 .. automodule:: domdf_python_tools.typing
 	:autosummary-sections: Functions ;; Classes

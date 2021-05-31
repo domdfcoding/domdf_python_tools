@@ -46,12 +46,13 @@ class Secret(str):
 
 	The secret overrides the :meth:`~.__eq__` method of :class:`str`, so:
 
-		.. code-block:: python
+	.. code-block:: python
 
-			>>> Secret("Barry as FLUFL") == "Barry as FLUFL"
-			True
+		>>> Secret("Barry as FLUFL") == "Barry as FLUFL"
+		True
 
 	.. versionadded:: 0.4.6
+	.. autosummary-widths:: 1/2
 	"""
 
 	__slots__ = ("value", )

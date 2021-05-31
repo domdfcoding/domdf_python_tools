@@ -3,6 +3,8 @@
 #  import_tools.py
 """
 Functions for importing classes.
+
+.. versionadded:: 0.5.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -89,9 +91,10 @@ def discover(
 	:default match_func: :py:obj:`None`, which includes all objects.
 	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
 
-	.. versionchanged:: 1.0.0
+	:rtype:
 
-		Added the ``exclude_side_effects`` parameter.
+	.. versionchanged:: 1.0.0  Added the ``exclude_side_effects`` parameter.
+	.. latex:clearpage::
 	"""
 
 	kwargs: _DiscoverKwargsType = dict(exclude_side_effects=exclude_side_effects, match_func=match_func)

@@ -13,7 +13,8 @@ Utilities for working with dates and times.
 .. autosummary::
 
 	~domdf_python_tools.dates.months
-
+	~domdf_python_tools.dates.month_full_names
+	~domdf_python_tools.dates.month_short_names
 
 """
 #
@@ -118,10 +119,10 @@ def utc_timestamp_to_datetime(
 	"""
 	Convert UTC timestamp (seconds from UNIX epoch) to a :class:`datetime.datetime` object.
 
-	If ``output_tz`` is None the timestamp is converted to the platform’s local date and time,
+	If ``output_tz`` is :py:obj:`None` the timestamp is converted to the platform’s local date and time,
 	and the local timezone is inferred and set for the object.
 
-	If ``output_tz`` is not None, it must be an instance of a :class:`datetime.tzinfo` subclass,
+	If ``output_tz`` is not :py:obj:`None`, it must be an instance of a :class:`datetime.tzinfo` subclass,
 	and the timestamp is converted to ``output_tz``’s time zone.
 
 
@@ -232,6 +233,8 @@ def check_date(month: Union[str, int], day: int, leap_year: bool = True) -> bool
 		This function will return :py:obj:`True` for the 29th Feb.
 		If you don't want this behaviour set ``leap_year`` to :py:obj:`False`.
 
+	.. latex:vspace:: -10px
+
 	:param month: The month to test.
 	:param day: The day number to test.
 	:param leap_year: Whether to return :py:obj:`True` for 29th Feb.
@@ -298,7 +301,10 @@ def get_utc_offset(
 def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[datetime.tzinfo]:
 	"""
 	Returns a localized ``pytz.timezone`` object for the given date.
+
 	If ``date`` is :py:obj:`None` then the current date is used.
+
+	.. latex:vspace:: -10px
 
 	:param tz: A string representing a pytz timezone
 	:param date: The date to obtain the timezone for

@@ -195,11 +195,10 @@ def str2tuple(input_string: str, sep: str = ',') -> Tuple[int, ...]:
 	"""
 	Convert a comma-separated string of integers into a tuple.
 
-	.. important::
-
-		The input string must represent a comma-separated series of integers.
-
+	.. latex:vspace:: -10px
+	.. important:: The input string must represent a comma-separated series of integers.
 	.. TODO:: Allow custom types, not just :class:`int` (making :class:`int` the default)
+	.. latex:vspace:: -20px
 
 	:param input_string: The string to be converted into a tuple
 	:param sep: The separator in the string.
@@ -424,11 +423,17 @@ def trim_precision(value: float, precision: int = 4) -> float:
 	return float(format(value, f"0.{precision}f"))
 
 
-def double_repr_string(string: str):
+def double_repr_string(string: str) -> str:
 	"""
 	Like :func:`repr(str) <repr>`, but tries to use double quotes instead.
 
 	.. versionadded:: 2.5.0
+
+	:param string:
+
+	:rtype:
+
+	.. latex:clearpage::
 	"""
 
 	# figure out which quote to use; double is preferred
@@ -474,7 +479,7 @@ def divide(string: str, sep: str) -> Tuple[str, str]:
 	.. versionadded:: 2.7.0
 
 	:param string:
-	:param sep:
+	:param sep: The separator to split at.
 	"""
 
 	if sep not in string:
@@ -492,6 +497,10 @@ def redivide(string: str, pat: Union[str, Pattern]) -> Tuple[str, str]:
 
 	:param string:
 	:param pat:
+
+	:rtype:
+
+	.. latex:clearpage::
 	"""
 
 	if isinstance(pat, str):

@@ -1,10 +1,13 @@
 =================================
-:mod:`domdf_python_tools.dates`
+:mod:`~domdf_python_tools.dates`
 =================================
+
+.. autosummary-widths:: 13/32
+	:html: 35/100
 
 .. automodule:: domdf_python_tools.dates
 	:undoc-members:
-	:exclude-members: months
+	:exclude-members: months,month_full_names,month_short_names
 
 
 .. autovariable:: domdf_python_tools.dates.months
@@ -20,11 +23,12 @@
 			Mar="March",
 			Apr="April",
 			May="May",
-			Jun="June",
-			Jul="July",
-			Aug="August",
-			Sep="September",
-			Oct="October",
-			Nov="November",
+			...,
 			Dec="December",
 		}
+
+.. autovariable:: domdf_python_tools.dates.month_full_names
+	:value: ('January', 'February', ..., 'December')
+
+.. autovariable:: domdf_python_tools.dates.month_short_names
+	:value: ('Jan', 'Feb', 'Mar', ..., 'Dec')

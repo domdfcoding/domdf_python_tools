@@ -3,6 +3,8 @@
 #  versions.py
 """
 NamedTuple-like class to represent a version number.
+
+.. versionadded:: 0.4.4
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -42,8 +44,6 @@ _V = TypeVar("_V", bound="Version")
 class Version(Tuple[int, int, int]):
 	"""
 	NamedTuple-like class to represent a version number.
-
-	.. versionadded:: 0.4.4
 
 	:param major:
 

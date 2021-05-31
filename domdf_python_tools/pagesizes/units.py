@@ -73,7 +73,8 @@ class Unit(float):
 
 	Behaves much like a float (which it inherits from).
 
-	**Addition**
+
+	:bold-title:`Addition`
 
 	Units can be added to each other:
 
@@ -102,7 +103,7 @@ class Unit(float):
 		<Unit '10.000 cm': 283.465pt>
 
 
-	**Subtraction**
+	:bold-title:`Subtraction`
 
 	Subtraction works the same as addition:
 
@@ -119,8 +120,9 @@ class Unit(float):
 		>>> 17 - (7*cm)
 		<Unit '10.000 cm': 283.465pt>
 
+	.. latex:clearpage::
 
-	**Multiplcation**
+	:bold-title:`Multiplcation`
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can only be multipled by
 	:class:`float` and :class:`int` objects:
@@ -143,7 +145,7 @@ class Unit(float):
 		>>> inch * (7*cm)
 		TypeError: unsupported operand type(s) for *: 'UnitInch' and 'Unitcm'
 
-	**Division**
+	:bold-title:`Division`
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit`\s can only be divided by :class:`float` and :class:`int` objects:
 
@@ -169,12 +171,12 @@ class Unit(float):
 		TypeError: unsupported operand type(s) for /: 'int' and 'Unitmm'
 
 
-	**Powers**
+	:bold-title:`Powers`
 
 	Powers (using ``**``) are not officially supported.
 
 
-	**Modulo Division**
+	:bold-title:`Modulo Division`
 
 	Modulo division of a :class:`~domdf_python_tools.pagesizes.units.Unit` by a
 	:class:`float` or :class:`int` object is allowed:
@@ -185,6 +187,8 @@ class Unit(float):
 		<Unit '0.500 mm': 1.417pt>
 
 	Dividing by a unit, or modulo division of two units, is not officially supported.
+
+	.. latex:clearpage::
 	"""
 
 	name: str = "pt"

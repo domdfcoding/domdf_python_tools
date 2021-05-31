@@ -125,25 +125,24 @@ def interrupt() -> None:
 
 
 def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bool = False) -> None:
-	"""
-	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
+	r"""
+	Print ``*objects`` to the text stream ``file``, starting with ``'\\r'``, separated by ``sep``
 	and followed by ``end``.
 
-	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
-
 	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
-	separated by `sep` and followed by `end`.
+	separated by ``sep`` and followed by ``end``.
 
-	If no objects are given, :func:`~domdf_python_tools.terminal.overtype` will just write ``"\\r"``.
+	If no objects are given, :func:`~.overtype` will just write ``"\\r"``.
 
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
-	:param objects: A list of strings or string-like objects to write to the terminal.
-	:param sep: String to separate the objects with.
-	:param end: String to end with.
+	:param \*objects: A list of strings or string-like objects to write to the terminal.
+	:param sep: The separator between values.
+	:param end: The final value to print.
 	:param file: An object with a ``write(string)`` method.
-	:default file: ``sys.stdout``
-	:param flush: If :py:obj:`True`, the stream is forcibly flushed.
+		If not present or :py:obj:`None`, :py:obj:`sys.stdout` will be used.
+	:no-default file:
+	:param flush: If :py:obj:`True` the stream is forcibly flushed after printing.
 	"""  # noqa D400
 
 	object0 = f"{CR}{objects[0]}"
