@@ -182,6 +182,12 @@ Contents
 	contributing
 	Source
 
+.. sidebar-links::
+	:caption: Links
+	:github:
+	:pypi: domdf_python_tools
+
+
 .. start links
 
 .. only:: html
