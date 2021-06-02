@@ -69,7 +69,7 @@ import os
 import pprint
 import textwrap
 from shutil import get_terminal_size
-from typing import IO
+from typing import IO, Optional
 
 # this package
 from domdf_python_tools.words import CR
@@ -124,7 +124,13 @@ def interrupt() -> None:
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time)")
 
 
-def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bool = False) -> None:
+def overtype(
+		*objects,
+		sep: str = ' ',
+		end: str = '',
+		file: Optional[IO] = None,
+		flush: bool = False,
+		) -> None:
 	r"""
 	Print ``*objects`` to the text stream ``file``, starting with ``'\\r'``, separated by ``sep``
 	and followed by ``end``.

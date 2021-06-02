@@ -74,6 +74,7 @@ from math import log10
 from pprint import pformat
 from types import MethodType
 from typing import (
+		IO,
 		TYPE_CHECKING,
 		Any,
 		Callable,
@@ -161,30 +162,87 @@ def list2str(the_list: Iterable[Any], sep: str = ',') -> str:
 	return sep.join([str(x) for x in the_list])
 
 
-def printr(obj: Any, *args, **kwargs) -> None:
-	"""
+def printr(
+		obj: Any,
+		*values: object,
+		sep: Optional[str] = ' ',
+		end: Optional[str] = '\n',
+		file: Optional[IO] = None,
+		flush: bool = False,
+		) -> None:
+	r"""
 	Print the :func:`repr` of an object.
+
+	If no objects are given, :func:`~.printr` will just write ``end``.
+
+	:param obj:
+	:param \*values: Additional values to print. These are printed verbatim.
+	:param sep: The separator between values.
+	:param end: The final value to print.
+		Setting to ``''`` will leave the insertion point at the end of the printed text.
+	:param file: The file to write to.
+		If not present or :py:obj:`None`, :py:obj:`sys.stdout` will be used.
+	:no-default file:
+	:param flush: If :py:obj:`True` the stream is forcibly flushed after printing.
 	"""
 
-	print(repr(obj), *args, **kwargs)
+	print(repr(obj), *values, sep=sep, end=end, file=file, flush=flush)
 
 
-def printt(obj: Any, *args, **kwargs) -> None:
-	"""
+def printt(
+		obj: Any,
+		*values: object,
+		sep: Optional[str] = ' ',
+		end: Optional[str] = '\n',
+		file: Optional[IO] = None,
+		flush: bool = False,
+		) -> None:
+	r"""
 	Print the type of an object.
+
+	If no objects are given, :func:`~.printt` will just write ``end``.
+
+	:param obj:
+	:param \*values: Additional values to print. These are printed verbatim.
+	:param sep: The separator between values.
+	:param end: The final value to print.
+		Setting to ``''`` will leave the insertion point at the end of the printed text.
+	:param file: The file to write to.
+		If not present or :py:obj:`None`, :py:obj:`sys.stdout` will be used.
+	:no-default file:
+	:param flush: If :py:obj:`True` the stream is forcibly flushed after printing.
 	"""
 
-	print(type(obj), *args, **kwargs)
+	print(type(obj), *values, sep=sep, end=end, file=file, flush=flush)
 
 
-def stderr_writer(*args, **kwargs) -> None:
-	"""
-	Write to stderr, flushing stdout beforehand and stderr afterwards.
+def stderr_writer(
+		*values: object,
+		sep: Optional[str] = ' ',
+		end: Optional[str] = '\n',
+		) -> None:
+	r"""
+	Print ``*values`` to :py:obj:`sys.stderr`, separated by ``sep`` and followed by ``end``.
+
+	:py:obj:`sys.stdout` is flushed before printing, and :py:obj:`sys.stderr` is flushed afterwards.
+
+	If no objects are given, :func:`~.stderr_writer` will just write ``end``.
+
+	:param \*values:
+	:param sep: The separator between values.
+	:param end: The final value to print.
+		Setting to ``''`` will leave the insertion point at the end of the printed text.
+
+	:rtype:
+
+	.. versionchanged:: 3.0.0
+
+		The only permitted keyword arguments are ``sep`` and ``end``.
+		Previous versions allowed other keywords arguments supported by :func:`print` but they had no effect.
 	"""
 
 	sys.stdout.flush()
-	kwargs["file"] = sys.stderr
-	print(*args, **kwargs)
+	print(*values, sep=sep, end=end, file=sys.stderr, flush=True)
 	sys.stderr.flush()
 
 
