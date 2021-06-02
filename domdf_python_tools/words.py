@@ -85,7 +85,7 @@ ASCII numbers.
 .. versionadded:: 0.7.0
 """
 
-greek_uppercase = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡϴΣΤΥΦΧΨ"
+greek_uppercase = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡϴΣΤΥΦΧΨΩ"
 """
 Uppercase Greek letters.
 
@@ -246,8 +246,8 @@ def make_font(
 	:param uppers: Iterable of uppercase letters (A-Z, 26 characters).
 	:param lowers: Iterable of lowercase letters (a-z, 26 characters).
 	:param digits: Optional iterable of digits (0-9).
-	:param greek_uppers: Optional iterable of uppercase Greek letters (𝚨-𝛁).
-	:param greek_lowers: Optional iterable of lowercase Greek letters (𝛂-𝛡).
+	:param greek_uppers: Optional iterable of uppercase Greek letters (A-Ω, 25 characters).
+	:param greek_lowers: Optional iterable of lowercase Greek letters (α-ϖ, 32 characters).
 	"""  # noqa D400
 
 	font = Font({
@@ -274,7 +274,7 @@ SERIF_BOLD_LOWER = "𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨
 #: Bold Serif digits
 SERIF_BOLD_DIGITS = "𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗"
 #: Bold Serif Greek letters (uppercase)
-SERIF_BOLD_GREEK_UPPER = "𝚨𝚩𝚪𝚫𝚬𝚭𝚮𝚯𝚰𝚱𝚲𝚳𝚴𝚵𝚶𝚷𝚸𝚹𝚺𝚻𝚼𝚽𝚾𝚿𝛀𝛁"
+SERIF_BOLD_GREEK_UPPER = "𝚨𝚩𝚪𝚫𝚬𝚭𝚮𝚯𝚰𝚱𝚲𝚳𝚴𝚵𝚶𝚷𝚸𝚹𝚺𝚻𝚼𝚽𝚾𝚿𝛀"
 #: Bold Serif Greek letters (lowercase)
 SERIF_BOLD_GREEK_LOWER = "𝛂𝛃𝛄𝛅𝛆𝛇𝛈𝛉𝛊𝛋𝛌𝛍𝛎𝛏𝛐𝛑𝛒𝛓𝛔𝛕𝛖𝛗𝛘𝛙𝛚𝛛𝛜𝛝𝛞𝛟𝛠𝛡"
 
