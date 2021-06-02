@@ -274,7 +274,7 @@ class Autosummary(AutosummaryWidths):
 
 class BoldTitle(SphinxRole):
 
-	def run(self) -> Tuple[List[Node], List[nodes.system_message]]:
+	def run(self) -> Tuple[List[nodes.Node], List[nodes.system_message]]:
 
 		node_list = [
 				nodes.raw('', r"\vspace{10px}", format="latex"),
