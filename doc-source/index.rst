@@ -157,6 +157,11 @@ Highlights
 
 .. TODO:: Find some more highlights
 
+Contents
+----------
+
+.. html-section::
+
 .. toctree::
 	:hidden:
 
