@@ -104,7 +104,7 @@ __all__ = [
 		"compare_dirs",
 		]
 
-newline_default = object()
+NEWLINE_DEFAULT = type("NEWLINE_DEFAULT", (object, ), {"__repr__": lambda self: "NEWLINE_DEFAULT"})()
 
 _P = TypeVar("_P", bound=pathlib.Path)
 """
@@ -554,7 +554,7 @@ class PathPlus(pathlib.Path):
 		buffering: int = -1,
 		encoding: Optional[str] = "UTF-8",
 		errors: Optional[str] = None,
-		newline: Optional[str] = newline_default,  # type: ignore
+		newline: Optional[str] = NEWLINE_DEFAULT,
 		) -> IO[Any]:
 		"""
 		Open the file pointed by this path and return a file object, as
@@ -581,7 +581,7 @@ class PathPlus(pathlib.Path):
 			encoding = None
 			newline = None
 
-		if newline is newline_default:
+		if newline is NEWLINE_DEFAULT:
 			if 'r' in mode:
 				newline = None
 			else:
