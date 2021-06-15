@@ -152,20 +152,6 @@ class TemporaryDirectorySubclassDocumenter(PatchedAutoSummClassDocumenter):
 				self.add_line("   " + _("Bases: %s") % ", ".join(bases), sourcename)
 
 
-def visit_seealso(translator: LaTeXTranslator, node: addnodes.seealso) -> None:
-	"""
-	Visit an :class:`addnodes.seealso`` node.
-
-	:param translator:
-	:param node:
-	"""
-
-	if len(node) > 1:
-		LaTeXTranslator.visit_seealso(translator, node)
-	else:
-		translator.body.append('\n\n\\sphinxstrong{%s:} ' % admonitionlabels["seealso"])
-
-
 class Autosummary(AutosummaryWidths):
 	"""
 	Modified autosummary directive which allows the summary of objects to be customised.
@@ -272,17 +258,6 @@ class Autosummary(AutosummaryWidths):
 		return nodes
 
 
-class BoldTitle(SphinxRole):
-
-	def run(self) -> Tuple[List[nodes.Node], List[nodes.system_message]]:
-
-		node_list = [
-				nodes.raw('', r"\vspace{10px}", format="latex"),
-				nodes.strong(f"**{self.text}**", self.text),
-				]
-
-		return node_list, []
-
 
 class AutoUnitDirective(SphinxDirective):
 	required_arguments = 1
@@ -302,11 +277,7 @@ def setup(app: Sphinx):
 	app.add_autodocumenter(TemporaryDirectorySubclassDocumenter)
 
 	app.add_role("inline-code", InlineRole())
-	app.add_role("bold-title", BoldTitle())
-
 	app.add_directive("autounit", AutoUnitDirective)
-
-	app.add_node(addnodes.seealso, latex=(visit_seealso, LaTeXTranslator.depart_seealso), override=True)
 	app.add_directive("autosummary2", Autosummary, override=True)
 
 
