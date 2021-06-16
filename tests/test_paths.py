@@ -825,9 +825,14 @@ def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 				("foo/**/**", "foo/bar.py", True),
 				("foo/**/**", "foo/baz/bar.py", True),
 				("foo/**/**", "foo/baz/baz/bar.py", True),
+				("**/.tox", "foo/bar/.tox", True),
+				("**/.tox", "foo/bar/.tox/build", False),
+				("**/.tox/*", "foo/bar/.tox/build", True),
+				("**/.tox/**", "foo/bar/.tox/build", True),
+				("**/.tox/**", "foo/bar/.tox/build/baz", True),
 				]
 		)
-def test_globpath(pattern: str, filename: str, match: bool):
+def test_matchglob(pattern: str, filename: str, match: bool):
 	assert matchglob(filename, pattern) is match
 
 

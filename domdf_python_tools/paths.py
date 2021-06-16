@@ -995,6 +995,9 @@ def matchglob(filename: PathLike, pattern: str, matchcase: bool = True) -> bool:
 	while True:
 		if not pattern_parts and not filename_parts:
 			return True
+		elif not pattern_parts and filename_parts:
+			# Pattern exhausted but still filename elements
+			return False
 
 		pattern_part = pattern_parts.popleft()
 
