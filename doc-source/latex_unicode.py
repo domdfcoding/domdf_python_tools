@@ -258,7 +258,6 @@ class Autosummary(AutosummaryWidths):
 		return nodes
 
 
-
 class AutoUnitDirective(SphinxDirective):
 	required_arguments = 1
 

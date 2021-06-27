@@ -447,7 +447,12 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 
 		:func:`itertools.count`.
 
-		The difference is that this returns more exact floats, whereas the values from :func:`itertools.count` drift.
+		The difference is that this returns more exact floats,
+		whereas the values from :func:`itertools.count` drift.
+
+		.. only:: html
+
+			A demonstration of the drift can be seen in this file: :download:`count_demo.py`.
 
 	.. latex:clearpage::
 	"""

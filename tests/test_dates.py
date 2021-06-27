@@ -13,11 +13,10 @@ from typing import Union
 
 # 3rd party
 import pytest
-from coincidence import count
+from coincidence.params import count
 
 # this package
 from domdf_python_tools import dates
-from domdf_python_tools.dates import calc_easter, month_full_names
 
 # TODO: test get_timezone
 
@@ -159,25 +158,68 @@ except ImportError:
 
 # TODO: Finish
 
+# import sys
+# from importlib.abc import MetaPathFinder
+#
+# class NoPytzPath(MetaPathFinder):
+#
+# 	def find_spec(self, fullname, path, target=None):
+# 		if fullname == "pytz":
+# 			raise ModuleNotFoundError(f"No module named '{fullname}'")
+#
+#
+# class TestDatesNoPytz:
+#
+# 	def test_import_pytz(self, fake_no_pytz):
+# 		with pytest.raises(ImportError):
+# 			import pytz
+# 		# this package
+# 		from domdf_python_tools import dates
+#
+# 		with pytest.raises(ImportError):
+# 			# 3rd party
+# 			import pytz
+#
+# 	def test_utc_offset_no_pytz(self, fake_no_pytz):
+# 		# this package
+# 		from domdf_python_tools import dates
+#
+# 		print(sys.modules.keys())
+#
+# 		with pytest.raises(
+# 				ImportError,
+# 				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
+# 				):
+# 			dates.get_utc_offset  # pylint: disable=pointless-statement
+#
+# 		with pytest.raises(
+# 				ImportError,
+# 				match=r"'get_utc_offset' requires pytz \(.*\), but it could not be imported",
+# 				):
+#
+# 			# this package
+# 			from domdf_python_tools.dates import get_utc_offset  # noqa: F401
 
-def test_parse_month():
-	for month_idx, month in enumerate(month_full_names):
 
-		month_idx += 1  # to make 1-indexed
+@pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))
+def test_parse_month(month_idx: int, month: str):
+	month_idx += 1  # to make 1-indexed
 
-		for i in range(3, len(month)):
-			assert dates.parse_month(month.lower()[:i]) == month
-			assert dates.parse_month(month.upper()[:i]) == month
-			assert dates.parse_month(month.capitalize()[:i]) == month
+	for i in range(3, len(month)):
+		assert dates.parse_month(month.lower()[:i]) == month
+		assert dates.parse_month(month.upper()[:i]) == month
+		assert dates.parse_month(month.capitalize()[:i]) == month
 
-		assert dates.parse_month(month_idx) == month
+	assert dates.parse_month(month_idx) == month
 
+
+def test_parse_month_errors():
 	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
 		with pytest.raises(ValueError, match=fr"The given month \({value!r}\) is not recognised."):
 			dates.parse_month(value)  # type: ignore
 
 
-@pytest.mark.parametrize("month_idx, month", enumerate(month_full_names))
+@pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))
 def test_get_month_number_from_name(month_idx: int, month: str):
 	month_idx += 1  # to make 1-indexed
 
@@ -212,7 +254,7 @@ def test_get_month_number_errors(value: Union[str, int], match: str):
 
 
 def test_check_date():
-	for month_idx, month in enumerate(month_full_names):
+	for month_idx, month in enumerate(dates.month_full_names):
 
 		month_idx += 1  # to make 1-indexed
 
@@ -282,4 +324,4 @@ def test_check_date():
 				]
 		)
 def test_calc_easter(date):
-	assert calc_easter(date.year) == date
+	assert dates.calc_easter(date.year) == date
