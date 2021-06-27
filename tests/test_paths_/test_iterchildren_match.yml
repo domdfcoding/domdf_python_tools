@@ -1,7 +1,7 @@
 - __pkginfo__.py
+- doc-source/api/count_demo.py
 - doc-source/conf.py
 - doc-source/latex_unicode.py
-- doc-source/patched_autosummary.py
 - domdf_python_tools/__init__.py
 - domdf_python_tools/_is_match.py
 - domdf_python_tools/bases.py
