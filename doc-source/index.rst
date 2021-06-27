@@ -152,11 +152,16 @@ Highlights
 	:colours: blue,green,red,orange
 
 	.stringlist.StringList
+	.stringlist.DelimitedList
 	.paths.PathPlus
+	.paths.TemporaryPathPlus
 	.iterative.groupfloats
+	.iterative.count
 	.words.Plural
+	.words.word_join
+	.utils.strtobool
+	.utils.head
 
-.. TODO:: Find some more highlights
 
 Contents
 ----------
