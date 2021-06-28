@@ -118,12 +118,24 @@ _PP = TypeVar("_PP", bound="PathPlus")
 .. versionadded:: 2.3.0
 """
 
-unwanted_dirs = (".git", ".hg", "venv", ".venv", ".mypy_cache", "__pycache__", ".pytest_cache", ".tox", ".tox4")
+unwanted_dirs = (
+		".git",
+		".hg",
+		"venv",
+		".venv",
+		".mypy_cache",
+		"__pycache__",
+		".pytest_cache",
+		".tox",
+		".tox4",
+		"__pypackages__",
+		)
 """
 A list of directories which will likely be unwanted when searching directory trees for files.
 
 .. versionadded:: 2.3.0
 .. versionchanged:: 2.9.0  Added ``.hg`` (`mercurial <https://www.mercurial-scm.org>`_)
+.. versionchanged:: 3.0.0  Added ``__pypackages__`` (:pep:`582`)
 """
 
 
