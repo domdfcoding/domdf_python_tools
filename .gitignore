@@ -85,13 +85,6 @@ profile_default/
 ipython_config.py
 Pipfile.lock
 .pyre/
-pathtype_demo.py
-addedin.py
 demo.py
 frozendict.py
-mutdef_plugin.py
-mutdef.py
-narrows_type.py
-count_demo.py
-_test_dates_fake_importerror.py.old
-coverage_fixup.py
+graaltest.sh
