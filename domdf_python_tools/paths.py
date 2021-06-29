@@ -149,7 +149,9 @@ def append(var: str, filename: PathLike, **kwargs) -> int:
 	:param filename: The file to append to
 	"""
 
-	with open(os.path.join(os.getcwd(), filename), 'a', **kwargs) as f:
+	kwargs.setdefault("encoding", "UTF-8")
+
+	with open(os.path.join(os.getcwd(), filename), 'a', **kwargs) as f:  # noqa: ENC001
 		return f.write(var)
 
 
@@ -268,7 +270,9 @@ def read(filename: PathLike, **kwargs) -> str:
 	:return: The contents of the file.
 	"""
 
-	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:
+	kwargs.setdefault("encoding", "UTF-8")
+
+	with open(os.path.join(os.getcwd(), filename), **kwargs) as f:  # noqa: ENC001
 		return f.read()
 
 
@@ -312,7 +316,9 @@ def write(var: str, filename: PathLike, **kwargs) -> None:
 	:param filename: The file to write to.
 	"""
 
-	with open(os.path.join(os.getcwd(), filename), 'w', **kwargs) as f:
+	kwargs.setdefault("encoding", "UTF-8")
+
+	with open(os.path.join(os.getcwd(), filename), 'w', **kwargs) as f:  # noqa: ENC001
 		f.write(var)
 
 

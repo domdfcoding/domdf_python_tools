@@ -37,7 +37,7 @@ class PackagePath(pathlib.PurePosixPath):
 	def locate(self) -> PathLike[str]: ...
 
 	# The following attributes are not defined on PackagePath, but are dynamically added by Distribution.files:
-	hash: Optional[FileHash]
+	hash: Optional[FileHash]  # noqa: A003  # pylint: disable=redefined-builtin
 	size: Optional[int]
 	dist: Distribution
 
@@ -64,12 +64,14 @@ class Distribution:
 
 	@overload
 	@classmethod
-	def discover(cls,
-					*,
-					context: None = ...,
-					name: Optional[str] = ...,
-					path: List[str] = ...,
-					**kwargs: Any) -> Iterable[Distribution]: ...
+	def discover(
+			cls,
+			*,
+			context: None = ...,
+			name: Optional[str] = ...,
+			path: List[str] = ...,
+			**kwargs: Any,
+			) -> Iterable[Distribution]: ...
 
 	@staticmethod
 	def at(path: StrPath) -> PathDistribution: ...
@@ -118,11 +120,13 @@ def distribution(distribution_name: str) -> Distribution: ...
 def distributions(*, context: DistributionFinder.Context) -> Iterable[Distribution]: ...
 
 @overload
-def distributions(*,
-					context: None = ...,
-					name: Optional[str] = ...,
-					path: List[str] = ...,
-					**kwargs: Any) -> Iterable[Distribution]: ...
+def distributions(
+		*,
+		context: None = ...,
+		name: Optional[str] = ...,
+		path: List[str] = ...,
+		**kwargs: Any,
+		) -> Iterable[Distribution]: ...
 
 def metadata(distribution_name: str) -> Message: ...
 def version(distribution_name: str) -> str: ...

@@ -1,16 +1,16 @@
 # From https://github.com/python/typeshed
 # Apache-2.0 Licensed
 
-import sys
-from typing import Any
-
+# stdlib
 import os
+import sys
 from pathlib import Path
 from types import ModuleType
-from typing import BinaryIO, ContextManager, Iterator, TextIO, Union
+from typing import Any, BinaryIO, ContextManager, Iterator, TextIO, Union
 
 Package = Union[str, ModuleType]
 Resource = Union[str, os.PathLike[Any]]
+
 def open_binary(package: Package, resource: Resource) -> BinaryIO: ...
 def open_text(package: Package, resource: Resource, encoding: str = ..., errors: str = ...) -> TextIO: ...
 def read_binary(package: Package, resource: Resource) -> bytes: ...
@@ -20,7 +20,9 @@ def is_resource(package: Package, name: str) -> bool: ...
 def contents(package: Package) -> Iterator[str]: ...
 
 if sys.version_info >= (3, 9):
-    from contextlib import AbstractContextManager
-    from importlib.abc import Traversable
-    def files(package: Package) -> Traversable: ...
-    def as_file(path: Traversable) -> AbstractContextManager[Path]: ...
+	# stdlib
+	from contextlib import AbstractContextManager
+	from importlib.abc import Traversable
+
+	def files(package: Package) -> Traversable: ...
+	def as_file(path: Traversable) -> AbstractContextManager[Path]: ...

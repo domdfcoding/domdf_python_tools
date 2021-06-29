@@ -43,10 +43,10 @@ def comparator_tmpdir(tmp_pathplus):
 			fn = "FiLe"  # Verify case-insensitive comparison
 		else:
 			fn = "file"
-		with open(os.path.join(dir, fn), 'w') as output:
+		with open(os.path.join(dir, fn), 'w', encoding="UTF-8") as output:
 			output.write('Contents of file go here.\n')
 
-	with open(os.path.join(data.dir_diff, "file2"), 'w') as output:
+	with open(os.path.join(data.dir_diff, "file2"), 'w', encoding="UTF-8") as output:
 		output.write('An extra file.\n')
 
 	return data
@@ -85,7 +85,7 @@ class TestDirComparator:
 			), "Comparing directory to same fails"
 
 		# Add different file2
-		with open(os.path.join(comparator_tmpdir.dir, "file2"), 'w') as output:
+		with open(os.path.join(comparator_tmpdir.dir, "file2"), 'w', encoding="UTF-8") as output:
 			output.write('Different contents.\n')
 
 		assert filecmp.cmpfiles(
@@ -174,7 +174,7 @@ class TestDirComparator:
 		self._assert_report(d.report, expected_report)
 
 		# Add different file2
-		with open(os.path.join(comparator_tmpdir.dir_diff, "file2"), 'w') as output:
+		with open(os.path.join(comparator_tmpdir.dir_diff, "file2"), 'w', encoding="UTF-8") as output:
 			output.write('Different contents.\n')
 		d = DirComparator(comparator_tmpdir.dir, comparator_tmpdir.dir_diff)
 		assert d.same_files == ["file"]
