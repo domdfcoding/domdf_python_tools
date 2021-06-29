@@ -41,10 +41,8 @@ Common aliases for type hinting.
 # stdlib
 import os
 import pathlib
-import typing
 from decimal import Decimal
-from json import JSONDecoder, JSONEncoder
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Type, TypeVar, Union
 
 # 3rd party
 from typing_extensions import Protocol, runtime_checkable
@@ -53,6 +51,9 @@ from typing_extensions import Protocol, runtime_checkable
 import domdf_python_tools
 
 if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
+	# stdlib
+	from json import JSONDecoder, JSONEncoder
+
 	# 3rd party
 	from pandas import DataFrame, Series
 
@@ -63,7 +64,7 @@ if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 	JSONEncoder.__module__ = "json"
 
 #: .. versionadded:: 1.0.0
-FrameOrSeries = typing.TypeVar("FrameOrSeries", "Series", "DataFrame")
+FrameOrSeries = TypeVar("FrameOrSeries", "Series", "DataFrame")
 
 __all__ = [
 		"PathLike",
@@ -92,7 +93,7 @@ Type hint for objects that represent filesystem paths.
 .. seealso:: :py:obj:`domdf_python_tools.typing.PathType`
 """
 
-PathType = typing.TypeVar("PathType", str, pathlib.Path, os.PathLike)
+PathType = TypeVar("PathType", str, pathlib.Path, os.PathLike)
 """
 Type variable for objects that represent filesystem paths.
 
@@ -138,7 +139,7 @@ class JsonLibrary(Protocol):
 			ensure_ascii: bool = ...,
 			check_circular: bool = ...,
 			allow_nan: bool = ...,
-			cls: Optional[Type[JSONEncoder]] = ...,
+			cls: Optional[Type["JSONEncoder"]] = ...,
 			indent: Union[None, int, str] = ...,
 			separators: Optional[Tuple[str, str]] = ...,
 			default: Optional[Callable[[Any], Any]] = ...,
@@ -165,7 +166,7 @@ class JsonLibrary(Protocol):
 	def loads(
 			s: Union[str, bytes],
 			*,
-			cls: Optional[Type[JSONDecoder]] = ...,
+			cls: Optional[Type["JSONDecoder"]] = ...,
 			object_hook: Optional[Callable[[Dict[Any, Any]], Any]] = ...,
 			parse_float: Optional[Callable[[str], Any]] = ...,
 			parse_int: Optional[Callable[[str], Any]] = ...,

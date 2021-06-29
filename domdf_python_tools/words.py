@@ -38,7 +38,6 @@ Functions for working with (English) words.
 
 # stdlib
 import functools
-import platform
 import random
 import re
 from gettext import ngettext
@@ -48,7 +47,7 @@ from typing import Any, Dict, Iterable, List, Optional
 
 # this package
 import domdf_python_tools
-from domdf_python_tools.compat import PYPY, importlib_resources
+from domdf_python_tools.compat import PYPY
 from domdf_python_tools.doctools import prettify_docstrings
 
 __all__ = [
@@ -114,6 +113,9 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 
 	:return: The list of words meeting the above specifiers.
 	"""  # noqa D400
+
+	# this package
+	from domdf_python_tools.compat import importlib_resources
 
 	words: str = importlib_resources.read_text("domdf_python_tools", "google-10000-english-no-swears.txt")
 	words_list: List[str] = words.splitlines()
