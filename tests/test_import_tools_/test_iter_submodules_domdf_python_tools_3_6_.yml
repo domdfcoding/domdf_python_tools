@@ -2,6 +2,8 @@
 - domdf_python_tools._is_match
 - domdf_python_tools.bases
 - domdf_python_tools.compat
+- domdf_python_tools.compat.importlib_metadata
+- domdf_python_tools.compat.importlib_resources
 - domdf_python_tools.dates
 - domdf_python_tools.delegators
 - domdf_python_tools.doctools
