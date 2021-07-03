@@ -26,6 +26,7 @@ Documentation = "https://domdf_python_tools.readthedocs.io/en/latest"
 
 [project.optional-dependencies]
 dates = [ "pytz>=2019.1",]
+testing = []
 all = [ "pytz>=2019.1",]
 
 [tool.mkrecipe]
@@ -51,7 +52,6 @@ extensions = [
     "sphinx_toolbox.tweaks.latex_toc",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
-    "sphinxcontrib.httpdomain",
     "sphinxcontrib.extras_require",
     "sphinx.ext.todo",
     "sphinxemoji.sphinxemoji",

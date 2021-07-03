@@ -18,10 +18,10 @@ repo_root = pathlib.Path(__file__).parent
 install_requires = (repo_root / "requirements.txt").read_text(encoding="UTF-8").split('\n')
 
 setup(
-		name="domdf-python-tools",
 		description="Helpful functions for Python 🐍 🛠️",
 		extras_require=extras_require,
 		install_requires=install_requires,
+		name="domdf_python_tools",
 		py_modules=[],
 		version=__version__,
 		)
