@@ -956,6 +956,5 @@ def test_write_text_line_endings(tmp_pathplus: PathPlus):
 	the_file.write_text('abcde\r\nfghlk\n\rmnopq', newline='\r\n')
 	assert the_file.read_bytes() == b'abcde\r\r\nfghlk\r\n\rmnopq'
 	# Check that no argument passed will change `\n` to `os.linesep`
-	os_linesep_byte = bytes(os.linesep, encoding="ascii")
 	the_file.write_text('abcde\nfghlk\n\rmnopq')
-	assert the_file.read_bytes() == b'abcde' + os_linesep_byte + b'fghlk' + os_linesep_byte + b'\rmnopq'
+	assert the_file.read_bytes() == b'abcde\nfghlk\n\rmnopq'
