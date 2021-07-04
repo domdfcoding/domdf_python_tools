@@ -16,5 +16,5 @@ __all__ = [
 		"extras_require",
 		]
 
-__version__ = "3.0.0"
+__version__ = "3.1.0"
 extras_require = {"dates": ["pytz>=2019.1"], "testing": [], "all": ["pytz>=2019.1"]}
