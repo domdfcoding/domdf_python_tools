@@ -488,6 +488,7 @@ class PathPlus(pathlib.Path):
 			data: str,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
+			newline: Optional[str] = NEWLINE_DEFAULT,
 			) -> int:
 		"""
 		Open the file in text mode, write to it, and close the file.
@@ -497,9 +498,20 @@ class PathPlus(pathlib.Path):
 		:param data:
 		:param encoding: The encoding to write to the file in.
 		:param errors:
+		:param newline:
+		:default newline: `universal newlines <https://docs.python.org/3/glossary.html#term-universal-newlines>`__ for reading, Unix line endings (``LF``) for writing.
+
+		.. versionchanged:: 3.1.0
+
+			Added the ``newline`` argument to match Python 3.10.
+			(see :github:pull:`22420 <python/cpython>`)
 		"""
 
-		return super().write_text(data, encoding=encoding, errors=errors)
+		if not isinstance(data, str):
+			raise TypeError(f'data must be str, not {data.__class__.__name__}')
+
+		with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+			return f.write(data)
 
 	def write_lines(
 			self,

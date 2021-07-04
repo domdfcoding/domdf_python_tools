@@ -927,3 +927,35 @@ else:
 @pytest.mark.parametrize("left_type", [pathlib.PurePath, pathlib.Path, PathPlus])
 def test_pathplus_from_uri(path: str, left_type: Type):
 	assert PathPlus.from_uri(left_type(path).as_uri()).as_posix() == path
+
+
+def test_write_text_line_endings(tmp_pathplus: PathPlus):
+	the_file = (tmp_pathplus / "foo.md")
+	the_file.write_text("Hello\nWorld")
+	assert the_file.read_bytes() == b"Hello\nWorld"
+
+	with the_file.open('w') as fp:
+		fp.write("Hello\nWorld")
+
+	assert the_file.read_bytes() == b"Hello\nWorld"
+
+	with the_file.open('w', newline="\r\n") as fp:
+		fp.write("Hello\nWorld")
+
+	assert the_file.read_bytes() == b"Hello\r\nWorld"
+
+	# The following from https://github.com/python/cpython/pull/22420/files
+
+	# Check that `\n` character change nothing
+	the_file.write_text('abcde\r\nfghlk\n\rmnopq', newline='\n')
+	assert the_file.read_bytes() == b'abcde\r\nfghlk\n\rmnopq'
+	# Check that `\r` character replaces `\n`
+	the_file.write_text('abcde\r\nfghlk\n\rmnopq', newline='\r')
+	assert the_file.read_bytes() == b'abcde\r\rfghlk\r\rmnopq'
+	# Check that `\r\n` character replaces `\n`
+	the_file.write_text('abcde\r\nfghlk\n\rmnopq', newline='\r\n')
+	assert the_file.read_bytes() == b'abcde\r\r\nfghlk\r\n\rmnopq'
+	# Check that no argument passed will change `\n` to `os.linesep`
+	os_linesep_byte = bytes(os.linesep, encoding="ascii")
+	the_file.write_text('abcde\nfghlk\n\rmnopq')
+	assert the_file.read_bytes() == b'abcde' + os_linesep_byte + b'fghlk' + os_linesep_byte + b'\rmnopq'
