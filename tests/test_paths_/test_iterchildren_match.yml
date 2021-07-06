@@ -42,6 +42,7 @@
 - tests/test_dates.py
 - tests/test_delegators.py
 - tests/test_dir_comparator.py
+- tests/test_docstrings.py
 - tests/test_doctools.py
 - tests/test_getters.py
 - tests/test_import_tools.py
