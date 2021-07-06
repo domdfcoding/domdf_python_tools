@@ -11,6 +11,7 @@
 - domdf_python_tools/dates.py
 - domdf_python_tools/delegators.py
 - domdf_python_tools/doctools.py
+- domdf_python_tools/getters.py
 - domdf_python_tools/import_tools.py
 - domdf_python_tools/iterative.py
 - domdf_python_tools/pagesizes/__init__.py
@@ -42,6 +43,7 @@
 - tests/test_delegators.py
 - tests/test_dir_comparator.py
 - tests/test_doctools.py
+- tests/test_getters.py
 - tests/test_import_tools.py
 - tests/test_iterative.py
 - tests/test_namedlist.py

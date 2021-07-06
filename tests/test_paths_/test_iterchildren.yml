@@ -10,6 +10,7 @@
 - domdf_python_tools/dates.py
 - domdf_python_tools/delegators.py
 - domdf_python_tools/doctools.py
+- domdf_python_tools/getters.py
 - domdf_python_tools/google-10000-english-no-swears.txt
 - domdf_python_tools/import_tools.py
 - domdf_python_tools/iterative.py
