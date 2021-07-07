@@ -247,17 +247,17 @@ class TestMethodcaller:
 
 		with pytest.raises(
 				TypeError,
-				match=r"__init__\(\) missing 2 required positional arguments: 'idx' and 'name'",
+				match=r"__init__\(\) missing 2 required positional arguments: '_idx' and '_name'",
 				):
 			methodcaller()  # type: ignore
 
-		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: 'name'"):
+		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: '_name'"):
 			methodcaller(12)  # type: ignore
 
-		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: 'name'"):
+		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: '_name'"):
 			methodcaller("name")  # type: ignore
 
-		with pytest.raises(TypeError, match="'idx' must be an integer"):
+		with pytest.raises(TypeError, match="'_idx' must be an integer"):
 			methodcaller("name", 12)  # type: ignore
 
 		with pytest.raises(TypeError, match="method name must be a string"):

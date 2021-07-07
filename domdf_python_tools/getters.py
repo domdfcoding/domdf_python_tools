@@ -38,7 +38,7 @@ which operate on values within sequences.
 
 # stdlib
 from functools import partial
-from typing import Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 __all__ = ["attrgetter", "itemgetter", "methodcaller"]
 
@@ -167,8 +167,8 @@ class methodcaller:
 
 	.. seealso:: :func:`operator.methodcaller` and :func:`operator.itemgetter`
 
-	:param idx: The index of the item to call the method on.
-	:param attr: The name of the method to call.
+	:param \_idx: The index of the item to call the method on.
+	:param \_attr: The name of the method to call.
 	:param \*args: Positional arguments to pass to the method.
 	:param \*\*kwargs: Keyword arguments to pass to the method.
 	"""
@@ -180,17 +180,33 @@ class methodcaller:
 	_args: Tuple[Any, ...]
 	_kwargs: Dict[str, Any]
 
-	def __init__(self, __idx: int, __name: str, *args, **kwargs):
-		if not isinstance(__idx, int):
-			raise TypeError("'idx' must be an integer")
+	if TYPE_CHECKING:
 
-		if not isinstance(__name, str):
-			raise TypeError("method name must be a string")
+		def __init__(__self, __idx: int, __name: str, *args, **kwargs):
+			if not isinstance(__idx, int):
+				raise TypeError("'idx' must be an integer")
 
-		self._idx = __idx
-		self._name = __name
-		self._args = args
-		self._kwargs = kwargs
+			if not isinstance(__name, str):
+				raise TypeError("method name must be a string")
+
+			__self._idx = __idx
+			__self._name = __name
+			__self._args = args
+			__self._kwargs = kwargs
+
+	else:
+
+		def __init__(_self, _idx: int, _name: str, *args, **kwargs):
+			if not isinstance(_idx, int):
+				raise TypeError("'_idx' must be an integer")
+
+			if not isinstance(_name, str):
+				raise TypeError("method name must be a string")
+
+			_self._idx = _idx
+			_self._name = _name
+			_self._args = args
+			_self._kwargs = kwargs
 
 	def __call__(self, obj: Any) -> Any:  # noqa: D102
 		return getattr(obj[self._idx], self._name)(*self._args, **self._kwargs)
