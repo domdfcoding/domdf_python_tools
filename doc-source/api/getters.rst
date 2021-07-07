@@ -3,7 +3,7 @@
 =======================================
 
 .. autosummary-widths:: 1/2
-	:html: 3/10
+	:html: 4/10
 
 .. automodule:: domdf_python_tools.getters
 	:no-show-inheritance:
