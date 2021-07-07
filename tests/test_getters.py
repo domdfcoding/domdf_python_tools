@@ -178,7 +178,9 @@ class TestItemgetter:
 
 		f = itemgetter(0, "name")
 
-		with pytest.raises(TypeError, match="string indices must be integers"):
+		with pytest.raises(
+				TypeError,
+				match="string( index)? indices must be integers( or slices, not str)?"):
 			f([a])
 
 		with pytest.raises(

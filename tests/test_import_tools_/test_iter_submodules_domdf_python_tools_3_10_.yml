@@ -7,6 +7,7 @@
 - domdf_python_tools.dates
 - domdf_python_tools.delegators
 - domdf_python_tools.doctools
+- domdf_python_tools.getters
 - domdf_python_tools.import_tools
 - domdf_python_tools.iterative
 - domdf_python_tools.pagesizes
