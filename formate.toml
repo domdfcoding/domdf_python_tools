@@ -40,6 +40,7 @@ known_third_party = [
     "coverage_pyver_pragma",
     "faker",
     "flake8",
+    "funcy",
     "github",
     "importlib_metadata",
     "importlib_resources",
