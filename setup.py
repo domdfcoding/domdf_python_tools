@@ -21,7 +21,7 @@ setup(
 		description="Helpful functions for Python 🐍 🛠️",
 		extras_require=extras_require,
 		install_requires=install_requires,
-		name="domdf-python-tools",
+		name="domdf_python_tools",
 		py_modules=[],
 		version=__version__,
 		)
