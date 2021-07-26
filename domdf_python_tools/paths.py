@@ -128,6 +128,7 @@ unwanted_dirs = (
 		".pytest_cache",
 		".tox",
 		".tox4",
+		".nox",
 		"__pypackages__",
 		)
 """
@@ -136,6 +137,7 @@ A list of directories which will likely be unwanted when searching directory tre
 .. versionadded:: 2.3.0
 .. versionchanged:: 2.9.0  Added ``.hg`` (`mercurial <https://www.mercurial-scm.org>`_)
 .. versionchanged:: 3.0.0  Added ``__pypackages__`` (:pep:`582`)
+.. versionchanged:: 3.2.0  Added ``.nox`` (https://nox.thea.codes/)
 """
 
 
