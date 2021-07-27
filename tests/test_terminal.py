@@ -5,8 +5,8 @@ import sys
 
 # 3rd party
 from coincidence.selectors import not_windows, only_windows
-from faker import Faker  # type: ignore
-from faker.providers import bank, company, internet, phone_number, python  # type: ignore
+from faker import Faker
+from faker.providers import bank, company, internet, phone_number, python
 
 # this package
 from domdf_python_tools.terminal import Echo, br, clear, interrupt, overtype
