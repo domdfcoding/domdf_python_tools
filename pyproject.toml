@@ -26,6 +26,7 @@ Documentation = "https://domdf_python_tools.readthedocs.io/en/latest"
 
 [project.optional-dependencies]
 dates = [ "pytz>=2019.1",]
+testing = []
 all = [ "pytz>=2019.1",]
 
 [tool.mkrecipe]
@@ -115,3 +116,23 @@ autodoc_exclude_members = [
     "__abstractmethods__",
     "__hash__",
 ]
+
+[tool.whey]
+base-classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+python-versions = [ "3.6", "3.7", "3.8", "3.9",]
+python-implementations = [ "CPython", "PyPy",]
+platforms = [ "Windows", "macOS", "Linux",]
+license-key = "MIT"
+additional-files = [ "include domdf_python_tools/google-10000-english-no-swears.txt",]
+
+[tool.mypy]
+python_version = "3.6"
+namespace_packages = true
+check_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_optional = true

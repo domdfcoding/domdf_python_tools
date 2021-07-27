@@ -23,7 +23,6 @@ setup(
 		install_requires=install_requires,
 		name="domdf-python-tools",
 		py_modules=[],
-		version=__version__,
 		)
 
 shutil.rmtree("domdf_python_tools.egg-info", ignore_errors=True)
