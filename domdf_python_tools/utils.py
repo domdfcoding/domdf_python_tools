@@ -103,7 +103,7 @@ if TYPE_CHECKING or domdf_python_tools.__docs:  # pragma: no cover
 
 _T = TypeVar("_T")
 
-SupportsLessThanT = TypeVar("SupportsLessThanT", bound=SupportsLessThan)  # noqa: Y001
+SupportsLessThanT = TypeVar("SupportsLessThanT", bound=SupportsLessThan)
 
 __all__ = [
 		"pyversion",
@@ -518,7 +518,7 @@ def redirect_output(combine: bool = False) -> Iterator[Tuple[StringIO, StringIO]
 	.. versionadded:: 2.6.0
 
 	:param combine: If :py:obj:`True` ``stderr`` is combined with ``stdout``.
-	"""  # noqa: D400
+	"""
 
 	if combine:
 		stdout = stderr = StringIO()
