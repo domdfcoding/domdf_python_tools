@@ -250,7 +250,7 @@ def test_clean_writer(tmp_pathplus):
 
 	test_string = '\n'.join([
 			"Top line",
-			"    ",
+			'\t',
 			"Line with whitespace   ",
 			"Line with tabs\t\t\t\t   ",
 			"No newline at end of file",
@@ -958,3 +958,76 @@ def test_write_text_line_endings(tmp_pathplus: PathPlus):
 	# Check that no argument passed will change `\n` to `os.linesep`
 	the_file.write_text('abcde\nfghlk\n\rmnopq')
 	assert the_file.read_bytes() == b'abcde\nfghlk\n\rmnopq'
+
+
+@pytest.fixture()
+def move_example_file(tmp_pathplus) -> PathPlus:
+	src_file = tmp_pathplus / "tmpdir/foo"
+	src_file.parent.maybe_make(parents=True)
+	src_file.write_bytes(b"spam")
+	return src_file
+
+
+class TestMove:
+
+	def test_move_file(self, move_example_file: PathPlus):
+		# Move a file to another location on the same filesystem.
+
+		contents = move_example_file.read_bytes()
+
+		with TemporaryPathPlus() as dst_dir:
+			dst = dst_dir / move_example_file.name
+
+			assert move_example_file.move(dst) == dst
+			assert contents == dst.read_bytes()
+			assert not move_example_file.exists()
+
+	def test_move_file_to_dir(self, move_example_file: PathPlus):
+		# Move a file inside an existing dir on the same filesystem.
+
+		contents = move_example_file.read_bytes()
+
+		with TemporaryPathPlus() as dst_dir:
+			dst = dst_dir / move_example_file.name
+
+			assert move_example_file.move(dst_dir) == dst
+			assert contents == dst.read_bytes()
+			assert not move_example_file.exists()
+
+	def test_move_dir(self, move_example_file: PathPlus):
+		# Move a dir to another location on the same filesystem.
+
+		src_dir = move_example_file.parent
+
+		with TemporaryPathPlus() as tmpdir:
+			dst_dir = tmpdir / "target"
+			contents = sorted(os.listdir(src_dir))
+			assert src_dir.move(dst_dir) == dst_dir
+			assert contents == sorted(os.listdir(dst_dir))
+			assert not os.path.exists(src_dir)
+
+	def test_move_dir_to_dir(self, move_example_file: PathPlus):
+		# Move a dir inside an existing dir on the same filesystem.
+
+		src_dir = move_example_file.parent
+
+		with TemporaryPathPlus() as dst_dir:
+			assert src_dir.move(dst_dir) == dst_dir / "tmpdir"
+			assert sorted(os.listdir(dst_dir)) == ["tmpdir"]
+			assert sorted(os.listdir(dst_dir / "tmpdir")) == ["foo"]
+			assert not os.path.exists(src_dir)
+
+	def test_existing_file_inside_dest_dir(self, move_example_file: PathPlus):
+		# A file with the same name inside the destination dir already exists.
+		with TemporaryPathPlus() as dst_dir:
+			(dst_dir / "foo").touch()
+
+			with pytest.raises(shutil.Error):
+				move_example_file.move(dst_dir)
+
+	def test_dont_move_dir_in_itself(self, move_example_file: PathPlus):
+		# Moving a dir inside itself raises an Error.
+		dst = os.path.join(move_example_file.parent, "bar")
+
+		with pytest.raises(shutil.Error):
+			move_example_file.parent.move(dst)

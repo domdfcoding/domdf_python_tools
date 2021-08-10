@@ -889,6 +889,8 @@ class PathPlus(pathlib.Path):
 		.. versionadded:: 2.9.0
 
 		:param uri:
+
+		:rtype: :class:`~.PathPlus`
 		"""
 
 		parseresult = urllib.parse.urlparse(uri)
@@ -916,6 +918,25 @@ class PathPlus(pathlib.Path):
 			path = urllib.parse.unquote_to_bytes(parseresult.path).decode("UTF-8")
 
 		return cls(path)
+
+	def move(self: _PP, dst: PathLike) -> _PP:
+		"""
+		Recursively move ``self`` to ``dst``.
+
+		``self`` may be a file or a directory.
+
+		See :func:`shutil.move` for more details.
+
+		.. versionadded:: 3.2.0
+
+		:param dst:
+
+		:returns: The new location of ``self``.
+		:rtype: :class:`~.PathPlus`
+		"""
+
+		new_path = shutil.move(os.fspath(self), dst)
+		return self.__class__(new_path)
 
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
