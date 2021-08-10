@@ -536,7 +536,7 @@ def test_delimitedlist():
 	assert f"{data:\n}" == "a\nb\nc\nd\ne"
 
 
-@pytest.mark.parametrize(
+joinlines_splitlines_param = pytest.mark.parametrize(
 		"string, lines",
 		[
 				("abc\ndef\n\rghi", [("abc", '\n'), ("def", '\n'), ('', '\r'), ("ghi", '')]),
@@ -548,21 +548,13 @@ def test_delimitedlist():
 				("abcdef", [("abcdef", '')]),
 				]
 		)
+
+
+@joinlines_splitlines_param
 def test_splitlines(string, lines):
 	assert splitlines(string) == lines
 
 
-@pytest.mark.parametrize(
-		"string, lines",
-		[
-				("abc\ndef\n\rghi", [("abc", '\n'), ("def", '\n'), ('', '\r'), ("ghi", '')]),
-				("abc\ndef\n\r\nghi", [("abc", '\n'), ("def", '\n'), ('', "\r\n"), ("ghi", '')]),
-				("abc\ndef\r\nghi", [("abc", '\n'), ("def", "\r\n"), ("ghi", '')]),
-				("abc\ndef\r\nghi\n", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n')]),
-				("abc\ndef\r\nghi\n\r", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
-				("\nabc\ndef\r\nghi\n\r", [('', '\n'), ("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
-				("abcdef", [("abcdef", '')]),
-				]
-		)
+@joinlines_splitlines_param
 def test_joinlines(string, lines):
 	assert string == joinlines(lines)
