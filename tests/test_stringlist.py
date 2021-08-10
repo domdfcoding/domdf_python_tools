@@ -6,7 +6,7 @@ from textwrap import dedent
 import pytest
 
 # this package
-from domdf_python_tools.stringlist import DelimitedList, Indent, StringList
+from domdf_python_tools.stringlist import DelimitedList, Indent, StringList, joinlines, splitlines
 
 
 class TestStringList:
@@ -534,3 +534,35 @@ def test_delimitedlist():
 	assert f"{data:; }" == "a; b; c; d; e"
 	assert f"{data:;}" == "a;b;c;d;e"
 	assert f"{data:\n}" == "a\nb\nc\nd\ne"
+
+
+@pytest.mark.parametrize(
+		"string, lines",
+		[
+				("abc\ndef\n\rghi", [("abc", '\n'), ("def", '\n'), ('', '\r'), ("ghi", '')]),
+				("abc\ndef\n\r\nghi", [("abc", '\n'), ("def", '\n'), ('', "\r\n"), ("ghi", '')]),
+				("abc\ndef\r\nghi", [("abc", '\n'), ("def", "\r\n"), ("ghi", '')]),
+				("abc\ndef\r\nghi\n", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n')]),
+				("abc\ndef\r\nghi\n\r", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
+				("\nabc\ndef\r\nghi\n\r", [('', '\n'), ("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
+				("abcdef", [("abcdef", '')]),
+				]
+		)
+def test_splitlines(string, lines):
+	assert splitlines(string) == lines
+
+
+@pytest.mark.parametrize(
+		"string, lines",
+		[
+				("abc\ndef\n\rghi", [("abc", '\n'), ("def", '\n'), ('', '\r'), ("ghi", '')]),
+				("abc\ndef\n\r\nghi", [("abc", '\n'), ("def", '\n'), ('', "\r\n"), ("ghi", '')]),
+				("abc\ndef\r\nghi", [("abc", '\n'), ("def", "\r\n"), ("ghi", '')]),
+				("abc\ndef\r\nghi\n", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n')]),
+				("abc\ndef\r\nghi\n\r", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
+				("\nabc\ndef\r\nghi\n\r", [('', '\n'), ("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
+				("abcdef", [("abcdef", '')]),
+				]
+		)
+def test_joinlines(string, lines):
+	assert string == joinlines(lines)

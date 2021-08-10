@@ -32,6 +32,7 @@ A list of strings that represent lines in a multiline string.
 
 # stdlib
 from contextlib import contextmanager
+from itertools import chain
 from typing import Any, Iterable, Iterator, List, Tuple, TypeVar, Union, cast, overload
 
 # this package
@@ -39,7 +40,7 @@ from domdf_python_tools.doctools import prettify_docstrings
 from domdf_python_tools.typing import String
 from domdf_python_tools.utils import convert_indents
 
-__all__ = ["Indent", "StringList", "DelimitedList", "_SL"]
+__all__ = ["Indent", "StringList", "DelimitedList", "_SL", "splitlines", "joinlines"]
 
 _S = TypeVar("_S")
 _SL = TypeVar("_SL", bound="StringList")
@@ -471,3 +472,67 @@ class DelimitedList(List[_S]):
 
 	def __format__(self, format_spec: str) -> str:
 		return format_spec.join([str(x) for x in self])  # pylint: disable=not-an-iterable
+
+
+def splitlines(string: str) -> List[Tuple[str, str]]:
+	"""
+	Split ``string`` into a list of two-element tuples,
+	containing the line content and the newline character(s), if any.
+
+	.. versionadded:: 3.2.0
+
+	:param string:
+
+	:rtype:
+
+	.. seealso:: :meth:`str.splitlines` and :func:`~.stringlist.joinlineslines`
+	"""  # noqa: D400
+
+	# Translated and adapted from https://github.com/python/cpython/blob/main/Objects/stringlib/split.h
+
+	str_len: int = len(string)
+	i: int = 0
+	j: int = 0
+	eol: int
+	the_list: List[Tuple[str, str]] = []
+
+	while i < str_len:
+
+		# Find a line and append it
+		while i < str_len and not string[i] in "\n\r":
+			i += 1
+
+		# Skip the line break reading CRLF as one line break
+		eol = i
+		if i < str_len:
+			if (string[i] == '\r') and (i + 1 < str_len) and (string[i + 1] == '\n'):
+				i += 2
+			else:
+				i += 1
+
+		if j == 0 and eol == str_len and type(string) is str:
+			# No whitespace in string, so just use it as the_list[0]
+			the_list.append((string, ''))
+			break
+
+		the_list.append((string[j:eol], string[eol:i]))
+		j = i
+
+	return the_list
+
+
+def joinlines(lines: List[Tuple[str, str]]) -> str:
+	"""
+	Given a list of two-element tuples, each containing a line and a newline character (or empty string),
+	return a single string.
+
+	.. versionadded:: 3.2.0
+
+	:param lines:
+
+	:rtype:
+
+	.. seealso:: :func:`~.stringlist.splitlines`
+	"""  # noqa: D400
+
+	return ''.join(chain.from_iterable(lines))
