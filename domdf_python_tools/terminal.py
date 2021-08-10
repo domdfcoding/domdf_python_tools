@@ -149,7 +149,7 @@ def overtype(
 		If not present or :py:obj:`None`, :py:obj:`sys.stdout` will be used.
 	:no-default file:
 	:param flush: If :py:obj:`True` the stream is forcibly flushed after printing.
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	object0 = f"{CR}{objects[0]}"
 	objects = (object0, *objects[1:])

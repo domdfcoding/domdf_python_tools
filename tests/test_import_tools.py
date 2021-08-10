@@ -20,7 +20,7 @@ sys.path.append('.')
 sys.path.append("tests")
 
 # 3rd party
-import discover_demo_module  # type: ignore  # noqa E402
+import discover_demo_module  # type: ignore  # noqa: E402
 
 
 def test_discover():

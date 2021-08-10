@@ -112,7 +112,7 @@ def get_words_list(min_length: int = 0, max_length: int = -1) -> List[str]:
 	:no-default max_length:
 
 	:return: The list of words meeting the above specifiers.
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	# this package
 	from domdf_python_tools.compat import importlib_resources
@@ -141,7 +141,7 @@ def get_random_word(min_length: int = 0, max_length: int = -1) -> str:
 	:no-default max_length:
 
 	:return: A random word meeting the above specifiers.
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	words_list = get_words_list(min_length=min_length, max_length=max_length)
 
@@ -250,7 +250,7 @@ def make_font(
 	:param digits: Optional iterable of digits (0-9).
 	:param greek_uppers: Optional iterable of uppercase Greek letters (A-Ω, 25 characters).
 	:param greek_lowers: Optional iterable of lowercase Greek letters (α-ϖ, 32 characters).
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	font = Font({
 			**dict(zip(ascii_uppercase, uppers)),

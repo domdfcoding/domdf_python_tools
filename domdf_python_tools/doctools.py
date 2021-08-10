@@ -221,7 +221,7 @@ def sphinxify_docstring() -> Callable[[_F], _F]:
 		intersphinx_mapping = {
 			"python": ("https://docs.python.org/3/", None),
 		}
-	"""  # noqa SXL001
+	"""
 
 	def wrapper(target: _F) -> _F:
 		target_doc = target.__doc__
@@ -300,7 +300,7 @@ operator_docstrings = {
 
 # Check against int
 base_int_docstrings = {
-		# "__bool__": "Return ``self != 0`.",  # TODO
+		# "__bool__": "Return ``self != 0``.",  # TODO
 		# __ceil__
 		"__float__": "Return :class:`float(self) <float>`.",  # __floor__
 		"__int__": "Return :class:`int(self) <int>`.",  # __round__

@@ -61,7 +61,7 @@ class Secret(str):
 
 	value: str  #: The actual value of the secret.
 
-	def __new__(cls, value) -> "Secret":  # noqa D102
+	def __new__(cls, value) -> "Secret":  # noqa: D102
 		obj: Secret = super().__new__(cls, "<SECRET>")
 		obj.value = str(value)
 		return obj

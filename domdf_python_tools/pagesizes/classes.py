@@ -100,7 +100,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		:param size: The size, in point, to convert from.
 
 		:rtype: A subclass of :class:`~domdf_python_tools.pagesizes.classes.BaseSize`
-		"""  # noqa D400
+		"""  # noqa: D400
 
 		assert isinstance(size, PageSize)
 

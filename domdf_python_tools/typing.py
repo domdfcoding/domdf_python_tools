@@ -222,7 +222,7 @@ class HasHead(Protocol):
 	This includes :class:`pandas.DataFrame` and :class:`pandas.Series`.
 
 	.. versionadded:: 0.8.0
-	"""  # noqa D400
+	"""
 
 	def head(self: "HasHead", n: int = 5) -> "HasHead":
 		"""

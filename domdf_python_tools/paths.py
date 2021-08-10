@@ -287,7 +287,7 @@ def relpath(path: PathLike, relative_to: Optional[PathLike] = None) -> pathlib.P
 	:param relative_to: The directory to find the path relative to.
 		Defaults to the current directory.
 	:no-default relative_to:
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	if not isinstance(path, pathlib.Path):
 		path = pathlib.Path(path)
@@ -397,7 +397,7 @@ class PathPlus(pathlib.Path):
 	def _from_parts(cls, args, init=True):
 		return super()._from_parts(args)  # type: ignore
 
-	def __new__(cls: Type[_PP], *args, **kwargs) -> _PP:  # noqa D102
+	def __new__(cls: Type[_PP], *args, **kwargs) -> _PP:  # noqa: D102
 		if cls is PathPlus:
 			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus  # type: ignore
 
@@ -578,11 +578,11 @@ class PathPlus(pathlib.Path):
 		:param errors:
 
 		:return: The content of the file.
-		"""  # noqa D400
+		"""  # noqa: D400
 
 		return self.read_text(encoding=encoding, errors=errors).split('\n')
 
-	def open(  # type: ignore  # noqa A003
+	def open(  # type: ignore  # noqa: A003  # pylint: disable=redefined-builtin
 		self,
 		mode: str = 'r',
 		buffering: int = -1,
@@ -609,7 +609,7 @@ class PathPlus(pathlib.Path):
 		.. versionchanged:: 0.5.1
 
 			Defaults to Unix line endings (``LF``) on all platforms.
-		"""  # noqa D400
+		"""  # noqa: D400
 
 		if 'b' in mode:
 			encoding = None

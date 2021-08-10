@@ -160,7 +160,7 @@ class UserList(MutableSequence[_T]):
 		self.data = []
 		if initlist is not None:
 			# XXX should this accept an arbitrary sequence?
-			if type(initlist) is type(self.data):  # noqa E721
+			if type(initlist) is type(self.data):  # noqa: E721
 				self.data[:] = initlist
 			elif isinstance(initlist, UserList):
 				self.data[:] = initlist.data[:]
