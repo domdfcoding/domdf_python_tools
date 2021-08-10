@@ -334,7 +334,7 @@ def test_count():
 
 	assert repr(count(10.25)) == "count(10.25)"
 	assert repr(count(10.0)) == "count(10.0)"
-	assert type(next(count(10.0))) == float
+	assert type(next(count(10.0))) == float  # pylint: disable=unidiomatic-typecheck
 
 	for i in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 10, sys.maxsize - 5, sys.maxsize + 5):
 		# Test repr
@@ -399,8 +399,8 @@ def test_count_with_stride():
 	assert repr(count(10, 1.00)) == "count(10, 1.0)"
 
 	c = count(10, 1.0)
-	assert type(next(c)) == int
-	assert type(next(c)) == float
+	assert type(next(c)) == int  # pylint: disable=unidiomatic-typecheck
+	assert type(next(c)) == float  # pylint: disable=unidiomatic-typecheck
 
 	for i in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 10, sys.maxsize - 5, sys.maxsize + 5):
 		for j in (-sys.maxsize - 5, -sys.maxsize + 5, -10, -1, 0, 1, 10, sys.maxsize - 5, sys.maxsize + 5):
@@ -437,7 +437,7 @@ def pickletest(protocol, it, stop=4, take=1, compare=None):
 	# Test the initial copy against the original
 	dump = pickle.dumps(it, protocol)  # nosec: B301
 	i2 = pickle.loads(dump)  # nosec: B301
-	assert type(it) == type(i2)
+	assert type(it) is type(i2)  # pylint: disable=unidiomatic-typecheck
 	a, b = expand(it), expand(i2)
 	assert a == b
 	if compare:

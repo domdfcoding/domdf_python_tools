@@ -372,4 +372,4 @@ class TestMethodcaller:
 
 def copy(obj, proto):
 	pickled = pickle.dumps(obj, proto)
-	return pickle.loads(pickled)
+	return pickle.loads(pickled)  # nosec: B301

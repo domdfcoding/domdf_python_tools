@@ -510,7 +510,7 @@ def splitlines(string: str) -> List[Tuple[str, str]]:
 			else:
 				i += 1
 
-		if j == 0 and eol == str_len and type(string) is str:
+		if j == 0 and eol == str_len and type(string) is str:  # pylint: disable=unidiomatic-typecheck
 			# No whitespace in string, so just use it as the_list[0]
 			the_list.append((string, ''))
 			break
