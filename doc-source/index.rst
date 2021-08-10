@@ -124,10 +124,12 @@ domdf_python_tools
 
 .. end shields
 
-.. note::
+.. only:: html
 
-	Before version 3 ``domdf_python_tools`` was licensed under the LGPLv3+.
-	Version 3 and later are licensed under the MIT License.
+	.. note::
+
+		Before version 3 ``domdf_python_tools`` was licensed under the LGPLv3+.
+		Version 3 and later are licensed under the MIT License.
 
 
 Installation
