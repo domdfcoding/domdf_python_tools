@@ -22,4 +22,6 @@
 .. autoclass:: domdf_python_tools.stringlist.StringList
 	:special-members:
 
+.. autofunction:: domdf_python_tools.stringlist.splitlines
+.. autofunction:: domdf_python_tools.stringlist.joinlines
 .. autotypevar:: domdf_python_tools.stringlist._SL

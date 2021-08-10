@@ -485,7 +485,7 @@ def splitlines(string: str) -> List[Tuple[str, str]]:
 
 	:rtype:
 
-	.. seealso:: :meth:`str.splitlines` and :func:`~.stringlist.joinlineslines`
+	.. seealso:: :meth:`str.splitlines` and :func:`~.stringlist.joinlines`
 	"""  # noqa: D400
 
 	# Translated and adapted from https://github.com/python/cpython/blob/main/Objects/stringlib/split.h
