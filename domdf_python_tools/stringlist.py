@@ -33,11 +33,11 @@ A list of strings that represent lines in a multiline string.
 # stdlib
 from contextlib import contextmanager
 from itertools import chain
-from typing import Any, Iterable, Iterator, List, Tuple, TypeVar, Union, cast, overload
+from typing import Any, Iterable, Iterator, List, Reversible, Tuple, TypeVar, Union, cast, overload
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
-from domdf_python_tools.typing import String
+from domdf_python_tools.typing import String, SupportsIndex
 from domdf_python_tools.utils import convert_indents
 
 __all__ = ["Indent", "StringList", "DelimitedList", "_SL", "splitlines", "joinlines"]
@@ -202,15 +202,19 @@ class StringList(List[str]):
 
 		return self.count('')
 
-	def insert(self, index: int, line: String) -> None:
+	def insert(self, index: SupportsIndex, line: String) -> None:
 		"""
 		Insert a line into the :class:`~domdf_python_tools.stringlist.StringList` at the given position.
 
 		:param index:
 		:param line:
+
+		.. versionchanged:: 3.2.0  Changed :class:`int` in the type annotation to :protocol:`~.SupportsIndex`.
 		"""
 
 		lines: List[str]
+
+		index = index.__index__()
 
 		if index < 0 or index > len(self):
 			lines = str(line).split('\n')
@@ -221,12 +225,12 @@ class StringList(List[str]):
 			super().insert(index, self._make_line(inner_line))
 
 	@overload
-	def __setitem__(self, index: int, line: String) -> None: ...
+	def __setitem__(self, index: SupportsIndex, line: String) -> None: ...
 
 	@overload
 	def __setitem__(self, index: slice, line: Iterable[String]) -> None: ...
 
-	def __setitem__(self, index: Union[int, slice], line: Union[String, Iterable[String]]):
+	def __setitem__(self, index: Union[SupportsIndex, slice], line: Union[String, Iterable[String]]):
 		"""
 		Replaces the given line with new content.
 
@@ -235,29 +239,39 @@ class StringList(List[str]):
 
 		:param index:
 		:param line:
+
+		.. versionchanged:: 3.2.0  Changed :class:`int` in the type annotation to :protocol:`~.SupportsIndex`.
 		"""
 
-		if isinstance(index, int):
+		if isinstance(index, slice):
+			line = cast(Iterable[String], line)
+
+			if not isinstance(line, Reversible):
+				line = tuple(line)
+
+			for lline, idx in zip(
+				reversed(line),
+				reversed(range(index.start or 0, index.stop + 1, index.step or 1)),
+				):
+				self[idx] = lline
+		else:
+			line = cast(String, line)
+			index = index.__index__()
+
 			if self and index < len(self):
 				self.pop(index)
 			if index < 0:
 				index = len(self) + index + 1
+
 			self.insert(index, line)
 
-		elif isinstance(index, slice):
-			for line, idx in zip(  # pylint: disable=redefined-argument-from-local
-				reversed(line),  # type: ignore
-				reversed(range(index.start or 0, index.stop + 1, index.step or 1)),
-				):
-				self[idx] = line
-
 	@overload
-	def __getitem__(self, index: int) -> str: ...
+	def __getitem__(self, index: SupportsIndex) -> str: ...
 
 	@overload
 	def __getitem__(self: _SL, index: slice) -> _SL: ...
 
-	def __getitem__(self: _SL, index: Union[int, slice]) -> Union[str, _SL]:
+	def __getitem__(self: _SL, index: Union[SupportsIndex, slice]) -> Union[str, _SL]:
 		r"""
 		Returns the line with the given index.
 
@@ -268,6 +282,8 @@ class StringList(List[str]):
 		.. versionchanged:: 1.8.0
 
 			Now returns a :class:`~domdf_python_tools.stringlist.StringList` when ``index`` is a :class:`slice`.
+
+		.. versionchanged:: 3.2.0  Changed :class:`int` in the type annotation to :protocol:`~.SupportsIndex`.
 		"""
 
 		if isinstance(index, slice):

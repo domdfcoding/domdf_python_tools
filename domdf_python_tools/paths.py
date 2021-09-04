@@ -1119,7 +1119,7 @@ class TemporaryPathPlus(tempfile.TemporaryDirectory):
 	.. autosummary-widths:: 6/16
 	"""
 
-	name: PathPlus  # type: ignore
+	name: PathPlus
 	"""
 	The temporary directory itself.
 
