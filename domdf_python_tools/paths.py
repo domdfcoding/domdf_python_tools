@@ -938,6 +938,22 @@ class PathPlus(pathlib.Path):
 		new_path = shutil.move(os.fspath(self), dst)
 		return self.__class__(new_path)
 
+	def stream(self, chunk_size: int = 1024) -> Iterator[bytes]:
+		"""
+		Stream the file in ``chunk_size`` sized chunks.
+
+		:param chunk_size: The chunk size, in bytes
+
+		.. versionadded:: 3.2.0
+		"""
+
+		with self.open("rb") as fp:
+			while True:
+				chunk = fp.read(chunk_size)
+				if not chunk:
+					break
+				yield chunk
+
 
 class PosixPathPlus(PathPlus, pathlib.PurePosixPath):
 	"""

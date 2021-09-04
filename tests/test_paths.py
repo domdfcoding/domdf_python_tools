@@ -1031,3 +1031,9 @@ class TestMove:
 
 		with pytest.raises(shutil.Error):
 			move_example_file.parent.move(dst)
+
+
+def test_stream(tmp_pathplus: PathPlus, advanced_data_regression: AdvancedDataRegressionFixture):
+	the_file = tmp_pathplus / "file.dat"
+	the_file.write_text("The quick brown fox jumps over the lazy dog" * 100)
+	advanced_data_regression.check(list(map(bytes.decode, the_file.stream(chunk_size=10))))
