@@ -2,19 +2,7 @@
 #
 #  typing.py
 """
-Common aliases for type hinting.
-
-**Data:**
-
-.. autosummary2::
-
-	~domdf_python_tools.typing.PathLike
-	~domdf_python_tools.typing.AnyNumber
-	~domdf_python_tools.typing.WrapperDescriptorType, The type of methods of some built-in data types and base classes.
-	~domdf_python_tools.typing.MethodWrapperType, The type of *bound* methods of some built-in data types and base classes.
-	~domdf_python_tools.typing.MethodDescriptorType, The type of methods of some built-in data types.
-	~domdf_python_tools.typing.ClassMethodDescriptorType, The type of *unbound* class methods of some built-in data types.
-
+Various type annotation aids.
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -70,12 +58,11 @@ __all__ = [
 		"PathLike",
 		"PathType",
 		"AnyNumber",
-		"check_membership",
-		"JsonLibrary",
 		"WrapperDescriptorType",
 		"MethodWrapperType",
 		"MethodDescriptorType",
 		"ClassMethodDescriptorType",
+		"JsonLibrary",
 		"HasHead",
 		"String",
 		"FrameOrSeries",
@@ -84,6 +71,7 @@ __all__ = [
 		"SupportsLessEqual",
 		"SupportsGreaterThan",
 		"SupportsGreaterEqual",
+		"check_membership",
 		]
 
 PathLike = Union[str, pathlib.Path, os.PathLike]
@@ -126,9 +114,9 @@ def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 
 class JsonLibrary(Protocol):
 	"""
-	Type hint for functions that take a JSON serialisation-deserialisation library as an argument.
+	:class:`typing.Protocol` for libraries that implement the same API as :mod:`json`.
 
-	The library implement at least the following methods:
+	Useful for annotating functions which take a JSON serialisation-deserialisation library as an argument.
 	"""
 
 	@staticmethod
@@ -262,7 +250,10 @@ class SupportsLessThan(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __lt__(self, __other: Any) -> bool: ...
+	def __lt__(self, __other: Any) -> bool:
+		"""
+		Return ``self < value``.
+		"""
 
 
 class SupportsLessEqual(Protocol):
@@ -272,7 +263,10 @@ class SupportsLessEqual(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __le__(self, __other: Any) -> bool: ...
+	def __le__(self, __other: Any) -> bool:
+		"""
+		Return ``self <= value``.
+		"""
 
 
 class SupportsGreaterThan(Protocol):
@@ -282,7 +276,10 @@ class SupportsGreaterThan(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __gt__(self, __other: Any) -> bool: ...
+	def __gt__(self, __other: Any) -> bool:
+		"""
+		Return ``self > value``.
+		"""
 
 
 class SupportsGreaterEqual(Protocol):
@@ -292,4 +289,7 @@ class SupportsGreaterEqual(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __ge__(self, __other: Any) -> bool: ...
+	def __ge__(self, __other: Any) -> bool:
+		"""
+		Return ``self >= value``.
+		"""
