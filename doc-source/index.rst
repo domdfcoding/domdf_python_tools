@@ -61,7 +61,8 @@ domdf_python_tools
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| requires-io-shield::
+	.. |requires| image:: https://dependency-dash.herokuapp.com/github/domdfcoding/domdf_python_tools/badge.svg
+		:target: https://dependency-dash.herokuapp.com/github/domdfcoding/domdf_python_tools/
 		:alt: Requirements Status
 
 	.. |coveralls| coveralls-shield::
