@@ -199,6 +199,7 @@ def test_deindent_string(docstring, expects):
 	assert doctools.deindent_string(docstring) == expects
 
 
+@pytest.mark.xfail(PEP_563, reason="The future of PEP 563 is unclear at this time.")
 def test_decorators():
 	# Check the ``SpamCafe`` class has has its docstrings modified appropriately.
 

@@ -18,13 +18,15 @@ conda_channels:
  - conda-forge
 
 python_versions:
- - 3.6
- - 3.7
- - 3.8
- - 3.9
- - 3.10-dev
- - pypy36
- - pypy37
+ 3.6:
+ 3.7:
+ 3.8:
+ 3.9:
+ "3.10":
+ "3.11-dev":
+  experimental: true
+ pypy36:
+ pypy37:
 
 classifiers:
  - 'Development Status :: 5 - Production/Stable'
