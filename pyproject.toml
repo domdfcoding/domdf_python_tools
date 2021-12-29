@@ -7,9 +7,9 @@ name = "domdf_python_tools"
 version = "3.1.0"
 description = "Helpful functions for Python 🐍 🛠️"
 readme = "README.rst"
+requires-python = ">=3.6"
 keywords = [ "utilities",]
 dynamic = [ "classifiers", "dependencies",]
-requires-python = ">=3.6"
 
 [[project.authors]]
 name = "Dominic Davis-Foster"
