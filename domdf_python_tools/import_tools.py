@@ -102,10 +102,7 @@ def discover(
 	matching_objects = discover_in_module(package, **kwargs)
 
 	if hasattr(package, "__path__"):
-		# https://github.com/python/mypy/issues/1422
-		# Stalled PRs: https://github.com/python/mypy/pull/3527
-		#              https://github.com/python/mypy/pull/5212
-		package_path = package.__path__  # type: ignore
+		package_path = package.__path__
 
 		for _, module_name, _ in pkgutil.walk_packages(package_path, prefix=f'{package.__name__}.'):
 			module = __import__(module_name, fromlist=["__trash"], level=0)

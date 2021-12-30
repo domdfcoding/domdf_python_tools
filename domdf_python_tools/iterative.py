@@ -489,11 +489,11 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 
 		if isinstance(step, int) and step == 1:
 
-			def __repr__(self):
+			def __repr__(self) -> str:
 				return f"{self.__class__.__name__}({get_next()})"
 		else:
 
-			def __repr__(self):
+			def __repr__(self) -> str:
 				return f"{self.__class__.__name__}{get_next(), step}"
 
 		def __init_subclass__(cls, **kwargs):
