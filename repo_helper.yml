@@ -73,7 +73,6 @@ extra_sphinx_extensions:
 
 tox_unmanaged:
  - testenv
- - flake8
 
 additional_ignore:
  - demo.py
