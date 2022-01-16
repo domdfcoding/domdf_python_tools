@@ -23,6 +23,9 @@ Provides the following:
 .. autovariable:: domdf_python_tools.compat.PYPY37
 	:no-value:
 
+.. autovariable:: domdf_python_tools.compat.PYPY38
+	:no-value:
+
 .. raw:: latex
 
 	\end{multicols}
@@ -74,7 +77,15 @@ from typing import TYPE_CHECKING, ContextManager, Optional, TypeVar
 # this package
 import domdf_python_tools
 
-__all__ = ["importlib_resources", "importlib_metadata", "nullcontext", "PYPY", "PYPY36", "PYPY37"]
+__all__ = [
+		"importlib_resources",
+		"importlib_metadata",
+		"nullcontext",
+		"PYPY",
+		"PYPY36",
+		"PYPY37",
+		"PYPY38",
+		]
 
 if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (py37+)
 
@@ -145,8 +156,17 @@ PYPY37: bool = False
 .. versionadded:: 2.6.0
 """
 
+PYPY38: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.8.
+
+.. versionadded:: 3.2.0
+"""
+
 if PYPY:  # pragma: no cover
 	if sys.version_info[:2] == (3, 6):
 		PYPY36 = True
 	elif sys.version_info[:2] == (3, 7):
 		PYPY37 = True
+	elif sys.version_info[:2] == (3, 8):
+		PYPY38 = True
