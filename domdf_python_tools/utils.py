@@ -410,7 +410,10 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 	:param obj:
 	:param n: Show the first ``n`` items of ``obj``.
 
-	.. seealso:: :func:`textwrap.shorten`, which truncates a string to fit within a given number of characters.
+	.. seealso::
+
+		* :func:`textwrap.shorten`, which truncates a string to fit within a given number of characters.
+		* :func:`itertools.islice`, which returns the first ``n`` elements from an iterator.
 	"""
 
 	if isinstance(obj, tuple) and hasattr(obj, "_fields"):
