@@ -28,6 +28,7 @@ python_versions:
   experimental: true
  pypy36:
  pypy37:
+ pypy38:
 
 classifiers:
  - 'Development Status :: 5 - Production/Stable'
