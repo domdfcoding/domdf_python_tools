@@ -2,6 +2,7 @@ git+https://github.com/sphinx-toolbox/sphinx-toolbox-experimental.git
 default-values>=0.5.0
 domdf-sphinx-theme>=0.3.0
 extras-require>=0.2.0
+html-section>=0.1.0
 pandas>=1.1.2
 pytest>=6.2.0
 pytest-regressions>=2.0.2
