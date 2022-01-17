@@ -30,23 +30,23 @@ if not ((3, 7) <= sys.version_info < (3, 11)):  # pragma: no cover (py37 OR py38
 			raise ValueError(f'{path!r} must be only a file name')
 		return file_name
 
-	def open_binary(package: importlib_resources.Package, resource: importlib_resources.Resource) -> BinaryIO:
+	def open_binary(package: Package, resource: Resource) -> BinaryIO:
 		"""
 		Return a file-like object opened for binary reading of the resource.
 		"""
 
-		return (importlib_resources.files(package) / _normalize_path(resource)).open("rb")
+		return (files(package) / _normalize_path(resource)).open("rb")
 
-	def read_binary(package: importlib_resources.Package, resource: importlib_resources.Resource) -> bytes:
+	def read_binary(package: Package, resource: Resource) -> bytes:
 		"""
 		Return the binary contents of the resource.
 		"""
 
-		return (importlib_resources.files(package) / _normalize_path(resource)).read_bytes()
+		return (files(package) / _normalize_path(resource)).read_bytes()
 
 	def open_text(
-			package: importlib_resources.Package,
-			resource: importlib_resources.Resource,
+			package: Package,
+			resource: Resource,
 			encoding: str = "utf-8",
 			errors: str = "strict",
 			) -> TextIO:
@@ -54,15 +54,15 @@ if not ((3, 7) <= sys.version_info < (3, 11)):  # pragma: no cover (py37 OR py38
 		Return a file-like object opened for text reading of the resource.
 		"""
 
-		return (importlib_resources.files(package) / _normalize_path(resource)).open(
+		return (files(package) / _normalize_path(resource)).open(
 				'r',
 				encoding=encoding,
 				errors=errors,
 				)
 
 	def read_text(
-			package: importlib_resources.Package,
-			resource: importlib_resources.Resource,
+			package: Package,
+			resource: Resource,
 			encoding: str = "utf-8",
 			errors: str = "strict",
 			) -> str:
