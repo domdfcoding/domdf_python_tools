@@ -431,6 +431,8 @@ def test_mkdir_concurrent_parent_creation(BASE):
 		p = PathPlus(BASE, "dirCPC%d" % pattern_num)
 		assert not (p.exists())
 
+		real_mkdir = os.mkdir
+
 		def my_mkdir(path, mode=0o777):
 			path = str(path)
 			# Emulate another process that would create the directory
@@ -439,15 +441,19 @@ def test_mkdir_concurrent_parent_creation(BASE):
 			# function is called at most 5 times (dirCPC/dir1/dir2,
 			# dirCPC/dir1, dirCPC, dirCPC/dir1, dirCPC/dir1/dir2).
 			if pattern.pop():
-				os.mkdir(path, mode)  # From another process.
+				real_mkdir(path, mode)  # From another process.
 				concurrently_created.add(path)
-			os.mkdir(path, mode)  # Our real call.
+			real_mkdir(path, mode)  # Our real call.
 
 		pattern = [bool(pattern_num & (1 << n)) for n in range(5)]
 		concurrently_created: Set = set()
 		p12 = p / "dir1" / "dir2"
 		try:
-			with mock.patch("pathlib._normal_accessor.mkdir", my_mkdir):
+			if sys.version_info > (3, 11):
+				cm = mock.patch("os.mkdir", my_mkdir)
+			else:
+				cm = mock.patch("pathlib._normal_accessor.mkdir", my_mkdir)
+			with cm:
 				p12.mkdir(parents=True, exist_ok=False)
 		except FileExistsError:
 			assert (str(p12) in concurrently_created)

@@ -387,7 +387,9 @@ class PathPlus(pathlib.Path):
 	"""
 
 	__slots__ = ()
-	_accessor = pathlib._normal_accessor  # type: ignore
+
+	if sys.version_info < (3, 11):
+		_accessor = pathlib._normal_accessor  # type: ignore
 	_closed = False
 
 	def _init(self, *args, **kwargs):
@@ -757,7 +759,7 @@ class PathPlus(pathlib.Path):
 			:returns: The new Path instance pointing to the target path.
 			"""
 
-			self._accessor.rename(self, target)  # type: ignore
+			os.rename(self, target)  # type: ignore
 			return self.__class__(target)
 
 		def replace(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
@@ -778,7 +780,7 @@ class PathPlus(pathlib.Path):
 			:returns: The new Path instance pointing to the target path.
 			"""
 
-			self._accessor.replace(self, target)  # type: ignore
+			os.replace(self, target)  # type: ignore
 			return self.__class__(target)
 
 		def unlink(self, missing_ok: bool = False) -> None:
@@ -792,7 +794,7 @@ class PathPlus(pathlib.Path):
 			"""
 
 			try:
-				self._accessor.unlink(self)
+				os.unlink(self)
 			except FileNotFoundError:
 				if not missing_ok:
 					raise
