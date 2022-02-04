@@ -759,7 +759,7 @@ class PathPlus(pathlib.Path):
 			:returns: The new Path instance pointing to the target path.
 			"""
 
-			os.rename(self, target)  # type: ignore
+			os.rename(self, target)
 			return self.__class__(target)
 
 		def replace(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
@@ -780,7 +780,7 @@ class PathPlus(pathlib.Path):
 			:returns: The new Path instance pointing to the target path.
 			"""
 
-			os.replace(self, target)  # type: ignore
+			os.replace(self, target)
 			return self.__class__(target)
 
 		def unlink(self, missing_ok: bool = False) -> None:
