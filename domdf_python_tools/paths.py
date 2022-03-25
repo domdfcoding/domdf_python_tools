@@ -799,21 +799,21 @@ class PathPlus(pathlib.Path):
 				if not missing_ok:
 					raise
 
+	def __enter__(self):
+		return self
+
+	def __exit__(self, t, v, tb):
+		# https://bugs.python.org/issue39682
+		# In previous versions of pathlib, this method marked this path as
+		# closed; subsequent attempts to perform I/O would raise an IOError.
+		# This functionality was never documented, and had the effect of
+		# making Path objects mutable, contrary to PEP 428. In Python 3.9 the
+		# _closed attribute was removed, and this method made a no-op.
+		# This method and __enter__()/__exit__() should be deprecated and
+		# removed in the future.
+		pass
+
 	if sys.version_info < (3, 9):  # pragma: no cover (py39+)
-
-		def __enter__(self):
-			return self
-
-		def __exit__(self, t, v, tb):
-			# https://bugs.python.org/issue39682
-			# In previous versions of pathlib, this method marked this path as
-			# closed; subsequent attempts to perform I/O would raise an IOError.
-			# This functionality was never documented, and had the effect of
-			# making Path objects mutable, contrary to PEP 428. In Python 3.9 the
-			# _closed attribute was removed, and this method made a no-op.
-			# This method and __enter__()/__exit__() should be deprecated and
-			# removed in the future.
-			pass
 
 		def is_relative_to(self, *other: Union[str, os.PathLike]) -> bool:
 			r"""
