@@ -13,6 +13,7 @@ requires_python: 3.6
 min_coverage: 95
 tox_testenv_extras: all
 docs_fail_on_warning: true
+mypy_version: 0.942
 
 conda_channels:
  - conda-forge

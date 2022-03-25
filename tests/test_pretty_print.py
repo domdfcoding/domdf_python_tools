@@ -920,7 +920,7 @@ deque([('brown', 2),
 		d: collections.UserDict = collections.UserDict()
 		assert FancyPrinter(width=1).pformat(d) == "{}"
 		words = "the quick brown fox jumped over a lazy dog".split()
-		d = collections.UserDict(zip(words, itertools.count()))  # type: ignore
+		d = collections.UserDict(zip(words, itertools.count()))
 		advanced_file_regression.check(FancyPrinter().pformat(d))
 
 	def test_user_list(self, advanced_file_regression: AdvancedFileRegressionFixture):
