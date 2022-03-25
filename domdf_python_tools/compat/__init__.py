@@ -23,7 +23,19 @@ Provides the following:
 .. autovariable:: domdf_python_tools.compat.PYPY37
 	:no-value:
 
+.. autovariable:: domdf_python_tools.compat.PYPY37_PLUS
+	:no-value:
+
 .. autovariable:: domdf_python_tools.compat.PYPY38
+	:no-value:
+
+.. autovariable:: domdf_python_tools.compat.PYPY38_PLUS
+	:no-value:
+
+.. autovariable:: domdf_python_tools.compat.PYPY39
+	:no-value:
+
+.. autovariable:: domdf_python_tools.compat.PYPY39_PLUS
 	:no-value:
 
 .. raw:: latex
@@ -84,7 +96,11 @@ __all__ = [
 		"PYPY",
 		"PYPY36",
 		"PYPY37",
+		"PYPY37_PLUS",
 		"PYPY38",
+		"PYPY38_PLUS",
+		"PYPY39",
+		"PYPY39_PLUS",
 		]
 
 if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (py37+)
@@ -163,10 +179,43 @@ PYPY38: bool = False
 .. versionadded:: 3.2.0
 """
 
+PYPY39: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.9.
+
+.. versionadded:: 3.3.0
+"""
+
+PYPY37_PLUS: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.7 or newer.
+
+.. versionadded:: 3.3.0
+"""
+
+PYPY38_PLUS: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.8 or newer.
+
+.. versionadded:: 3.3.0
+"""
+
+PYPY39_PLUS: bool = False
+"""
+:py:obj:`True` if running on PyPy 3.9 or newer.
+
+.. versionadded:: 3.3.0
+"""
+
 if PYPY:  # pragma: no cover
 	if sys.version_info[:2] == (3, 6):
 		PYPY36 = True
 	elif sys.version_info[:2] == (3, 7):
 		PYPY37 = True
+		PYPY37_PLUS = True
 	elif sys.version_info[:2] == (3, 8):
 		PYPY38 = True
+		PYPY38_PLUS = PYPY37_PLUS = True
+	elif sys.version_info[:2] == (3, 9):
+		PYPY39 = True
+		PYPY39_PLUS = PYPY38_PLUS = PYPY37_PLUS = True
