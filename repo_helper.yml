@@ -12,6 +12,7 @@ python_deploy_version: 3.6
 requires_python: 3.6
 min_coverage: 95
 tox_testenv_extras: all
+pre_commit_exclude: "^domdf_python_tools/compat/importlib_resources.py$"
 docs_fail_on_warning: true
 mypy_version: 0.942
 

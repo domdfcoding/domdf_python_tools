@@ -156,7 +156,7 @@ def test_discover_entry_points_by_name_name_match_func(advanced_data_regression:
 								only_pypy("Output differs on PyPy 3.8")
 								]
 						),
-pytest.param(
+				pytest.param(
 						3.9,
 						marks=[
 								only_version(3.9, reason="Output differs on Python 3.9"),

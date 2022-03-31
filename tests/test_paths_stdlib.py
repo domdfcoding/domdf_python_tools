@@ -15,8 +15,6 @@ import shutil
 import socket
 import stat
 import sys
-import tempfile
-import unittest
 from typing import Set
 from unittest import mock
 

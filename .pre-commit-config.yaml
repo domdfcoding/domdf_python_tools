@@ -1,7 +1,7 @@
 # This file is managed by 'repo_helper'. Don't edit it directly.
 ---
 
-exclude: ^$
+exclude: ^domdf_python_tools/compat/importlib_resources.py$
 
 repos:
  - repo: https://github.com/repo-helper/pyproject-parser
