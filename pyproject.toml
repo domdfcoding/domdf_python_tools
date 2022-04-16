@@ -9,7 +9,6 @@ description = "Helpful functions for Python 🐍 🛠️"
 readme = "README.rst"
 requires-python = ">=3.6"
 keywords = [ "utilities",]
-dynamic = [ "dependencies",]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -27,6 +26,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
 ]
+dynamic = [ "dependencies",]
 
 [[project.authors]]
 name = "Dominic Davis-Foster"
