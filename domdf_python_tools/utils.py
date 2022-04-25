@@ -30,7 +30,7 @@ General utility functions.
 
 """
 #
-#  Copyright © 2018-2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2018-2022 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -84,6 +84,7 @@ from typing import (
 		List,
 		Optional,
 		Pattern,
+		Set,
 		Tuple,
 		TypeVar,
 		Union,
@@ -128,6 +129,7 @@ __all__ = [
 		"divide",
 		"redivide",
 		"unique_sorted",
+		"replace_nonprinting",
 		]
 
 #: The current major python version.
@@ -345,6 +347,13 @@ def posargs2kwargs(
 		self_arg, *posarg_names = inspect.getfullargspec(posarg_names).args
 	elif callable(posarg_names):
 		posarg_names = inspect.getfullargspec(posarg_names).args
+
+	for name, arg_value in zip(posarg_names, args):
+		if name in kwargs:
+			if isinstance(posarg_names, MethodType):
+				raise TypeError(f"{posarg_names.__name__}(): got multiple values for argument '{name}'")
+			else:
+				raise TypeError(f"got multiple values for argument '{name}'")
 
 	kwargs.update(zip(posarg_names, args))
 
@@ -613,3 +622,38 @@ def unique_sorted(
 	"""
 
 	return sorted(set(elements), key=key, reverse=reverse)
+
+
+def replace_nonprinting(string: str, exclude: Optional[Set[int]] = None) -> str:
+	"""
+	Replace nonprinting (control) characters in ``string`` with ``^`` and ``M-`` notation.
+
+	.. versionadded:: 3.3.0
+
+	:param string:
+	:param exclude: A set of codepoints to exclude.
+
+	:rtype:
+
+	.. seealso:: :wikipedia:`C0 and C1 control codes` on Wikipedia
+	"""
+
+	# https://stackoverflow.com/a/44952259
+
+	if exclude is None:
+		exclude = set()
+
+	translation_map = {}
+
+	for codepoint in range(32):
+		if codepoint not in exclude:
+			translation_map[codepoint] = f"^{chr(64 + codepoint)}"
+
+	if 127 not in exclude:
+		translation_map[127] = "^?"
+
+	for codepoint in range(128, 256):
+		if codepoint not in exclude:
+			translation_map[codepoint] = f"M+{chr(codepoint-64)}"
+
+	return string.translate(translation_map)

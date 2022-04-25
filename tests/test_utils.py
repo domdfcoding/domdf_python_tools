@@ -36,6 +36,7 @@ from domdf_python_tools.utils import (
 		pyversion,
 		redirect_output,
 		redivide,
+		replace_nonprinting,
 		stderr_writer,
 		str2tuple,
 		strtobool,
@@ -527,3 +528,18 @@ def test_redivide_errors():
 		)
 def test_unique_sorted(values, expected):
 	assert unique_sorted(values) == expected
+
+
+@pytest.mark.parametrize(
+		"the_string, expected",
+		[
+				("\t\t\t", "^I^I^I"),
+				("\u0000\u0000\u0000", "^@^@^@"),
+				("\r\n", "^M^J"),
+				("\b\u000b", "^H^K"),
+				("\u001a", "^Z^?"),
+				('\x81', "M+A"),
+				]
+		)
+def test_replace_nonprinting(the_string: str, expected: str):
+	assert replace_nonprinting(the_string) == expected
