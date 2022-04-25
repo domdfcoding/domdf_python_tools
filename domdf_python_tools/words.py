@@ -43,7 +43,7 @@ import re
 from gettext import ngettext
 from reprlib import recursive_repr
 from string import ascii_lowercase, ascii_uppercase
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, NamedTuple, Optional, Tuple
 
 # this package
 import domdf_python_tools
@@ -75,6 +75,7 @@ __all__ = [
 		"CR",
 		"LF",
 		"Plural",
+		"PluralPhrase",
 		]
 
 ascii_digits = "0123456789"
@@ -615,3 +616,72 @@ class Plural(functools.partial):
 		args.extend(repr(x) for x in self.args)
 		args.extend(f"{k}={v!r}" for (k, v) in self.keywords.items())
 		return f"{qualname}({', '.join(args)})"
+
+
+@prettify_docstrings
+class PluralPhrase(NamedTuple):
+	"""
+	Represents a phrase which varies depending on a numerical count.
+
+	.. versionadded:: 3.3.0
+
+	:param template: The phrase template.
+	:param words: The words to insert into the template.
+
+	For example, consider the phase::
+
+		The proposed changes are to ...
+
+	The "phrase template" would be:
+
+	.. code-block:: python
+
+		"The proposed {} {} to ..."
+
+	and the two words to insert are:
+
+	.. code-block:: python
+
+		Plural("change", "changes")
+		Plural("is", "are")
+
+	The phrase is constructed as follows:
+
+	.. code-block:: python
+
+		>>> phrase = PluralPhrase(
+		...     "The proposed {} {} to ...",
+		...     (Plural("change", "changes"), Plural("is", "are"))
+		... )
+		>>> phrase(1)
+		'The proposed change is to ...'
+		>>> phrase(2)
+		'The proposed changes are to ...'
+
+	The phrase template can use any `valid syntax`_ for :meth:`str.format`,
+	except for keyword arguments. The exception if the keyword ``n``,
+	which is replaced with the count (e.g. ``2``) passed in when the phrase is constructed.
+	For example:
+
+	.. code-block:: python
+
+		>>> phrase2 = PluralPhrase("The farmer has {n} {0}.", (Plural("cow", "cows"), ))
+		>>> phrase2(2)
+		'The farmer has 2 cows.'
+
+	.. _valid syntax: https://docs.python.org/3/library/string.html#formatstrings
+
+	"""
+
+	template: str
+	words: Tuple[Plural, ...]
+
+	def __call__(self, n: int) -> str:  # noqa: TYP004  # TODO
+		"""
+		Construct the phrase based on the value of ``n``.
+
+		:param n:
+		"""
+
+		plural_words = [x(n) for x in self.words]
+		return self.template.format(*plural_words, n=n)

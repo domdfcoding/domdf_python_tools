@@ -107,11 +107,22 @@ Functions
 	:html: 31/100
 
 .. automodulesumm:: domdf_python_tools.words
-	:autosummary-members: alpha_sort,get_words_list,get_random_word,as_text,word_join,Plural
+	:autosummary-members: alpha_sort,get_words_list,get_random_word,as_text,word_join
 
 .. autofunction:: domdf_python_tools.words.alpha_sort
 .. autofunction:: domdf_python_tools.words.as_text
 .. autofunction:: domdf_python_tools.words.get_words_list
 .. autofunction:: domdf_python_tools.words.get_random_word
 .. autofunction:: domdf_python_tools.words.word_join
+
+Classes
+-------------
+
+.. autosummary-widths:: 8/16
+	:html: 31/100
+
+.. automodulesumm:: domdf_python_tools.words
+	:autosummary-members: Plural,PluralPhrase
+
 .. autoclass:: domdf_python_tools.words.Plural
+.. autonamedtuple:: domdf_python_tools.words.PluralPhrase

@@ -12,7 +12,14 @@ import pytest
 from domdf_python_tools import words
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.stringlist import StringList
-from domdf_python_tools.words import DOUBLESTRUCK_LETTERS, Plural, alpha_sort, get_random_word, get_words_list
+from domdf_python_tools.words import (
+		DOUBLESTRUCK_LETTERS,
+		Plural,
+		PluralPhrase,
+		alpha_sort,
+		get_random_word,
+		get_words_list
+		)
 
 
 @pytest.mark.parametrize(
@@ -167,3 +174,37 @@ def test_plural():
 
 	assert repr(cow) == "Plural('cow', 'cows')"
 	assert repr(glass) == "Plural('glass', 'glasses')"
+
+
+def test_pluralphrase():
+	phrase1 = PluralPhrase("The proposed {} {} to ...", (Plural("change", "changes"), Plural("is", "are")))
+	phrase2 = PluralPhrase("The farmer has {n} {0}.", (Plural("cow", "cows"), ))
+	phrase3 = PluralPhrase("The proposed {1} {0} to ...", (Plural("is", "are"), Plural("change", "changes")))
+	phrase4 = PluralPhrase(
+			"The farmer has {n} {0}. The {0} {1} brown.", (Plural("cow", "cows"), Plural("is", "are"))
+			)
+	n = 1
+	assert phrase1(n) == "The proposed change is to ..."
+	assert phrase2(n) == "The farmer has 1 cow."
+	assert phrase3(n) == "The proposed change is to ..."
+	assert phrase4(n) == "The farmer has 1 cow. The cow is brown."
+
+	n = 2
+	assert phrase1(n) == "The proposed changes are to ..."
+	assert phrase2(n) == "The farmer has 2 cows."
+	assert phrase3(n) == "The proposed changes are to ..."
+	assert phrase4(n) == "The farmer has 2 cows. The cows are brown."
+
+	n = 3
+	assert phrase1(n) == "The proposed changes are to ..."
+	assert phrase2(n) == "The farmer has 3 cows."
+	assert phrase3(n) == "The proposed changes are to ..."
+	assert phrase4(n) == "The farmer has 3 cows. The cows are brown."
+
+	phrase1_repr = "PluralPhrase(template='The proposed {} {} to ...', words=(Plural('change', 'changes'), Plural('is', 'are')))"
+	assert repr(phrase1) == phrase1_repr
+	assert repr(phrase2) == "PluralPhrase(template='The farmer has {n} {0}.', words=(Plural('cow', 'cows'),))"
+	phrase3_repr = "PluralPhrase(template='The proposed {1} {0} to ...', words=(Plural('is', 'are'), Plural('change', 'changes')))"
+	assert repr(phrase3) == phrase3_repr
+	phrase4_repr = "PluralPhrase(template='The farmer has {n} {0}. The {0} {1} brown.', words=(Plural('cow', 'cows'), Plural('is', 'are')))"
+	assert repr(phrase4) == phrase4_repr
