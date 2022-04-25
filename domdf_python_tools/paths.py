@@ -375,7 +375,7 @@ class PathPlus(pathlib.Path):
 	"""
 	Subclass of :class:`pathlib.Path` with additional methods and a default encoding of UTF-8.
 
-	Path represents a filesystem path but unlike :class:`pathlib.PurePath`, also offers
+	Path represents a filesystem path but, unlike :class:`pathlib.PurePath`, also offers
 	methods to do system calls on path objects.
 	Depending on your system, instantiating a :class:`~.PathPlus` will return
 	either a :class:`~.PosixPathPlus` or a :class:`~.WindowsPathPlus`. object.
