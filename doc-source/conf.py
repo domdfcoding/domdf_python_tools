@@ -84,3 +84,4 @@ def setup(app):
 manpages_url = "https://manpages.debian.org/{path}"
 toctree_plus_types.add("fixture")
 latex_elements["preamble"] = "\\usepackage{textgreek}\\usepackage{multicol}"
+needspace_amount = r"5\baselineskip"

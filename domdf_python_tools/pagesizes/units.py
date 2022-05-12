@@ -120,9 +120,8 @@ class Unit(float):
 		>>> 17 - (7*cm)
 		<Unit '10.000 cm': 283.465pt>
 
-	.. latex:clearpage::
 
-	:bold-title:`Multiplcation`
+	:bold-title:`Multiplication`
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can only be multipled by
 	:class:`float` and :class:`int` objects:

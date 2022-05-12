@@ -52,9 +52,7 @@ class Secret(str):
 		True
 
 	.. versionadded:: 0.4.6
-
 	.. autosummary-widths:: 1/2
-		:html: 2/10
 	"""
 
 	__slots__ = ("value", )

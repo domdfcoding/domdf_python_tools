@@ -10,7 +10,6 @@ Utilities for documenting functions, classes and methods.
 	:autosummary-sections: Data
 
 .. autosummary-widths:: 17/32
-	:html: 4/10
 
 .. automodulesumm:: domdf_python_tools.doctools
 	:autosummary-sections: Functions
@@ -143,9 +142,7 @@ def make_sphinx_links(input_string: str, builtins_list: Optional[Sequence[str]] 
 
 	.. code-block:: python
 
-		intersphinx_mapping = {
-			"python": ("https://docs.python.org/3/", None),
-		}
+		intersphinx_mapping = {"python": ("https://docs.python.org/3/", None)}
 
 	:param input_string: The string to process.
 	:param builtins_list: A list of builtins to make links for.

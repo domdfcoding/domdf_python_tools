@@ -3,7 +3,6 @@
 ===========================================
 
 .. autosummary-widths:: 1/2
-	:html: 2/10
 
 .. automodule:: domdf_python_tools.pagesizes.units
 	:autosummary-members:

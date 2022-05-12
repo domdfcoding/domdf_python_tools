@@ -318,8 +318,6 @@ class StringList(List[str]):
 		Sets the type of the indent to insert at the beginning of new lines.
 
 		:param indent_type: The type of indent to use for new lines.
-
-		.. latex:clearpage::
 		"""
 
 		self.indent.type = str(indent_type)

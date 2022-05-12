@@ -3,7 +3,6 @@
 =================================
 
 .. autosummary-widths:: 13/32
-	:html: 35/100
 
 .. automodule:: domdf_python_tools.dates
 	:undoc-members:

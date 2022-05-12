@@ -37,7 +37,6 @@ Fonts
 ------
 
 .. autosummary-widths:: 13/32
-	:html: 3/10
 
 .. automodulesumm:: domdf_python_tools.words
 	:autosummary-members: make_font,Font,SERIF_BOLD_LETTERS,SERIF_ITALIC_LETTERS,SERIF_BOLD_ITALIC_LETTERS,SANS_SERIF_LETTERS,SANS_SERIF_BOLD_LETTERS,SANS_SERIF_ITALIC_LETTERS,SANS_SERIF_BOLD_ITALIC_LETTERS,SCRIPT_LETTERS,FRAKTUR_LETTERS,MONOSPACE_LETTERS,DOUBLESTRUCK_LETTERS
@@ -104,7 +103,6 @@ Functions
 -------------
 
 .. autosummary-widths:: 8/16
-	:html: 31/100
 
 .. automodulesumm:: domdf_python_tools.words
 	:autosummary-members: alpha_sort,get_words_list,get_random_word,as_text,word_join
@@ -115,11 +113,13 @@ Functions
 .. autofunction:: domdf_python_tools.words.get_random_word
 .. autofunction:: domdf_python_tools.words.word_join
 
+
+.. latex:clearpage::
+
 Classes
 -------------
 
 .. autosummary-widths:: 8/16
-	:html: 31/100
 
 .. automodulesumm:: domdf_python_tools.words
 	:autosummary-members: Plural,PluralPhrase

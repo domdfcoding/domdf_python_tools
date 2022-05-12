@@ -247,7 +247,7 @@ def stderr_writer(
 	print(*values, sep=sep, end=end, file=sys.stderr, flush=True)
 	sys.stderr.flush()
 
-
+#: Alias of :func:`~.stderr_writer`
 printe = stderr_writer
 
 
@@ -500,10 +500,6 @@ def double_repr_string(string: str) -> str:
 	.. versionadded:: 2.5.0
 
 	:param string:
-
-	:rtype:
-
-	.. latex:clearpage::
 	"""
 
 	# figure out which quote to use; double is preferred

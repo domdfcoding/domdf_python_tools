@@ -55,6 +55,7 @@ sphinx_conf_epilogue:
  - manpages_url = "https://manpages.debian.org/{path}"
  - toctree_plus_types.add("fixture")
  - latex_elements["preamble"] = "\\usepackage{textgreek}\\usepackage{multicol}"
+ - needspace_amount = r"5\baselineskip"
 
 intersphinx_mapping:
  - "'pandas': ('https://pandas.pydata.org/docs/', None)"
@@ -68,9 +69,8 @@ mypy_deps:
 extra_sphinx_extensions:
  - sphinx_autofixture
  - sphinx_highlights
- - sphinx_toolbox_experimental.needspace
- - sphinx_toolbox_experimental.autosummary_widths
- - sphinx_toolbox_experimental.succinct_seealso
+ - sphinx_toolbox.more_autosummary.column_widths
+ - sphinx_toolbox.latex.succinct_seealso
  - latex_unicode
 
 tox_unmanaged:

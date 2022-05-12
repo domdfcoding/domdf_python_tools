@@ -81,6 +81,8 @@ Protocols
 .. autoprotocol:: SupportsGreaterEqual
 
 
+.. latex:clearpage::
+
 Utility Functions
 ---------------------
 

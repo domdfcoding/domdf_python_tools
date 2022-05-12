@@ -140,6 +140,8 @@ class UserList(MutableSequence[_T]):
 	:param initlist: The initial values to populate the :class:`~.UserList` with.
 	:default initlist: ``[]``
 
+	.. latex:clearpage::
+
 	.. admonition:: Subclassing requirements
 
 		Subclasses of :class:`~.UserList` are expected to offer a constructor which can be called with
@@ -290,7 +292,11 @@ class UserList(MutableSequence[_T]):
 
 		:param item:
 
+		:rtype:
+
 		:raises ValueError: if the item is not present.
+
+		.. latex:clearpage::
 		"""
 
 		self.data.remove(item)
@@ -573,8 +579,6 @@ class NamedList(UserList[_T]):
 	.. versionchanged:: 0.10.0
 
 		:class:`~.NamedList` now subclasses :class:`.UserList` rather than :class:`collections.UserList`.
-
-	.. latex:clearpage::
 	"""
 
 	def __repr__(self) -> str:

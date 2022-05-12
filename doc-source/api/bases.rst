@@ -3,7 +3,6 @@
 ==================================
 
 .. autosummary-widths:: 5/16
-	:html: 2/10
 
 .. automodule:: domdf_python_tools.bases
 	:autosummary-members:
@@ -92,6 +91,7 @@ UserFloat
 	:special-members:
 	:exclude-members: __ceil__,__floor__,conjugate,imag,real
 
+.. latex:clearpage::
 
 Lineup
 ---------

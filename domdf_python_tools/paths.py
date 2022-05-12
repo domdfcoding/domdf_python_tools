@@ -171,8 +171,6 @@ def copytree(
 	In Python 3.8 and above :func:`shutil.copytree` takes a ``dirs_exist_ok`` argument,
 	which has the same result.
 
-	.. latex:clearpage::
-
 	:param src: Source file to copy
 	:param dst: Destination to copy file to
 	:param symlinks: Whether to represent symbolic links in the source as symbolic
@@ -819,10 +817,18 @@ class PathPlus(pathlib.Path):
 			r"""
 			Returns whether the path is relative to another path.
 
-			.. versionadded:: 0.3.8 for Python 3.9 and above
-			.. versionadded:: 1.4.0 for Python 3.6 and Python 3.7
+			.. versionadded:: 0.3.8 for Python 3.9 and above.
+			.. latex:vspace:: -10px
+			.. versionadded:: 1.4.0 for Python 3.6 and Python 3.7.
+			.. latex:vspace:: -10px
 
 			:param \*other:
+
+			.. latex:vspace:: -20px
+
+			:rtype:
+
+			.. latex:vspace:: -20px
 			"""
 
 			try:
@@ -1052,7 +1058,6 @@ def matchglob(filename: PathLike, pattern: str, matchcase: bool = True) -> bool:
 
 	.. seealso:: :wikipedia:`Glob (programming)#Syntax` on Wikipedia
 	.. versionchanged:: 2.5.0  Added the ``matchcase`` option.
-	.. latex:clearpage::
 	"""
 
 	match_func = fnmatch.fnmatchcase if matchcase else fnmatch.fnmatch

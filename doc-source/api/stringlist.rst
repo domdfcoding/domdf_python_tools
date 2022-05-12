@@ -3,7 +3,6 @@
 =====================================
 
 .. autosummary-widths:: 51/128
-	:html: 3/10
 
 .. automodule:: domdf_python_tools.stringlist
 	:no-members:

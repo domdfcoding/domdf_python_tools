@@ -173,6 +173,10 @@ class JsonLibrary(Protocol):
 		:param parse_constant:
 		:param object_pairs_hook:
 		:param kwds:
+
+		:rtype:
+
+		.. latex:clearpage::
 		"""
 
 

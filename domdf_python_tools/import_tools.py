@@ -120,12 +120,12 @@ def discover_in_module(
 	"""
 	Returns a list of objects in the given module, optionally filtered by ``match_func``.
 
+	.. versionadded:: 2.6.0
+
 	:param module: A Python module.
 	:param match_func: Function taking an object and returning :py:obj:`True` if the object is to be included in the output.
 	:default match_func: :py:obj:`None`, which includes all objects.
 	:param exclude_side_effects: Don't include objects that are only there because of an import side effect.
-
-	.. versionadded:: 2.6.0
 	"""
 
 	matching_objects = []

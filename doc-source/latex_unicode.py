@@ -52,7 +52,7 @@ from sphinx.util.docutils import SphinxDirective, SphinxRole, unescape
 from sphinx_toolbox import latex
 from sphinx_toolbox.more_autodoc.typehints import default_preprocessors, format_annotation
 from sphinx_toolbox.more_autosummary import PatchedAutoSummClassDocumenter
-from sphinx_toolbox_experimental.autosummary_widths import AutosummaryWidths
+from sphinx_toolbox.more_autosummary.column_widths import AutosummaryWidths
 
 # this package
 from domdf_python_tools.paths import PathPlus
