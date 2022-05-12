@@ -247,6 +247,7 @@ def stderr_writer(
 	print(*values, sep=sep, end=end, file=sys.stderr, flush=True)
 	sys.stderr.flush()
 
+
 #: Alias of :func:`~.stderr_writer`
 printe = stderr_writer
 
