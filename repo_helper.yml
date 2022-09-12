@@ -3,7 +3,7 @@ modname: domdf_python_tools
 copyright_years: "2019-2022"
 author: "Dominic Davis-Foster"
 email: "dominic@davis-foster.co.uk"
-version: "3.3.0"
+version: "3.4.0"
 username: "domdfcoding"
 license: 'MIT'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
