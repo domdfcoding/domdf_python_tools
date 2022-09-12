@@ -112,9 +112,9 @@ Functions
 .. autofunction:: domdf_python_tools.words.get_words_list
 .. autofunction:: domdf_python_tools.words.get_random_word
 .. autofunction:: domdf_python_tools.words.word_join
-
-
 .. latex:clearpage::
+.. autofunction:: domdf_python_tools.words.truncate_string
+
 
 Classes
 -------------

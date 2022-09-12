@@ -18,7 +18,8 @@ from domdf_python_tools.words import (
 		PluralPhrase,
 		alpha_sort,
 		get_random_word,
-		get_words_list
+		get_words_list,
+		truncate_string
 		)
 
 
@@ -208,3 +209,11 @@ def test_pluralphrase():
 	assert repr(phrase3) == phrase3_repr
 	phrase4_repr = "PluralPhrase(template='The farmer has {n} {0}. The {0} {1} brown.', words=(Plural('cow', 'cows'), Plural('is', 'are')))"
 	assert repr(phrase4) == phrase4_repr
+
+
+def test_truncate():
+	message = "hello world this is a very long sentance with no point"
+	assert truncate_string(message, 20) == "hello world this ..."
+	assert truncate_string(message, 30) == "hello world this is a very ..."
+	assert truncate_string(message, 30, '…') == "hello world this is a very lo…"
+	assert truncate_string(message, 200, '…') == message

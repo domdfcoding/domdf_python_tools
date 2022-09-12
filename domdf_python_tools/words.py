@@ -76,6 +76,7 @@ __all__ = [
 		"LF",
 		"Plural",
 		"PluralPhrase",
+		"truncate_string",
 		]
 
 ascii_digits = "0123456789"
@@ -685,3 +686,30 @@ class PluralPhrase(NamedTuple):
 
 		plural_words = [x(n) for x in self.words]
 		return self.template.format(*plural_words, n=n)
+
+
+@functools.lru_cache()
+def _slice_end(max_length: int, ending: str = "...") -> slice:
+	slice_end = max_length - len(ending)
+	return slice(slice_end)
+
+
+def truncate_string(string: str, max_length: int, ending: str = "...") -> str:
+	"""
+	Truncate a string to ``max_length`` characters, and put ``ending`` on the end.
+
+	The truncated string is further truncated by the length of ``ending`` so the returned string is no more then ``max_length``.
+
+	.. versionadded:: 3.3.0
+
+	:param string:
+	:param max_length:
+	:param ending:
+	"""
+
+	string_length = len(string)
+
+	if string_length > max_length:
+		return string[_slice_end(max_length, ending)] + ending
+	else:
+		return string
