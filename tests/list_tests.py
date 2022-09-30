@@ -296,13 +296,13 @@ class CommonTest(seq_tests.CommonTest):
 		# overflow test. issue1621
 		class CustomIter:
 
-			def __iter__(self):
+			def __iter__(self):  # noqa: MAN002
 				return self
 
-			def __next__(self):
+			def __next__(self):  # noqa: MAN002
 				raise StopIteration
 
-			def __length_hint__(self):
+			def __length_hint__(self):  # noqa: MAN002
 				return sys.maxsize
 
 		a = self.type2test([1, 2, 3, 4])
@@ -378,7 +378,7 @@ class CommonTest(seq_tests.CommonTest):
 
 		class BadCmp:
 
-			def __eq__(self, other):
+			def __eq__(self, other):  # noqa: MAN001,MAN002
 				if other == 2:
 					raise BadExc()
 				return False
@@ -389,7 +389,7 @@ class CommonTest(seq_tests.CommonTest):
 
 		class BadCmp2:
 
-			def __eq__(self, other):
+			def __eq__(self, other):  # noqa: MAN001,MAN002
 				raise BadExc()
 
 		d = self.type2test("abcdefghcij")
@@ -422,10 +422,10 @@ class CommonTest(seq_tests.CommonTest):
 		# Test modifying the list during index's iteration
 		class EvilCmp:
 
-			def __init__(self, victim):
+			def __init__(self, victim):  # noqa: MAN001
 				self.victim = victim
 
-			def __eq__(self, other):
+			def __eq__(self, other):  # noqa: MAN001,MAN002
 				del self.victim[:]
 				return False
 
@@ -501,7 +501,7 @@ class CommonTest(seq_tests.CommonTest):
 		with pytest.raises(TypeError):
 			u.sort(42, 42)
 
-		def revcmp(a, b):
+		def revcmp(a, b):  # noqa: MAN001,MAN002
 			if a == b:
 				return 0
 			elif a < b:
@@ -602,7 +602,7 @@ class CommonTest(seq_tests.CommonTest):
 		# Bug #1242657
 		class F:
 
-			def __iter__(self):
+			def __iter__(self):  # noqa: MAN002
 				raise KeyboardInterrupt
 
 		with pytest.raises(KeyboardInterrupt):

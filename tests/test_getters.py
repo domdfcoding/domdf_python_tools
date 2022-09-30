@@ -8,6 +8,7 @@
 
 # stdlib
 import pickle
+from typing import Any
 
 # 3rd party
 import pytest
@@ -276,10 +277,10 @@ class TestMethodcaller:
 			def foo(self, *args, **kwds):
 				return args[0] + args[1]
 
-			def bar(self, f=42):
+			def bar(self, f=42):  # noqa: MAN001,MAN002
 				return f
 
-			def baz(*args, **kwds):
+			def baz(*args, **kwds):  # noqa: MAN002
 				return kwds["name"], kwds["self"]
 
 		a = A()
@@ -370,6 +371,6 @@ class TestMethodcaller:
 		evaluate(repr(methodcaller(1, "__iter__", "arg1", "arg2", kw1="kwarg1", kw2="kwarg2")))
 
 
-def copy(obj, proto):
+def copy(obj: Any, proto: int):
 	pickled = pickle.dumps(obj, proto)
 	return pickle.loads(pickled)  # nosec: B301

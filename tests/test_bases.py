@@ -64,7 +64,7 @@ class TestDictable:
 		assert alice.age == 20
 		assert alice.occupation == "IRC Lurker"
 
-	def test_str(self, alice):
+	def test_str(self, alice: object):
 		assert str(alice).startswith("<tests.test_bases.Person")
 
 	def test_equality(self):

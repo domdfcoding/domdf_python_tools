@@ -17,19 +17,19 @@ units_ints_zero2thousand: List[Union[Unit, int]] = [*units_zero2thousand, *zero2
 
 
 @pytest.mark.parametrize("unit", units_of_12)
-def test_repr(unit):
+def test_repr(unit: Unit):
 	assert re.match(r"<Unit '12\.000 .*': .*pt", repr(unit))
 
 
 @pytest.mark.parametrize("unit", units_of_12)
-def test_str(unit):
+def test_str(unit: Unit):
 	assert re.match(r"<Unit '12\.000\u205F.*': .*pt", str(unit))
 
 
 class TestMul:
 
 	@pytest.mark.parametrize("obj", units_zero2thousand)
-	def test_mul_errors(self, obj):
+	def test_mul_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Multiplying a unit by another unit is not allowed."):
 			Unit(17) * obj  # pylint: disable=expression-not-assigned
 
@@ -39,12 +39,12 @@ class TestMul:
 		assert obj * Unit(17 / 2) == obj * (17 / 2)
 
 	@pytest.mark.parametrize("obj", units_zero2thousand)
-	def test_rmul_errors(self, obj):
+	def test_rmul_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Multiplying a unit by another unit is not allowed."):
 			obj * Unit(17)  # pylint: disable=expression-not-assigned
 
 	@pytest.mark.parametrize("obj", units_ints_zero2thousand)
-	def test_pow_errors(self, obj):
+	def test_pow_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Powers are not supported for units."):
 			Unit(17)**obj  # pylint: disable=expression-not-assigned
 
@@ -61,7 +61,7 @@ class TestDiv:
 		assert truediv(Unit(17 / 2), obj) == (17 / 2) / obj
 
 	@pytest.mark.parametrize("obj", units_zero2thousand)
-	def test_truediv_errors(self, obj):
+	def test_truediv_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Dividing a unit by another unit is not allowed."):
 			truediv(Unit(17), obj)
 		with pytest.raises(NotImplementedError, match="Dividing a unit by another unit is not allowed."):
@@ -73,14 +73,14 @@ class TestDiv:
 		assert floordiv(Unit(17 / 2), obj) == (17 / 2) // obj
 
 	@pytest.mark.parametrize("obj", units_zero2thousand)
-	def test_floordiv_errors(self, obj):
+	def test_floordiv_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Dividing a unit by another unit is not allowed."):
 			floordiv(Unit(17), obj)
 		with pytest.raises(NotImplementedError, match="Dividing a unit by another unit is not allowed."):
 			floordiv(obj, Unit(17))
 
 	@pytest.mark.parametrize("obj", units_zero2thousand)
-	def test_modulo_errors(self, obj):
+	def test_modulo_errors(self, obj: Unit):
 		with pytest.raises(NotImplementedError, match="Modulo division of a unit by another unit is not allowed."):
 			Unit(17) % obj  # pylint: disable=expression-not-assigned
 		with pytest.raises(NotImplementedError, match="Modulo division of a unit by another unit is not allowed."):
@@ -91,7 +91,7 @@ class TestDiv:
 		assert Unit(17) % obj == 17 % obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_rtruediv_errors(self, obj):
+	def test_rtruediv_errors(self, obj: int):
 		with pytest.raises(NotImplementedError, match="Dividing by a unit is not allowed."):
 			truediv(obj, Unit(17))
 
@@ -103,19 +103,19 @@ class TestDiv:
 class TestAdd:
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_add_unit(self, unit, obj: int):
+	def test_add_unit(self, unit: Unit, obj: int):
 		assert isinstance(unit + Unit(obj), Unit)
 		assert (unit + Unit(obj)).name == unit.name
 		assert (unit + Unit(obj)).as_pt() == unit.as_pt() + obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_radd_unit(self, unit, obj: int):
+	def test_radd_unit(self, unit: Unit, obj: int):
 		assert isinstance(Unit(obj) + unit, Unit)
 		assert (Unit(obj) + unit).name == "pt"
 		assert (Unit(obj) + unit).as_pt() == unit.as_pt() + obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_add_number(self, unit, obj: int):
+	def test_add_number(self, unit: Unit, obj: int):
 
 		assert isinstance(Unit(12) + obj, Unit)
 		assert (Unit(12) + obj).name == "pt"
@@ -126,7 +126,7 @@ class TestAdd:
 		assert (UnitInch(1) + obj) == UnitInch.from_pt(72) + obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_radd_number(self, unit, obj: int):
+	def test_radd_number(self, unit: Unit, obj: int):
 		assert isinstance(obj + Unit(12), Unit)
 		assert (obj + Unit(12)).name == "pt"
 		assert (obj + Unit(12)).as_pt() == 12 + obj
@@ -140,19 +140,19 @@ class TestAdd:
 class TestSub:
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_sub_unit(self, unit, obj: int):
+	def test_sub_unit(self, unit: Unit, obj: int):
 		assert isinstance(unit + Unit(obj), Unit)
 		assert (unit - Unit(obj)).name == unit.name
 		assert (unit - Unit(obj)).as_pt() == unit.as_pt() - obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_rsub_unit(self, unit, obj: int):
+	def test_rsub_unit(self, unit: Unit, obj: int):
 		assert isinstance(Unit(obj) - unit, Unit)
 		assert (Unit(obj) - unit).name == "pt"
 		assert (Unit(obj) - unit).as_pt() == obj - unit.as_pt()
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_sub_number(self, unit, obj: int):
+	def test_sub_number(self, unit: Unit, obj: int):
 
 		assert isinstance(Unit(12) - obj, Unit)
 		assert (Unit(12) - obj).name == "pt"
@@ -163,7 +163,7 @@ class TestSub:
 		assert (UnitInch(1) - obj) == UnitInch.from_pt(72) - obj
 
 	@pytest.mark.parametrize("obj", zero2thousand)
-	def test_rsub_number(self, unit, obj: int):
+	def test_rsub_number(self, unit: Unit, obj: int):
 		assert isinstance(obj + Unit(12), Unit)
 		assert (obj - Unit(12)).name == "pt"
 		assert (obj - Unit(12)).as_pt() == obj - 12

@@ -12,7 +12,6 @@ import os
 import shutil
 from contextlib import redirect_stdout
 from io import StringIO
-from types import SimpleNamespace
 
 # 3rd party
 import pytest
@@ -21,9 +20,18 @@ import pytest
 from domdf_python_tools.paths import DirComparator, PathPlus, compare_dirs
 
 
+class ComparatorTmpdirData:
+	__slots__ = ("dir", "dir_same", "dir_diff", "dir_ignored", "caseinsensitive")
+	dir: str  # noqa: A003  # pylint: disable=redefined-builtin
+	dir_same: str
+	dir_diff: str
+	dir_ignored: str
+	caseinsensitive: bool
+
+
 @pytest.fixture()
-def comparator_tmpdir(tmp_pathplus):
-	data = SimpleNamespace()
+def comparator_tmpdir(tmp_pathplus: PathPlus) -> ComparatorTmpdirData:
+	data = ComparatorTmpdirData()
 	data.dir = os.path.join(tmp_pathplus, "dir")
 	data.dir_same = os.path.join(tmp_pathplus, "dir-same")
 	data.dir_diff = os.path.join(tmp_pathplus, "dir-diff")

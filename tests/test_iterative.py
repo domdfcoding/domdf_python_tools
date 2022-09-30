@@ -21,7 +21,7 @@ import sys
 from itertools import islice
 from random import shuffle
 from types import GeneratorType
-from typing import List, Tuple
+from typing import Any, Iterable, List, Optional, Sequence, Tuple, TypeVar
 
 # 3rd party
 import pytest
@@ -241,7 +241,7 @@ def test_ranges_from_iterable():
 	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
 
 
-def _extend_param(sequence, expects):
+def _extend_param(sequence: Sequence, expects: Any):
 	return pytest.param(sequence, expects, id=sequence)
 
 
@@ -257,7 +257,7 @@ def _extend_param(sequence, expects):
 				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
 				]
 		)
-def test_extend(sequence, expects):
+def test_extend(sequence: Sequence[str], expects: str):
 	assert ''.join(extend(sequence, 4)) == expects
 
 
@@ -273,7 +273,7 @@ def test_extend(sequence, expects):
 				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
 				]
 		)
-def test_extend_with(sequence, expects):
+def test_extend_with(sequence: Sequence[str], expects: str):
 	assert ''.join(extend_with(sequence, 4, 'z')) == expects
 
 
@@ -294,7 +294,10 @@ def lzip(*args):
 	return list(zip(*args))
 
 
-def take(n, seq):
+_T = TypeVar("_T")
+
+
+def take(n: Optional[int], seq: Iterable[_T]) -> List[_T]:
 	"""
 	Convenience function for partially consuming a long of infinite iterable
 	"""
@@ -417,7 +420,7 @@ def test_count_with_stride():
 			# 	pickletest(proto, count(i, j))
 
 
-def pickletest(protocol, it, stop=4, take=1, compare=None):
+def pickletest(protocol: int, it, stop: int = 4, take: int = 1, compare=None):
 	"""
 	Test that an iterator is the same after pickling, also when part-consumed
 	"""

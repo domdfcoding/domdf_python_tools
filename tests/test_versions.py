@@ -3,6 +3,7 @@ import copy
 import pickle
 import platform
 import sys
+from typing import Any
 
 # 3rd party
 import pytest
@@ -260,7 +261,7 @@ def test_equals(value, version):
 				([0, 9, 1], Version(0, 9)),
 				],
 		)
-def test_lt(value, version):
+def test_lt(value: Any, version: Version):
 	assert value > version
 	assert version < value
 

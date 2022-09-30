@@ -8,6 +8,7 @@ Test functions in pagesizes.py
 
 # stdlib
 from math import isclose
+from typing import List, Tuple, Type
 
 # 3rd party
 import pytest
@@ -28,6 +29,7 @@ from domdf_python_tools.pagesizes import (
 		Size_mm,
 		Size_pica,
 		Size_um,
+		Unit,
 		cm,
 		convert_from,
 		inch,
@@ -65,7 +67,7 @@ from domdf_python_tools.pagesizes.utils import _measurement_re
 						),
 				],
 		)
-def test_repr(obj, expects):
+def test_repr(obj: Unit, expects: str):
 	assert repr(obj) == expects
 
 
@@ -78,12 +80,12 @@ def test_repr(obj, expects):
 				(Size_pica(12, 34), "Size_pica(width=12, height=34)"),
 				],
 		)
-def test_str(obj, expects):
+def test_str(obj: Unit, expects: str):
 	assert str(obj) == expects
 
 
 @pytest.mark.parametrize("size", [A6, A5, A4, A3, A2, A1, A0])
-def test_orientation(size):
+def test_orientation(size: BaseSize):
 	assert size.is_portrait()
 	assert size.portrait().is_portrait()
 	assert size.landscape().portrait().is_portrait()
@@ -106,7 +108,7 @@ def test_is_square():
 
 
 @pytest.mark.parametrize("unit", [pt, inch, cm, mm, um, pc])
-def test_convert_size(unit):
+def test_convert_size(unit: Unit):
 	size = PageSize(12, 34, unit)
 	unit_str = unit.name
 	if unit_str == "µm":
@@ -176,7 +178,7 @@ def test_convert_size(unit):
 				pytest.param(2, 5, 10, id="not isinstance(from_, Unit)"),
 				],
 		)
-def test_convert_from(value, unit, expects):
+def test_convert_from(value: List[int], unit, expects: Tuple[float, ...]):
 	assert convert_from(value, unit) == expects
 
 
@@ -187,7 +189,7 @@ def test_convert_from(value, unit, expects):
 				((12, 34), Size_mm(12, 34), Size_mm),
 				],
 		)
-def test_from_size(size, expected, class_):
+def test_from_size(size: Tuple[int, int], expected: Unit, class_: Type[BaseSize]):
 	print(class_.from_size(size))
 	assert class_.from_size(size) == expected
 
@@ -210,7 +212,7 @@ def test_from_size(size, expected, class_):
 				("10μm", [("10", "μm")]),
 				],
 		)
-def test_measurement_re(string, expects):
+def test_measurement_re(string: str, expects: Unit):
 	assert _measurement_re.findall(string) == expects
 
 
@@ -261,5 +263,5 @@ def test_parse_measurement_errors():
 				("5in", 5 * inch),
 				],
 		)
-def test_parse_measurement(string, expects):
+def test_parse_measurement(string: str, expects: Unit):
 	assert parse_measurement(string) == expects

@@ -15,7 +15,7 @@ import shutil
 import socket
 import stat
 import sys
-from typing import Set
+from typing import Iterator, Set
 from unittest import mock
 
 # 3rd party
@@ -54,7 +54,7 @@ only_posix = pytest.mark.skipif(condition=os.name == "nt", reason="test requires
 
 
 @pytest.fixture()
-def BASE(tmp_pathplus: PathPlus):
+def BASE(tmp_pathplus: PathPlus) -> Iterator[PathPlus]:
 	top_dir = tmp_pathplus
 	tmp_pathplus = top_dir / "a/b/c/d"
 	tmp_pathplus.maybe_make(parents=True)
@@ -114,7 +114,7 @@ else:
 		os.symlink(src, dest)
 
 
-def test_stat(BASE):
+def test_stat(BASE: PathPlus):
 	p = PathPlus(BASE) / "fileA"
 	st = p.stat()
 	assert (p.stat() == st)
@@ -128,7 +128,7 @@ def test_stat(BASE):
 
 
 @pytest.mark.skipif(not hasattr(socket, "AF_UNIX"), reason="Unix sockets required")
-def test_is_socket_true(BASE):
+def test_is_socket_true(BASE: PathPlus):
 	P = PathPlus(BASE, "mysock")
 	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 	try:
@@ -153,7 +153,7 @@ def test_cwd():
 	assert (p.is_absolute())
 
 
-def test_read_write_text(BASE):
+def test_read_write_text(BASE: PathPlus):
 	p = PathPlus(BASE)
 	(p / "fileA").write_text("äbcdefg", encoding="latin-1")
 	assert ((p / "fileA").read_text(encoding="utf-8", errors="ignore") == "bcdefg")
@@ -163,7 +163,7 @@ def test_read_write_text(BASE):
 	assert ((p / "fileA").read_text(encoding="latin-1") == "äbcdefg")
 
 
-def test_with(BASE):
+def test_with(BASE: PathPlus):
 	p = PathPlus(BASE)
 	it = p.iterdir()
 	it2 = p.iterdir()
@@ -182,7 +182,7 @@ def test_with(BASE):
 		pass
 
 
-def test_chmod(BASE):
+def test_chmod(BASE: PathPlus):
 	p = PathPlus(BASE) / "fileA"
 	mode = p.stat().st_mode
 	# Clear writable bit.
@@ -195,13 +195,13 @@ def test_chmod(BASE):
 	assert (p.stat().st_mode == new_mode)
 
 
-def test_lstat_nosymlink(BASE):
+def test_lstat_nosymlink(BASE: PathPlus):
 	p = PathPlus(BASE) / "fileA"
 	st = p.stat()
 	assert (st == p.lstat())
 
 
-def test_owner(BASE):
+def test_owner(BASE: PathPlus):
 	pwd = pytest.importorskip("pwd", reason="the pwd module is needed for this test")
 
 	p = PathPlus(BASE) / "fileA"
@@ -213,7 +213,7 @@ def test_owner(BASE):
 	assert (name == p.owner())
 
 
-def test_group(BASE):
+def test_group(BASE: PathPlus):
 	grp = pytest.importorskip("grp", reason="the grp module is needed for this test")
 
 	p = PathPlus(BASE) / "fileA"
@@ -225,7 +225,7 @@ def test_group(BASE):
 	assert (name == p.group())
 
 
-def test_unlink(BASE):
+def test_unlink(BASE: PathPlus):
 	p = PathPlus(BASE) / "fileA"
 	p.unlink()
 	with pytest.raises(FileNotFoundError):
@@ -234,14 +234,14 @@ def test_unlink(BASE):
 		p.unlink()
 
 
-def test_unlink_missing_ok(BASE):
+def test_unlink_missing_ok(BASE: PathPlus):
 	p = PathPlus(BASE) / "fileAAA"
 	with pytest.raises(FileNotFoundError):
 		p.unlink()
 	p.unlink(missing_ok=True)
 
 
-def test_rmdir(BASE):
+def test_rmdir(BASE: PathPlus):
 	p = PathPlus(BASE) / "dirA"
 	for q in p.iterdir():
 		q.unlink()
@@ -253,7 +253,7 @@ def test_rmdir(BASE):
 
 
 @pytest.mark.skipif(hasattr(os, "link"), reason="os.link() is present")
-def test_link_to_not_implemented(BASE):
+def test_link_to_not_implemented(BASE: PathPlus):
 	P = PathPlus(BASE) / TESTFN
 	p = P / "fileA"
 	# linking to another path.
@@ -295,7 +295,7 @@ def test_rename(BASE, tmp_pathplus: PathPlus):
 		q.stat()
 
 
-def test_touch_common(BASE):
+def test_touch_common(BASE: PathPlus):
 	P = PathPlus(BASE)
 	p = P / "newfileA"
 	assert not (p.exists())
@@ -303,7 +303,7 @@ def test_touch_common(BASE):
 	assert (p.exists())
 
 
-def test_touch_nochange(BASE):
+def test_touch_nochange(BASE: PathPlus):
 	P = PathPlus(BASE)
 	p = P / "fileA"
 	p.touch()
@@ -311,7 +311,7 @@ def test_touch_nochange(BASE):
 		assert (f.read().strip() == b"this is file A")
 
 
-def test_mkdir(BASE):
+def test_mkdir(BASE: PathPlus):
 	P = PathPlus(BASE)
 	p = P / "newdirA"
 	assert not (p.exists())
@@ -323,7 +323,7 @@ def test_mkdir(BASE):
 	assert (cm.value.errno == errno.EEXIST)
 
 
-def test_mkdir_parents(BASE):
+def test_mkdir_parents(BASE: PathPlus):
 	# Creating a chain of directories.
 	p = PathPlus(BASE, "newdirB", "newdirC")
 	assert not (p.exists())
@@ -349,7 +349,7 @@ def test_mkdir_parents(BASE):
 	assert (stat.S_IMODE(p.parent.stat().st_mode) == mode)
 
 
-def test_mkdir_exist_ok(BASE):
+def test_mkdir_exist_ok(BASE: PathPlus):
 	p = PathPlus(BASE, "dirB")
 	st_ctime_first = p.stat().st_ctime
 	assert (p.exists())
@@ -362,7 +362,7 @@ def test_mkdir_exist_ok(BASE):
 	assert (p.stat().st_ctime == st_ctime_first)
 
 
-def test_mkdir_exist_ok_with_parent(BASE):
+def test_mkdir_exist_ok_with_parent(BASE: PathPlus):
 	p = PathPlus(BASE, "dirC")
 	assert p.exists()
 	with pytest.raises(FileExistsError) as cm:
@@ -398,7 +398,7 @@ def test_mkdir_with_unknown_drive():
 		(p / "child" / "path").mkdir(parents=True)
 
 
-def test_mkdir_with_child_file(BASE):
+def test_mkdir_with_child_file(BASE: PathPlus):
 	p = PathPlus(BASE, "dirB", "fileB")
 	assert p.exists()
 	# An exception is raised when the last path component is an existing
@@ -411,7 +411,7 @@ def test_mkdir_with_child_file(BASE):
 	assert exc_info.value.errno == errno.EEXIST
 
 
-def test_mkdir_no_parents_file(BASE):
+def test_mkdir_no_parents_file(BASE: PathPlus):
 	p = PathPlus(BASE, "fileA")
 	assert p.exists()
 	# An exception is raised when the last path component is an existing
@@ -424,7 +424,7 @@ def test_mkdir_no_parents_file(BASE):
 	assert exc_info.value.errno == errno.EEXIST
 
 
-def test_mkdir_concurrent_parent_creation(BASE):
+def test_mkdir_concurrent_parent_creation(BASE: PathPlus):
 	for pattern_num in range(32):
 		p = PathPlus(BASE, "dirCPC%d" % pattern_num)
 		assert not (p.exists())
@@ -464,7 +464,7 @@ def test_mkdir_concurrent_parent_creation(BASE):
 		PYPY and sys.platform == "win32",
 		reason="symlink() is not implemented for PyPy on Windows",
 		)
-def test_symlink_to(BASE):
+def test_symlink_to(BASE: PathPlus):
 	P = PathPlus(BASE)
 	target = P / "fileA"
 	# Symlinking a path target.
@@ -488,7 +488,7 @@ def test_symlink_to(BASE):
 	assert (list(link.iterdir()))
 
 
-def test_is_dir(BASE):
+def test_is_dir(BASE: PathPlus):
 	P = PathPlus(BASE)
 	assert ((P / "dirA").is_dir())
 	assert not ((P / "fileA").is_dir())
@@ -501,7 +501,7 @@ def test_is_dir(BASE):
 		assert not (P / "brokenLink").is_dir()
 
 
-def test_is_file(BASE):
+def test_is_file(BASE: PathPlus):
 	P = PathPlus(BASE)
 	assert ((P / "fileA").is_file())
 	assert not ((P / "dirA").is_file())
@@ -515,7 +515,7 @@ def test_is_file(BASE):
 
 
 @only_posix
-def test_is_mount(BASE):
+def test_is_mount(BASE: PathPlus):
 	P = PathPlus(BASE)
 	R = PathPlus('/')  # TODO: Work out Windows.
 	assert not ((P / "fileA").is_mount())
@@ -527,7 +527,7 @@ def test_is_mount(BASE):
 		assert not ((P / "linkA").is_mount())
 
 
-def test_is_symlink(BASE):
+def test_is_symlink(BASE: PathPlus):
 	P = PathPlus(BASE)
 	assert not ((P / "fileA").is_symlink())
 	assert not ((P / "dirA").is_symlink())
@@ -540,7 +540,7 @@ def test_is_symlink(BASE):
 		assert ((P / "brokenLink").is_symlink())
 
 
-def test_is_fifo_false(BASE):
+def test_is_fifo_false(BASE: PathPlus):
 	P = PathPlus(BASE)
 	assert not ((P / "fileA").is_fifo())
 	assert not ((P / "dirA").is_fifo())
@@ -548,7 +548,7 @@ def test_is_fifo_false(BASE):
 	assert not ((P / "fileA" / "bah").is_fifo())
 
 
-def test_is_socket_false(BASE):
+def test_is_socket_false(BASE: PathPlus):
 	P = PathPlus(BASE)
 	assert not (P / "fileA").is_socket()
 	assert not (P / "dirA").is_socket()
@@ -582,7 +582,7 @@ def test_is_char_device_true():
 	assert not P.is_file()
 
 
-def test_pickling_common(BASE):
+def test_pickling_common(BASE: PathPlus):
 	p = PathPlus(BASE, "fileA")
 	for proto in range(0, pickle.HIGHEST_PROTOCOL + 1):
 		dumped = pickle.dumps(p, proto)
@@ -615,7 +615,7 @@ def test_glob_empty_pattern(tmp_pathplus: PathPlus):
 
 @pytest.mark.usefixtures("_umask_0")
 @only_posix
-def test_open_mode(BASE):
+def test_open_mode(BASE: PathPlus):
 
 	p = PathPlus(BASE)
 	with (p / "new_file").open("wb"):
@@ -630,7 +630,7 @@ def test_open_mode(BASE):
 
 
 @only_posix
-def test_touch_mode(BASE):
+def test_touch_mode(BASE: PathPlus):
 	old_mask = os.umask(0)
 
 	try:

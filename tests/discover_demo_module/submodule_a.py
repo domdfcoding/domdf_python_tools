@@ -1,6 +1,6 @@
-def foo():
+def foo():  # noqa
 	pass
 
 
-def bar():
+def bar():  # noqa
 	pass

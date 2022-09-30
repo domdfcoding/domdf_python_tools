@@ -17,7 +17,7 @@ from typing import no_type_check
 
 # 3rd party
 import pytest
-from coincidence.regressions import AdvancedFileRegressionFixture, check_file_regression
+from coincidence.regressions import AdvancedFileRegressionFixture
 
 # this package
 from domdf_python_tools.pretty_print import FancyPrinter, simple_repr
