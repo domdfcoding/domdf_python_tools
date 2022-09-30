@@ -53,6 +53,7 @@ Utilities for working with dates and times.
 # stdlib
 import datetime
 import sys
+import time
 import typing
 from collections import OrderedDict
 from types import ModuleType
@@ -69,6 +70,7 @@ __all__ = [
 		"calc_easter",
 		"month_short_names",
 		"month_full_names",
+		"is_bst",
 		]
 
 
@@ -316,6 +318,43 @@ def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[
 	d = date.replace(tzinfo=None)
 
 	return pytz.timezone(tz).localize(d).tzinfo
+
+
+def is_bst(the_date: Union[time.struct_time, datetime.date]) -> bool:
+	"""
+	Calculates whether the given day falls within British Summer Time.
+
+	This function should also be applicable to other timezones which change to summer time on the same date (e.g. Central European Summer Time).
+
+	.. note::
+
+		This function does not consider the time of day,
+		and therefore does not handle the fact that the time changes at 1 AM GMT.
+		It also does not account for historic deviations from the current norm.
+
+	.. versionadded:: 3.5.0
+
+	:param the_date: A :class:`time.struct_time`, :class:`datetime.date`
+		or :class:`datetime.datetime` representing the target date.
+
+	:returns: :py:obj:`True` if the date falls within British Summer Time, :py:obj:`False` otherwise.
+	"""
+
+	if isinstance(the_date, datetime.date):
+		the_date = the_date.timetuple()
+
+	day, month, dow = the_date.tm_mday, the_date.tm_mon, (the_date.tm_wday + 1) % 7
+
+	if 3 > month > 10:
+		return False
+	elif 3 < month < 10:
+		return True
+	elif month == 3:
+		return day - dow >= 25
+	elif month == 10:
+		return day - dow < 25
+	else:
+		return False
 
 
 _pytz_functions = ["get_utc_offset", "get_timezone"]
