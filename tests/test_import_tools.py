@@ -1,5 +1,7 @@
 # stdlib
 import inspect
+import platform
+import re
 import sys
 from contextlib import contextmanager
 
@@ -175,16 +177,122 @@ def test_discover_entry_points_by_name_name_match_func(advanced_data_regression:
 		)
 @pytest.mark.parametrize(
 		"module",
-		[
-				"collections",
-				"importlib",
-				"domdf_python_tools",
-				"consolekit",
-				"asyncio",
-				"json",
-				"cRQefleMvm",
-				"reprlib"
-				],
+		["collections", "importlib", "domdf_python_tools", "consolekit", "json", "cRQefleMvm", "reprlib"],
 		)
 def test_iter_submodules(version, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	advanced_data_regression.check(list(iter_submodules(module)))
+
+
+if sys.version_info < (3, 10):
+	# From https://github.com/python/cpython/blob/main/Lib/platform.py#L1319
+	# License: https://github.com/python/cpython/blob/main/LICENSE
+
+	### freedesktop.org os-release standard
+	# https://www.freedesktop.org/software/systemd/man/os-release.html
+
+	# NAME=value with optional quotes (' or "). The regular expression is less
+	# strict than shell lexer, but that's ok.
+	_os_release_line = re.compile("^(?P<name>[a-zA-Z0-9_]+)=(?P<quote>[\"']?)(?P<value>.*)(?P=quote)$")
+	# unescape five special characters mentioned in the standard
+	_os_release_unescape = re.compile(r"\\([\\\$\"\'`])")
+	# /etc takes precedence over /usr/lib
+	_os_release_candidates = ("/etc/os-release", "/usr/lib/os-release")
+
+	def freedesktop_os_release():
+		"""
+		Return operation system identification from freedesktop.org os-release
+		"""
+
+		errno = None
+		for candidate in _os_release_candidates:
+			try:
+				with open(candidate, encoding="utf-8") as f:
+					info = {"ID": "linux"}
+
+					for line in f:
+						mo = _os_release_line.match(line)
+						if mo is not None:
+							info[mo.group("name")] = _os_release_unescape.sub(r"\1", mo.group("value"))
+
+					return info
+
+			except OSError as e:
+				errno = e.errno
+
+		else:
+			raise OSError(errno, f"Unable to read files {', '.join(_os_release_candidates)}")
+
+else:
+	freedesktop_os_release = platform.freedesktop_os_release
+
+on_alt_linux = False
+
+if platform.system() == "Linux":
+	try:
+		on_alt_linux = freedesktop_os_release()["ID"] == "altlinux"
+	except OSError:
+		pass
+
+
+@pytest.mark.parametrize(
+		"version",
+		[
+				pytest.param(3.6, marks=only_version(3.6, reason="Output differs on Python 3.6")),
+				pytest.param(
+						3.7,
+						marks=[
+								only_version(3.7, reason="Output differs on Python 3.7"),
+								not_pypy("Output differs on PyPy")
+								]
+						),
+				pytest.param(
+						"3.7-pypy",
+						marks=[
+								only_version(3.7, reason="Output differs on Python 3.7"),
+								only_pypy("Output differs on PyPy")
+								]
+						),
+				pytest.param(
+						3.8,
+						marks=[
+								only_version(3.8, reason="Output differs on Python 3.8"),
+								not_pypy("Output differs on PyPy 3.8")
+								]
+						),
+				pytest.param(
+						"3.8_pypy",
+						marks=[
+								only_version(3.8, reason="Output differs on Python 3.8"),
+								only_pypy("Output differs on PyPy 3.8")
+								]
+						),
+				pytest.param(
+						3.9,
+						marks=[
+								only_version(3.9, reason="Output differs on Python 3.9"),
+								not_pypy("Output differs on PyPy 3.9")
+								]
+						),
+				pytest.param(
+						"3.9_pypy",
+						marks=[
+								only_version(3.9, reason="Output differs on Python 3.9"),
+								only_pypy("Output differs on PyPy 3.9")
+								]
+						),
+				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
+				]
+		)
+@pytest.mark.parametrize(
+		"platform",
+		[
+				pytest.param('', marks=pytest.mark.skipif(on_alt_linux, reason="Not for ALT Linux")),
+				pytest.param("altlinux", marks=pytest.mark.skipif(not on_alt_linux, reason="Only for ALT Linux")),
+				]
+		)
+def test_iter_submodules_asyncio(
+		platform,
+		version,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		):
+	advanced_data_regression.check(list(iter_submodules("asyncio")))
