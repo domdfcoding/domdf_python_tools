@@ -126,7 +126,7 @@ def test_discover_entry_points_by_name_name_match_func(advanced_data_regression:
 	advanced_data_regression.check({k: v.__name__ for k, v in entry_points.items()})
 
 
-@pytest.mark.parametrize(
+iter_submodules_versions = pytest.mark.parametrize(
 		"version",
 		[
 				pytest.param(3.6, marks=only_version(3.6, reason="Output differs on Python 3.6")),
@@ -175,6 +175,9 @@ def test_discover_entry_points_by_name_name_match_func(advanced_data_regression:
 				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
 				]
 		)
+
+
+@iter_submodules_versions
 @pytest.mark.parametrize(
 		"module",
 		["collections", "importlib", "domdf_python_tools", "consolekit", "json", "cRQefleMvm", "reprlib"],
@@ -233,55 +236,7 @@ if platform.system() == "Linux":
 		pass
 
 
-@pytest.mark.parametrize(
-		"version",
-		[
-				pytest.param(3.6, marks=only_version(3.6, reason="Output differs on Python 3.6")),
-				pytest.param(
-						3.7,
-						marks=[
-								only_version(3.7, reason="Output differs on Python 3.7"),
-								not_pypy("Output differs on PyPy")
-								]
-						),
-				pytest.param(
-						"3.7-pypy",
-						marks=[
-								only_version(3.7, reason="Output differs on Python 3.7"),
-								only_pypy("Output differs on PyPy")
-								]
-						),
-				pytest.param(
-						3.8,
-						marks=[
-								only_version(3.8, reason="Output differs on Python 3.8"),
-								not_pypy("Output differs on PyPy 3.8")
-								]
-						),
-				pytest.param(
-						"3.8_pypy",
-						marks=[
-								only_version(3.8, reason="Output differs on Python 3.8"),
-								only_pypy("Output differs on PyPy 3.8")
-								]
-						),
-				pytest.param(
-						3.9,
-						marks=[
-								only_version(3.9, reason="Output differs on Python 3.9"),
-								not_pypy("Output differs on PyPy 3.9")
-								]
-						),
-				pytest.param(
-						"3.9_pypy",
-						marks=[
-								only_version(3.9, reason="Output differs on Python 3.9"),
-								only_pypy("Output differs on PyPy 3.9")
-								]
-						),
-				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
-				]
-		)
+@iter_submodules_versions
 @pytest.mark.parametrize(
 		"platform",
 		[
