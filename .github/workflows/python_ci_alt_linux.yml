@@ -1,0 +1,65 @@
+# This file is managed by 'repo_helper'. Don't edit it directly.
+---
+name: ALT Linux
+
+on:
+  push:
+    branches-ignore:
+      - 'repo-helper-update'
+      - 'pre-commit-ci-update-config'
+      - 'imgbot'
+    tags:
+      - '*'
+  pull_request:
+
+permissions:
+  actions: write
+  issues: write
+  contents: read
+
+jobs:
+  tests:
+    name: "alt-linux / Python ${{ matrix.config.python-version }}"
+    runs-on: "ubuntu-20.04"
+    container:
+     image: ghcr.io/domdfcoding/alt-linux-python:latest
+    continue-on-error: ${{ matrix.config.experimental }}
+    env:
+      USING_COVERAGE: '3.10'
+
+    strategy:
+      fail-fast: False
+      matrix:
+        config:
+          - {python-version: "3.10", testenvs: "py310,build", experimental: False}
+
+    steps:
+      - name: Checkout 🛎️
+        uses: "actions/checkout@v3"
+
+      - name: "Configure"
+        run: git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
+
+      - name: Check for changed files
+        if: startsWith(github.ref, 'refs/tags/') != true
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          list-files: "json"
+          filters: |
+            code:
+              - '!(doc-source/**|CONTRIBUTING.rst|.imgbotconfig|.pre-commit-config.yaml|.pylintrc|.readthedocs.yml)'
+
+      - name: Install dependencies 🔧
+        id: setup-python
+        if: ${{ steps.changes.outputs.code == 'true' || steps.changes.outcome == 'skipped' }}
+        run: |
+          python3 -VV
+          python3 -m site
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install --upgrade tox virtualenv!=20.16.0
+          python3 -m pip install --upgrade coverage_pyver_pragma
+
+      - name: "Run Tests for Python ${{ matrix.config.python-version }}"
+        if: steps.setup-python.outcome == 'success'
+        run: python3 -m tox -e "${{ matrix.config.testenvs }}" -s false
