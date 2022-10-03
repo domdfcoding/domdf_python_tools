@@ -241,7 +241,7 @@ def test_ranges_from_iterable():
 	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
 
 
-def _extend_param(sequence: Sequence, expects: Any):
+def _extend_param(sequence: str, expects: Any):
 	return pytest.param(sequence, expects, id=sequence)
 
 
