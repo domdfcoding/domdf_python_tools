@@ -219,8 +219,7 @@ if sys.version_info < (3, 10):
 			except OSError as e:
 				errno = e.errno
 
-		else:
-			raise OSError(errno, f"Unable to read files {', '.join(_os_release_candidates)}")
+		raise OSError(errno, f"Unable to read files {', '.join(_os_release_candidates)}")
 
 else:
 	freedesktop_os_release = platform.freedesktop_os_release
