@@ -16,8 +16,8 @@ from collections import namedtuple
 
 # 3rd party
 import click
+import coincidence
 import pytest
-from coincidence import testing_boolean_values
 from coincidence.regressions import AdvancedDataRegressionFixture
 
 # this package
@@ -189,7 +189,7 @@ class TestStr2Tuple:
 
 class TestStrToBool:
 
-	@testing_boolean_values(extra_truthy=[50, -1])
+	@coincidence.testing_boolean_values(extra_truthy=[50, -1])
 	def test_strtobool(self, boolean_string, expected_boolean):
 		assert strtobool(boolean_string) == expected_boolean
 
