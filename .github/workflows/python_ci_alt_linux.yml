@@ -57,7 +57,7 @@ jobs:
           python3 -VV
           python3 -m site
           python3 -m pip install --upgrade pip setuptools wheel
-          python3 -m pip install --upgrade tox virtualenv!=20.16.0
+          python3 -m pip install --upgrade tox~=3.0 virtualenv!=20.16.0
           python3 -m pip install --upgrade coverage_pyver_pragma
 
       - name: "Run Tests for Python ${{ matrix.config.python-version }}"
