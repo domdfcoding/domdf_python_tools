@@ -7,7 +7,7 @@ Functions for working with (English) words.
 .. versionadded:: 0.4.5
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2022 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,7 @@ Functions for working with (English) words.
 import functools
 import random
 import re
+import sys
 from gettext import ngettext
 from reprlib import recursive_repr
 from string import ascii_lowercase, ascii_uppercase
@@ -601,7 +602,8 @@ class Plural(functools.partial):
 			:param n:
 			"""
 
-	if PYPY:  # pragma: no cover (!PyPy)
+	# if PYPY:  # pragma: no cover (!PyPy)
+	if PYPY and sys.version_info < (3, 9):  # pragma: no cover (!PyPy)
 
 		def __init__(self, singular: str, plural: str):
 			super().__init__(ngettext, singular, plural)  # type: ignore[call-arg]
