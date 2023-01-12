@@ -204,6 +204,9 @@ def test_lstat_nosymlink(BASE: PathPlus):
 def test_owner(BASE: PathPlus):
 	pwd = pytest.importorskip("pwd", reason="the pwd module is needed for this test")
 
+	if sys.platform == "win32":
+		return
+
 	p = PathPlus(BASE) / "fileA"
 	uid = p.stat().st_uid
 	try:
@@ -215,6 +218,9 @@ def test_owner(BASE: PathPlus):
 
 def test_group(BASE: PathPlus):
 	grp = pytest.importorskip("grp", reason="the grp module is needed for this test")
+
+	if sys.platform == "win32":
+		return
 
 	p = PathPlus(BASE) / "fileA"
 	gid = p.stat().st_gid
