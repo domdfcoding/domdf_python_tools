@@ -313,10 +313,10 @@ def test_count():
 	assert take(2, zip("abc", count(-3))) == [('a', -3), ('b', -2)]
 
 	with pytest.raises(TypeError, match=r"count\(\) takes from 0 to 2 positional arguments but 3 were given"):
-		count(2, 3, 4)  # type: ignore
+		count(2, 3, 4)  # type: ignore[call-arg]
 
 	with pytest.raises(TypeError, match="a number is required"):
-		count('a')  # type: ignore
+		count('a')  # type: ignore[type-var]
 
 	assert take(10, count(sys.maxsize - 5)) == list(range(sys.maxsize - 5, sys.maxsize + 5))
 	assert take(10, count(-sys.maxsize - 5)) == list(range(-sys.maxsize - 5, -sys.maxsize + 5))
@@ -364,10 +364,10 @@ def test_count_with_stride():
 	assert lzip("abc", count(step=-1)) == [('a', 0), ('b', -1), ('c', -2)]
 
 	with pytest.raises(TypeError, match="a number is required"):
-		count('a', 'b')  # type: ignore
+		count('a', 'b')  # type: ignore[type-var]
 
 	with pytest.raises(TypeError, match="a number is required"):
-		count(5, 'b')  # type: ignore
+		count(5, 'b')  # type: ignore[type-var]
 
 	assert lzip("abc", count(2, 0)) == [('a', 2), ('b', 2), ('c', 2)]
 	assert lzip("abc", count(2, 1)) == [('a', 2), ('b', 3), ('c', 4)]
@@ -474,5 +474,5 @@ def test_subclassing_count():
 			match="type 'domdf_python_tools.iterative.count' is not an acceptable base type",
 			):
 
-		class MyCount(CountType):  # type: ignore
+		class MyCount(CountType):  # type: ignore[valid-type,misc]
 			pass

@@ -55,13 +55,13 @@ class TestAttrgetter:
 			f([a, b])
 
 		with pytest.raises(TypeError, match="attribute name must be a string"):
-			attrgetter(0, 2)  # type: ignore
+			attrgetter(0, 2)  # type: ignore[arg-type]
 
 		with pytest.raises(TypeError, match="'idx' must be an integer"):
-			attrgetter("hello", 0)  # type: ignore
+			attrgetter("hello", 0)  # type: ignore[arg-type]
 
 		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: 'attr'"):
-			attrgetter(0)  # type: ignore
+			attrgetter(0)  # type: ignore[call-arg]
 
 		f = attrgetter(1, "name")
 

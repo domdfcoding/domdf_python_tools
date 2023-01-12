@@ -106,7 +106,7 @@ class Dictable(Iterable[Tuple[str, _V]]):
 		return self.__dict__
 
 	def __setstate__(self, state):
-		self.__init__(**state)  # type: ignore
+		self.__init__(**state)  # type: ignore[misc]
 
 	def __copy__(self):
 		return self.__class__(**self.__dict__)
@@ -219,7 +219,7 @@ class UserList(MutableSequence[_T]):
 	def __setitem__(self, i: slice, o: Iterable[_T]) -> None: ...
 
 	def __setitem__(self, i: Union[int, slice], item: Union[_T, Iterable[_T]]) -> None:
-		self.data[i] = item  # type: ignore
+		self.data[i] = item  # type: ignore[index, assignment]
 
 	def __delitem__(self, i: Union[int, slice]):
 		del self.data[i]
@@ -422,7 +422,7 @@ class UserFloat(Real):
 	def __mul__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__mul__(other))
 
-	def __floordiv__(self: _F, other: float) -> _F:  # type: ignore
+	def __floordiv__(self: _F, other: float) -> _F:  # type: ignore[override]
 		return self.__class__(float(self).__floordiv__(other))
 
 	def __truediv__(self: _F, other: float) -> _F:
@@ -432,7 +432,7 @@ class UserFloat(Real):
 		return self.__class__(float(self).__mod__(other))
 
 	def __divmod__(self: _F, other: float) -> Tuple[_F, _F]:
-		return tuple(self.__class__(x) for x in float(self).__divmod__(other))  # type: ignore
+		return tuple(self.__class__(x) for x in float(self).__divmod__(other))  # type: ignore[return-value]
 
 	def __pow__(self: _F, other: float, mod=None) -> _F:
 		return self.__class__(float(self).__pow__(other, mod))
@@ -446,7 +446,7 @@ class UserFloat(Real):
 	def __rmul__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__rmul__(other))
 
-	def __rfloordiv__(self: _F, other: float) -> _F:  # type: ignore
+	def __rfloordiv__(self: _F, other: float) -> _F:  # type: ignore[override]
 		return self.__class__(float(self).__rfloordiv__(other))
 
 	def __rtruediv__(self: _F, other: float) -> _F:
