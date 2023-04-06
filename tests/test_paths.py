@@ -350,6 +350,7 @@ def test_make_executable():
 		assert os.access(tempfile, os.X_OK)
 
 
+@pytest.mark.skipif(sys.version_info[:2] > (3, 11), reason="No longer valid on Python 3.12+")
 def test_instantiate_wrong_platform():
 	if os.name == "nt":
 		with pytest.raises(NotImplementedError, match="cannot instantiate .* on your system"):
