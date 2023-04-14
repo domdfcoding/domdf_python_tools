@@ -34,7 +34,7 @@ domdf_python_tools
 		  - |license| |language| |requires|
 
 	.. |docs| rtfd-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:alt: Documentation Build Status
 
 	.. |docs_check| actions-shield::
