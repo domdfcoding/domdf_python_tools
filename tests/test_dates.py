@@ -25,7 +25,7 @@ try:
 	import pytz
 
 	test_date = datetime(1996, 10, 13, 2, 20).replace(tzinfo=pytz.utc)
-	today = datetime.utcnow().replace(tzinfo=pytz.utc)  # make sure UTC
+	today = datetime.now(pytz.utc)  # make sure UTC
 
 	def test_utc_offset():
 		# Check that the correct UTC offsets are given for common timezones
