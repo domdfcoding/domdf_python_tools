@@ -178,7 +178,7 @@ def test_convert_size(unit: Unit):
 				pytest.param(2, 5, 10, id="not isinstance(from_, Unit)"),
 				],
 		)
-def test_convert_from(value: List[int], unit, expects: Tuple[float, ...]):
+def test_convert_from(value: List[int], unit: Unit, expects: Tuple[float, ...]):
 	assert convert_from(value, unit) == expects
 
 

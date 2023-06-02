@@ -82,7 +82,7 @@ class NamedListTest:
 	str_out = "ShoppingList['egg and bacon', 'egg sausage and bacon', 'egg and spam', 'egg bacon and spam']"
 	cls_str: str
 
-	def test(self, capsys):
+	def test_(self, capsys):
 		assert isinstance(self.shopping_list, UserList)
 		assert self.shopping_list[0] == "egg and bacon"
 

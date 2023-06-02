@@ -324,7 +324,8 @@ def is_bst(the_date: Union[time.struct_time, datetime.date]) -> bool:
 	"""
 	Calculates whether the given day falls within British Summer Time.
 
-	This function should also be applicable to other timezones which change to summer time on the same date (e.g. Central European Summer Time).
+	This function should also be applicable to other timezones
+	which change to summer time on the same date (e.g. Central European Summer Time).
 
 	.. note::
 

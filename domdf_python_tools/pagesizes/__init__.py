@@ -39,7 +39,7 @@ This module defines a few common page sizes in points (1/72 inch).
 #
 
 # this package
-from .classes import *
-from .sizes import *
-from .units import *
-from .utils import *
+from .classes import *  # noqa: F401
+from .sizes import *  # noqa: F401
+from .units import *  # noqa: F401
+from .utils import *  # noqa: F401

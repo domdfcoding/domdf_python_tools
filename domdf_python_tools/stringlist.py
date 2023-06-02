@@ -513,7 +513,7 @@ def splitlines(string: str) -> List[Tuple[str, str]]:
 	while i < str_len:
 
 		# Find a line and append it
-		while i < str_len and not string[i] in "\n\r":
+		while i < str_len and string[i] not in "\n\r":
 			i += 1
 
 		# Skip the line break reading CRLF as one line break
