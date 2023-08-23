@@ -76,7 +76,7 @@ class CommonTest(seq_tests.CommonTest):
 	@not_pypy()
 	def test_repr_deep(self):
 		a = self.type2test([])
-		for i in range(sys.getrecursionlimit() + 100):
+		for i in range(1500 + 1):  # sys.getrecursionlimit() + 100
 			a = self.type2test([a])
 		with pytest.raises(RecursionError):
 			repr(a)
