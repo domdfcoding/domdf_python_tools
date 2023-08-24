@@ -288,7 +288,7 @@ def get_utc_offset(
 	"""
 
 	if date is None:
-		date = datetime.datetime.utcnow()
+		date = datetime.datetime.now(pytz.utc)
 
 	timezone: Optional[datetime.tzinfo]
 
@@ -313,7 +313,7 @@ def get_timezone(tz: str, date: Optional[datetime.datetime] = None) -> Optional[
 	"""
 
 	if date is None:  # pragma: no cover (hard to test)
-		date = datetime.datetime.utcnow()
+		date = datetime.datetime.now(pytz.utc)
 
 	d = date.replace(tzinfo=None)
 
