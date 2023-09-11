@@ -4,7 +4,6 @@
 - asyncio.base_futures
 - asyncio.base_subprocess
 - asyncio.base_tasks
-- asyncio.compat
 - asyncio.constants
 - asyncio.coroutines
 - asyncio.events
@@ -23,7 +22,6 @@
 - asyncio.streams
 - asyncio.subprocess
 - asyncio.tasks
-- asyncio.test_utils
 - asyncio.threads
 - asyncio.transports
 - asyncio.trsock
