@@ -25,8 +25,9 @@ python_versions:
  3.9:
  "3.10":
  "3.11":
- "3.12-dev":
-  experimental: true
+ "3.12":
+#  "3.13-dev":
+#   experimental: true
  pypy36:
  pypy37:
  pypy38:
