@@ -2,7 +2,7 @@ default-values>=0.6.0
 domdf-sphinx-theme>=0.3.0
 extras-require>=0.5.0
 html-section>=0.3.0
-jinja2<3.1
+jinja2<3.2
 pandas>=1.1.2
 pytest>=6.2.0
 pytest-regressions>=2.0.2
