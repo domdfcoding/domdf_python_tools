@@ -8,7 +8,7 @@ username: "domdfcoding"
 license: 'MIT'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
 
-python_deploy_version: 3.6
+python_deploy_version: 3.8
 requires_python: 3.6
 min_coverage: 95
 tox_testenv_extras: all
