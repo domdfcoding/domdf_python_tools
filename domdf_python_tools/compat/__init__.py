@@ -103,7 +103,11 @@ __all__ = [
 		"PYPY39_PLUS",
 		]
 
-if sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs or TYPE_CHECKING:  # pragma: no cover (py37+)
+if TYPE_CHECKING:  # pragma: no cover
+	# stdlib
+	from contextlib import nullcontext
+
+elif sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs:  # pragma: no cover (py37+)
 
 	_T = TypeVar("_T")
 

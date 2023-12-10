@@ -198,7 +198,7 @@ except ImportError:
 # 				):
 #
 # 			# this package
-# 			from domdf_python_tools.dates import get_utc_offset  # noqa: F401
+# 			from domdf_python_tools.dates import get_utc_offset
 
 
 @pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))
