@@ -463,6 +463,18 @@ class StringList(List[str]):
 		finally:
 			self.indent_type = original_indent_type
 
+	def splitlines(self, keepends: bool = False) -> List[str]:
+		"""
+		Analagous to :meth:`str.splitlines`.
+
+		.. versionadded:: 3.8.0
+		"""
+
+		if keepends:
+			return [line + '\n' for line in self]
+		else:
+			return self
+
 
 class DelimitedList(List[_S]):
 	"""

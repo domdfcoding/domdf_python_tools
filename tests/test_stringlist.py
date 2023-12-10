@@ -1,6 +1,8 @@
 # stdlib
 import pickle
+import textwrap
 from textwrap import dedent
+from typing import no_type_check
 
 # 3rd party
 import pytest
@@ -558,3 +560,11 @@ def test_splitlines(string, lines):
 @joinlines_splitlines_param
 def test_joinlines(string, lines):
 	assert string == joinlines(lines)
+
+
+@no_type_check
+def test_textwrap_indent():
+	sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
+	assert textwrap.indent(sl, "    ") == "\n\n    hello\n    world\n\n\n\n    1234\n"
+	assert textwrap.indent(sl, '\t') == "\n\n\thello\n\tworld\n\n\n\n\t1234\n"
+	assert textwrap.indent(sl, ">>> ") == "\n\n>>> hello\n>>> world\n\n\n\n>>> 1234\n"
