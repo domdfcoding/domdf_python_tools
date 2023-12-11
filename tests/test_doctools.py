@@ -8,6 +8,7 @@ Test functions in doctools.py
 
 # stdlib
 import math
+import sys
 from typing import Iterable, NamedTuple, get_type_hints
 
 # 3rd party
@@ -353,7 +354,16 @@ def test_sphinxify_docstring():
 
 		return math.pi
 
-	assert demo_function.__doc__ == """
+	if sys.version_info >= (3, 13):
+		assert demo_function.__doc__ == """
+This is a docstring that contains references to :class:`str`, :class:`int`, and :class:`float`
+but lacks proper references to them when rendered in Sphinx.
+
+:return: pi
+:rtype: float
+"""
+	else:
+		assert demo_function.__doc__ == """
 		This is a docstring that contains references to :class:`str`, :class:`int`, and :class:`float`
 		but lacks proper references to them when rendered in Sphinx.
 
