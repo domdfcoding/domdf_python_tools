@@ -736,7 +736,7 @@ class PathPlus(pathlib.Path):
 
 	if sys.version_info < (3, 8):  # pragma: no cover (py38+)
 
-		def rename(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
+		def rename(self: _P, target: Union[str, pathlib.PurePath]) -> _P:
 			"""
 			Rename this path to the target path.
 
@@ -755,7 +755,7 @@ class PathPlus(pathlib.Path):
 			os.rename(self, target)
 			return self.__class__(target)
 
-		def replace(self: _P, target: Union[str, pathlib.PurePath]) -> _P:  # type: ignore
+		def replace(self: _P, target: Union[str, pathlib.PurePath]) -> _P:
 			"""
 			Rename this path to the target path, overwriting if that path exists.
 
