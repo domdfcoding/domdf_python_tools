@@ -82,6 +82,9 @@ class TestStringList:
 		sl[3:4] = "\nfoo\nbar\n", "baz"
 		assert sl == ["foo", "bar", '', '', "foo", "bar", '', "baz", '', "world", '', '', '', "1234"]
 
+		sl[3:5] = iter(["foo", "bar", "baz"])
+		assert sl == ["foo", "bar", '', "foo", "bar", "baz", '', "baz", '', "world", '', '', '', "1234"]
+
 	def test_blankline(self):
 		sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 
@@ -563,8 +566,15 @@ def test_joinlines(string, lines):
 
 
 @no_type_check
-def test_textwrap_indent():
+def test_stringlist_textwrap_indent():
 	sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
 	assert textwrap.indent(sl, "    ") == "\n\n    hello\n    world\n\n\n\n    1234\n"
 	assert textwrap.indent(sl, '\t') == "\n\n\thello\n\tworld\n\n\n\n\t1234\n"
 	assert textwrap.indent(sl, ">>> ") == "\n\n>>> hello\n>>> world\n\n\n\n>>> 1234\n"
+
+
+def test_stringlist_splitlines():
+	sl = StringList(['', '', "hello", "world", '', '', '', "1234"])
+	assert sl.splitlines() is sl
+	assert list(sl.splitlines()) == ['', '', "hello", "world", '', '', '', "1234"]
+	assert sl.splitlines(keepends=True) == ['\n', '\n', "hello\n", "world\n", '\n', '\n', '\n', "1234\n"]
