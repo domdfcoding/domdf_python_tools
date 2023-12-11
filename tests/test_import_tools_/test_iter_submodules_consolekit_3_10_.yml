@@ -1,4 +1,5 @@
 - consolekit
+- consolekit._readline
 - consolekit._types
 - consolekit.commands
 - consolekit.input
@@ -7,3 +8,4 @@
 - consolekit.testing
 - consolekit.tracebacks
 - consolekit.utils
+- consolekit.versions
