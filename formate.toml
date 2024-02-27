@@ -56,4 +56,4 @@ known_third_party = [
     "requests",
     "typing_extensions",
 ]
-known_first_party = "domdf_python_tools"
+known_first_party = [ "domdf_python_tools",]
