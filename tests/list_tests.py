@@ -74,6 +74,7 @@ class CommonTest(seq_tests.CommonTest):
 		assert repr(a2) == "[0, 1, 2, [...], 3]"
 
 	@not_pypy()
+	@pytest.mark.skipif(sys.version_info >= (3, 12), reason="Doesn't error on newer Pythons")
 	def test_repr_deep(self):
 		a = self.type2test([])
 		for i in range(1500 + 1):  # sys.getrecursionlimit() + 100
