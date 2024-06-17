@@ -124,11 +124,17 @@ def test_printr(obj, expects, capsys):
 	assert re.match(expects, stdout[0])
 
 
+if sys.version_info >= (3, 13):
+	pure_posix_path_expected = "<class 'pathlib._local.PurePosixPath'>"
+else:
+	pure_posix_path_expected = "<class 'pathlib.PurePosixPath'>"
+
+
 @pytest.mark.parametrize(
 		"obj, expects",
 		[
 				("This is a test", "<class 'str'>"),
-				(pathlib.PurePosixPath("foo.txt"), "<class 'pathlib.PurePosixPath'>"),
+				(pathlib.PurePosixPath("foo.txt"), pure_posix_path_expected),
 				(1234, "<class 'int'>"),
 				(12.34, "<class 'float'>"),
 				(CustomRepr(), "<class 'tests.test_utils.CustomRepr'>"),
