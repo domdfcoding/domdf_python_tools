@@ -5,7 +5,7 @@ import os
 import sys
 from typing import Any, BinaryIO, TextIO
 
-if sys.version_info[:2] < (3, 7):  # pragma: no cover (py37+)
+if sys.version_info[:2] < (3, 9):  # pragma: no cover (py37+)
 	# 3rd party
 	import importlib_resources
 
@@ -16,7 +16,7 @@ else:  # pragma: no cover (<py39)
 	import importlib.resources
 	globals().update(importlib.resources.__dict__)
 
-if not ((3, 7) <= sys.version_info < (3, 11)):  # pragma: no cover (py37 OR py38 OR py39 OR py310):
+if not ((3, 9) <= sys.version_info < (3, 11)):  # pragma: no cover (py39 OR py310):
 
 	def _normalize_path(path: Any) -> str:
 		"""
