@@ -130,6 +130,7 @@ unwanted_dirs = (
 		".tox4",
 		".nox",
 		"__pypackages__",
+		"dosdevices",
 		)
 """
 A list of directories which will likely be unwanted when searching directory trees for files.
