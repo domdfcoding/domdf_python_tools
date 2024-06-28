@@ -5,7 +5,7 @@ import os
 import sys
 from typing import Any, BinaryIO, TextIO
 
-if sys.version_info[:2] < (3, 9):  # pragma: no cover (py37+)
+if sys.version_info[:2] < (3, 9):  # pragma: no cover (py39+)
 	# 3rd party
 	import importlib_resources
 
