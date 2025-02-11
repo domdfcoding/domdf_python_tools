@@ -29,7 +29,6 @@
 - domdf_python_tools/utils.py
 - domdf_python_tools/versions.py
 - domdf_python_tools/words.py
-- setup.py
 - tests/__init__.py
 - tests/conftest.py
 - tests/discover_demo_module/__init__.py
