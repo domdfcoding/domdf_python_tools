@@ -20,7 +20,7 @@ permissions:
 jobs:
   tests:
     name: "alt-linux / Python ${{ matrix.config.python-version }}"
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     container:
      image: ghcr.io/domdfcoding/alt-linux-python:latest
     continue-on-error: ${{ matrix.config.experimental }}
