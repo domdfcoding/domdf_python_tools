@@ -171,14 +171,13 @@ def alpha_sort(
 
 	alphabet_ = list(alphabet)
 
-	try:
-		return sorted(iterable, key=lambda attr: [alphabet_.index(letter) for letter in attr], reverse=reverse)
-	except ValueError as e:
-		m = re.match(r"'(.*)' is not in list", str(e))
-		if m:
-			raise ValueError(f"The character {m.group(1)!r} was not found in the alphabet.") from None
-		else:  # pragma: no cover
-			raise e
+	def _alphabet_index(letter: str) -> int:
+		try:
+			return alphabet_.index(letter)
+		except ValueError:
+			raise ValueError(f"The character {letter!r} was not found in the alphabet.") from None
+
+	return sorted(iterable, key=lambda attr: [_alphabet_index(letter) for letter in attr], reverse=reverse)
 
 
 class Font(Dict[str, str]):
