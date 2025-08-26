@@ -124,7 +124,7 @@ def test_printr(obj, expects, capsys):
 	assert re.match(expects, stdout[0])
 
 
-if sys.version_info >= (3, 13):
+if sys.version_info[:2] == (3, 13):
 	pure_posix_path_expected = "<class 'pathlib._local.PurePosixPath'>"
 else:
 	pure_posix_path_expected = "<class 'pathlib.PurePosixPath'>"
