@@ -39,7 +39,7 @@ Functions and classes for pretty printing.
 # stdlib
 import sys
 from io import StringIO
-from typing import IO, Any, Callable, Iterator, MutableMapping, Optional, Tuple, Type, TypeVar
+from typing import IO, Any, Callable, ClassVar, Iterator, MutableMapping, Optional, Tuple, Type, TypeVar
 
 try:  # pragma: no cover
 
@@ -106,7 +106,7 @@ class FancyPrinter(PrettyPrinter):
 
 	_dispatch: MutableMapping[Callable, Callable]
 	_indent_per_level: int
-	_format_items: Callable[[PrettyPrinter, Any, Any, Any, Any, Any, Any], None]
+	_format_items: ClassVar[Callable[[PrettyPrinter, Any, Any, Any, Any, Any, Any], None]]
 	_dispatch = dict(PrettyPrinter._dispatch)  # type: ignore
 
 	def _make_open(self, char: str, indent: int, obj):

@@ -116,7 +116,7 @@ class Dictable(Iterable[Tuple[str, _V]]):
 
 	@property
 	@abstractmethod
-	def __dict__(self):
+	def __dict__(self):  # type: ignore[override]
 		return dict()  # pragma: no cover (abc)
 
 	def __eq__(self, other) -> bool:
@@ -422,7 +422,7 @@ class UserFloat(Real):
 	def __mul__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__mul__(other))
 
-	def __floordiv__(self: _F, other: float) -> _F:  # type: ignore[override]
+	def __floordiv__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__floordiv__(other))
 
 	def __truediv__(self: _F, other: float) -> _F:
@@ -446,7 +446,7 @@ class UserFloat(Real):
 	def __rmul__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__rmul__(other))
 
-	def __rfloordiv__(self: _F, other: float) -> _F:  # type: ignore[override]
+	def __rfloordiv__(self: _F, other: float) -> _F:
 		return self.__class__(float(self).__rfloordiv__(other))
 
 	def __rtruediv__(self: _F, other: float) -> _F:
@@ -538,8 +538,8 @@ class UserFloat(Real):
 	def __abs__(self: _F) -> _F:
 		return self.__class__(float(self).__abs__())
 
-	def __hash__(self) -> int:
-		return float(self).__hash__()
+	# def __hash__(self) -> int:
+	# 	return float(self).__hash__()
 
 	def __repr__(self) -> str:
 		return str(self)

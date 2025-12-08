@@ -7,7 +7,7 @@ from domdf_python_tools.delegators import delegate_kwargs, delegates
 
 
 def f(a: int = 1, b: float = 1.1, c: int = 2, d: list = [], e: tuple = (), f: str = '', g: bytes = b'') -> int:
-	pass
+	return 0
 
 
 def test_delegate_kwargs():
@@ -84,7 +84,7 @@ def test_delegates_method():
 
 		@delegates(f)
 		def g(self, *args, **kwargs) -> str:
-			pass
+			return ''
 
 	sig = inspect.signature(F.g)
 	assert list(sig.parameters.keys()) == ["self", 'a', 'b', 'c', 'd', 'e', 'f', 'g']

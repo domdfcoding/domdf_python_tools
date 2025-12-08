@@ -90,7 +90,7 @@ class Version(Tuple[int, int, int]):
 		return self[2]
 
 	def __new__(cls: Type[_V], major=0, minor=0, patch=0) -> _V:  # noqa: D102
-		t: _V = super().__new__(cls, (int(major), int(minor), int(patch)))  # type: ignore
+		t: _V = super().__new__(cls, (int(major), int(minor), int(patch)))
 
 		return t
 

@@ -431,7 +431,7 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 		if len(obj) <= n:
 			return repr(obj)
 		else:
-			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}  # type: ignore
+			head_of_namedtuple = {k: v for k, v in zip(obj._fields[:n], obj[:n])}
 			repr_fmt = '(' + ", ".join(f"{k}={v!r}" for k, v in head_of_namedtuple.items()) + f", {etc})"
 			return obj.__class__.__name__ + repr_fmt
 

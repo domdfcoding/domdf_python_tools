@@ -23,14 +23,12 @@ from domdf_python_tools.bases import Dictable, UserFloat
 class Person(Dictable):
 
 	def __init__(self, name, age, occupation=None):
-		super().__init__()
-
 		self.name = str(name)
 		self.age = int(age)
 		self.occupation = occupation
 
 	@property
-	def __dict__(self):
+	def __dict__(self):  # type: ignore[override]
 		return dict(
 				name=self.name,
 				age=self.age,
@@ -46,7 +44,7 @@ class Child(Person):
 		self.school = "school"
 
 	@property
-	def __dict__(self):
+	def __dict__(self):  # type: ignore[override]
 		class_dict = super().__dict__
 		class_dict["School"] = self.school
 		return class_dict
