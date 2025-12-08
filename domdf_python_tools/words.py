@@ -681,7 +681,7 @@ class PluralPhrase(NamedTuple):
 	template: str
 	words: Tuple[Plural, ...]
 
-	def __call__(self, n: int) -> str:  # noqa: TYP004  # TODO
+	def __call__(self, n: int) -> str:
 		"""
 		Construct the phrase based on the value of ``n``.
 

@@ -37,7 +37,7 @@ if sys.version_info[:2] >= (3, 10):
 	from test.support.os_helper import TESTFN, can_symlink
 else:
 	# stdlib
-	from test.support import TESTFN, can_symlink  # type: ignore[import-not-found]
+	from test.support import TESTFN, can_symlink  # type: ignore
 
 
 @pytest.fixture()
