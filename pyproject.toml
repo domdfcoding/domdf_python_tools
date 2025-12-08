@@ -7,7 +7,7 @@ name = "domdf_python_tools"
 version = "3.10.0"
 description = "Helpful functions for Python 🐍 🛠️"
 readme = "README.rst"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 keywords = [ "utilities",]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
