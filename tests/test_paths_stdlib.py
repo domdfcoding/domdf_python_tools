@@ -30,14 +30,14 @@ try:
 	import grp
 	import pwd
 except ImportError:
-	grp = pwd = None  # type: ignore
+	grp = pwd = None  # type: ignore[assignment]
 
 if sys.version_info[:2] >= (3, 10):
 	# stdlib
 	from test.support.os_helper import TESTFN, can_symlink
 else:
 	# stdlib
-	from test.support import TESTFN, can_symlink  # type: ignore
+	from test.support import TESTFN, can_symlink  # type: ignore[import-not-found]
 
 
 @pytest.fixture()
@@ -159,7 +159,7 @@ def test_read_write_text(BASE: PathPlus):
 	assert ((p / "fileA").read_text(encoding="utf-8", errors="ignore") == "bcdefg")
 	# Check that trying to write bytes does not truncate the file.
 	with pytest.raises(TypeError):
-		(p / "fileA").write_text(b"somebytes")  # type: ignore
+		(p / "fileA").write_text(b"somebytes")  # type: ignore[arg-type]
 	assert ((p / "fileA").read_text(encoding="latin-1") == "äbcdefg")
 
 

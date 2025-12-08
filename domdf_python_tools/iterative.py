@@ -501,4 +501,4 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 
 	count.__qualname__ = count.__name__ = "count"
 
-	return count()  # type: ignore
+	return count()  # type: ignore[return-value]

@@ -456,7 +456,7 @@ class UserFloat(Real):
 		return self.__class__(float(self).__rmod__(other))
 
 	def __rdivmod__(self: _F, other: float) -> Tuple[_F, _F]:
-		return tuple(self.__class__(x) for x in float(self).__rdivmod__(other))  # type: ignore
+		return tuple(self.__class__(x) for x in float(self).__rdivmod__(other))  # type: ignore[return-value]
 
 	def __rpow__(self: _F, other: float, mod=None) -> _F:
 		return self.__class__(float(self).__rpow__(other, mod))
@@ -471,7 +471,13 @@ class UserFloat(Real):
 
 		return float(self).__trunc__()
 
-	def __round__(self, ndigits: Optional[int] = None) -> Union[int, float]:  # type: ignore
+	@overload
+	def __round__(self, ndigits: None = ...) -> int: ...
+
+	@overload
+	def __round__(self, ndigits: int) -> float: ...
+
+	def __round__(self, ndigits: Optional[int] = None) -> Union[int, float]:
 		"""
 		Round the :class:`~.UserFloat` to ``ndigits`` decimal places, defaulting to ``0``.
 
@@ -622,7 +628,7 @@ class Lineup(UserList[_T]):
 
 		return self
 
-	def sort(  # type: ignore
+	def sort(  # type: ignore[override]
 			self: _LU,
 			*,
 			key=None,
@@ -643,25 +649,25 @@ class Lineup(UserList[_T]):
 		super().sort(key=key, reverse=reverse)
 		return self
 
-	def reverse(self: _LU) -> _LU:  # type: ignore  # noqa: D102
+	def reverse(self: _LU) -> _LU:  # type: ignore[override]  # noqa: D102
 		super().reverse()
 		return self
 
-	def append(  # type: ignore  # noqa: D102
+	def append(  # type: ignore[override]  # noqa: D102
 			self: _LU,
 			item: _T,
 			) -> _LU:
 		super().append(item)
 		return self
 
-	def extend(  # type: ignore  # noqa: D102
+	def extend(  # type: ignore[override]  # noqa: D102
 			self: _LU,
 			other: Iterable[_T],
 			) -> _LU:
 		super().extend(other)
 		return self
 
-	def insert(  # type: ignore  # noqa: D102
+	def insert(  # type: ignore[override]  # noqa: D102
 			self: _LU,
 			i: int,
 			item: _T,
@@ -669,13 +675,13 @@ class Lineup(UserList[_T]):
 		super().insert(i, item)
 		return self
 
-	def remove(  # type: ignore  # noqa: D102
+	def remove(  # type: ignore[override]  # noqa: D102
 			self: _LU,
 			item: _T,
 			) -> _LU:
 		super().remove(item)
 		return self
 
-	def clear(self: _LU) -> _LU:  # type: ignore  # noqa: D102
+	def clear(self: _LU) -> _LU:  # type: ignore[override]  # noqa: D102
 		super().clear()
 		return self

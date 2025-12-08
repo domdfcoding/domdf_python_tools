@@ -170,26 +170,22 @@ class Echo:
 		if frame is None:  # pragma: no cover
 			raise ValueError("Unable to obtain the frame of the caller.")
 		else:
-			self.parent_frame = inspect.currentframe().f_back  # type: ignore  # TODO
+			self.parent_frame = inspect.currentframe().f_back  # type: ignore[union-attr]   # TODO
 
 	def __enter__(self):
 		"""
 		Called when entering the context manager.
 		"""
 
-		self.locals_on_entry = self.parent_frame.f_locals.copy()  # type: ignore
+		self.locals_on_entry = self.parent_frame.f_locals.copy()  # type: ignore[union-attr]
 
 	def __exit__(self, *args, **kwargs):
 		"""
 		Called when exiting the context manager.
 		"""
 
-		new_locals = {
-				k: v
-				for k,
-				v in self.parent_frame.f_locals.items()  # type: ignore
-				if k not in self.locals_on_entry
-				}
+		f_locals = self.parent_frame.f_locals  # type: ignore[union-attr]
+		new_locals = {k: v for k, v in f_locals.items() if k not in self.locals_on_entry}
 
 		print(textwrap.indent(pprint.pformat(new_locals), self.indent))
 

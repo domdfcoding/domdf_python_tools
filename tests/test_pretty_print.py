@@ -608,7 +608,7 @@ mappingproxy(OrderedDict([
 		assert FancyPrinter().pformat({Unorderable: 0, 1: 0}) == "{1: 0, " + repr(Unorderable) + ": 0}"
 
 		# Issue 14998: TypeError on tuples with NoneTypes as dict keys.
-		keys = [(1, ), (None, )]  # type: ignore
+		keys = [(1, ), (None, )]  # type: ignore[list-item]
 		assert FancyPrinter().pformat(dict.fromkeys(keys, 0)) == "{%r: 0, %r: 0}" % tuple(sorted(keys, key=id))
 
 	def test_sort_orderable_and_unorderable_values(self):
@@ -618,8 +618,8 @@ mappingproxy(OrderedDict([
 		# self-test
 		assert a < b
 		assert str(type(b)) < str(type(a))
-		assert sorted([b, a]) == [a, b]  # type: ignore
-		assert sorted([a, b]) == [a, b]  # type: ignore
+		assert sorted([b, a]) == [a, b]  # type: ignore[type-var]
+		assert sorted([a, b]) == [a, b]  # type: ignore[type-var]
 		# set
 		assert FancyPrinter(width=1).pformat({b, a}) == f"{{\n {a!r},\n {b!r},\n }}"
 		assert FancyPrinter(width=1).pformat({a, b}) == f"{{\n {a!r},\n {b!r},\n }}"
@@ -738,7 +738,7 @@ mappingproxy(OrderedDict([
 		number = 10
 		o = [0] * number
 		for i in range(levels - 1):
-			o = [o]  # type: ignore
+			o = [o]  # type: ignore[list-item]
 		for w in range(levels * 2 + 1, levels + 3 * number - 1):
 			lines = FancyPrinter(width=w, compact=True).pformat(o, ).splitlines()
 			maxwidth = max(map(len, lines))

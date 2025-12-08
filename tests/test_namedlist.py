@@ -121,7 +121,7 @@ class TestNamedListFunction(NamedListTest):
 
 class TestNamedlistSubclassFunction:
 
-	class ShoppingList(namedlist()):  # type: ignore
+	class ShoppingList(namedlist()):  # type: ignore[misc]
 		pass
 
 	shopping_list = ShoppingList(["egg and bacon", "egg sausage and bacon", "egg and spam", "egg bacon and spam"])

@@ -24,7 +24,7 @@ class TestStringList:
 		assert StringList("1\n") == ['1', '']
 
 		with pytest.raises(TypeError, match="'int' object is not iterable"):
-			StringList(1)  # type: ignore
+			StringList(1)  # type: ignore[arg-type]
 
 	def test_append(self):
 		sl = StringList()
@@ -458,10 +458,10 @@ class TestIndent:
 		indent.size = 1
 		assert indent.size == 1
 
-		indent.size = '2'  # type: ignore
+		indent.size = '2'  # type: ignore[assignment]
 		assert indent.size == 2
 
-		indent.size = 3.0  # type: ignore
+		indent.size = 3.0  # type: ignore[assignment]
 		assert indent.size == 3
 
 	def test_type(self):
@@ -473,7 +473,7 @@ class TestIndent:
 		indent.type = ' '
 		assert indent.type == ' '
 
-		indent.type = 1  # type: ignore
+		indent.type = 1  # type: ignore[assignment]
 		assert indent.type == '1'
 
 		indent.type = ">>> "

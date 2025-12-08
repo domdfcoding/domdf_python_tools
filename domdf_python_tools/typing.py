@@ -109,7 +109,7 @@ def check_membership(obj: Any, type_: Union[Type, object]) -> bool:
 		such as a :class:`typing.List`, :py:data:`typing.Union` or :py:class:`typing.Sequence`.
 	"""
 
-	return isinstance(obj, type_.__args__)  # type: ignore
+	return isinstance(obj, type_.__args__)  # type: ignore[union-attr]
 
 
 class JsonLibrary(Protocol):

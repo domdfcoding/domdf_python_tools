@@ -82,7 +82,7 @@ def delegate_kwargs(to: Callable, *except_: str) -> Callable[[_C], _C]:
 				if param in to_params:
 					del to_params[param]
 
-			f.__signature__ = from_sig.replace(  # type: ignore
+			f.__signature__ = from_sig.replace(  # type: ignore[attr-defined]
 				parameters=[*from_params.values(), *to_params.values()]
 				)
 			f.__annotations__ = {**to_annotations, **from_annotations}
@@ -116,11 +116,11 @@ def delegates(to: Callable) -> Callable[[_C], _C]:
 		from_params = dict(from_sig.parameters)
 
 		if tuple(from_params.keys()) == ("args", "kwargs"):
-			f.__signature__ = to_sig  # type: ignore
+			f.__signature__ = to_sig  # type: ignore[attr-defined]
 			copy_annotations(f)
 
 		elif tuple(from_params.keys()) == ("self", "args", "kwargs"):
-			f.__signature__ = from_sig.replace(  # type: ignore
+			f.__signature__ = from_sig.replace(  # type: ignore[attr-defined]
 				parameters=[from_params["self"], *to_sig.parameters.values()]
 				)
 

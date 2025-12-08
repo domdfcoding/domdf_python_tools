@@ -76,7 +76,7 @@ class MyStr(str):
 	__slots__ = ()
 
 
-class MyPath(type(pathlib.Path())):  # type: ignore
+class MyPath(type(pathlib.Path())):  # type: ignore[misc]
 	pass
 
 

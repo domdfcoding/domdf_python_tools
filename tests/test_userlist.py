@@ -25,7 +25,7 @@ class TestList(list_tests.CommonTest):
 	def test_getslice(self):
 		super().test_getslice()
 		l = [0, 1, 2, 3, 4]
-		u = self.type2test(l)  # type: ignore
+		u = self.type2test(l)  # type: ignore[call-arg]
 		for i in range(-3, 6):
 			assert u[:i] == l[:i]
 			assert u[i:] == l[i:]
@@ -34,7 +34,7 @@ class TestList(list_tests.CommonTest):
 
 	def test_slice_type(self):
 		l = [0, 1, 2, 3, 4]
-		u = self.type2test(l)  # type: ignore
+		u = self.type2test(l)  # type: ignore[call-arg]
 		assert u[:] != u.__class__
 		assert u[:] == u
 
@@ -42,7 +42,7 @@ class TestList(list_tests.CommonTest):
 	def test_iadd(self):
 		super().test_iadd()
 		u = [0, 1]
-		u += self.type2test([0, 1])  # type: ignore
+		u += self.type2test([0, 1])  # type: ignore[call-arg]
 		assert u == [0, 1, 0, 1]
 
 	@no_type_check

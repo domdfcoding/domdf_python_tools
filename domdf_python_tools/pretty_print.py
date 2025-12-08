@@ -45,14 +45,14 @@ try:  # pragma: no cover
 
 	# 3rd party
 	from pprint36 import PrettyPrinter
-	from pprint36._pprint import _safe_key  # type: ignore
+	from pprint36._pprint import _safe_key  # type: ignore[attr-defined]
 
 	supports_sort_dicts = True
 
 except ImportError:
 
 	# stdlib
-	from pprint import PrettyPrinter, _safe_key  # type: ignore
+	from pprint import PrettyPrinter, _safe_key  # type: ignore[attr-defined]
 
 	supports_sort_dicts = sys.version_info >= (3, 8)
 
@@ -107,7 +107,7 @@ class FancyPrinter(PrettyPrinter):
 	_dispatch: MutableMapping[Callable, Callable]
 	_indent_per_level: int
 	_format_items: ClassVar[Callable[[PrettyPrinter, Any, Any, Any, Any, Any, Any], None]]
-	_dispatch = dict(PrettyPrinter._dispatch)  # type: ignore
+	_dispatch = dict(PrettyPrinter._dispatch)  # type: ignore[attr-defined]
 
 	def _make_open(self, char: str, indent: int, obj):
 		if self._indent_per_level > 1:
@@ -115,13 +115,13 @@ class FancyPrinter(PrettyPrinter):
 		else:
 			the_indent = ' ' * (indent + self._indent_per_level)
 
-		if obj and not self._compact:  # type: ignore
+		if obj and not self._compact:  # type: ignore[attr-defined]
 			return f"{char}\n{the_indent}"
 		else:
 			return char
 
 	def _make_close(self, char: str, indent: int, obj):
-		if obj and not self._compact:  # type: ignore
+		if obj and not self._compact:  # type: ignore[attr-defined]
 			return f",\n{' ' * (indent + self._indent_per_level)}{char}"
 		else:
 			return char
@@ -143,14 +143,14 @@ class FancyPrinter(PrettyPrinter):
 			write((self._indent_per_level - 1) * ' ')
 
 		if obj:
-			self._format_dict_items(  # type: ignore
-					obj.items(),
-					stream,
-					indent,
-					allowance + 1,
-					context,
-					level,
-					)
+			self._format_dict_items(  # type: ignore[attr-defined]
+				obj.items(),
+				stream,
+				indent,
+				allowance + 1,
+				context,
+				level,
+				)
 
 		write(self._make_close('}', indent, obj))
 
@@ -243,7 +243,7 @@ class ReprPrettyPrinter(FancyPrinter):
 			last = i == last_index
 			write(key)
 			write('=')
-			self._format(  # type: ignore
+			self._format(  # type: ignore[attr-defined]
 				ent,
 				stream,
 				indent + len(key) + 2,
@@ -284,7 +284,7 @@ def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 		__repr__.__name__ = "__repr__"
 		__repr__.__module__ = obj.__module__
 		__repr__.__qualname__ = f"{obj.__module__}.__repr__"
-		obj.__repr__ = __repr__  # type: ignore
+		obj.__repr__ = __repr__  # type: ignore[assignment]
 
 		return obj
 

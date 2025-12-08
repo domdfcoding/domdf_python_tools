@@ -218,7 +218,7 @@ class Font(Dict[str, str]):
 
 		return ''.join(self[char] for char in text)
 
-	def get(self, char: str, default: Optional[str] = None) -> str:  # type: ignore
+	def get(self, char: str, default: Optional[str] = None) -> str:  # type: ignore[override]
 		"""
 		Returns the given character in this font.
 
@@ -595,12 +595,14 @@ class Plural(functools.partial):
 		def __init__(self, singular: str, plural: str):
 			pass
 
-		def __call__(self, n: int) -> str:  # type: ignore
+		def __call__(self, n: int) -> str:
 			"""
 			Returns either the singular or plural form of the word depending on the value of ``n``.
 
 			:param n:
 			"""
+
+			return ''
 
 	# if PYPY:  # pragma: no cover (!PyPy)
 	if PYPY and sys.version_info < (3, 9):  # pragma: no cover (!PyPy)

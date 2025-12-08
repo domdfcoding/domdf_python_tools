@@ -444,11 +444,11 @@ def head(obj: Union[Tuple, List, "DataFrame", "Series", String, HasHead], n: int
 	elif isinstance(obj, HasHead):
 		return obj.head(n).to_string()
 
-	elif len(obj) <= n:  # type: ignore
+	elif len(obj) <= n:  # type: ignore[arg-type]
 		return str(obj)
 
 	else:
-		return str(obj[:n]) + etc  # type: ignore
+		return str(obj[:n]) + etc  # type: ignore[index]
 
 
 def magnitude(x: float) -> int:
@@ -553,7 +553,7 @@ def divide(string: str, sep: str) -> Tuple[str, str]:
 		raise ValueError(f"{sep!r} not in {string!r}")
 
 	parts = string.split(sep, 1)
-	return tuple(parts)  # type: ignore
+	return tuple(parts)  # type: ignore[return-value]
 
 
 def redivide(string: str, pat: Union[str, Pattern]) -> Tuple[str, str]:
@@ -577,7 +577,7 @@ def redivide(string: str, pat: Union[str, Pattern]) -> Tuple[str, str]:
 		raise ValueError(f"{pat!r} has no matches in {string!r}")
 
 	parts = pat.split(string, 1)
-	return tuple(parts)  # type: ignore
+	return tuple(parts)  # type: ignore[return-value]
 
 
 @overload

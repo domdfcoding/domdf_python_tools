@@ -411,7 +411,7 @@ class StringList(List[str]):
 		:param size: If ``indent`` is an indent type, the indent size to use within the ``with`` block.
 		"""
 
-		original_indent: Tuple[int, str] = tuple(self.indent)  # type: ignore
+		original_indent: Tuple[int, str] = tuple(self.indent)  # type: ignore[assignment]
 
 		try:
 			self.set_indent(indent, size)

@@ -244,7 +244,7 @@ class CommonTest:
 		assert len(vv) == len(s2)
 
 		# Create from various iteratables
-		for s2 in ("123", '', range(1000), ("do", 1.2), range(2000, 2200, 5)):  # type: ignore
+		for s2 in ("123", '', range(1000), ("do", 1.2), range(2000, 2200, 5)):  # type: ignore[assignment]
 			for g in (Sequence, IterFunc, IterGen, itermulti, iterfunc):
 				assert self.type2test(g(s2)) == self.type2test(s2)
 			assert self.type2test(IterFuncStop(s2)) == self.type2test()
@@ -405,7 +405,7 @@ class CommonTest:
 		assert u2 + u2 + u2 == u2 * 3
 		assert u2 + u2 + u2 == 3 * u2
 
-		class subclass(self.type2test):  # type: ignore
+		class subclass(self.type2test):  # type: ignore[name-defined]
 			pass
 
 		u3 = subclass([0, 1])
@@ -434,7 +434,7 @@ class CommonTest:
 
 	def test_getitemoverwriteiter(self):
 		# Verify that __getitem__ overrides are not recognized by __iter__
-		class T(self.type2test):  # type: ignore
+		class T(self.type2test):  # type: ignore[name-defined]
 
 			def __getitem__(self, key: Any) -> str:
 				return str(key) + "!!!"

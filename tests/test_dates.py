@@ -216,7 +216,7 @@ def test_parse_month(month_idx: int, month: str):
 def test_parse_month_errors():
 	for value in ["abc", 0, '0', -1, "-1", 13, "13"]:
 		with pytest.raises(ValueError, match=fr"The given month \({value!r}\) is not recognised."):
-			dates.parse_month(value)  # type: ignore
+			dates.parse_month(value)  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))

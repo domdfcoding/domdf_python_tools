@@ -12,7 +12,7 @@ from typing import Any
 
 # 3rd party
 import pytest
-from funcy.funcs import rpartial  # type: ignore
+from funcy.funcs import rpartial  # type: ignore[import-untyped]
 
 # this package
 import domdf_python_tools
@@ -29,10 +29,10 @@ class TestAttrgetter:
 			pass
 
 		a = A()
-		a.name = "john"  # type: ignore
+		a.name = "john"  # type: ignore[attr-defined]
 
 		b = A()
-		b.name = "graham"  # type: ignore
+		b.name = "graham"  # type: ignore[attr-defined]
 
 		f = attrgetter(0, "name")
 		assert f([a, b]) == "john"
@@ -41,13 +41,13 @@ class TestAttrgetter:
 		assert f([a, b]) == "graham"
 
 		with pytest.raises(TypeError, match=r"__call__\(\) missing 1 required positional argument: 'obj'"):
-			f()  # type: ignore
+			f()  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) takes 2 positional arguments but 3 were given"):
-			f(a, "cleese")  # type: ignore
+			f(a, "cleese")  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) got an unexpected keyword argument 'surname'"):
-			f(a, surname="cleese")  # type: ignore
+			f(a, surname="cleese")  # type: ignore[call-arg]
 
 		f = attrgetter(0, "rank")
 
@@ -78,15 +78,15 @@ class TestAttrgetter:
 
 		# recursive gets
 		a = A()
-		a.name = "john"  # type: ignore
-		a.child = A()  # type: ignore
-		a.child.name = "thomas"  # type: ignore
+		a.name = "john"  # type: ignore[attr-defined]
+		a.child = A()  # type: ignore[attr-defined]
+		a.child.name = "thomas"  # type: ignore[attr-defined]
 		f = attrgetter(3, "child.name")
 
 		assert f([1, 2, 3, a]) == "thomas"
 
 		with pytest.raises(AttributeError, match="'A' object has no attribute 'child'"):
-			f([1, 2, 3, a.child])  # type: ignore
+			f([1, 2, 3, a.child])  # type: ignore[attr-defined]
 
 		f = attrgetter(1, "child.name")
 
@@ -105,8 +105,8 @@ class TestAttrgetter:
 		with pytest.raises(AttributeError, match="'A' object has no attribute ''"):
 			f([a])
 
-		a.child.child = A()  # type: ignore
-		a.child.child.name = "johnson"  # type: ignore
+		a.child.child = A()  # type: ignore[attr-defined]
+		a.child.child.name = "johnson"  # type: ignore[attr-defined]
 
 		f = attrgetter(0, "child.child.name")
 		assert f([a]) == "johnson"
@@ -118,12 +118,12 @@ class TestAttrgetter:
 			pass
 
 		a = A()
-		a.x = 'X'  # type: ignore
-		a.y = 'Y'  # type: ignore
-		a.z = 'Z'  # type: ignore
-		a.t = A()  # type: ignore
-		a.t.u = A()  # type: ignore
-		a.t.u.v = 'V'  # type: ignore
+		a.x = 'X'  # type: ignore[attr-defined]
+		a.y = 'Y'  # type: ignore[attr-defined]
+		a.z = 'Z'  # type: ignore[attr-defined]
+		a.t = A()  # type: ignore[attr-defined]
+		a.t.u = A()  # type: ignore[attr-defined]
+		a.t.u.v = 'V'  # type: ignore[attr-defined]
 
 		f = attrgetter(0, 'x')
 		f2 = copy(f, proto)
@@ -150,13 +150,13 @@ class TestItemgetter:
 		assert f([1, 2, a]) == 'C'
 
 		with pytest.raises(TypeError, match=r"__call__\(\) missing 1 required positional argument: 'obj'"):
-			f()  # type: ignore
+			f()  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) takes 2 positional arguments but 3 were given"):
-			f(a, 3)  # type: ignore
+			f(a, 3)  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) got an unexpected keyword argument 'size'"):
-			f(a, size=3)  # type: ignore
+			f(a, size=3)  # type: ignore[call-arg]
 
 		f = itemgetter(1, 10)
 
@@ -186,16 +186,16 @@ class TestItemgetter:
 				TypeError,
 				match=r"__init__\(\) missing 2 required positional arguments: 'idx' and 'item'",
 				):
-			itemgetter()  # type: ignore
+			itemgetter()  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: 'item'"):
-			itemgetter(1)  # type: ignore
+			itemgetter(1)  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: 'item'"):
-			itemgetter("abc")  # type: ignore
+			itemgetter("abc")  # type: ignore[arg-type,call-arg]
 
 		with pytest.raises(TypeError, match="'idx' must be an integer"):
-			itemgetter("abc", 2)  # type: ignore
+			itemgetter("abc", 2)  # type: ignore[arg-type]
 
 		d = dict(key="val")
 
@@ -250,19 +250,19 @@ class TestMethodcaller:
 				TypeError,
 				match=r"__init__\(\) missing 2 required positional arguments: '_idx' and '_name'",
 				):
-			methodcaller()  # type: ignore
+			methodcaller()  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: '_name'"):
-			methodcaller(12)  # type: ignore
+			methodcaller(12)  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__init__\(\) missing 1 required positional argument: '_name'"):
-			methodcaller("name")  # type: ignore
+			methodcaller("name")  # type: ignore[arg-type,call-arg]
 
 		with pytest.raises(TypeError, match="'_idx' must be an integer"):
-			methodcaller("name", 12)  # type: ignore
+			methodcaller("name", 12)  # type: ignore[arg-type]
 
 		with pytest.raises(TypeError, match="method name must be a string"):
-			methodcaller(0, 12)  # type: ignore
+			methodcaller(0, 12)  # type: ignore[arg-type]
 
 		f = methodcaller(1, "foo")
 
@@ -293,19 +293,19 @@ class TestMethodcaller:
 		assert f([1, a]) == 3
 
 		with pytest.raises(TypeError, match=r"__call__\(\) missing 1 required positional argument: 'obj'"):
-			f()  # type: ignore
+			f()  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) takes 2 positional arguments but 3 were given"):
-			f(a, 3)  # type: ignore
+			f(a, 3)  # type: ignore[call-arg]
 
 		with pytest.raises(TypeError, match=r"__call__\(\) got an unexpected keyword argument 'spam'"):
-			f(a, spam=3)  # type: ignore
+			f(a, spam=3)  # type: ignore[call-arg]
 
 		f = methodcaller(0, "bar")
 		assert f([a]) == 42
 
 		with pytest.raises(TypeError, match=r"__call__\(\) takes 2 positional arguments but 3 were given"):
-			f([a], [a])  # type: ignore
+			f([a], [a])  # type: ignore[call-arg]
 
 		f = methodcaller(0, "bar", f=5)
 		assert f([a]) == 5

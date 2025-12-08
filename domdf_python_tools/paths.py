@@ -388,7 +388,7 @@ class PathPlus(pathlib.Path):
 	__slots__ = ()
 
 	if sys.version_info < (3, 11):
-		_accessor = pathlib._normal_accessor  # type: ignore
+		_accessor = pathlib._normal_accessor  # type: ignore[attr-defined]
 	_closed = False
 
 	def _init(self, *args, **kwargs):
@@ -396,11 +396,11 @@ class PathPlus(pathlib.Path):
 
 	@classmethod
 	def _from_parts(cls, args, init=True):
-		return super()._from_parts(args)  # type: ignore
+		return super()._from_parts(args)  # type: ignore[misc]
 
 	def __new__(cls: Type[_PP], *args, **kwargs) -> _PP:  # noqa: D102
 		if cls is PathPlus:
-			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus  # type: ignore
+			cls = WindowsPathPlus if os.name == "nt" else PosixPathPlus  # type: ignore[assignment]
 
 		return super().__new__(cls, *args, **kwargs)
 
@@ -630,7 +630,7 @@ class PathPlus(pathlib.Path):
 			data: Any,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			json_library: JsonLibrary = json,  # type: ignore
+			json_library: JsonLibrary = json,  # type: ignore[assignment]
 			*,
 			compress: bool = False,
 			**kwargs,
@@ -674,7 +674,7 @@ class PathPlus(pathlib.Path):
 			self,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			json_library: JsonLibrary = json,  # type: ignore
+			json_library: JsonLibrary = json,  # type: ignore[assignment]
 			*,
 			decompress: bool = False,
 			**kwargs,
@@ -1255,7 +1255,7 @@ class DirComparator(filecmp.dircmp):
 			"right_list": filecmp.dircmp.phase0
 			}
 
-	methodmap = _methodmap  # type: ignore
+	methodmap = _methodmap  # type: ignore[assignment]
 
 
 def compare_dirs(a: PathLike, b: PathLike) -> bool:
