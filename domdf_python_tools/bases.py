@@ -544,8 +544,8 @@ class UserFloat(Real):
 	def __abs__(self: _F) -> _F:
 		return self.__class__(float(self).__abs__())
 
-	# def __hash__(self) -> int:
-	# 	return float(self).__hash__()
+	def __hash__(self) -> int:  # type: ignore[override]
+		return float(self).__hash__()
 
 	def __repr__(self) -> str:
 		return str(self)
