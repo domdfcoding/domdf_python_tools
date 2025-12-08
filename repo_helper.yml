@@ -8,8 +8,6 @@ username: "domdfcoding"
 license: 'MIT'
 short_desc: 'Helpful functions for Python 🐍 🛠️'
 
-python_deploy_version: 3.8
-requires_python: 3.6
 min_coverage: 95
 tox_testenv_extras: all
 pre_commit_exclude: "^domdf_python_tools/compat/importlib_resources.py$"
