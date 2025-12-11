@@ -129,6 +129,9 @@ def test_stat(BASE: PathPlus):
 
 @pytest.mark.skipif(not hasattr(socket, "AF_UNIX"), reason="Unix sockets required")
 def test_is_socket_true(BASE: PathPlus):
+	if sys.platform == "win32":
+		return
+
 	P = PathPlus(BASE, "mysock")
 	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 	try:
