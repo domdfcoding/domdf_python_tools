@@ -20,7 +20,7 @@ from typing import Type
 # 3rd party
 import pytest
 from coincidence.regressions import AdvancedDataRegressionFixture
-from coincidence.selectors import not_pypy, not_windows, only_windows, max_version
+from coincidence.selectors import max_version, not_pypy, not_windows, only_windows
 
 # this package
 from domdf_python_tools import paths
@@ -925,11 +925,13 @@ else:
 
 
 @pytest.mark.parametrize("path", _from_uri_paths)
-@pytest.mark.parametrize("left_type", [
-	pytest.param(pathlib.PurePath, marks=max_version((3, 13))),
-	pathlib.Path, 
-	PathPlus,
-	])
+@pytest.mark.parametrize(
+		"left_type", [
+				pytest.param(pathlib.PurePath, marks=max_version((3, 13))),
+				pathlib.Path,
+				PathPlus,
+				]
+		)
 def test_pathplus_from_uri(path: str, left_type: Type):
 	assert PathPlus.from_uri(left_type(path).as_uri()).as_posix() == path
 
