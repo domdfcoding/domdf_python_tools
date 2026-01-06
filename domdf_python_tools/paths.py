@@ -56,6 +56,7 @@ import stat
 import sys
 import tempfile
 import urllib.parse
+import warnings
 from collections import defaultdict, deque
 from operator import methodcaller
 from typing import (
@@ -531,6 +532,12 @@ class PathPlus(pathlib.Path):
 
 		.. versionchanged:: 2.4.0  Added the ``trailing_whitespace`` option.
 		"""
+
+		if isinstance(data, str):
+			warnings.warn(
+					"Passing a string to PathPlus.write_lines writes each character to its own line.\n"
+					"That probably isn't what you intended."
+					)
 
 		if trailing_whitespace:
 			data = list(data)

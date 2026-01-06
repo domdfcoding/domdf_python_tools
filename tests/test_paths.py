@@ -521,6 +521,11 @@ def test_write_lines(tmp_pathplus):
 	content = tmp_file.read_text()
 	assert content == "this\nis\na\nlist\nof\nwords\nto\nwrite\nto\nthe\nfile\n"
 
+	with pytest.warns(UserWarning, match="Passing a string to PathPlus.write_lines writes each character to its own line."):
+		tmp_file.write_lines("abcdefg")
+	
+	assert tmp_file.read_text() == "a\nb\nc\nd\ne\nf\ng\n"
+
 
 def test_write_lines_trailing_whitespace(tmp_pathplus: PathPlus):
 	tmp_file = tmp_pathplus / "test.txt"
