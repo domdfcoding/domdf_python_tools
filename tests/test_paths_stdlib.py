@@ -24,6 +24,7 @@ import pytest
 # this package
 from domdf_python_tools.compat import PYPY
 from domdf_python_tools.paths import PathPlus, PosixPathPlus, WindowsPathPlus
+from domdf_python_tools.typing import PathLike
 
 try:
 	# stdlib
@@ -63,11 +64,11 @@ def BASE(tmp_pathplus: PathPlus) -> Iterator[PathPlus]:
 
 	if os.name == "nt":
 		# Workaround for http://bugs.python.org/issue13772.
-		def dirlink(src, dest):
+		def dirlink(src: PathLike, dest: PathLike):
 			os.symlink(src, dest, target_is_directory=True)
 	else:
 
-		def dirlink(src, dest):
+		def dirlink(src: PathLike, dest: PathLike):
 			os.symlink(src, dest)
 
 	os.mkdir(join("dirA"))
@@ -100,17 +101,13 @@ def BASE(tmp_pathplus: PathPlus) -> Iterator[PathPlus]:
 	shutil.rmtree(top_dir)
 
 
-def assertEqualNormCase(path_a, path_b):
-	assert (os.path.normcase(path_a) == os.path.normcase(path_b))
-
-
 if os.name == "nt":
 	# Workaround for http://bugs.python.org/issue13772.
-	def dirlink(src, dest):
+	def dirlink(src: PathLike, dest: PathLike) -> None:
 		os.symlink(src, dest, target_is_directory=True)
 else:
 
-	def dirlink(src, dest):
+	def dirlink(src: PathLike, dest: PathLike) -> None:
 		os.symlink(src, dest)
 
 
@@ -151,7 +148,7 @@ def test_cwd():
 	p = PathPlus.cwd()
 	q = PathPlus(os.getcwd())
 	assert (p == q)
-	assertEqualNormCase(str(p), str(q))
+	assert (os.path.normcase(str(p)) == os.path.normcase(str(q)))
 	assert (type(p) is type(q))
 	assert (p.is_absolute())
 
@@ -440,7 +437,7 @@ def test_mkdir_concurrent_parent_creation(BASE: PathPlus):
 
 		real_mkdir = os.mkdir
 
-		def my_mkdir(path, mode=0o777):
+		def my_mkdir(path: PathLike, mode: int = 0o777):
 			path = str(path)
 			# Emulate another process that would create the directory
 			# just before we try to create it ourselves.  We do it

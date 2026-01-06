@@ -4,6 +4,7 @@ import platform
 import re
 import sys
 from contextlib import contextmanager
+from typing import Any, ContextManager
 
 # 3rd party
 import pytest
@@ -39,7 +40,8 @@ def test_discover():
 def test_discover_function_only():
 	# Alphabetical order regardless of order in the module.
 	assert discover(
-			discover_demo_module, match_func=inspect.isfunction
+			discover_demo_module,
+			match_func=inspect.isfunction,
 			) == [
 					discover_demo_module.foo_in_init,
 					discover_demo_module.submodule_a.bar,
@@ -50,7 +52,8 @@ def test_discover_function_only():
 def test_discover_class_only():
 	# Alphabetical order regardless of order in the module.
 	assert discover(
-			discover_demo_module, match_func=inspect.isclass
+			discover_demo_module,
+			match_func=inspect.isclass,
 			) == [
 					discover_demo_module.submodule_b.Alice,
 					discover_demo_module.submodule_b.Bob,
@@ -59,7 +62,7 @@ def test_discover_class_only():
 
 def test_discover_hasattr():
 
-	def match_func(obj):
+	def match_func(obj: Any):
 		return hasattr(obj, "foo")
 
 	assert discover(discover_demo_module, match_func=match_func) == []
@@ -102,7 +105,7 @@ def raises_attribute_error(obj, **kwargs):
 				pytest.param(HasPath, haspath_error, id="HasPath"),
 				],
 		)
-def test_discover_errors(obj, expects):
+def test_discover_errors(obj: Any, expects: ContextManager):
 	with expects:
 		discover(obj)
 
@@ -114,14 +117,16 @@ def test_discover_entry_points(advanced_data_regression: AdvancedDataRegressionF
 
 def test_discover_entry_points_by_name_object_match_func(advanced_data_regression: AdvancedDataRegressionFixture):
 	entry_points = discover_entry_points_by_name(
-			"flake8.extension", object_match_func=lambda f: f.__name__.startswith("break")
+			"flake8.extension",
+			object_match_func=lambda f: f.__name__.startswith("break"),
 			)
 	advanced_data_regression.check({k: v.__name__ for k, v in entry_points.items()})
 
 
 def test_discover_entry_points_by_name_name_match_func(advanced_data_regression: AdvancedDataRegressionFixture):
 	entry_points = discover_entry_points_by_name(
-			"flake8.extension", name_match_func=lambda n: n.startswith("pycodestyle.")
+			"flake8.extension",
+			name_match_func=lambda n: n.startswith("pycodestyle."),
 			)
 	advanced_data_regression.check({k: v.__name__ for k, v in entry_points.items()})
 
@@ -134,46 +139,46 @@ iter_submodules_versions = pytest.mark.parametrize(
 						3.7,
 						marks=[
 								only_version(3.7, reason="Output differs on Python 3.7"),
-								not_pypy("Output differs on PyPy")
-								]
+								not_pypy("Output differs on PyPy"),
+								],
 						),
 				pytest.param(
 						"3.7-pypy",
 						marks=[
 								only_version(3.7, reason="Output differs on Python 3.7"),
-								only_pypy("Output differs on PyPy")
-								]
+								only_pypy("Output differs on PyPy"),
+								],
 						),
 				pytest.param(
 						3.8,
 						marks=[
 								only_version(3.8, reason="Output differs on Python 3.8"),
-								not_pypy("Output differs on PyPy 3.8")
-								]
+								not_pypy("Output differs on PyPy 3.8"),
+								],
 						),
 				pytest.param(
 						"3.8_pypy",
 						marks=[
 								only_version(3.8, reason="Output differs on Python 3.8"),
-								only_pypy("Output differs on PyPy 3.8")
-								]
+								only_pypy("Output differs on PyPy 3.8"),
+								],
 						),
 				pytest.param(
 						3.9,
 						marks=[
 								only_version(3.9, reason="Output differs on Python 3.9"),
-								not_pypy("Output differs on PyPy 3.9")
-								]
+								not_pypy("Output differs on PyPy 3.9"),
+								],
 						),
 				pytest.param(
 						"3.9_pypy",
 						marks=[
 								only_version(3.9, reason="Output differs on Python 3.9"),
-								only_pypy("Output differs on PyPy 3.9")
-								]
+								only_pypy("Output differs on PyPy 3.9"),
+								],
 						),
 				pytest.param("3.10", marks=only_version("3.10", reason="Output differs on Python 3.10")),
-				]
+				],
 		)
 
 
@@ -242,7 +247,7 @@ if platform.system() == "Linux":
 		[
 				pytest.param('', marks=pytest.mark.skipif(on_alt_linux, reason="Not for ALT Linux")),
 				pytest.param("altlinux", marks=pytest.mark.skipif(not on_alt_linux, reason="Only for ALT Linux")),
-				]
+				],
 		)
 def test_iter_submodules_asyncio(
 		platform,

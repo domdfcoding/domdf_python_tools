@@ -35,9 +35,10 @@ from domdf_python_tools.paths import (
 		sort_paths,
 		traverse_to_file
 		)
+from domdf_python_tools.typing import PathLike
 
 
-def test_maybe_make(tmp_pathplus):
+def test_maybe_make(tmp_pathplus: PathPlus):
 	test_dir = tmp_pathplus / "maybe_make"
 
 	assert test_dir.exists() is False
@@ -64,7 +65,7 @@ def test_maybe_make(tmp_pathplus):
 	assert test_dir.is_file()
 
 
-def test_maybe_make_pathplus(tmp_pathplus):
+def test_maybe_make_pathplus(tmp_pathplus: PathPlus):
 	test_dir = tmp_pathplus / "maybe_make"
 
 	assert test_dir.exists() is False
@@ -91,7 +92,7 @@ def test_maybe_make_pathplus(tmp_pathplus):
 	assert test_dir.is_file()
 
 
-def test_maybe_make_string(tmp_pathplus):
+def test_maybe_make_string(tmp_pathplus: PathPlus):
 	test_dir = tmp_pathplus / "maybe_make"
 
 	assert test_dir.exists() is False
@@ -118,7 +119,7 @@ def test_maybe_make_string(tmp_pathplus):
 	assert test_dir.is_file()
 
 
-def test_maybe_make_parents(tmp_pathplus):
+def test_maybe_make_parents(tmp_pathplus: PathPlus):
 	test_dir = tmp_pathplus / "maybe_make" / "child1" / "child2"
 
 	assert test_dir.exists() is False
@@ -134,7 +135,7 @@ def test_maybe_make_parents(tmp_pathplus):
 	assert test_dir.exists()
 
 
-def test_maybe_make_parents_pathplus(tmp_pathplus):
+def test_maybe_make_parents_pathplus(tmp_pathplus: PathPlus):
 	test_dir = tmp_pathplus / "maybe_make" / "child1" / "child2"
 
 	assert test_dir.exists() is False
@@ -150,7 +151,7 @@ def test_maybe_make_parents_pathplus(tmp_pathplus):
 	assert test_dir.exists()
 
 
-def test_parent_path(tmp_pathplus):
+def test_parent_path(tmp_pathplus: PathPlus):
 	dir1 = tmp_pathplus / "dir1"
 	dir2 = dir1 / "dir2"
 	dir3 = dir2 / "dir3"
@@ -172,7 +173,7 @@ def test_parent_path(tmp_pathplus):
 				(None, pathlib.Path("/home/username/Documents/letter.doc")),
 				],
 		)
-def test_relpath(relto, relpath):
+def test_relpath(relto: PathLike, relpath: PathLike):
 	path = "/home/username/Documents/letter.doc"
 	assert paths.relpath(path, relative_to=relto) == pathlib.Path(relpath)
 	assert isinstance(paths.relpath(path, relative_to=relto), pathlib.Path)
@@ -186,13 +187,13 @@ def test_relpath(relto, relpath):
 				("c:/users/username/Documents", "letter.doc"),
 				(
 						pathlib.Path("c:/users/username/Documents/games/chess.py"),
-						"c:/users/username/Documents/letter.doc"
+						"c:/users/username/Documents/letter.doc",
 						),
 				(pathlib.Path("c:/users/username/Documents"), "letter.doc"),
 				(None, pathlib.Path("c:/users/username/Documents/letter.doc")),
 				],
 		)
-def test_relpath_windows(relto, relpath):
+def test_relpath_windows(relto: PathLike, relpath: PathLike):
 	path = "c:/users/username/Documents/letter.doc"
 	assert paths.relpath(path, relative_to=relto) == pathlib.Path(relpath)
 	assert isinstance(paths.relpath(path, relative_to=relto), pathlib.Path)
@@ -245,7 +246,7 @@ class TestCurrentDirOperations:
 				pathlib.Path(file).unlink()
 
 
-def test_clean_writer(tmp_pathplus):
+def test_clean_writer(tmp_pathplus: PathPlus):
 	tempfile = tmp_pathplus / "tmpfile.txt"
 
 	test_string = '\n'.join([
@@ -287,36 +288,45 @@ Too many newlines
 
 @pytest.mark.parametrize(
 		"input_string, output_string",
-		[([
-				"Top line",
-				"    ",
-				"Line with whitespace   ",
-				"Line with tabs\t\t\t\t   ",
-				"No newline at end of file",
-				], [
-						"Top line",
-						'',
-						"Line with whitespace",
-						"Line with tabs",
-						"No newline at end of file",
-						'',
-						]),
-			([
-					"Top line",
-					"    ",
-					"Line with whitespace   ",
-					"Line with tabs\t\t\t\t   ",
-					"Too many newlines\n\n\n\n\n\n\n"
-					], [
-							"Top line",
-							'',
-							"Line with whitespace",
-							"Line with tabs",
-							"Too many newlines",
-							'',
-							]), ([], [''])]
+		[
+				(
+						[
+								"Top line",
+								"    ",
+								"Line with whitespace   ",
+								"Line with tabs\t\t\t\t   ",
+								"No newline at end of file",
+								],
+						[
+								"Top line",
+								'',
+								"Line with whitespace",
+								"Line with tabs",
+								"No newline at end of file",
+								'',
+								],
+						),
+				(
+						[
+								"Top line",
+								"    ",
+								"Line with whitespace   ",
+								"Line with tabs\t\t\t\t   ",
+								"Too many newlines\n\n\n\n\n\n\n",
+								],
+						[
+								"Top line",
+								'',
+								"Line with whitespace",
+								"Line with tabs",
+								"Too many newlines",
+								'',
+								],
+						),
+				([], ['']),
+				],
 		)
-def test_pathplus_write_clean(tmp_pathplus, input_string, output_string):
+def test_pathplus_write_clean(tmp_pathplus: PathPlus, input_string: str, output_string: str):
 	tempfile = tmp_pathplus / "tmpfile.txt"
 
 	tempfile.write_clean('\n'.join(input_string))
@@ -360,7 +370,7 @@ def test_instantiate_wrong_platform():
 			paths.WindowsPathPlus()
 
 
-def test_copytree(tmp_pathplus):
+def test_copytree(tmp_pathplus: PathPlus):
 	srcdir = tmp_pathplus / "src"
 	srcdir.mkdir()
 
@@ -411,7 +421,7 @@ def test_copytree(tmp_pathplus):
 	assert (destdir / 'c' / "c.txt").is_file()
 
 
-def test_copytree_exists(tmp_pathplus):
+def test_copytree_exists(tmp_pathplus: PathPlus):
 	srcdir = tmp_pathplus / "src"
 	srcdir.mkdir()
 
@@ -465,7 +475,7 @@ def test_copytree_exists(tmp_pathplus):
 		condition=(sys.version_info < (3, 6, 9) and platform.python_implementation() == "PyPy"),
 		reason="Fails with unrelated error on PyPy 7.1.1 / 3.6.1",
 		)
-def test_copytree_exists_stdlib(tmp_pathplus):
+def test_copytree_exists_stdlib(tmp_pathplus: PathPlus):
 	srcdir = tmp_pathplus / "src"
 	srcdir.mkdir()
 
@@ -499,7 +509,7 @@ def test_copytree_exists_stdlib(tmp_pathplus):
 		shutil.copytree(srcdir, destdir)
 
 
-def test_write_lines(tmp_pathplus):
+def test_write_lines(tmp_pathplus: PathPlus):
 	tmp_file = tmp_pathplus / "test.txt"
 
 	contents = [
@@ -521,9 +531,12 @@ def test_write_lines(tmp_pathplus):
 	content = tmp_file.read_text()
 	assert content == "this\nis\na\nlist\nof\nwords\nto\nwrite\nto\nthe\nfile\n"
 
-	with pytest.warns(UserWarning, match="Passing a string to PathPlus.write_lines writes each character to its own line."):
+	with pytest.warns(
+			UserWarning,
+			match="Passing a string to PathPlus.write_lines writes each character to its own line.",
+			):
 		tmp_file.write_lines("abcdefg")
-	
+
 	assert tmp_file.read_text() == "a\nb\nc\nd\ne\nf\ng\n"
 
 
@@ -572,7 +585,7 @@ def test_read_lines(tmp_pathplus: PathPlus):
 	assert tmp_file.read_lines() == expected
 
 
-def test_dump_json(tmpdir):
+def test_dump_json(tmpdir: str):
 	tmpdir_p = PathPlus(tmpdir)
 
 	tmp_file = tmpdir_p / "test.txt"
@@ -592,7 +605,7 @@ def test_dump_json(tmpdir):
 """)
 
 
-def test_dump_json_gzip(tmpdir):
+def test_dump_json_gzip(tmpdir: str):
 	tmpdir_p = PathPlus(tmpdir)
 
 	tmp_file = tmpdir_p / "test.txt"
@@ -604,7 +617,7 @@ def test_dump_json_gzip(tmpdir):
 	assert tmp_file.load_json(decompress=True) == {"key": "value", "int": 1234, "float": 12.34}
 
 
-def test_load_json(tmpdir):
+def test_load_json(tmpdir: str):
 	tmpdir_p = PathPlus(tmpdir)
 
 	tmp_file = tmpdir_p / "test.txt"
@@ -613,12 +626,13 @@ def test_load_json(tmpdir):
 
 	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}
 
-	tmp_file.write_text(dedent("""\
+	json_string = dedent("""\
 	{
 	  "key": "value",
 	  "int": 1234,
 	  "float": 12.34
-	}"""))
+	}""")
+	tmp_file.write_text(json_string)
 
 	assert tmp_file.load_json() == {"key": "value", "int": 1234, "float": 12.34}
 
@@ -647,7 +661,7 @@ def test_in_directory(tmp_pathplus: PathPlus):
 				("foo/foo.yml", "foo"),
 				("foo/bar/foo.yml", "foo/bar"),
 				("foo/bar/baz/foo.yml", "foo/bar/baz"),
-				]
+				],
 		)
 def test_traverse_to_file(tmp_pathplus: PathPlus, location: str, expected: str):
 	(tmp_pathplus / location).parent.maybe_make(parents=True)
@@ -716,7 +730,13 @@ def test_iterchildren_match(advanced_data_regression: AdvancedDataRegressionFixt
 		child_paths = sorted(p.relative_to(repo_path).as_posix() for p in children)
 
 		for exclude_filename in {
-				".coverage", "pathtype_demo.py", "dist", "htmlcov", "conda", ".idea", "mutdef.py"
+				".coverage",
+				"pathtype_demo.py",
+				"dist",
+				"htmlcov",
+				"conda",
+				".idea",
+				"mutdef.py",
 				}:
 			if exclude_filename in child_paths:
 				child_paths.remove(exclude_filename)
@@ -817,7 +837,7 @@ def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 				(
 						"/home/domdf/Python/01 GitHub Repos/03 Libraries/domdf_python_tools/**/*.py",
 						"/home/domdf/Python/01 GitHub Repos/03 Libraries/domdf_python_tools/domdf_python_tools/pagesizes/units.py",
-						True
+						True,
 						),
 				("domdf_python_tools/**/*.py", "domdf_python_tools/domdf_python_tools/pagesizes/units.py", True),
 				("**/*.py", ".pre-commit-config.yaml", False),
@@ -836,7 +856,7 @@ def test_iterchildren_no_exclusions(tmp_pathplus: PathPlus):
 				("**/.tox/*", "foo/bar/.tox/build", True),
 				("**/.tox/**", "foo/bar/.tox/build", True),
 				("**/.tox/**", "foo/bar/.tox/build/baz", True),
-				]
+				],
 		)
 def test_matchglob(pattern: str, filename: str, match: bool):
 	assert matchglob(filename, pattern) is match
@@ -923,7 +943,7 @@ if platform.system() == "Windows":
 			"c:/a/bé",
 			"//some/share/",
 			"//some/share/a/b.c",
-			"//some/share/a/b%#cé"
+			"//some/share/a/b%#cé",
 			]
 else:
 	_from_uri_paths = ['/', "/home/domdf/☃.txt", "/a/b.c", "/a/b%#c"]
@@ -931,11 +951,12 @@ else:
 
 @pytest.mark.parametrize("path", _from_uri_paths)
 @pytest.mark.parametrize(
-		"left_type", [
+		"left_type",
+		[
 				pytest.param(pathlib.PurePath, marks=max_version((3, 13))),
 				pathlib.Path,
 				PathPlus,
-				]
+				],
 		)
 def test_pathplus_from_uri(path: str, left_type: Type):
 	assert PathPlus.from_uri(left_type(path).as_uri()).as_posix() == path
@@ -973,7 +994,7 @@ def test_write_text_line_endings(tmp_pathplus: PathPlus):
 
 
 @pytest.fixture()
-def move_example_file(tmp_pathplus) -> PathPlus:
+def move_example_file(tmp_pathplus: PathPlus) -> PathPlus:
 	src_file = tmp_pathplus / "tmpdir/foo"
 	src_file.parent.maybe_make(parents=True)
 	src_file.write_bytes(b"spam")

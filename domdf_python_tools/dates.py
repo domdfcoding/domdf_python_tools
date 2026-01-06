@@ -383,7 +383,7 @@ except ImportError as e:
 		'{word_join(_pytz_functions)}' require pytz (https://pypi.org/project/pytz/), but it could not be imported.
 
 		The error was: {e}.
-		"""
+		""",
 				)
 
 	else:
@@ -394,7 +394,7 @@ except ImportError as e:
 			def __getattr__(self, name):
 				if name in _pytz_functions:
 					raise ImportError(
-							f"{name!r} requires pytz (https://pypi.org/project/pytz/), but it could not be imported."
+							f"{name!r} requires pytz (https://pypi.org/project/pytz/), but it could not be imported.",
 							)
 				else:
 					return getattr(_actual_module, name)

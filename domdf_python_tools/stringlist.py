@@ -108,7 +108,7 @@ class Indent:
 
 		return f"{type(self).__name__}(size={self.size}, type={self.type!r})"
 
-	def __eq__(self, other):
+	def __eq__(self, other) -> bool:  # noqa: MAN001
 		if isinstance(other, Indent):
 			return other.size == self.size and other.type == self.type
 		elif isinstance(other, str):
@@ -252,7 +252,7 @@ class StringList(List[str]):
 			for lline, idx in zip(
 				reversed(line),
 				reversed(range(index.start or 0, index.stop + 1, index.step or 1)),
-				):
+			):
 				self[idx] = lline
 		else:
 			line = cast(String, line)
@@ -304,7 +304,7 @@ class StringList(List[str]):
 
 		self.append('')
 
-	def set_indent_size(self, size: int = 0):
+	def set_indent_size(self, size: int = 0) -> None:
 		"""
 		Sets the size of the indent to insert at the beginning of new lines.
 
@@ -313,7 +313,7 @@ class StringList(List[str]):
 
 		self.indent.size = int(size)
 
-	def set_indent_type(self, indent_type: str = '\t'):
+	def set_indent_type(self, indent_type: str = '\t') -> None:
 		"""
 		Sets the type of the indent to insert at the beginning of new lines.
 
@@ -322,7 +322,7 @@ class StringList(List[str]):
 
 		self.indent.type = str(indent_type)
 
-	def set_indent(self, indent: Union[String, Indent], size: int = 0):
+	def set_indent(self, indent: Union[String, Indent], size: int = 0) -> None:
 		"""
 		Sets the indent to insert at the beginning of new lines.
 
@@ -386,7 +386,7 @@ class StringList(List[str]):
 
 		return str(self).encode("UTF-8")
 
-	def __eq__(self, other) -> bool:
+	def __eq__(self, other) -> bool:  # noqa: PRM002
 		"""
 		Returns whether the other object is equal to this :class:`~domdf_python_tools.stringlist.StringList`.
 		"""
@@ -466,6 +466,8 @@ class StringList(List[str]):
 	def splitlines(self, keepends: bool = False) -> List[str]:
 		"""
 		Analagous to :meth:`str.splitlines`.
+
+		:param keepends:
 
 		.. versionadded:: 3.8.0
 		"""

@@ -150,7 +150,7 @@ class FancyPrinter(PrettyPrinter):
 				allowance + 1,
 				context,
 				level,
-				)
+			)
 
 		write(self._make_close('}', indent, obj))
 
@@ -250,7 +250,7 @@ class ReprPrettyPrinter(FancyPrinter):
 				allowance if last else 1,
 				context,
 				level,
-				)
+			)
 
 			if not last:
 				write(delimnl)
@@ -263,7 +263,7 @@ def simple_repr(*attributes: str, show_module: bool = False, **kwargs):
 	r"""
 	Adds a simple ``__repr__`` method to the decorated class.
 
-	:param attributes: The attributes to include in the ``__repr__``.
+	:param \*attributes: The attributes to include in the ``__repr__``.
 	:param show_module: Whether to show the name of the module in the ``__repr__``.
 	:param \*\*kwargs: Keyword arguments passed on to :class:`pprint.PrettyPrinter`.
 	"""

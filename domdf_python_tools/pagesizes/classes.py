@@ -110,6 +110,8 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 	def from_size(cls, size: Tuple[AnyNumber, AnyNumber]) -> "BaseSize":
 		"""
 		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a tuple.
+
+		:param size:
 		"""
 
 		return cls(*size)

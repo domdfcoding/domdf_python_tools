@@ -53,7 +53,7 @@ __all__ = [
 		"discover_in_module",
 		"discover_entry_points",
 		"discover_entry_points_by_name",
-		"iter_submodules"
+		"iter_submodules",
 		]
 
 

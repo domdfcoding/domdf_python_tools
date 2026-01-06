@@ -194,7 +194,7 @@ class DummyClass:
 				(False, ''),
 				(0, ''),
 				([], ''),
-				]
+				],
 		)
 def test_deindent_string(docstring, expects):
 	assert doctools.deindent_string(docstring) == expects
@@ -210,13 +210,13 @@ def test_decorators():
 
 	# set_opening_hours and ceil should have extra text at the beginning
 	assert (SpamCafe.set_opening_hours.__doc__ or '').startswith("I will not buy this record, it is scratched.")
-	assert (doctools.deindent_string(SpamCafe.set_opening_hours.__doc__
-										)).endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
+	doc = (doctools.deindent_string(SpamCafe.set_opening_hours.__doc__))
+	assert doc.endswith(doctools.deindent_string(Cafe.set_opening_hours.__doc__))
 	# Dedented both strings to be sure of equivalence
-	assert (SpamCafe.ceil.__doc__ or ''
-			).startswith("I don't know why the cafe has a ceil function, but we'd better document it properly.", )
-	assert doctools.deindent_string(SpamCafe.ceil.__doc__
-									).rstrip().endswith(doctools.deindent_string(math.ceil.__doc__).rstrip())
+	expected = "I don't know why the cafe has a ceil function, but we'd better document it properly."
+	assert (SpamCafe.ceil.__doc__ or '').startswith(expected)
+	doc = doctools.deindent_string(SpamCafe.ceil.__doc__).rstrip()
+	assert doc.endswith(doctools.deindent_string(math.ceil.__doc__).rstrip())
 	# Dedented both strings to be sure of equivalence
 
 	# Functions
@@ -225,18 +225,25 @@ def test_decorators():
 
 	if PEP_563:
 		assert undocumented_function.__annotations__ == {
-				'a': "float", 'b': "float", 'c': "float", 'd': "int", "return": "float"
+				'a': "float",
+				'b': "float",
+				'c': "float",
+				'd': "int",
+				"return": "float",
 				}
 	else:
 		assert undocumented_function.__annotations__ == {
-				'a': float, 'b': float, 'c': float, 'd': int, "return": float
+				'a': float,
+				'b': float,
+				'c': float,
+				'd': int,
+				"return": float,
 				}
 
-	assert (partially_documented_function.__doc__ or '').startswith(
-			"This function works like ``documented_function`` except it returns the result telepathically."
-			)
-	assert (doctools.deindent_string(partially_documented_function.__doc__
-										)).endswith(doctools.deindent_string(documented_function.__doc__))
+	expected = "This function works like ``documented_function`` except it returns the result telepathically."
+	assert (partially_documented_function.__doc__ or '').startswith(expected)
+	doc = (doctools.deindent_string(partially_documented_function.__doc__))
+	assert doc.endswith(doctools.deindent_string(documented_function.__doc__))
 	# Dedented both strings to be sure of equivalence
 	assert DummyClass.function_in_class_with_same_args.__doc__ == documented_function.__doc__
 	assert DummyClass.function_in_class_with_same_args.__name__ == "function_in_class_with_same_args"
@@ -244,7 +251,7 @@ def test_decorators():
 
 def test_document_object_from_another():
 
-	def funA():
+	def funA() -> None:
 		pass
 
 	doctools.document_object_from_another(funA, str)

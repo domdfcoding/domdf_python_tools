@@ -13,7 +13,7 @@ import itertools
 import random
 import types
 from textwrap import dedent
-from typing import no_type_check
+from typing import Any, no_type_check
 
 # 3rd party
 import pytest
@@ -32,13 +32,13 @@ class list2(list):
 
 class list3(list):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return list.__repr__(self)
 
 
 class list_custom_repr(list):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '*' * len(list.__repr__(self))
 
 
@@ -49,14 +49,14 @@ class tuple2(tuple):
 class tuple3(tuple):
 	__slots__ = ()
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return tuple.__repr__(self)
 
 
 class tuple_custom_repr(tuple):
 	__slots__ = ()
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '*' * len(tuple.__repr__(self))
 
 
@@ -66,13 +66,13 @@ class set2(set):
 
 class set3(set):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return set.__repr__(self)
 
 
 class set_custom_repr(set):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '*' * len(set.__repr__(self))
 
 
@@ -82,13 +82,13 @@ class frozenset2(frozenset):
 
 class frozenset3(frozenset):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return frozenset.__repr__(self)
 
 
 class frozenset_custom_repr(frozenset):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '*' * len(frozenset.__repr__(self))
 
 
@@ -98,19 +98,19 @@ class dict2(dict):
 
 class dict3(dict):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return dict.__repr__(self)
 
 
 class dict_custom_repr(dict):
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return '*' * len(dict.__repr__(self))
 
 
 class Unorderable:
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return str(id(self))
 
 
@@ -120,25 +120,25 @@ class Orderable:
 	def __init__(self, hash):  # noqa: A002  # pylint: disable=redefined-builtin
 		self._hash = hash
 
-	def __lt__(self, other):
+	def __lt__(self, other) -> bool:
 		return False
 
-	def __gt__(self, other):
+	def __gt__(self, other) -> bool:
 		return self != other
 
-	def __le__(self, other):
+	def __le__(self, other) -> bool:
 		return self == other
 
-	def __ge__(self, other):
+	def __ge__(self, other) -> bool:
 		return True
 
-	def __eq__(self, other):
+	def __eq__(self, other) -> bool:
 		return self is other
 
-	def __ne__(self, other):
+	def __ne__(self, other) -> bool:
 		return self is not other
 
-	def __hash__(self):
+	def __hash__(self) -> int:
 		return self._hash
 
 
@@ -175,7 +175,7 @@ class TestFancyPrinter:
 		 'tomato',
 		 'cherry',
 		 'blackcurrant',
-		 ]"""
+		 ]""",
 				)
 
 	@no_type_check
@@ -212,7 +212,7 @@ class TestFancyPrinter:
 					...,
 					list(range(100)),
 					list(range(200)),
-					]
+					],
 			)
 	def test_basic(self, safe):
 		# Verify .isrecursive() and .isreadable() w/o recursion
@@ -328,7 +328,7 @@ class TestFancyPrinter:
 				"controldesk_runtime_us": 0,
 				"main_code_runtime_us": 0,
 				"read_io_runtime_us": 0,
-				"write_io_runtime_us": 43690
+				"write_io_runtime_us": 43690,
 				}
 		exp = """\
 {
@@ -417,7 +417,7 @@ class TestFancyPrinter:
 		assert FancyPrinter(width=16).pformat(o) == expected
 		assert FancyPrinter(width=25).pformat(o) == expected
 		assert FancyPrinter(width=14).pformat(
-				o
+				o,
 				) == """\
 [
  [
@@ -506,7 +506,7 @@ class TestFancyPrinter:
 		d = dict(zip(words, itertools.count()))
 		m = types.MappingProxyType(d)
 		assert FancyPrinter().pformat(
-				m
+				m,
 				) == """\
 mappingproxy({
               'the': 0,
@@ -522,7 +522,7 @@ mappingproxy({
 		d = collections.OrderedDict(zip(words, itertools.count()))
 		m = types.MappingProxyType(d)
 		assert FancyPrinter().pformat(
-				m
+				m,
 				) == """\
 mappingproxy(OrderedDict([
                           ('the', 0),
@@ -556,9 +556,9 @@ mappingproxy(OrderedDict([
 					pytest.param(set(range(7)), 20, id="case_1"),
 					pytest.param(set2(range(7)), 20, id="case_2"),
 					pytest.param(set3(range(7)), 20, id="case_3"),
-					]
+					],
 			)
-	def test_set_reprs(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
+	def test_set_reprs(self, value, width: int, advanced_file_regression: AdvancedFileRegressionFixture):
 		assert FancyPrinter().pformat(set()) == "set()"
 		assert FancyPrinter().pformat(set(range(3))) == "{0, 1, 2}"
 		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
@@ -569,9 +569,14 @@ mappingproxy(OrderedDict([
 					pytest.param(frozenset(range(7)), 20, id="case_1"),
 					pytest.param(frozenset2(range(7)), 20, id="case_2"),
 					pytest.param(frozenset3(range(7)), 20, id="case_3"),
-					]
+					],
 			)
-	def test_frozenset_reprs(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
+	def test_frozenset_reprs(
+			self,
+			value: frozenset,
+			width: int,
+			advanced_file_regression: AdvancedFileRegressionFixture,
+			):
 		assert FancyPrinter().pformat(frozenset()) == "frozenset()"
 		assert FancyPrinter().pformat(frozenset(range(3))) == "frozenset({0, 1, 2})"
 		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
@@ -601,8 +606,8 @@ mappingproxy(OrderedDict([
 
 		assert clean(FancyPrinter().pformat(set(keys))) == '{' + ','.join(map(repr, skeys)) + ",}"
 		assert clean(FancyPrinter().pformat(frozenset(keys))) == "frozenset({" + ','.join(map(repr, skeys)) + ",})"
-		assert clean(FancyPrinter().pformat(dict.fromkeys(keys))
-						) == '{' + ','.join("%r:None" % k for k in keys) + ",}"
+		expected = '{' + ','.join("%r:None" % k for k in keys) + ",}"
+		assert clean(FancyPrinter().pformat(dict.fromkeys(keys))) == expected
 
 		# Issue 10017: TypeError on user-defined types as dict keys.
 		assert FancyPrinter().pformat({Unorderable: 0, 1: 0}) == "{1: 0, " + repr(Unorderable) + ": 0}"
@@ -630,8 +635,9 @@ mappingproxy(OrderedDict([
 	def test_str_wrap(self):
 		# pprint tries to wrap strings intelligently
 		fox = "the quick brown fox jumped over a lazy dog"
-		assert FancyPrinter(width=19
-							).pformat(fox) == """\
+		assert FancyPrinter(
+				width=19,
+				).pformat(fox) == """\
 ('the quick brown '
  'fox jumped over '
  'a lazy dog')"""
@@ -651,13 +657,13 @@ mappingproxy(OrderedDict([
 		special = "Portons dix bons \"whiskys\"\nà l'avocat goujat\t qui fumait au zoo"
 		assert FancyPrinter(width=68).pformat(special) == repr(special)
 		assert FancyPrinter(width=31).pformat(
-				special
+				special,
 				) == """\
 ('Portons dix bons "whiskys"\\n'
  "à l'avocat goujat\\t qui "
  'fumait au zoo')"""
 		assert FancyPrinter(width=20).pformat(
-				special
+				special,
 				) == """\
 ('Portons dix bons '
  '"whiskys"\\n'
@@ -731,7 +737,7 @@ mappingproxy(OrderedDict([
   14, 15],
  [], [0], [0, 1], [0, 1, 2], [0, 1, 2, 3],
  [0, 1, 2, 3, 4]]"""
-		assert FancyPrinter(width=47, compact=True).pformat(o, ) == expected
+		assert FancyPrinter(width=47, compact=True).pformat(o) == expected
 
 	def test_compact_width(self):
 		levels = 20
@@ -740,7 +746,7 @@ mappingproxy(OrderedDict([
 		for i in range(levels - 1):
 			o = [o]  # type: ignore[list-item]
 		for w in range(levels * 2 + 1, levels + 3 * number - 1):
-			lines = FancyPrinter(width=w, compact=True).pformat(o, ).splitlines()
+			lines = FancyPrinter(width=w, compact=True).pformat(o).splitlines()
 			maxwidth = max(map(len, lines))
 			assert maxwidth <= w
 			maxwidth > w - 3  # pylint: disable=pointless-statement
@@ -764,31 +770,31 @@ mappingproxy(OrderedDict([
 		special = bytes(range(16))
 		assert FancyPrinter(width=61).pformat(special) == repr(special)
 		assert FancyPrinter(width=48).pformat(
-				special
+				special,
 				) == """\
 (b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\t\\n\\x0b'
  b'\\x0c\\r\\x0e\\x0f')"""
 		assert FancyPrinter(width=32).pformat(
-				special
+				special,
 				) == """\
 (b'\\x00\\x01\\x02\\x03'
  b'\\x04\\x05\\x06\\x07\\x08\\t\\n\\x0b'
  b'\\x0c\\r\\x0e\\x0f')"""
 		assert FancyPrinter(width=1).pformat(
-				special
+				special,
 				) == """\
 (b'\\x00\\x01\\x02\\x03'
  b'\\x04\\x05\\x06\\x07'
  b'\\x08\\t\\n\\x0b'
  b'\\x0c\\r\\x0e\\x0f')"""
-		assert FancyPrinter(width=21).pformat({'a': 1, 'b': letters, 'c': 2} == """\
+		assert FancyPrinter(width=21).pformat({'a': 1, 'b': letters, 'c': 2}) == """\
 {
  'a': 1,
  'b': b'abcdefghijkl'
       b'mnopqrstuvwx'
       b'yz',
  'c': 2,
- }""")
+ }"""
 		assert FancyPrinter(width=20).pformat({'a': 1, 'b': letters, 'c': 2}) == """\
 {
  'a': 1,
@@ -852,9 +858,9 @@ mappingproxy(OrderedDict([
 							),
 					pytest.param([[[[[bytearray(b"abcdefghijklmnopqrstuvwxyz")]]]]], 37, id="case_11"),
 					pytest.param([[[[[bytearray(range(16))]]]]], 50, id="case_12"),
-					]
+					],
 			)
-	def test_bytearray_wrap(self, value, width, advanced_file_regression: AdvancedFileRegressionFixture):
+	def test_bytearray_wrap(self, value, width: int, advanced_file_regression: AdvancedFileRegressionFixture):
 		advanced_file_regression.check(FancyPrinter(width=width).pformat(value))
 
 	def test_default_dict(self, advanced_file_regression: AdvancedFileRegressionFixture):
@@ -892,7 +898,7 @@ mappingproxy(OrderedDict([
 		words = "the quick brown fox jumped over a lazy dog".split()
 		d = collections.deque(zip(words, itertools.count()))
 		assert FancyPrinter().pformat(
-				d
+				d,
 				) == """\
 deque([('the', 0),
        ('quick', 1),
@@ -905,7 +911,7 @@ deque([('the', 0),
        ('dog', 8)])"""
 		d = collections.deque(zip(words, itertools.count()), maxlen=7)
 		assert FancyPrinter().pformat(
-				d
+				d,
 				) == """\
 deque([('brown', 2),
        ('fox', 3),
@@ -930,6 +936,12 @@ deque([('brown', 2),
 		d = collections.UserList(zip(words, itertools.count()))
 		advanced_file_regression.check(FancyPrinter().pformat(d))
 
+	_sl_str_param = StringList([
+			"('the quick brown '",
+			" 'fox jumped over '",
+			" 'a lazy dog')",
+			])
+
 	@pytest.mark.parametrize(
 			"value, width, expects",
 			[
@@ -937,27 +949,25 @@ deque([('brown', 2),
 					(
 							collections.UserString("the quick brown fox jumped over a lazy dog"),
 							20,
-							str(StringList([
-									"('the quick brown '",
-									" 'fox jumped over '",
-									" 'a lazy dog')",
-									]))
+							str(_sl_str_param),
 							),
-					({1: collections.UserString("the quick brown fox jumped over a lazy dog")},
-						20,
-						str(
-								StringList([
-										'{',
-										" 1: 'the quick '",
-										"    'brown fox '",
-										"    'jumped over a '",
-										"    'lazy dog',",
-										" }"
-										])
-								)),
-					]
+					(
+							{1: collections.UserString("the quick brown fox jumped over a lazy dog")},
+							20,
+							str(
+									StringList([
+											'{',
+											" 1: 'the quick '",
+											"    'brown fox '",
+											"    'jumped over a '",
+											"    'lazy dog',",
+											" }",
+											]),
+									),
+							),
+					],
 			)
-	def test_user_string(self, value, width, expects):
+	def test_user_string(self, value: Any, width: int, expects: str):
 		assert FancyPrinter(width=width).pformat(value) == expects
 
 

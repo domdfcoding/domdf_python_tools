@@ -246,7 +246,7 @@ def test_get_month_number_from_no(count: int):
 				('0', "The given month ('0') is not recognised."),
 				("-1", "The given month ('-1') is not recognised."),
 				("13", "The given month ('13') is not recognised."),
-				]
+				],
 		)
 def test_get_month_number_errors(value: Union[str, int], match: str):
 	with pytest.raises(ValueError, match=re.escape(match)):
@@ -321,9 +321,9 @@ def test_check_date():
 				date(2019, 4, 21),
 				date(2020, 4, 12),
 				date(2021, 4, 4),
-				]
+				],
 		)
-def test_calc_easter(date):
+def test_calc_easter(date: date):
 	assert dates.calc_easter(date.year) == date
 
 
@@ -382,7 +382,7 @@ def test_calc_easter(date):
 				(date(month=10, day=26, year=2024), True),
 				(date(month=10, day=27, year=2024), False),
 				(date(month=10, day=28, year=2024), False),
-				]
+				],
 		)
-def test_is_bst(the_date, result: bool):
+def test_is_bst(the_date: date, result: bool):
 	assert dates.is_bst(the_date) is result

@@ -3,7 +3,7 @@ import decimal
 import pathlib
 import random
 import string
-from typing import List
+from typing import Any, Dict, List, Sequence
 
 # 3rd party
 import pytest
@@ -116,7 +116,7 @@ def test_alpha_sort():
 				(decimal.Decimal("1234"), "1234"),
 				],
 		)
-def test_as_text(value, expects):
+def test_as_text(value: Any, expects: str):
 	assert words.as_text(value) == expects
 
 
@@ -143,17 +143,23 @@ def test_as_text(value, expects):
 				((["bob"], ), {"use_repr": True, "oxford": True}, "'bob'"),
 				((["bob", "alice"], ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
 				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
-				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "delimiter": ';'},
-					"'bob'; 'alice'; and 'fred'"),
-				((["bob", "alice", "fred"], ), {"use_repr": True, "oxford": True, "connective": "or"},
-					"'bob', 'alice', or 'fred'"),
+				(
+						(["bob", "alice", "fred"], ),
+						{"use_repr": True, "oxford": True, "delimiter": ';'},
+						"'bob'; 'alice'; and 'fred'",
+						),
+				(
+						(["bob", "alice", "fred"], ),
+						{"use_repr": True, "oxford": True, "connective": "or"},
+						"'bob', 'alice', or 'fred'",
+						),
 				((["bob", "alice"], ), {"connective": "or"}, "bob or alice"),
 				((("bob", ), ), {"use_repr": True, "oxford": True}, "'bob'"),
 				((("bob", "alice"), ), {"use_repr": True, "oxford": True}, "'bob' and 'alice'"),
 				((("bob", "alice", "fred"), ), {"use_repr": True, "oxford": True}, "'bob', 'alice', and 'fred'"),
 				],
 		)
-def test_word_join(args, kwargs, expects):
+def test_word_join(args: Sequence, kwargs: Dict[str, Any], expects: str):
 	assert words.word_join(*args, **kwargs) == expects
 
 
@@ -182,7 +188,8 @@ def test_pluralphrase():
 	phrase2 = PluralPhrase("The farmer has {n} {0}.", (Plural("cow", "cows"), ))
 	phrase3 = PluralPhrase("The proposed {1} {0} to ...", (Plural("is", "are"), Plural("change", "changes")))
 	phrase4 = PluralPhrase(
-			"The farmer has {n} {0}. The {0} {1} brown.", (Plural("cow", "cows"), Plural("is", "are"))
+			"The farmer has {n} {0}. The {0} {1} brown.",
+			(Plural("cow", "cows"), Plural("is", "are")),
 			)
 	n = 1
 	assert phrase1(n) == "The proposed change is to ..."

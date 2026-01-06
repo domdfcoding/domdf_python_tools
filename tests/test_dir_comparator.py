@@ -12,6 +12,7 @@ import os
 import shutil
 from contextlib import redirect_stdout
 from io import StringIO
+from typing import Sequence
 
 # 3rd party
 import pytest
@@ -66,17 +67,17 @@ class TestDirComparator:
 		assert ".hg" in filecmp.DEFAULT_IGNORES
 
 	# @pytest.mark.parametrize()
-	def test_cmpfiles(self, comparator_tmpdir):
+	def test_cmpfiles(self, comparator_tmpdir: ComparatorTmpdirData):
 		assert filecmp.cmpfiles(
 			comparator_tmpdir.dir,
 			comparator_tmpdir.dir,
 			["file"],
-			) == (["file"], [], []), "Comparing directory to itself fails"
+		) == (["file"], [], []), "Comparing directory to itself fails"
 		assert filecmp.cmpfiles(
 			comparator_tmpdir.dir,
 			comparator_tmpdir.dir_same,
 			["file"],
-			) == (["file"], [], []), "Comparing directory to same fails"
+		) == (["file"], [], []), "Comparing directory to same fails"
 
 		# Try it with shallow=False
 		assert filecmp.cmpfiles(
@@ -84,13 +85,13 @@ class TestDirComparator:
 			comparator_tmpdir.dir,
 			["file"],
 			shallow=False,
-			) == (["file"], [], []), "Comparing directory to itself fails"
+		) == (["file"], [], []), "Comparing directory to itself fails"
 		assert filecmp.cmpfiles(
 			comparator_tmpdir.dir,
 			comparator_tmpdir.dir_same,
 			["file"],
 			shallow=False,
-			), "Comparing directory to same fails"
+		), "Comparing directory to same fails"
 
 		# Add different file2
 		with open(os.path.join(comparator_tmpdir.dir, "file2"), 'w', encoding="UTF-8") as output:
@@ -100,16 +101,16 @@ class TestDirComparator:
 			comparator_tmpdir.dir,
 			comparator_tmpdir.dir_same,
 			["file", "file2"],
-			) != (["file"], ["file2"], []), "Comparing mismatched directories fails"
+		) != (["file"], ["file2"], []), "Comparing mismatched directories fails"
 
-	def _assert_lists(self, actual, expected):
+	def _assert_lists(self, actual: Sequence, expected: Sequence):
 		"""
 		Assert that two lists are equal, up to ordering.
 		"""
 
 		assert sorted(actual) == sorted(expected)
 
-	def test_dircmp(self, comparator_tmpdir):
+	def test_dircmp(self, comparator_tmpdir: ComparatorTmpdirData):
 		# Check attributes for comparison of two identical directories
 		left_dir, right_dir = comparator_tmpdir.dir, comparator_tmpdir.dir_same
 		d = DirComparator(left_dir, right_dir)
@@ -195,7 +196,7 @@ class TestDirComparator:
 				]
 		self._assert_report(d.report, expected_report)
 
-	def test_dircmp_subdirs_type(self, comparator_tmpdir):
+	def test_dircmp_subdirs_type(self, comparator_tmpdir: ComparatorTmpdirData):
 		"""
 		Check that dircmp.subdirs respects subclassing.
 		"""
@@ -209,7 +210,7 @@ class TestDirComparator:
 		sub_dcmp = sub_dirs["subdir"]
 		assert type(sub_dcmp) == MyDirCmp  # pylint: disable=unidiomatic-typecheck
 
-	def test_report_partial_closure(self, comparator_tmpdir):
+	def test_report_partial_closure(self, comparator_tmpdir: ComparatorTmpdirData):
 		left_dir, right_dir = comparator_tmpdir.dir, comparator_tmpdir.dir_same
 		d = DirComparator(left_dir, right_dir)
 		left_subdir = os.path.join(left_dir, "subdir")
@@ -223,7 +224,7 @@ class TestDirComparator:
 				]
 		self._assert_report(d.report_partial_closure, expected_report)
 
-	def test_report_full_closure(self, comparator_tmpdir):
+	def test_report_full_closure(self, comparator_tmpdir: ComparatorTmpdirData):
 		left_dir, right_dir = comparator_tmpdir.dir, comparator_tmpdir.dir_same
 		d = DirComparator(left_dir, right_dir)
 		left_subdir = os.path.join(left_dir, "subdir")

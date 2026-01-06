@@ -78,18 +78,18 @@ class Version(Tuple[int, int, int]):
 	"""
 
 	@property  # type: ignore
-	def major(self):  # noqa: D102
+	def major(self) -> int:  # noqa: D102
 		return self[0]
 
 	@property  # type: ignore
-	def minor(self):  # noqa: D102
+	def minor(self) -> int:  # noqa: D102
 		return self[1]
 
 	@property  # type: ignore
-	def patch(self):  # noqa: D102
+	def patch(self) -> int:  # noqa: D102
 		return self[2]
 
-	def __new__(cls: Type[_V], major=0, minor=0, patch=0) -> _V:  # noqa: D102
+	def __new__(cls: Type[_V], major=0, minor=0, patch=0) -> _V:  # noqa: D102,MAN001
 		t: _V = super().__new__(cls, (int(major), int(minor), int(patch)))
 
 		return t
@@ -123,14 +123,14 @@ class Version(Tuple[int, int, int]):
 
 		return self.major
 
-	def __getnewargs__(self):
+	def __getnewargs__(self) -> Tuple[int, int, int]:
 		"""
 		Return Version as a plain tuple. Used by copy and pickle.
 		"""
 
-		return tuple(self)
+		return tuple(self)  # type: ignore[return-value]
 
-	def __eq__(self, other) -> bool:
+	def __eq__(self, other) -> bool:  # noqa: MAN001,PRM002
 		"""
 		Returns whether this version is equal to the other version.
 
@@ -145,7 +145,7 @@ class Version(Tuple[int, int, int]):
 			shortest = min(len(self), (len(other)))
 			return self[:shortest] == other[:shortest]
 
-	def __gt__(self, other) -> bool:
+	def __gt__(self, other) -> bool:  # noqa: MAN001,PRM002
 		"""
 		Returns whether this version is greater than the other version.
 
@@ -159,7 +159,7 @@ class Version(Tuple[int, int, int]):
 		else:
 			return tuple(self) > other
 
-	def __lt__(self, other) -> bool:
+	def __lt__(self, other) -> bool:  # noqa: MAN001,PRM002
 		"""
 		Returns whether this version is less than the other version.
 
@@ -173,7 +173,7 @@ class Version(Tuple[int, int, int]):
 		else:
 			return tuple(self) < other
 
-	def __ge__(self, other) -> bool:
+	def __ge__(self, other) -> bool:  # noqa: MAN001,PRM002
 		"""
 		Returns whether this version is greater than or equal to the other version.
 
@@ -187,7 +187,7 @@ class Version(Tuple[int, int, int]):
 		else:
 			return tuple(self)[:len(other)] >= other
 
-	def __le__(self, other) -> bool:
+	def __le__(self, other) -> bool:  # noqa: MAN001,PRM002
 		"""
 		Returns whether this version is less than or equal to the other version.
 
@@ -256,12 +256,12 @@ class Version(Tuple[int, int, int]):
 				}
 
 	def _replace(self: _V, **kwargs) -> _V:
-		"""
+		r"""
 		Return a new instance of the named tuple replacing specified fields with new values.
 
 		.. versionadded:: 1.4.0
 
-		:param kwargs:
+		:param \*\*kwargs:
 		"""
 
 		return self.__class__(**{**self._asdict(), **kwargs})
@@ -303,7 +303,7 @@ def _iter_float(version_float: float) -> Generator[int, None, None]:
 	return _iter_string(str(version_float))
 
 
-def _prep_for_eq(other: Union[str, float, Version], ) -> Tuple[int, ...]:
+def _prep_for_eq(other: Union[str, float, Version]) -> Tuple[int, ...]:  # noqa: PRM002
 	"""
 	Prepare 'other' for use in ``__eq__``, ``__le__``, ``__ge__``, ``__gt__``, and ``__lt__``.
 	"""

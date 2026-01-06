@@ -354,15 +354,12 @@ class TestMethodcaller:
 	def test_repr(self):
 		assert repr(methodcaller(0, "lower")) == "domdf_python_tools.getters.methodcaller(0, 'lower')"
 		assert repr(methodcaller(1, "__iter__")) == "domdf_python_tools.getters.methodcaller(1, '__iter__')"
-		assert repr(
-				methodcaller(1, "__iter__", "arg1")
-				) == "domdf_python_tools.getters.methodcaller(1, '__iter__', 'arg1')"
-		assert repr(
-				methodcaller(1, "__iter__", kw1="kwarg1")
-				) == "domdf_python_tools.getters.methodcaller(1, '__iter__', kw1='kwarg1')"
-		assert repr(
-				methodcaller(1, "__iter__", "arg1", "arg2", kw1="kwarg1", kw2="kwarg2")
-				) == "domdf_python_tools.getters.methodcaller(1, '__iter__', 'arg1', 'arg2', kw1='kwarg1', kw2='kwarg2')"
+		expected = "domdf_python_tools.getters.methodcaller(1, '__iter__', 'arg1')"
+		assert repr(methodcaller(1, "__iter__", "arg1")) == expected
+		expected = "domdf_python_tools.getters.methodcaller(1, '__iter__', kw1='kwarg1')"
+		assert repr(methodcaller(1, "__iter__", kw1="kwarg1")) == expected
+		expected = "domdf_python_tools.getters.methodcaller(1, '__iter__', 'arg1', 'arg2', kw1='kwarg1', kw2='kwarg2')"
+		assert repr(methodcaller(1, "__iter__", "arg1", "arg2", kw1="kwarg1", kw2="kwarg2")) == expected
 
 		evaluate(repr(methodcaller(0, "lower")))
 		evaluate(repr(methodcaller(1, "__iter__")))

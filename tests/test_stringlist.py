@@ -2,7 +2,7 @@
 import pickle
 import textwrap
 from textwrap import dedent
-from typing import no_type_check
+from typing import List, Tuple, no_type_check
 
 # 3rd party
 import pytest
@@ -64,7 +64,22 @@ class TestStringList:
 
 		sl.insert(100, "end")
 		assert sl == [
-				"1234", "foo", "bar", '', "a line", '', '', '', "hello", "world", '', '', '', "1234", "baz", "end"
+				"1234",
+				"foo",
+				"bar",
+				'',
+				"a line",
+				'',
+				'',
+				'',
+				"hello",
+				"world",
+				'',
+				'',
+				'',
+				"1234",
+				"baz",
+				"end",
 				]
 
 	def test_setitem(self):
@@ -215,7 +230,7 @@ class TestStringList:
 
 			def __repr__(self) -> str:
 				return "Foo()"
-		"""
+		""",
 				)
 
 		sl = StringList()
@@ -551,17 +566,17 @@ joinlines_splitlines_param = pytest.mark.parametrize(
 				("abc\ndef\r\nghi\n\r", [("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
 				("\nabc\ndef\r\nghi\n\r", [('', '\n'), ("abc", '\n'), ("def", "\r\n"), ("ghi", '\n'), ('', '\r')]),
 				("abcdef", [("abcdef", '')]),
-				]
+				],
 		)
 
 
 @joinlines_splitlines_param
-def test_splitlines(string, lines):
+def test_splitlines(string: str, lines: List[str]):
 	assert splitlines(string) == lines
 
 
 @joinlines_splitlines_param
-def test_joinlines(string, lines):
+def test_joinlines(string: str, lines: List[Tuple[str, str]]):
 	assert string == joinlines(lines)
 
 

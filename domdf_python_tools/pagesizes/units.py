@@ -39,7 +39,7 @@ Provides a variety of units for use with pagesizes.
 # stdlib
 import math
 from decimal import ROUND_HALF_UP, Decimal
-from typing import SupportsFloat, Union
+from typing import NoReturn, SupportsFloat, Union
 
 # this package
 from domdf_python_tools.doctools import prettify_docstrings
@@ -199,12 +199,12 @@ class Unit(float):
 	name: str = "pt"
 	_in_pt: float = 1
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		value = _rounders(float(self), "0.000")
 		as_pt = _rounders(self.as_pt(), "0.000")
 		return f"<Unit '{value} {self.name}': {as_pt}pt>"
 
-	def __str__(self):
+	def __str__(self) -> str:
 		value = _rounders(float(self), "0.000")
 		as_pt = _rounders(self.as_pt(), "0.000")
 		return f"<Unit '{value}\u205F{self.name}': {as_pt}pt>"
@@ -251,10 +251,10 @@ class Unit(float):
 
 		return self.__class__(super().__mod__(other))
 
-	def __pow__(self, power, modulo=None):
+	def __pow__(self, power, modulo=None) -> NoReturn:  # noqa: MAN001
 		raise NotImplementedError("Powers are not supported for units.")
 
-	def __rtruediv__(self, other):
+	def __rtruediv__(self, other) -> NoReturn:  # noqa: MAN001
 		raise NotImplementedError("Dividing by a unit is not allowed.")
 
 	__rdiv__ = __rtruediv__

@@ -10,7 +10,7 @@ Test functions in bases.py
 import copy
 import pickle  # nosec: B101
 from numbers import Number, Real
-from typing import no_type_check
+from typing import Any, Dict, Optional, no_type_check
 
 # 3rd party
 import pytest
@@ -22,13 +22,13 @@ from domdf_python_tools.bases import Dictable, UserFloat
 
 class Person(Dictable):
 
-	def __init__(self, name, age, occupation=None):
+	def __init__(self, name: str, age: int, occupation: Optional[str] = None):
 		self.name = str(name)
 		self.age = int(age)
 		self.occupation = occupation
 
 	@property
-	def __dict__(self):  # type: ignore[override]
+	def __dict__(self) -> Dict[str, Any]:  # type: ignore[override]
 		return dict(
 				name=self.name,
 				age=self.age,
@@ -38,13 +38,13 @@ class Person(Dictable):
 
 class Child(Person):
 
-	def __init__(self, name, age, school):
+	def __init__(self, name: str, age: int, school: str):
 		super().__init__(name, age, "Student")
 
 		self.school = "school"
 
 	@property
-	def __dict__(self):  # type: ignore[override]
+	def __dict__(self) -> Dict[str, Any]:  # type: ignore[override]
 		class_dict = super().__dict__
 		class_dict["School"] = self.school
 		return class_dict
@@ -57,12 +57,13 @@ def alice():
 
 class TestDictable:
 
-	def test_creation(self, alice):
+	@no_type_check
+	def test_creation(self, alice: Dictable):
 		assert alice.name == "Alice"
 		assert alice.age == 20
 		assert alice.occupation == "IRC Lurker"
 
-	def test_str(self, alice: object):
+	def test_str(self, alice: Dictable):
 		assert str(alice).startswith("<tests.test_bases.Person")
 
 	def test_equality(self):
@@ -71,21 +72,21 @@ class TestDictable:
 
 		assert dolly == clone
 
-	def test_iter(self, alice):
+	def test_iter(self, alice: Dictable):
 		for key, value in alice:
 			assert key == "name"
 			assert value == "Alice"
 			return
 
-	def test_copy(self, alice):
+	def test_copy(self, alice: Dictable):
 		assert copy.copy(alice) == alice
 		assert copy.deepcopy(alice) == alice
 		assert copy.copy(alice) == copy.copy(alice)
 
-	def test_pickle(self, alice):
+	def test_pickle(self, alice: Dictable):
 		assert pickle.loads(pickle.dumps(alice)) == alice  # nosec: B101
 
-	def test_vars(self, alice):
+	def test_vars(self, alice: Dictable):
 		assert vars(alice) == dict(alice)
 
 	def test_subclass(self):
@@ -301,5 +302,5 @@ class TestUserFloat:
 				(([0, 1], [0, 1]), True),
 				],
 		)
-def test_is_match_with(case, expected):
+def test_is_match_with(case: Any, expected: bool):
 	assert is_match_with(*case) == expected

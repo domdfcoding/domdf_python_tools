@@ -12,7 +12,7 @@ Tests common to tuple, list and UserList.UserList
 import pickle
 import sys
 from itertools import chain
-from typing import Any, List
+from typing import Any, Callable, Iterator, List, Tuple, Type
 
 # 3rd party
 import pytest
@@ -180,16 +180,16 @@ def itermulti(seqn):
 	return chain(map(lambda x: x, iterfunc(IterGen(Sequence(seqn)))))
 
 
-class LyingTuple(tuple):
+class LyingTuple(Tuple[int]):
 	__slots__ = ()
 
-	def __iter__(self):
+	def __iter__(self) -> Iterator[int]:
 		yield 1
 
 
-class LyingList(list):
+class LyingList(List[int]):
 
-	def __iter__(self):
+	def __iter__(self) -> Iterator[int]:
 		yield 1
 
 
@@ -197,13 +197,13 @@ class CommonTest:
 	# The type to be tested
 	type2test: type
 
-	def assertEqual(self, left, right):
+	def assertEqual(self, left: Any, right: Any):
 		assert left == right
 
-	def assertNotEqual(self, left, right):
+	def assertNotEqual(self, left: Any, right: Any):
 		assert left != right
 
-	def assertRaises(self, what, func, *args):
+	def assertRaises(self, what: Type[Exception], func: Callable, *args):
 		with pytest.raises(what):
 			func(*args)
 
@@ -226,13 +226,13 @@ class CommonTest:
 
 		class OtherSeq:
 
-			def __init__(self, initseq):
+			def __init__(self, initseq) -> None:
 				self.__data = initseq
 
-			def __len__(self):
+			def __len__(self) -> int:
 				return len(self.__data)
 
-			def __getitem__(self, i):
+			def __getitem__(self, i):  # noqa: MAN001,MAN002
 				return self.__data[i]
 
 		s = OtherSeq(u0)
@@ -500,7 +500,7 @@ class CommonTest:
 
 		class BadCmp:
 
-			def __eq__(self, other):
+			def __eq__(self, other) -> bool:
 				if other == 2:
 					raise BadExc()
 				return False
@@ -540,7 +540,7 @@ class CommonTest:
 
 		class BadCmp:
 
-			def __eq__(self, other):
+			def __eq__(self, other) -> bool:
 				if other == 2:
 					raise BadExc()
 				return False

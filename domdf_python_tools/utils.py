@@ -139,7 +139,7 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 SPACE_PLACEHOLDER = '␣'
 
 
-def cmp(x, y) -> int:
+def cmp(x, y) -> int:  # noqa: PRM002
 	"""
 	Implementation of ``cmp`` for Python 3.
 
@@ -277,6 +277,8 @@ def strtobool(val: Union[str, int]) -> bool:
 	:py:obj:`True` values are ``'y'``, ``'yes'``, ``'t'``, ``'true'``, ``'on'``, ``'1'``, and ``1``.
 
 	:py:obj:`False` values are ``'n'``, ``'no'``, ``'f'``, ``'false'``, ``'off'``, ``'0'``, and ``0``.
+
+	:param val:
 
 	:raises: :py:exc:`ValueError` if ``val`` is anything else.
 	"""

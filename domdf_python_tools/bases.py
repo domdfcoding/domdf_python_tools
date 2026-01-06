@@ -80,7 +80,7 @@ _V = TypeVar("_V")
 
 
 @prettify_docstrings
-class Dictable(Iterable[Tuple[str, _V]]):
+class Dictable(Iterable[Tuple[str, _V]]):  # noqa: PRM002
 	"""
 	The basic structure of a class that can be converted into a dictionary.
 	"""
@@ -119,7 +119,7 @@ class Dictable(Iterable[Tuple[str, _V]]):
 	def __dict__(self):  # type: ignore[override]
 		return dict()  # pragma: no cover (abc)
 
-	def __eq__(self, other) -> bool:
+	def __eq__(self, other) -> bool:  # noqa: MAN001
 		if isinstance(other, self.__class__):
 			return is_match_with(other.__dict__, self.__dict__)
 
@@ -266,6 +266,8 @@ class UserList(MutableSequence[_T]):
 	def append(self, item: _T) -> None:
 		"""
 		Append ``item`` to the end of the :class:`~.domdf_python_tools.bases.UserList`.
+
+		:param item:
 		"""
 
 		self.data.append(item)
@@ -273,6 +275,9 @@ class UserList(MutableSequence[_T]):
 	def insert(self, i: int, item: _T) -> None:
 		"""
 		Insert ``item`` at position ``i`` in the :class:`~.domdf_python_tools.bases.UserList`.
+
+		:param i:
+		:param item:
 		"""
 
 		self.data.insert(i, item)
@@ -280,6 +285,8 @@ class UserList(MutableSequence[_T]):
 	def pop(self, i: int = -1) -> _T:
 		"""
 		Removes and returns the item at index ``i``.
+
+		:param i:
 
 		:raises IndexError: if list is empty or index is out of range.
 		"""
@@ -315,7 +322,7 @@ class UserList(MutableSequence[_T]):
 
 		return self.__class__(self)
 
-	def count(self, item: _T) -> int:
+	def count(self, item: _T) -> int:  # noqa: PRM002
 		"""
 		Returns the number of occurrences of ``item`` in the :class:`~.domdf_python_tools.bases.UserList`.
 		"""
@@ -323,11 +330,11 @@ class UserList(MutableSequence[_T]):
 		return self.data.count(item)
 
 	def index(self, item: _T, *args: Any) -> int:
-		"""
+		r"""
 		Returns the index of the fist element matching ``item``.
 
 		:param item:
-		:param args:
+		:param \*args:
 
 		:raises ValueError: if the item is not present.
 		"""
@@ -341,7 +348,7 @@ class UserList(MutableSequence[_T]):
 
 		self.data.reverse()
 
-	def sort(self, *, key=None, reverse: bool = False) -> None:
+	def sort(self, *, key=None, reverse: bool = False) -> None:  # noqa: PRM002
 		"""
 		Sort the list in ascending order and return :py:obj:`None`.
 
@@ -628,7 +635,7 @@ class Lineup(UserList[_T]):
 
 		return self
 
-	def sort(  # type: ignore[override]
+	def sort(  # type: ignore[override]  # noqa: PRM002
 			self: _LU,
 			*,
 			key=None,

@@ -134,7 +134,7 @@ class JsonLibrary(Protocol):
 			sort_keys: bool = ...,
 			**kwds: Any,
 			) -> str:
-		"""
+		r"""
 		Serialize ``obj`` to a JSON formatted :class:`str`.
 
 		:param obj:
@@ -147,7 +147,7 @@ class JsonLibrary(Protocol):
 		:param separators:
 		:param default:
 		:param sort_keys:
-		:param kwds:
+		:param \*\*kwds:
 		"""
 
 	@staticmethod
@@ -162,7 +162,7 @@ class JsonLibrary(Protocol):
 			object_pairs_hook: Optional[Callable[[List[Tuple[Any, Any]]], Any]] = ...,
 			**kwds: Any,
 			) -> Any:
-		"""
+		r"""
 		Deserialize ``s`` to a Python object.
 
 		:param s:
@@ -172,7 +172,7 @@ class JsonLibrary(Protocol):
 		:param parse_int:
 		:param parse_constant:
 		:param object_pairs_hook:
-		:param kwds:
+		:param \*\*kwds:
 
 		:rtype:
 
@@ -225,7 +225,7 @@ class HasHead(Protocol):
 		:return: The first n rows of the caller object.
 		"""
 
-	def to_string(self, *args, **kwargs) -> Optional[str]:
+	def to_string(self, *args, **kwargs) -> Optional[str]:  # noqa: PRM002
 		"""
 		Render the object to a console-friendly tabular output.
 		"""
@@ -254,7 +254,7 @@ class SupportsLessThan(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __lt__(self, __other: Any) -> bool:
+	def __lt__(self, __other: Any) -> bool:  # noqa: PRM002
 		"""
 		Return ``self < value``.
 		"""
@@ -267,7 +267,7 @@ class SupportsLessEqual(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __le__(self, __other: Any) -> bool:
+	def __le__(self, __other: Any) -> bool:  # noqa: PRM002
 		"""
 		Return ``self <= value``.
 		"""
@@ -280,7 +280,7 @@ class SupportsGreaterThan(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __gt__(self, __other: Any) -> bool:
+	def __gt__(self, __other: Any) -> bool:  # noqa: PRM002
 		"""
 		Return ``self > value``.
 		"""
@@ -293,7 +293,7 @@ class SupportsGreaterEqual(Protocol):
 	.. versionadded:: 3.0.0
 	"""
 
-	def __ge__(self, __other: Any) -> bool:
+	def __ge__(self, __other: Any) -> bool:  # noqa: PRM002
 		"""
 		Return ``self >= value``.
 		"""

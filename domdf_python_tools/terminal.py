@@ -179,7 +179,7 @@ class Echo:
 
 		self.locals_on_entry = self.parent_frame.f_locals.copy()  # type: ignore[union-attr]
 
-	def __exit__(self, *args, **kwargs):
+	def __exit__(self, *args, **kwargs):  # noqa: PRM002
 		"""
 		Called when exiting the context manager.
 		"""

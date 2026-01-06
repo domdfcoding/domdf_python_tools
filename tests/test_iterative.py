@@ -21,7 +21,7 @@ import sys
 from itertools import islice
 from random import shuffle
 from types import GeneratorType
-from typing import Any, Iterable, List, Optional, Sequence, Tuple, TypeVar
+from typing import Any, Iterable, List, MutableSequence, Optional, Sequence, Tuple, TypeVar
 
 # 3rd party
 import pytest
@@ -138,7 +138,7 @@ def test_len(capsys):
 				([((1, 2), (3, 4)), ((5, 6), (7, 8))], [1, 2, 3, 4, 5, 6, 7, 8]),
 				((((1, 2), (3, 4)), ((5, 6), (7, 8))), [1, 2, 3, 4, 5, 6, 7, 8]),
 				((("12", "34"), ("56", "78")), ['1', '2', '3', '4', '5', '6', '7', '8']),
-				]
+				],
 		)
 def test_double_chain(value, expects):
 	assert list(double_chain(value)) == expects
@@ -164,9 +164,9 @@ def test_make_tree(advanced_file_regression: AdvancedFileRegressionFixture):
 											],
 									],
 							"domdf_python_tools==2.2.0",
-							])
+							]),
 					),
-			advanced_file_regression
+			advanced_file_regression,
 			)
 
 
@@ -177,9 +177,9 @@ def test_make_tree(advanced_file_regression: AdvancedFileRegressionFixture):
 				["abc", "def", ["ghi", "jkl", "mno", "pqr"]],
 				["abc", "def", "ghi", "jkl", ["mno", "pqr"]],
 				["abc", "def", "ghi", "jkl", "mno", "pqr"],
-				]
+				],
 		)
-def test_flatten(data, advanced_data_regression: AdvancedDataRegressionFixture):
+def test_flatten(data: List, advanced_data_regression: AdvancedDataRegressionFixture):
 	advanced_data_regression.check(list(flatten(data)))
 
 
@@ -191,9 +191,9 @@ def test_flatten(data, advanced_data_regression: AdvancedDataRegressionFixture):
 				pytest.param(['1', '3', '5', '7', '9'], id="numerical_strings"),
 				pytest.param(["1.2", "3.4", "5.6", "7.8", "9.0"], id="float strings"),
 				pytest.param(["0.9", "0.12.4", '1', "2.5"], id="versions"),
-				]
+				],
 		)
-def test_natmin(data):
+def test_natmin(data: MutableSequence):
 	orig_data = data[:]
 	for _ in range(5):
 		shuffle(data)
@@ -208,9 +208,9 @@ def test_natmin(data):
 				pytest.param(['1', '3', '5', '7', '9'], id="numerical_strings"),
 				pytest.param(["1.2", "3.4", "5.6", "7.8", "9.0"], id="float strings"),
 				pytest.param(["0.9", "0.12.4", '1', "2.5"], id="versions"),
-				]
+				],
 		)
-def test_natmax(data):
+def test_natmax(data: MutableSequence):
 	orig_data = data[:]
 	for _ in range(5):
 		shuffle(data)
@@ -233,9 +233,8 @@ def test_groupfloats():
 
 def test_ranges_from_iterable():
 	expects = [(170.0, 170.15), (171.05, 171.2)]
-	assert list(
-			ranges_from_iterable([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05)
-			) == expects
+	ranges = ranges_from_iterable([170.0, 170.05, 170.1, 170.15, 171.05, 171.1, 171.15, 171.2], step=0.05)
+	assert list(ranges) == expects
 
 	expects = [(1, 5), (7, 10)]
 	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
@@ -255,7 +254,7 @@ def _extend_param(sequence: str, expects: Any):
 				_extend_param("abcde", "abcde"),
 				pytest.param(('a', 'b', 'c', 'd', 'e'), "abcde", id="tuple"),
 				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
-				]
+				],
 		)
 def test_extend(sequence: Sequence[str], expects: str):
 	assert ''.join(extend(sequence, 4)) == expects
@@ -271,7 +270,7 @@ def test_extend(sequence: Sequence[str], expects: str):
 				_extend_param("abcde", "abcde"),
 				pytest.param(('a', 'b', 'c', 'd', 'e'), "abcde", id="tuple"),
 				pytest.param(['a', 'b', 'c', 'd', 'e'], "abcde", id="list"),
-				]
+				],
 		)
 def test_extend_with(sequence: Sequence[str], expects: str):
 	assert ''.join(extend_with(sequence, 4, 'z')) == expects

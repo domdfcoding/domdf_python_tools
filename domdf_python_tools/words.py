@@ -39,7 +39,6 @@ Functions for working with (English) words.
 # stdlib
 import functools
 import random
-import re
 import sys
 from gettext import ngettext
 from reprlib import recursive_repr
@@ -614,7 +613,7 @@ class Plural(functools.partial):
 			return functools.partial.__new__(cls, ngettext, singular, plural)
 
 	@recursive_repr()
-	def __repr__(self):
+	def __repr__(self) -> str:
 		qualname = type(self).__qualname__
 		args: List[str] = []
 		args.extend(repr(x) for x in self.args)

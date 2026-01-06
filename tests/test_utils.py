@@ -13,6 +13,7 @@ import platform
 import re
 import sys
 from collections import namedtuple
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
 
 # 3rd party
 import click
@@ -60,7 +61,7 @@ class TestList2Str:
 					(['a', 2, pathlib.Path("foo.txt")], "a,2,foo.txt"),
 					],
 			)
-	def test_list2str(self, value, expects):
+	def test_list2str(self, value: Any, expects: str):
 		str_representation = list2str(value)
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
@@ -74,7 +75,7 @@ class TestList2Str:
 					(['a', 2, pathlib.Path("foo.txt")], "a;2;foo.txt"),
 					],
 			)
-	def test_list2str_semicolon(self, value, expects):
+	def test_list2str_semicolon(self, value: Any, expects: str):
 		str_representation = list2str(value, sep=';')
 		assert isinstance(str_representation, str)
 		assert str_representation == expects
@@ -85,7 +86,7 @@ class CustomRepr:
 	def __init__(self):
 		pass
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		return "This is my custom __repr__!"
 
 
@@ -98,7 +99,7 @@ class NoRepr:
 no_repr_instance = NoRepr()
 
 
-def get_mem_addr(obj):
+def get_mem_addr(obj: object):
 	if sys.platform == "win32" and platform.python_implementation() != "PyPy":
 		return f"0x0*{hex(id(obj))[2:].upper()}"
 	else:
@@ -116,7 +117,7 @@ def get_mem_addr(obj):
 				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
 				],
 		)
-def test_printr(obj, expects, capsys):
+def test_printr(obj: Any, expects: str, capsys):
 	printr(obj)
 
 	captured = capsys.readouterr()
@@ -141,7 +142,7 @@ else:
 				(no_repr_instance, "<class 'tests.test_utils.NoRepr'>"),
 				],
 		)
-def test_printt(obj, expects, capsys):
+def test_printt(obj: Any, expects: str, capsys):
 	printt(obj)
 
 	captured = capsys.readouterr()
@@ -160,7 +161,7 @@ def test_printt(obj, expects, capsys):
 				(no_repr_instance, f"<tests.test_utils.NoRepr object at {get_mem_addr(no_repr_instance)}>"),
 				],
 		)
-def test_stderr_writer(obj, expects, capsys):
+def test_stderr_writer(obj: Any, expects: str, capsys):
 	stderr_writer(obj)
 
 	captured = capsys.readouterr()
@@ -188,7 +189,7 @@ class TestStr2Tuple:
 					("1; 2; 3", (1, 2, 3)),  # tests with semicolon
 					],
 			)
-	def test_str2tuple_semicolon(self, value, expects):
+	def test_str2tuple_semicolon(self, value: str, expects: Tuple[int, ...]):
 		assert isinstance(str2tuple(value, sep=';'), tuple)
 		assert str2tuple(value, sep=';') == expects
 
@@ -196,7 +197,7 @@ class TestStr2Tuple:
 class TestStrToBool:
 
 	@coincidence.testing_boolean_values(extra_truthy=[50, -1])
-	def test_strtobool(self, boolean_string, expected_boolean):
+	def test_strtobool(self, boolean_string, expected_boolean: bool):
 		assert strtobool(boolean_string) == expected_boolean
 
 	@pytest.mark.parametrize(
@@ -210,7 +211,7 @@ class TestStrToBool:
 					(0.0, AttributeError),
 					],
 			)
-	def test_strtobool_errors(self, obj, expects):
+	def test_strtobool_errors(self, obj: Any, expects: Type[Exception]):
 		with pytest.raises(expects):
 			strtobool(obj)
 
@@ -236,7 +237,7 @@ class TestStrToBool:
 				("Hello World", "'Hello World'"),
 				],
 		)
-def test_enquote_value(obj, expects):
+def test_enquote_value(obj: Any, expects: Any):
 	assert enquote_value(obj) == expects
 
 
@@ -268,7 +269,7 @@ def test_cmp():
 	assert cmp(20, 20) == 0
 
 
-def demo_function(arg1, arg2, arg3):
+def demo_function(arg1, arg2, arg3):  # noqa: MAN001,MAN002
 	pass
 
 
@@ -281,29 +282,45 @@ cwd = pathlib.Path.cwd()
 				((1, 2, 3), ("arg1", "arg2", "arg3"), {}, {"arg1": 1, "arg2": 2, "arg3": 3}),
 				((1, 2, 3), ("arg1", "arg2", "arg3"), None, {"arg1": 1, "arg2": 2, "arg3": 3}),
 				((1, 2, 3), ("arg1", "arg2", "arg3"), {"arg4": 4}, {"arg1": 1, "arg2": 2, "arg3": 3, "arg4": 4}),
-				((1, 2, 3), demo_function, None, {
-						"arg1": 1,
-						"arg2": 2,
-						"arg3": 3,
-						}),
-				((cwd, "wb", -1, "UTF-8"),
-					pathlib.Path.open,
-					None, {
-							"self": cwd,
-							"mode": "wb",
-							"buffering": -1,
-							"encoding": "UTF-8",
-							}),
-				(("wb", -1, "UTF-8"),
-					pathlib.Path().open,
-					None, {
-							"mode": "wb",
-							"buffering": -1,
-							"encoding": "UTF-8",
-							}),
-				]
+				(
+						(1, 2, 3),
+						demo_function,
+						None,
+						{
+								"arg1": 1,
+								"arg2": 2,
+								"arg3": 3,
+								},
+						),
+				(
+						(cwd, "wb", -1, "UTF-8"),
+						pathlib.Path.open,
+						None,
+						{
+								"self": cwd,
+								"mode": "wb",
+								"buffering": -1,
+								"encoding": "UTF-8",
+								},
+						),
+				(
+						("wb", -1, "UTF-8"),
+						pathlib.Path().open,
+						None,
+						{
+								"mode": "wb",
+								"buffering": -1,
+								"encoding": "UTF-8",
+								},
+						),
+				],
 		)
-def test_posargs2kwargs(args, posarg_names, kwargs, expects):
+def test_posargs2kwargs(
+		args: Sequence,
+		posarg_names: Union[str, Callable],
+		kwargs: Optional[Dict[str, Any]],
+		expects: Dict[str, Any],
+		):
 	assert posargs2kwargs(args, posarg_names, kwargs) == expects
 
 
@@ -351,41 +368,43 @@ class TestHead:
 	@pytest.mark.parametrize(
 			"args, expects",
 			[
-					((foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), ),
-						"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, ...)"),
-					((foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13),
-						"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, k=11, l=12, m=13)"),
-					]
+					(
+							(foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), ),
+							"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, ...)",
+							),
+					(
+							(foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13),
+							"foo(a=1, b=2, c=3, d=4, e=5, f=6, g=7, h=8, i=9, j=10, k=11, l=12, m=13)",
+							),
+					],
 			)
-	def test_namedtuple(self, args, expects):
+	def test_namedtuple(self, args: Sequence, expects: str):
 		assert head(*args) == expects
 
 	@pytest.mark.parametrize(
 			"args, expects",
 			[
 					(((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), ), "(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...)"),
-					((
-							(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
-							13,
+					(
+							((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13), 13),
+							"(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)",
 							),
-						"(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)"),
-					]
+					],
 			)
-	def test_tuple(self, args, expects):
+	def test_tuple(self, args: Sequence, expects: str):
 		assert head(*args) == expects
 
 	@pytest.mark.parametrize(
 			"args, expects",
 			[
 					(([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], ), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...]"),
-					((
-							[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-							13,
+					(
+							([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 13),
+							"[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]",
 							),
-						"[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"),
-					]
+					],
 			)
-	def test_list(self, args, expects):
+	def test_list(self, args: Sequence, expects: str):
 		assert head(*args) == expects
 
 	def test_data_frame(self):
@@ -396,7 +415,7 @@ class TestHead:
 				columns=["Name", "Age", "Occupation"],
 				)
 		assert head(
-				df
+				df,
 				) == """    Name  Age  Occupation
 0    Bob   20  Apprentice
 1  Alice   23   Secretary
@@ -451,7 +470,7 @@ def test_trim_precision():
 				("don't", "\"don't\""),
 				("Here's a single quote \"", "\"Here's a single quote \\\"\""),
 				(enquote_value('☃'), "\"'☃'\""),
-				]
+				],
 		)
 def test_double_repr_string(value: str, expects: str):
 	assert double_repr_string(value) == expects
@@ -488,7 +507,7 @@ def test_redirect_output_combine():
 				("hello = world", " = "),
 				("hello: world", ':'),
 				("hello: world", ": "),
-				]
+				],
 		)
 def test_divide(string: str, sep: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	data = dict(divide(e, sep) for e in [string, string, string])
@@ -509,7 +528,7 @@ def test_divide_errors():
 				("hello = world", '='),
 				("hello: world", r":\s?"),
 				("hello: world", r"\s?:\s?"),
-				]
+				],
 		)
 def test_redivide(string: str, sep: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	data = dict(redivide(e, sep) for e in [string, string, string])
@@ -530,9 +549,9 @@ def test_redivide_errors():
 				(("foo", "bar"), ["bar", "foo"]),
 				(("foo", "foo", "bar"), ["bar", "foo"]),
 				(("foo", "bar", "bar"), ["bar", "foo"]),
-				]
+				],
 		)
-def test_unique_sorted(values, expected):
+def test_unique_sorted(values: Sequence[str], expected: List[str]):
 	assert unique_sorted(values) == expected
 
 
@@ -545,7 +564,7 @@ def test_unique_sorted(values, expected):
 				("\b\u000b", "^H^K"),
 				("\u001a", "^Z^?"),
 				('\x81', "M+A"),
-				]
+				],
 		)
 def test_replace_nonprinting(the_string: str, expected: str):
 	assert replace_nonprinting(the_string) == expected

@@ -9,7 +9,7 @@ Test functions in typing.py
 # stdlib
 import os
 import pathlib
-from typing import Dict, List, Sequence, Set, Tuple, Union
+from typing import Any, Dict, List, Sequence, Set, Tuple, Union
 
 # 3rd party
 import pytest
@@ -35,7 +35,7 @@ from domdf_python_tools.typing import PathLike, check_membership
 				(12.34, Dict[int, float]),
 				],
 		)
-def test_check_membership_true(obj, type_):
+def test_check_membership_true(obj: Any, type_):
 	# todo: Positions for Tuple and Dict
 	assert check_membership(obj, type_)
 
@@ -57,19 +57,19 @@ def test_check_membership_true(obj, type_):
 				(12.34, Dict[int, str]),
 				],
 		)
-def test_check_membership_false(obj, type_):
+def test_check_membership_false(obj: Any, type_):
 	# todo: Positions for Tuple and Dict
 	assert not check_membership(obj, type_)
 
 
 class MyPathLike(os.PathLike):
 
-	def __init__(self, directory, filename):
+	def __init__(self, directory: PathLike, filename: PathLike):
 		self.directory = str(directory)
 		self.filename = str(filename)
 
-	def __fspath__(self):
-		os.path.join(self.directory, self.filename)
+	def __fspath__(self) -> str:
+		return os.path.join(self.directory, self.filename)
 
 
 class MyStr(str):
@@ -97,19 +97,20 @@ class MyPath(type(pathlib.Path())):  # type: ignore[misc]
 				MyPathLike('.', "test_typing.py"),
 				],
 		)
-def test_pathlike_true(obj):
+def test_pathlike_true(obj: PathLike):
 	assert check_membership(obj, PathLike)
 
 
 @pytest.mark.parametrize(
-		"obj", [
+		"obj",
+		[
 				1234,
 				12.34,
 				[1, 2, 3, 4, 5],
 				{1, 2, 3, 4, 5},
 				(1, 2, 3, 4, 5),
 				{'a': 1, 'b': 2},
-				]
+				],
 		)
-def test_pathlike_false(obj):
+def test_pathlike_false(obj: Any):
 	assert not check_membership(obj, PathLike)

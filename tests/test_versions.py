@@ -3,7 +3,7 @@ import copy
 import pickle
 import platform
 import sys
-from typing import Any
+from typing import Any, Sequence, Tuple
 
 # 3rd party
 import pytest
@@ -28,7 +28,7 @@ pytestmark = pytest.mark.skipif(
 				("15", (15, )),
 				],
 		)
-def test_iter_string(string, expects):
+def test_iter_string(string: str, expects: Tuple[int, ...]):
 	assert tuple(_iter_string(string)) == expects
 
 
@@ -47,7 +47,7 @@ def test_iter_string(string, expects):
 				("15", (15, )),
 				],
 		)
-def test_iter_float(float_, expects):
+def test_iter_float(float_: float, expects: Version):
 	assert tuple(_iter_float(float_)) == expects
 
 
@@ -70,39 +70,31 @@ def test_iter_float(float_, expects):
 				(('1', '5', '1'), (1, 5, 1)),
 				(('1', '5', '1', '2', '3', '4', '5'), (1, 5, 1, 2, 3, 4, 5)),
 				(("15", ), (15, )),
-				([
-						'1',
-						], (1, )),
+				(['1'], (1, )),
 				(['1', '0'], (1, 0)),
 				(['1', '5'], (1, 5)),
 				(['1', '5', '1'], (1, 5, 1)),
 				(['1', '5', '1', '2', '3', '4', '5'], (1, 5, 1, 2, 3, 4, 5)),
-				([
-						"15",
-						], (15, )),
+				(["15"], (15, )),
 				((1, ), (1, )),
 				((1, 0), (1, 0)),
 				((1, 5), (1, 5)),
 				((1, 5, 1), (1, 5, 1)),
 				((1, 5, 1, 2, 3, 4, 5), (1, 5, 1, 2, 3, 4, 5)),
 				((15, ), (15, )),
-				([
-						1,
-						], (1, )),
+				([1], (1, )),
 				([1, 0], (1, 0)),
 				([1, 5], (1, 5)),
 				([1, 5, 1], (1, 5, 1)),
 				([1, 5, 1, 2, 3, 4, 5], (1, 5, 1, 2, 3, 4, 5)),
-				([
-						15,
-						], (15, )),
+				([15], (15, )),
 				(Version(1, 2, 3), (1, 2, 3)),
 				(Version(1, 2), (1, 2, 0)),
 				(Version(1), (1, 0, 0)),
 				],
 		)
-def test_prep_for_eq(other, expects):
-	assert _prep_for_eq(other) == expects
+def test_prep_for_eq(other: Sequence, expects: Tuple[int, ...]):
+	assert _prep_for_eq(other) == expects  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize(
@@ -115,7 +107,7 @@ def test_prep_for_eq(other, expects):
 				(2.0, Version(2)),
 				],
 		)
-def test_from_float(float_, expects):
+def test_from_float(float_: float, expects: Version):
 	assert Version.from_float(float_) == expects
 
 
@@ -133,7 +125,7 @@ def test_from_float(float_, expects):
 				("1.5.2", Version(1, 5, 2)),
 				],
 		)
-def test_from_str(string, expects):
+def test_from_str(string: str, expects: Version):
 	assert Version.from_str(string) == expects
 
 
@@ -145,33 +137,25 @@ def test_from_str(string, expects):
 				(('1', '5'), Version(1, 5)),
 				(('1', '5', '1'), Version(1, 5, 1)),
 				(("15", ), Version(15)),
-				([
-						'1',
-						], Version(1)),
+				(['1'], Version(1)),
 				(['1', '0'], Version(1, 0)),
 				(['1', '5'], Version(1, 5)),
 				(['1', '5', '1'], Version(1, 5, 1)),
-				([
-						"15",
-						], Version(15)),
+				(["15"], Version(15)),
 				((1, ), Version(1)),
 				((1, 0), Version(1, 0)),
 				((1, 5), Version(1, 5)),
 				((1, 5, 1), Version(1, 5, 1)),
 				((15, ), Version(15)),
-				([
-						1,
-						], Version(1)),
+				([1], Version(1)),
 				([1, 0], Version(1, 0)),
 				([1, 5], Version(1, 5)),
 				([1, 5, 1], Version(1, 5, 1)),
-				([
-						15,
-						], Version(15)),
+				([15], Version(15)),
 				],
 		)
-def test_from_tuple(tuple_, expects):
-	assert Version.from_tuple(tuple_) == expects
+def test_from_tuple(tuple_: Sequence, expects: Version):
+	assert Version.from_tuple(tuple_) == expects  # type: ignore[arg-type]
 
 
 def test_too_many_values():
@@ -199,29 +183,21 @@ def test_too_many_values():
 				(('1', '5'), Version(1, 5)),
 				(('1', '5', '1'), Version(1, 5, 1)),
 				(("15", ), Version(15)),
-				([
-						'1',
-						], Version(1)),
+				(['1'], Version(1)),
 				(['1', '0'], Version(1, 0)),
 				(['1', '5'], Version(1, 5)),
 				(['1', '5', '1'], Version(1, 5, 1)),
-				([
-						"15",
-						], Version(15)),
+				(["15"], Version(15)),
 				((1, ), Version(1)),
 				((1, 0), Version(1, 0)),
 				((1, 5), Version(1, 5)),
 				((1, 5, 1), Version(1, 5, 1)),
 				((15, ), Version(15)),
-				([
-						1,
-						], Version(1)),
+				([1], Version(1)),
 				([1, 0], Version(1, 0)),
 				([1, 5], Version(1, 5)),
 				([1, 5, 1], Version(1, 5, 1)),
-				([
-						15,
-						], Version(15)),
+				([15], Version(15)),
 				('1', Version(1)),
 				("1.0", Version(1, 0)),
 				("1.5", Version(1, 5)),
@@ -235,7 +211,7 @@ def test_too_many_values():
 				(15, Version(15)),
 				],
 		)
-def test_equals(value, version):
+def test_equals(value: Any, version: Version):
 	assert version == value
 	assert value == version
 
@@ -279,14 +255,12 @@ def test_lt(value: Any, version: Version):
 				((1, ), Version(1.1)),
 				((0, 9), Version(1)),
 				((0, 8, 8), Version(0, 9)),
-				([
-						1,
-						], Version(1.1)),
+				([1], Version(1.1)),
 				([0, 9], Version(1)),
 				([0, 8, 8], Version(0, 9)),
 				],
 		)
-def test_gt(value, version):
+def test_gt(value: Any, version: Version):
 	assert value < version
 	assert version > value
 
@@ -315,29 +289,21 @@ def test_gt(value, version):
 				(('1', '5'), Version(1, 5)),
 				(('1', '5', '1'), Version(1, 5, 1)),
 				(("15", ), Version(15)),
-				([
-						'1',
-						], Version(1)),
+				(['1'], Version(1)),
 				(['1', '0'], Version(1, 0)),
 				(['1', '5'], Version(1, 5)),
 				(['1', '5', '1'], Version(1, 5, 1)),
-				([
-						"15",
-						], Version(15)),
+				(["15"], Version(15)),
 				((1, ), Version(1)),
 				((1, 0), Version(1, 0)),
 				((1, 5), Version(1, 5)),
 				((1, 5, 1), Version(1, 5, 1)),
 				((15, ), Version(15)),
-				([
-						1,
-						], Version(1)),
+				([1], Version(1)),
 				([1, 0], Version(1, 0)),
 				([1, 5], Version(1, 5)),
 				([1, 5, 1], Version(1, 5, 1)),
-				([
-						15,
-						], Version(15)),
+				([15], Version(15)),
 				('1', Version(1)),
 				("1.0", Version(1, 0)),
 				("1.5", Version(1, 5)),
@@ -351,7 +317,7 @@ def test_gt(value, version):
 				("1.5.1.2.3.4.5", Version(1, 5, 1)),
 				],
 		)
-def test_le(value, version):
+def test_le(value: Any, version: Version):
 	assert value >= version
 	assert version <= value
 
@@ -369,9 +335,7 @@ def test_le(value, version):
 				((1, ), Version(1.1)),
 				((0, 9), Version(1)),
 				((0, 8, 8), Version(0, 9)),
-				([
-						1,
-						], Version(1.1)),
+				([1], Version(1.1)),
 				([0, 9], Version(1)),
 				([0, 8, 8], Version(0, 9)),
 				(('1', ), Version(1)),
@@ -379,29 +343,21 @@ def test_le(value, version):
 				(('1', '5'), Version(1, 5)),
 				(('1', '5', '1'), Version(1, 5, 1)),
 				(("15", ), Version(15)),
-				([
-						'1',
-						], Version(1)),
+				(['1'], Version(1)),
 				(['1', '0'], Version(1, 0)),
 				(['1', '5'], Version(1, 5)),
 				(['1', '5', '1'], Version(1, 5, 1)),
-				([
-						"15",
-						], Version(15)),
+				(["15"], Version(15)),
 				((1, ), Version(1)),
 				((1, 0), Version(1, 0)),
 				((1, 5), Version(1, 5)),
 				((1, 5, 1), Version(1, 5, 1)),
 				((15, ), Version(15)),
-				([
-						1,
-						], Version(1)),
+				([1], Version(1)),
 				([1, 0], Version(1, 0)),
 				([1, 5], Version(1, 5)),
 				([1, 5, 1], Version(1, 5, 1)),
-				([
-						15,
-						], Version(15)),
+				([15], Version(15)),
 				('1', Version(1)),
 				("1.0", Version(1, 0)),
 				("1.5", Version(1, 5)),
@@ -415,7 +371,7 @@ def test_le(value, version):
 				("1.5.0.2.3.4.5", Version(1, 5, 1)),
 				],
 		)
-def test_ge(value, version):
+def test_ge(value: Any, version: Version):
 	assert value <= version
 	assert version >= value
 
@@ -431,7 +387,7 @@ def test_ge(value, version):
 				(Version(minor=3, patch=4), "Version(major=0, minor=3, patch=4)"),
 				],
 		)
-def test_repr(version, expects):
+def test_repr(version: Version, expects: Any):
 	assert repr(version) == expects
 
 
@@ -446,7 +402,7 @@ def test_repr(version, expects):
 				(Version(minor=3, patch=4), "v0.3.4"),
 				],
 		)
-def test_str(version, expects):
+def test_str(version: Version, expects: Any):
 	assert str(version) == expects
 
 
@@ -461,7 +417,7 @@ def test_str(version, expects):
 				(Version(minor=3, patch=4), 0.3),
 				],
 		)
-def test_float(version, expects):
+def test_float(version: Version, expects: Any):
 	assert float(version) == expects
 
 
@@ -476,7 +432,7 @@ def test_float(version, expects):
 				(Version(minor=3, patch=4), 0),
 				],
 		)
-def test_int(version, expects):
+def test_int(version: Version, expects: Any):
 	assert int(version) == expects
 
 
@@ -492,7 +448,7 @@ def test_int(version, expects):
 				Version(1, 2, 3),
 				],
 		)
-def test_pickle(obj):
+def test_pickle(obj: Version):
 	assert pickle.loads(pickle.dumps(obj)) == obj  # nosec: B301
 
 
@@ -508,5 +464,5 @@ def test_pickle(obj):
 				Version(1, 2, 3),
 				],
 		)
-def test_copy(obj):
+def test_copy(obj: Version):
 	assert copy.copy(obj) == obj
