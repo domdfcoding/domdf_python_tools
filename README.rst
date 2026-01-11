@@ -112,7 +112,7 @@ domdf_python_tools
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+	:target: https://pypistats.org/packages/domdf_python_tools
 	:alt: PyPI - Downloads
 
 .. end shields
