@@ -49,11 +49,6 @@ dates = [ "pytz>=2019.1",]
 testing = []
 all = [ "pytz>=2019.1",]
 
-[tool.mkrecipe]
-conda-channels = [ "conda-forge", "domdfcoding",]
-extras = [ "dates",]
-license-key = "MIT"
-
 [tool.sphinx-pyproject]
 github_username = "domdfcoding"
 github_repository = "domdf_python_tools"
