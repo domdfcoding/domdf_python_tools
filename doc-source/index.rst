@@ -139,9 +139,11 @@ Installation
 .. start installation
 
 .. installation:: domdf_python_tools
-	:pypi: domdf-python-tools
+	:pypi:
+	:pypi-name: domdf-python-tools
 	:github:
-	:anaconda: domdf-python-tools
+	:anaconda:
+	:conda-name: domdf-python-tools
 	:conda-channels: conda-forge
 
 .. end installation
