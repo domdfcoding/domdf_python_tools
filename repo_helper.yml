@@ -13,6 +13,7 @@ tox_testenv_extras: all
 pre_commit_exclude: "^domdf_python_tools/compat/importlib_resources.py$"
 docs_fail_on_warning: true
 use_hatch: true
+on_conda_forge: true
 
 conda_channels:
  - conda-forge

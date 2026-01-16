@@ -85,12 +85,12 @@ domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Wheel
 
-.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools?logo=anaconda
-	:target: https://anaconda.org/domdfcoding/domdf_python_tools
+.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/domdf_python_tools?logo=anaconda
+	:target: https://anaconda.org/conda-forge/domdf_python_tools
 	:alt: Conda - Package Version
 
-.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
-	:target: https://anaconda.org/domdfcoding/domdf_python_tools
+.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/domdf_python_tools?label=conda%7Cplatform
+	:target: https://anaconda.org/conda-forge/domdf_python_tools
 	:alt: Conda - Platform
 
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/domdf_python_tools
@@ -134,17 +134,8 @@ To install with ``pip``:
 
 To install with ``conda``:
 
-	* First add the required channels
+.. code-block:: bash
 
-	.. code-block:: bash
-
-		$ conda config --add channels https://conda.anaconda.org/conda-forge
-		$ conda config --add channels https://conda.anaconda.org/domdfcoding
-
-	* Then install
-
-	.. code-block:: bash
-
-		$ conda install domdf_python_tools
+	$ conda install -c conda-forge domdf_python_tools
 
 .. end installation

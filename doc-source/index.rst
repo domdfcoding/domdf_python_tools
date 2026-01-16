@@ -91,12 +91,12 @@ domdf_python_tools
 		:wheel:
 		:alt: PyPI - Wheel
 
-	.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/domdf_python_tools?logo=anaconda
-		:target: https://anaconda.org/domdfcoding/domdf_python_tools
+	.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/domdf_python_tools?logo=anaconda
+		:target: https://anaconda.org/conda-forge/domdf_python_tools
 		:alt: Conda - Package Version
 
-	.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/domdf_python_tools?label=conda%7Cplatform
-		:target: https://anaconda.org/domdfcoding/domdf_python_tools
+	.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/domdf_python_tools?label=conda%7Cplatform
+		:target: https://anaconda.org/conda-forge/domdf_python_tools
 		:alt: Conda - Platform
 
 	.. |license| github-shield::
@@ -142,7 +142,7 @@ Installation
 	:pypi:
 	:github:
 	:anaconda:
-	:conda-channels: conda-forge, domdfcoding
+	:conda-channels: conda-forge
 
 .. end installation
 
