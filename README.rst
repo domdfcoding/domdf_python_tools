@@ -85,12 +85,12 @@ domdf_python_tools
 	:target: https://pypi.org/project/domdf_python_tools/
 	:alt: PyPI - Wheel
 
-.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/domdf_python_tools?logo=anaconda
-	:target: https://anaconda.org/conda-forge/domdf_python_tools
+.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/domdf-python-tools?logo=anaconda
+	:target: https://anaconda.org/conda-forge/domdf-python-tools
 	:alt: Conda - Package Version
 
-.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/domdf_python_tools?label=conda%7Cplatform
-	:target: https://anaconda.org/conda-forge/domdf_python_tools
+.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/domdf-python-tools?label=conda%7Cplatform
+	:target: https://anaconda.org/conda-forge/domdf-python-tools
 	:alt: Conda - Platform
 
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/domdf_python_tools
@@ -130,12 +130,12 @@ To install with ``pip``:
 
 .. code-block:: bash
 
-	$ python -m pip install domdf_python_tools
+	$ python -m pip install domdf-python-tools
 
 To install with ``conda``:
 
 .. code-block:: bash
 
-	$ conda install -c conda-forge domdf_python_tools
+	$ conda install -c conda-forge domdf-python-tools
 
 .. end installation
