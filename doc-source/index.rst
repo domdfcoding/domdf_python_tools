@@ -72,22 +72,22 @@ domdf_python_tools
 		:alt: CodeFactor Grade
 
 	.. |pypi-version| pypi-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:version:
 		:alt: PyPI - Package Version
 
 	.. |supported-versions| pypi-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:py-versions:
 		:alt: PyPI - Supported Python Versions
 
 	.. |supported-implementations| pypi-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:implementations:
 		:alt: PyPI - Supported Implementations
 
 	.. |wheel| pypi-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:wheel:
 		:alt: PyPI - Wheel
 
@@ -119,7 +119,7 @@ domdf_python_tools
 		:alt: Maintenance
 
 	.. |pypi-downloads| pypi-shield::
-		:project: domdf_python_tools
+		:project: domdf-python-tools
 		:downloads: month
 		:alt: PyPI - Downloads
 
