@@ -69,20 +69,20 @@ domdf_python_tools
 	:target: https://www.codefactor.io/repository/github/domdfcoding/domdf_python_tools
 	:alt: CodeFactor Grade
 
-.. |pypi-version| image:: https://img.shields.io/pypi/v/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |pypi-version| image:: https://img.shields.io/pypi/v/domdf-python-tools
+	:target: https://pypi.org/project/domdf-python-tools/
 	:alt: PyPI - Package Version
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf_python_tools?logo=python&logoColor=white
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/domdf-python-tools?logo=python&logoColor=white
+	:target: https://pypi.org/project/domdf-python-tools/
 	:alt: PyPI - Supported Python Versions
 
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/domdf-python-tools
+	:target: https://pypi.org/project/domdf-python-tools/
 	:alt: PyPI - Supported Implementations
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/domdf_python_tools
-	:target: https://pypi.org/project/domdf_python_tools/
+.. |wheel| image:: https://img.shields.io/pypi/wheel/domdf-python-tools
+	:target: https://pypi.org/project/domdf-python-tools/
 	:alt: PyPI - Wheel
 
 .. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/domdf-python-tools?logo=anaconda
@@ -111,8 +111,8 @@ domdf_python_tools
 .. |maintained| image:: https://img.shields.io/maintenance/yes/2026
 	:alt: Maintenance
 
-.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/domdf_python_tools
-	:target: https://pypistats.org/packages/domdf_python_tools
+.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/domdf-python-tools
+	:target: https://pypistats.org/packages/domdf-python-tools
 	:alt: PyPI - Downloads
 
 .. end shields

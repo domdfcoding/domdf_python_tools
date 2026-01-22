@@ -3,7 +3,7 @@ requires = [ "hatch-requirements-txt",]
 build-backend = "hatchling.build"
 
 [project]
-name = "domdf_python_tools"
+name = "domdf-python-tools"
 version = "3.10.0"
 description = "Helpful functions for Python 🐍 🛠️"
 readme = "README.rst"
@@ -143,6 +143,7 @@ python-implementations = [ "CPython", "PyPy",]
 platforms = [ "Windows", "macOS", "Linux",]
 license-key = "MIT"
 additional-files = [ "include domdf_python_tools/google-10000-english-no-swears.txt",]
+package = "domdf_python_tools"
 
 [tool.mypy]
 python_version = "3.9"

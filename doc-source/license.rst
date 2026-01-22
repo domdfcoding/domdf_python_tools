@@ -7,4 +7,4 @@ License
 .. license-info:: MIT
 
 .. license::
-	:py: domdf_python_tools
+	:py: domdf-python-tools
