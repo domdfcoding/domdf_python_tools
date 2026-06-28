@@ -201,7 +201,7 @@ except ImportError:
 # 			from domdf_python_tools.dates import get_utc_offset
 
 
-@pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))
+@pytest.mark.parametrize("month_idx, month", list(enumerate(dates.month_full_names)))
 def test_parse_month(month_idx: int, month: str):
 	month_idx += 1  # to make 1-indexed
 
@@ -219,7 +219,7 @@ def test_parse_month_errors():
 			dates.parse_month(value)  # type: ignore[arg-type]
 
 
-@pytest.mark.parametrize("month_idx, month", enumerate(dates.month_full_names))
+@pytest.mark.parametrize("month_idx, month", list(enumerate(dates.month_full_names)))
 def test_get_month_number_from_name(month_idx: int, month: str):
 	month_idx += 1  # to make 1-indexed
 
