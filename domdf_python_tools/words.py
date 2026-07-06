@@ -673,7 +673,6 @@ class PluralPhrase(NamedTuple):
 		'The farmer has 2 cows.'
 
 	.. _valid syntax: https://docs.python.org/3/library/string.html#formatstrings
-
 	"""
 
 	template: str

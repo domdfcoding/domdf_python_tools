@@ -118,7 +118,6 @@ def interrupt() -> None:
 
 		>>> interrupt()
 		(Press Ctrl-C to quit at any time)
-
 	"""
 
 	print(f"(Press Ctrl-{'C' if os.name == 'nt' else 'D'} to quit at any time)")

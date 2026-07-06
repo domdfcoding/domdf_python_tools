@@ -234,7 +234,6 @@ def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False):
 	:no-default parents:
 
 	.. versionchanged:: 1.6.0  Removed the ``'exist_ok'`` option, since it made no sense in this context.
-
 	"""
 
 	if not isinstance(directory, pathlib.Path):
@@ -455,7 +454,6 @@ class PathPlus(pathlib.Path):
 
 			This will fail silently if a file with the same name already exists.
 			This appears to be due to the behaviour of :func:`os.mkdir`.
-
 		"""
 
 		try:
