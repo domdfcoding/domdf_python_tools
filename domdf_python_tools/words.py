@@ -653,9 +653,9 @@ class PluralPhrase(NamedTuple):
 	.. code-block:: python
 
 		>>> phrase = PluralPhrase(
-		...     "The proposed {} {} to ...",
-		...     (Plural("change", "changes"), Plural("is", "are"))
-		... )
+		... 		"The proposed {} {} to ...",
+		... 		(Plural("change", "changes"), Plural("is", "are")),
+		... 		)
 		>>> phrase(1)
 		'The proposed change is to ...'
 		>>> phrase(2)

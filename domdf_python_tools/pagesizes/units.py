@@ -80,7 +80,7 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (3*mm) + (7*mm)
+		>>> (3 * mm) + (7 * mm)
 		<Unit '10.000 mm': 28.346pt>
 
 	When adding different :class:`~domdf_python_tools.pagesizes.units.Unit` objects,
@@ -88,18 +88,18 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (2.54*cm) + inch
+		>>> (2.54 * cm) + inch
 		<Unit '5.080 cm': 144.000pt>
-		>>> inch + (2.54*cm)
+		>>> inch + (2.54 * cm)
 		<Unit '2.000 inch': 144.000pt>
 
 	:class:`~domdf_python_tools.pagesizes.units.Unit` objects can also be added to :class:`float` and :class:`int` objects:
 
 	.. code-block:: python
 
-		>>> (3*cm) + 7
+		>>> (3 * cm) + 7
 		<Unit '10.000 cm': 283.465pt>
-		>>> 7 + (3*cm)
+		>>> 7 + (3 * cm)
 		<Unit '10.000 cm': 283.465pt>
 
 
@@ -109,15 +109,15 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (17*mm) - (7*mm)
+		>>> (17 * mm) - (7 * mm)
 		<Unit '10.000 mm': 28.346pt>
-		>>> (2.54*cm) - inch
+		>>> (2.54 * cm) - inch
 		<Unit '0.000 cm': 0.000pt>
-		>>> inch - (2.54*cm)
+		>>> inch - (2.54 * cm)
 		<Unit '0.000 inch': 0.000pt>
-		>>> (17*cm) - 7
+		>>> (17 * cm) - 7
 		<Unit '10.000 cm': 283.465pt>
-		>>> 17 - (7*cm)
+		>>> 17 - (7 * cm)
 		<Unit '10.000 cm': 283.465pt>
 
 
@@ -128,11 +128,11 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (3*mm) * 3
+		>>> (3 * mm) * 3
 		<Unit '9.000 mm': 25.512pt>
-		>>> 3 * (3*mm)
+		>>> 3 * (3 * mm)
 		<Unit '9.000 mm': 25.512pt>
-		>>> 3.5 * (3*mm)
+		>>> 3.5 * (3 * mm)
 		<Unit '10.500 mm': 29.764pt>
 
 	Multiplication works either way round.
@@ -142,7 +142,7 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> inch * (7*cm)
+		>>> inch * (7 * cm)
 		Traceback (most recent call last):
 		NotImplementedError: Multiplying a unit by another unit is not allowed.
 
@@ -153,16 +153,16 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (3*mm) / 3
+		>>> (3 * mm) / 3
 		<Unit '1.000 mm': 2.835pt>
-		>>> (10*mm) / 2.5
+		>>> (10 * mm) / 2.5
 		<Unit '4.000 mm': 11.339pt>
 
 	Dividing by another unit results in a :exc:`NotImplementedError`:
 
 	.. code-block:: python
 
-		>>> inch / (7*cm)
+		>>> inch / (7 * cm)
 		Traceback (most recent call last):
 		NotImplementedError: Dividing a unit by another unit is not allowed.
 
@@ -171,7 +171,7 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> 3 / (3*mm)
+		>>> 3 / (3 * mm)
 		Traceback (most recent call last):
 		NotImplementedError: Dividing by a unit is not allowed.
 
@@ -188,7 +188,7 @@ class Unit(float):
 
 	.. code-block:: python
 
-		>>> (3*mm) % 2.5
+		>>> (3 * mm) % 2.5
 		<Unit '0.500 mm': 1.417pt>
 
 	Dividing by a unit, or modulo division of two units, is not officially supported.

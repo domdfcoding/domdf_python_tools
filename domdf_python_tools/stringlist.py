@@ -405,7 +405,7 @@ class StringList(List[str]):
 
 			>>> sl = StringList()
 			>>> with sl.with_indent("    ", 1):
-			...     sl.append("Hello World")
+			... 	sl.append("Hello World")
 
 		:param indent: The :class:`~.Indent` to use within the ``with`` block, or the indent type.
 		:param size: If ``indent`` is an indent type, the indent size to use within the ``with`` block.
@@ -428,7 +428,7 @@ class StringList(List[str]):
 
 			>>> sl = StringList()
 			>>> with sl.with_indent_size(1):
-			...     sl.append("Hello World")
+			... 	sl.append("Hello World")
 
 		:param size: The indent size to use within the ``with`` block.
 		"""
@@ -450,7 +450,7 @@ class StringList(List[str]):
 
 			>>> sl = StringList()
 			>>> with sl.with_indent_type("    "):
-			...     sl.append("Hello World")
+			... 	sl.append("Hello World")
 
 		:param indent_type: The type of indent to use within the ``with`` block.
 		"""

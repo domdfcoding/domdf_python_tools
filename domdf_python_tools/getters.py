@@ -55,9 +55,9 @@ class attrgetter:
 	.. code-block:: python
 
 		>>> from pathlib import Path
-		>>> attrgetter(0, 'name')([Path("dir/code.py")])
+		>>> attrgetter(0, "name")([Path("dir/code.py")])
 		'code.py'
-		>>> attrgetter(2, 'parent.name')([Path("dir/coincidence.py"), Path("dir/wheel.py"), Path("dir/operator.py")])
+		>>> attrgetter(2, "parent.name")([Path("dir/coincidence.py"), Path("dir/wheel.py"), Path("dir/operator.py")])
 		'dir'
 
 	.. seealso:: :func:`operator.attrgetter` and :func:`operator.itemgetter`
@@ -110,14 +110,14 @@ class itemgetter:
 
 	.. code-block:: python
 
-		>>> itemgetter(0, 1)(['ABCDEFG'])
+		>>> itemgetter(0, 1)(["ABCDEFG"])
 		'B'
-		>>> itemgetter(1, 2)(['ABC', 'DEF'])
+		>>> itemgetter(1, 2)(["ABC", "DEF"])
 		'F'
-		>>> itemgetter(0, slice(2, None))(['ABCDEFG'])
+		>>> itemgetter(0, slice(2, None))(["ABCDEFG"])
 		'CDEFG'
-		>>> army = [dict(rank='captain', name='Blackadder'), dict(rank='Private', name='Baldrick')]
-		>>> itemgetter(0, 'rank')(army)
+		>>> army = [dict(rank="captain", name="Blackadder"), dict(rank="Private", name="Baldrick")]
+		>>> itemgetter(0, "rank")(army)
 		'captain'
 
 	.. seealso:: :func:`operator.itemgetter`
@@ -158,11 +158,11 @@ class methodcaller:
 	.. code-block:: python
 
 		>>> from datetime import date
-		>>> methodcaller(0, 'upper')(["hello", "world"])
+		>>> methodcaller(0, "upper")(["hello", "world"])
 		'HELLO'
-		>>> methodcaller(1, 'center', 9, "=")(["hello", "world"])
+		>>> methodcaller(1, "center", 9, '=')(["hello", "world"])
 		'==world=='
-		>>> methodcaller(0, 'replace', year=2019)([date(2021, 7, 6)])
+		>>> methodcaller(0, "replace", year=2019)([date(2021, 7, 6)])
 		datetime.date(2019, 7, 6)
 
 	.. seealso:: :func:`operator.methodcaller` and :func:`operator.itemgetter`
