@@ -216,8 +216,8 @@ def sphinxify_docstring() -> Callable[[_F], _F]:
 	.. code-block:: python
 
 		intersphinx_mapping = {
-			"python": ("https://docs.python.org/3/", None),
-		}
+				"python": ("https://docs.python.org/3/", None),
+				}
 	"""
 
 	def wrapper(target: _F) -> _F:

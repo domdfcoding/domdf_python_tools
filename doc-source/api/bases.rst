@@ -63,7 +63,7 @@ from :class:`NamedList` rather than from :func:`~.namedlist`. For example, do th
 .. code-block:: python
 
 	>>> class ShoppingList(NamedList):
-	...     pass
+	... 	pass
 	>>>
 
 and not this:
