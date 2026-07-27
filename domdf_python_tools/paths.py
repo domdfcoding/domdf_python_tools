@@ -458,6 +458,11 @@ class PathPlus(pathlib.Path):
 
 		"""
 
+		if isinstance(mode, bool):
+			warnings.warn(
+					f"Boolean {mode} passed as mode argument, which was probably unintended. You probably wanted 'parents={mode}'",
+					)
+
 		try:
 			self.mkdir(mode, parents, exist_ok=True)
 		except FileExistsError:
