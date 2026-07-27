@@ -38,7 +38,6 @@ classifiers:
 extras_require:
   dates:
    - pytz>=2019.1
-  testing: []
 
 conda_extras:
  - dates

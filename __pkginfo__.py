@@ -2,4 +2,4 @@
 
 __all__ = ["extras_require"]
 
-extras_require = {"dates": ["pytz>=2019.1"], "testing": [], "all": ["pytz>=2019.1"]}
+extras_require = {"dates": ["pytz>=2019.1"], "all": ["pytz>=2019.1"]}
