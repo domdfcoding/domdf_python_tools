@@ -70,7 +70,7 @@ def replace_emoji(app: Sphinx, exception: Optional[Exception] = None):
 	output_content = output_file.read_text()
 
 	# Documentation summary emoji
-	output_content = output_content.replace(" 🐍 🛠️", '')
+	output_content = output_content.replace(" 🐍 🛠️", '')
 	output_content = output_content.replace('🐍', '')
 	output_content = output_content.replace('🛠', '')
 	output_content = output_content.replace('️', '')  # Variation Selector-16
