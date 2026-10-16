@@ -139,7 +139,7 @@ pyversion: int = int(sys.version_info.major)  # Python Version
 SPACE_PLACEHOLDER = '␣'
 
 
-def cmp(x, y) -> int:  # noqa: PRM002
+def cmp(x, y) -> int:  # noqa: PRM002,MAN001
 	"""
 	Implementation of ``cmp`` for Python 3.
 

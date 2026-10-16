@@ -4,7 +4,7 @@ import platform
 import re
 import sys
 from contextlib import contextmanager
-from typing import Any, ContextManager
+from typing import Any, ContextManager, Dict, Iterator
 
 # 3rd party
 import pytest
@@ -62,7 +62,7 @@ def test_discover_class_only():
 
 def test_discover_hasattr():
 
-	def match_func(obj: Any):
+	def match_func(obj: Any) -> bool:
 		return hasattr(obj, "foo")
 
 	assert discover(discover_demo_module, match_func=match_func) == []
@@ -74,7 +74,7 @@ class HasPath:
 
 
 @contextmanager
-def does_not_raise():
+def does_not_raise() -> Iterator[None]:
 	yield
 
 
@@ -84,7 +84,7 @@ else:
 	haspath_error = pytest.raises(ValueError, match="^path must be None or list of paths to look for modules in$")
 
 
-def raises_attribute_error(obj, **kwargs):
+def raises_attribute_error(obj, **kwargs):  # noqa: MAN001,MAN002
 	return pytest.param(
 			obj,
 			pytest.raises(AttributeError, match=f"^'{type(obj).__name__}' object has no attribute '__name__'$"),
@@ -187,7 +187,7 @@ iter_submodules_versions = pytest.mark.parametrize(
 		"module",
 		["collections", "importlib", "domdf_python_tools", "consolekit", "json", "cRQefleMvm", "reprlib"],
 		)
-def test_iter_submodules(version, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
+def test_iter_submodules(version: float, module: str, advanced_data_regression: AdvancedDataRegressionFixture):
 	advanced_data_regression.check(list(iter_submodules(module)))
 
 
@@ -206,7 +206,7 @@ if sys.version_info < (3, 10):
 	# /etc takes precedence over /usr/lib
 	_os_release_candidates = ("/etc/os-release", "/usr/lib/os-release")
 
-	def freedesktop_os_release():
+	def freedesktop_os_release() -> Dict[str, str]:
 		"""
 		Return operation system identification from freedesktop.org os-release
 		"""
@@ -250,8 +250,8 @@ if platform.system() == "Linux":
 				],
 		)
 def test_iter_submodules_asyncio(
-		platform,
-		version,
+		platform: str,
+		version: float,
 		advanced_data_regression: AdvancedDataRegressionFixture,
 		):
 	advanced_data_regression.check(list(iter_submodules("asyncio")))

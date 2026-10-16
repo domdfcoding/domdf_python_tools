@@ -13,11 +13,11 @@ def f(a: int = 1, b: float = 1.1, c: int = 2, d: list = [], e: tuple = (), f: st
 def test_delegate_kwargs():
 
 	@delegate_kwargs(f)
-	def g(b: int, a: int = 7, **kwargs: Any):
+	def g(b: int, a: int = 7, **kwargs: Any):  # noqa: MAN002
 		pass
 
 	@delegate_kwargs(f)
-	def h(a: int, b: int):
+	def h(a: int, b: int) -> None:
 		pass
 
 	sig = inspect.signature(g)
@@ -47,11 +47,11 @@ def test_delegate_kwargs():
 def test_delegates():
 
 	@delegates(f)
-	def g(*args, **kwargs):
+	def g(*args, **kwargs):  # noqa: MAN002
 		pass
 
 	@delegates(f)
-	def h(a: int, b: int):
+	def h(a: int, b: int):  # noqa: MAN002
 		pass
 
 	sig = inspect.signature(g)

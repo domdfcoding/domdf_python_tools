@@ -100,7 +100,7 @@ def delegates(to: Callable) -> Callable[[_C], _C]:
 	:param to: The function the arguments are passed on to.
 	"""  # noqa: D400
 
-	def copy_annotations(f):
+	def copy_annotations(f):  # noqa: MAN001,MAN002
 		if hasattr(to, "__annotations__"):
 			if hasattr(f, "__annotations__"):
 				return_annotation = f.__annotations__.get("return", inspect.Parameter.empty)

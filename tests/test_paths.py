@@ -235,7 +235,7 @@ class TestCurrentDirOperations:
 		file.unlink()
 
 	@classmethod
-	def teardown_class(cls):
+	def teardown_class(cls) -> None:
 		for file in [
 				"paths_append_test_file.txt",
 				"paths_delete_test_file.txt",

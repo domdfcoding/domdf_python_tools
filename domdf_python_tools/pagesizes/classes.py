@@ -92,7 +92,7 @@ class BaseSize(namedtuple("__BaseSize", "width, height")):
 		return f"{self.__class__.__name__}(width={_rounders(self.width, '0')}, height={_rounders(self.height, '0')})"
 
 	@classmethod
-	def from_pt(cls, size: Tuple[float, float]):
+	def from_pt(cls, size: Tuple[float, float]):  # noqa: MAN002
 		"""
 		Create a :class:`~domdf_python_tools.pagesizes.classes.BaseSize` object from a
 		page size in point.

@@ -51,7 +51,7 @@ class Child(Person):
 
 
 @pytest.fixture()
-def alice():
+def alice() -> Person:
 	return Person("Alice", 20, "IRC Lurker")
 
 

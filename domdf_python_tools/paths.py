@@ -205,7 +205,7 @@ def copytree(
 	return dst
 
 
-def delete(filename: PathLike, **kwargs):  # noqa: PRM002
+def delete(filename: PathLike, **kwargs) -> None:  # noqa: PRM002
 	"""
 	Delete the file in the current directory.
 
@@ -217,7 +217,7 @@ def delete(filename: PathLike, **kwargs):  # noqa: PRM002
 	os.remove(os.path.join(os.getcwd(), filename), **kwargs)
 
 
-def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False):
+def maybe_make(directory: PathLike, mode: int = 0o777, parents: bool = False) -> None:
 	"""
 	Create a directory at the given path, but only if the directory does not already exist.
 
@@ -355,7 +355,7 @@ def make_executable(filename: PathLike) -> None:
 
 
 @contextlib.contextmanager
-def in_directory(directory: PathLike):
+def in_directory(directory: PathLike) -> Iterator[None]:
 	"""
 	Context manager to change into the given directory for the
 	duration of the ``with`` block.
@@ -392,11 +392,11 @@ class PathPlus(pathlib.Path):
 		_accessor = pathlib._normal_accessor  # type: ignore[attr-defined]
 	_closed = False
 
-	def _init(self, *args, **kwargs):
+	def _init(self, *args, **kwargs) -> None:
 		pass
 
 	@classmethod
-	def _from_parts(cls, args, init=True):
+	def _from_parts(cls, args, init=True):  # noqa: MAN001,MAN002
 		return super()._from_parts(args)  # type: ignore[misc]
 
 	def __new__(cls: Type[_PP], *args, **kwargs) -> _PP:  # noqa: D102
@@ -419,7 +419,7 @@ class PathPlus(pathlib.Path):
 			string: str,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			):
+			) -> None:
 		"""
 		Write to the file without trailing whitespace, and with a newline at the end of the file.
 
@@ -437,7 +437,7 @@ class PathPlus(pathlib.Path):
 			self,
 			mode: int = 0o777,
 			parents: bool = False,
-			):
+			) -> None:
 		"""
 		Create a directory at this path, but only if the directory does not already exist.
 
@@ -473,7 +473,7 @@ class PathPlus(pathlib.Path):
 			string: str,
 			encoding: Optional[str] = "UTF-8",
 			errors: Optional[str] = None,
-			):
+			) -> None:
 		"""
 		Open the file in text mode, append the given string to it, and close the file.
 
@@ -590,7 +590,7 @@ class PathPlus(pathlib.Path):
 
 		return self.read_text(encoding=encoding, errors=errors).split('\n')
 
-	def open(  # type: ignore  # noqa: A003  # pylint: disable=redefined-builtin
+	def open(  # type: ignore[override]  # noqa: A003  # pylint: disable=redefined-builtin
 		self,
 		mode: str = 'r',
 		buffering: int = -1,
@@ -807,7 +807,7 @@ class PathPlus(pathlib.Path):
 				if not missing_ok:
 					raise
 
-	def __enter__(self):
+	def __enter__(self):  # noqa: MAN002
 		return self
 
 	def __exit__(self, t, v, tb):
@@ -1005,21 +1005,21 @@ class WindowsPathPlus(PathPlus, pathlib.PureWindowsPath):
 
 	__slots__ = ()
 
-	def owner(self):  # pragma: no cover
+	def owner(self):  # pragma: no cover  # noqa: MAN002
 		"""
 		Unsupported on Windows.
 		"""
 
 		raise NotImplementedError("Path.owner() is unsupported on this system")
 
-	def group(self):  # pragma: no cover
+	def group(self):  # pragma: no cover  # noqa: MAN002
 		"""
 		Unsupported on Windows.
 		"""
 
 		raise NotImplementedError("Path.group() is unsupported on this system")
 
-	def is_mount(self):  # pragma: no cover
+	def is_mount(self):  # pragma: no cover  # noqa: MAN002
 		"""
 		Unsupported on Windows.
 		"""

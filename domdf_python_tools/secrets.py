@@ -59,13 +59,13 @@ class Secret(str):
 
 	value: str  #: The actual value of the secret.
 
-	def __new__(cls, value) -> "Secret":  # noqa: D102
+	def __new__(cls, value: str) -> "Secret":  # noqa: D102
 		obj: Secret = super().__new__(cls, "<SECRET>")
 		obj.value = str(value)
 		return obj
 
-	def __eq__(self, other) -> bool:
+	def __eq__(self, other) -> bool:  # noqa: MAN001
 		return self.value == other
 
-	def __hash__(self):
+	def __hash__(self) -> int:
 		return hash(self.value)

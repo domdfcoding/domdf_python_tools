@@ -12,7 +12,7 @@ class MyDictable(Dictable):
 		self.bar: float = float(bar)
 
 	@property
-	def __dict__(self):  # type: ignore[override]
+	def __dict__(self):  # type: ignore[override]  # noqa: MAN002
 		return dict(foo=self.foo, bar=self.bar)
 
 

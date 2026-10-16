@@ -91,7 +91,7 @@ class attrgetter:
 		data = {**self._attrs, "module": self.__class__.__module__, "qualname": self.__class__.__qualname__}
 		return "{module}.{qualname}(idx={idx}, attr={attr!r})".format_map(data)
 
-	def __reduce__(self):
+	def __reduce__(self):  # noqa: MAN002
 		return self.__class__, tuple(self._attrs.values())
 
 
@@ -141,7 +141,7 @@ class itemgetter:
 		data = {**self._items, "module": self.__class__.__module__, "qualname": self.__class__.__qualname__}
 		return "{module}.{qualname}(idx={idx}, item={item!r})".format_map(data)
 
-	def __reduce__(self):
+	def __reduce__(self):  # noqa: MAN002
 		return self.__class__, tuple(self._items.values())
 
 
@@ -182,7 +182,7 @@ class methodcaller:
 
 	if TYPE_CHECKING:
 
-		def __init__(__self, __idx: int, __name: str, *args, **kwargs):
+		def __init__(__self, __idx: int, __name: str, *args, **kwargs):  # noqa: MAN001
 			if not isinstance(__idx, int):
 				raise TypeError("'idx' must be an integer")
 
@@ -196,7 +196,7 @@ class methodcaller:
 
 	else:
 
-		def __init__(_self, _idx: int, _name: str, *args, **kwargs):
+		def __init__(_self, _idx: int, _name: str, *args, **kwargs):  # noqa: MAN001
 			if not isinstance(_idx, int):
 				raise TypeError("'_idx' must be an integer")
 
@@ -217,7 +217,7 @@ class methodcaller:
 		args.extend(f'{k}={v!r}' for k, v in self._kwargs.items())
 		return f'{self.__class__.__module__}.{self.__class__.__name__}({", ".join(args)})'
 
-	def __reduce__(self):
+	def __reduce__(self):  # noqa: MAN002
 		if not self._kwargs:
 			return self.__class__, (self._idx, self._name) + self._args
 		else:

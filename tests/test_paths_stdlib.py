@@ -42,7 +42,7 @@ else:
 
 
 @pytest.fixture()
-def _umask_0():
+def _umask_0() -> Iterator[None]:
 	old_mask = os.umask(0)
 	try:
 		yield
@@ -64,11 +64,11 @@ def BASE(tmp_pathplus: PathPlus) -> Iterator[PathPlus]:
 
 	if os.name == "nt":
 		# Workaround for http://bugs.python.org/issue13772.
-		def dirlink(src: PathLike, dest: PathLike):
+		def dirlink(src: PathLike, dest: PathLike) -> None:
 			os.symlink(src, dest, target_is_directory=True)
 	else:
 
-		def dirlink(src: PathLike, dest: PathLike):
+		def dirlink(src: PathLike, dest: PathLike) -> None:
 			os.symlink(src, dest)
 
 	os.mkdir(join("dirA"))
@@ -268,7 +268,7 @@ def test_link_to_not_implemented(BASE: PathPlus):
 		p.link_to(q)
 
 
-def test_rename(BASE, tmp_pathplus: PathPlus):
+def test_rename(BASE: PathPlus, tmp_pathplus: PathPlus):
 	P = PathPlus(BASE)
 	p = P / "fileA"
 	size = p.stat().st_size
@@ -437,7 +437,7 @@ def test_mkdir_concurrent_parent_creation(BASE: PathPlus):
 
 		real_mkdir = os.mkdir
 
-		def my_mkdir(path: PathLike, mode: int = 0o777):
+		def my_mkdir(path: PathLike, mode: int = 0o777) -> None:
 			path = str(path)
 			# Emulate another process that would create the directory
 			# just before we try to create it ourselves.  We do it

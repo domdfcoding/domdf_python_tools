@@ -334,7 +334,7 @@ def groupfloats(
 	a: float
 	b: Iterable[_group]
 
-	def key(pair):
+	def key(pair: Tuple[float, float]) -> float:
 		return (pair[1] * modifier) - ((pair[0] * modifier) * step)
 
 	for a, b in itertools.groupby(enumerate(iterable), key=key):
@@ -467,16 +467,16 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 
 	pos: int = 0
 
-	def get_next():
+	def get_next() -> float:
 		if pos:
-			return start + (step * pos)
+			return start + (step * pos)  # type: ignore[return-value]
 		else:
-			return start
+			return start  # type: ignore[return-value]
 
 	@final
 	class count(Iterator[AnyNum]):
 
-		def __next__(self):
+		def __next__(self) -> AnyNum:
 			nonlocal pos
 
 			val = get_next()
@@ -484,7 +484,7 @@ def count(start: AnyNum = 0, step: AnyNum = 1) -> Iterator[AnyNum]:
 
 			return val
 
-		def __iter__(self):
+		def __iter__(self) -> "count":
 			return self
 
 		if isinstance(step, int) and step == 1:

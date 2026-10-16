@@ -7,7 +7,7 @@ from domdf_python_tools.words import get_words_list
 
 
 @pytest.mark.parametrize("value", get_words_list())
-def test_secret(value):
+def test_secret(value: str):
 	the_secret = Secret(value)
 	assert isinstance(the_secret, str)
 	assert isinstance(the_secret.value, str)

@@ -391,7 +391,7 @@ except ImportError as e:
 
 		class SelfWrapper(ModuleType):
 
-			def __getattr__(self, name):
+			def __getattr__(self, name: str):  # noqa: MAN002
 				if name in _pytz_functions:
 					raise ImportError(
 							f"{name!r} requires pytz (https://pypi.org/project/pytz/), but it could not be imported.",

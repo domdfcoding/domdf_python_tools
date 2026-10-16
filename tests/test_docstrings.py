@@ -3,6 +3,7 @@ import doctest
 import inspect
 import shutil
 from textwrap import indent
+from types import ModuleType
 
 # 3rd party
 import pytest
@@ -17,7 +18,7 @@ ret = 0
 
 
 @pytest.mark.parametrize("module", [iterative, getters, secrets, stringlist, utils, words, pagesizes.units])
-def test_docstrings(module):
+def test_docstrings(module: ModuleType):
 	# Check that we were actually given a module.
 	if inspect.ismodule(module):
 		print(f"Running doctest in {module!r}".center(shutil.get_terminal_size().columns, '='))

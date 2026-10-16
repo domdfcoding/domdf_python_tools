@@ -30,7 +30,7 @@ from typing import Iterable, Iterator
 __all__ = ["is_match_with", "iterator"]
 
 
-def is_match_with(obj, source):  # noqa: D103
+def is_match_with(obj, source) -> bool:  # noqa: D103,MAN001
 	if (
 			isinstance(obj, dict) and isinstance(source, dict)
 			or isinstance(obj, list) and isinstance(source, list)
@@ -55,7 +55,7 @@ def is_match_with(obj, source):  # noqa: D103
 	return equal
 
 
-def iterator(obj) -> Iterator:  # noqa: D103
+def iterator(obj: Iterable) -> Iterator:  # noqa: D103
 	if isinstance(obj, dict) or hasattr(obj, "items"):
 		return iter(obj.items())
 	elif isinstance(obj, Iterable):

@@ -172,7 +172,7 @@ class Echo:
 		else:
 			self.parent_frame = inspect.currentframe().f_back  # type: ignore[union-attr]   # TODO
 
-	def __enter__(self):
+	def __enter__(self):  # noqa: MAN002
 		"""
 		Called when entering the context manager.
 		"""

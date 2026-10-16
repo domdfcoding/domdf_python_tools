@@ -105,18 +105,18 @@ class Dictable(Iterable[Tuple[str, _V]]):  # noqa: PRM002
 	def __getstate__(self) -> Dict[str, _V]:
 		return self.__dict__
 
-	def __setstate__(self, state):
+	def __setstate__(self, state) -> None:  # noqa: MAN001
 		self.__init__(**state)  # type: ignore[misc]
 
-	def __copy__(self):
+	def __copy__(self):  # noqa: MAN002
 		return self.__class__(**self.__dict__)
 
-	def __deepcopy__(self, memodict={}):
+	def __deepcopy__(self, memodict={}):  # noqa: MAN001,MAN002
 		return self.__copy__()
 
 	@property
 	@abstractmethod
-	def __dict__(self):  # type: ignore[override]
+	def __dict__(self):  # type: ignore[override]  # noqa: MAN002
 		return dict()  # pragma: no cover (abc)
 
 	def __eq__(self, other) -> bool:  # noqa: MAN001
@@ -188,7 +188,7 @@ class UserList(MutableSequence[_T]):
 		return self.data >= self.__cast(other)
 
 	@staticmethod
-	def __cast(other):
+	def __cast(other):  # noqa: MAN001,MAN002
 		return other.data if isinstance(other, UserList) else other
 
 	def __contains__(self, item: object) -> bool:
@@ -221,7 +221,7 @@ class UserList(MutableSequence[_T]):
 	def __setitem__(self, i: Union[int, slice], item: Union[_T, Iterable[_T]]) -> None:
 		self.data[i] = item  # type: ignore[index, assignment]
 
-	def __delitem__(self, i: Union[int, slice]):
+	def __delitem__(self, i: Union[int, slice]) -> None:
 		del self.data[i]
 
 	def __add__(self: _S, other: Iterable[_T]) -> _S:
@@ -231,7 +231,7 @@ class UserList(MutableSequence[_T]):
 			return self.__class__(self.data + other)
 		return self.__class__(self.data + list(other))
 
-	def __radd__(self, other):
+	def __radd__(self, other):  # noqa: MAN001,MAN002
 		if isinstance(other, UserList):
 			return self.__class__(other.data + self.data)
 		elif isinstance(other, type(self.data)):
@@ -256,7 +256,7 @@ class UserList(MutableSequence[_T]):
 		self.data *= n
 		return self
 
-	def __copy__(self):
+	def __copy__(self):  # noqa: MAN002
 		inst = self.__class__.__new__(self.__class__)
 		inst.__dict__.update(self.__dict__)
 		# Create a copy and avoid triggering descriptors
@@ -441,7 +441,7 @@ class UserFloat(Real):
 	def __divmod__(self: _F, other: float) -> Tuple[_F, _F]:
 		return tuple(self.__class__(x) for x in float(self).__divmod__(other))  # type: ignore[return-value]
 
-	def __pow__(self: _F, other: float, mod=None) -> _F:
+	def __pow__(self: _F, other: float, mod: None = None) -> _F:
 		return self.__class__(float(self).__pow__(other, mod))
 
 	def __radd__(self: _F, other: float) -> _F:
@@ -465,7 +465,7 @@ class UserFloat(Real):
 	def __rdivmod__(self: _F, other: float) -> Tuple[_F, _F]:
 		return tuple(self.__class__(x) for x in float(self).__rdivmod__(other))  # type: ignore[return-value]
 
-	def __rpow__(self: _F, other: float, mod=None) -> _F:
+	def __rpow__(self: _F, other: float, mod: None = None) -> _F:
 		return self.__class__(float(self).__rpow__(other, mod))
 
 	def __getnewargs__(self) -> Tuple[float]:
@@ -557,10 +557,10 @@ class UserFloat(Real):
 	def __repr__(self) -> str:
 		return str(self)
 
-	def __ceil__(self):
+	def __ceil__(self):  # noqa: MAN002
 		raise NotImplementedError
 
-	def __floor__(self):
+	def __floor__(self):  # noqa: MAN002
 		raise NotImplementedError
 
 	def __bool__(self) -> bool:

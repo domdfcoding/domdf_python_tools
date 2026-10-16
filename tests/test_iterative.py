@@ -21,7 +21,7 @@ import sys
 from itertools import islice
 from random import shuffle
 from types import GeneratorType
-from typing import Any, Iterable, List, MutableSequence, Optional, Sequence, Tuple, TypeVar
+from typing import Any, Iterable, Iterator, List, MutableSequence, Optional, Sequence, Tuple, TypeVar
 
 # 3rd party
 import pytest
@@ -140,7 +140,7 @@ def test_len(capsys):
 				((("12", "34"), ("56", "78")), ['1', '2', '3', '4', '5', '6', '7', '8']),
 				],
 		)
-def test_double_chain(value, expects):
+def test_double_chain(value: Sequence, expects: List):
 	assert list(double_chain(value)) == expects
 
 
@@ -240,7 +240,7 @@ def test_ranges_from_iterable():
 	assert list(ranges_from_iterable([1, 2, 3, 4, 5, 7, 8, 9, 10])) == expects
 
 
-def _extend_param(sequence: str, expects: Any):
+def _extend_param(sequence: str, expects: Any):  # noqa: MAN002
 	return pytest.param(sequence, expects, id=sequence)
 
 
@@ -289,7 +289,7 @@ def test_extend_with_int():
 	assert tuple(extend_with("abcdefg", 10, 0)) == expects
 
 
-def lzip(*args):
+def lzip(*args) -> List:
 	return list(zip(*args))
 
 
@@ -419,12 +419,12 @@ def test_count_with_stride():
 			# 	pickletest(proto, count(i, j))
 
 
-def pickletest(protocol: int, it, stop: int = 4, take: int = 1, compare=None):
+def pickletest(protocol: int, it: Iterator, stop: int = 4, take: int = 1) -> None:
 	"""
 	Test that an iterator is the same after pickling, also when part-consumed
 	"""
 
-	def expand(it, i=0):
+	def expand(it: Iterator, i: int = 0) -> Iterable:
 		# Recursively expand iterables, within sensible bounds
 		if i > 10:
 			raise RuntimeError("infinite recursion encountered")
@@ -442,9 +442,6 @@ def pickletest(protocol: int, it, stop: int = 4, take: int = 1, compare=None):
 	assert type(it) is type(i2)  # pylint: disable=unidiomatic-typecheck
 	a, b = expand(it), expand(i2)
 	assert a == b
-	if compare:
-		c = expand(compare)
-		assert a == c
 
 	# Take from the copy, and create another copy and compare them.
 	i3 = pickle.loads(dump)  # nosec: B301
@@ -460,9 +457,6 @@ def pickletest(protocol: int, it, stop: int = 4, take: int = 1, compare=None):
 	i4 = pickle.loads(dump)  # nosec: B301
 	a, b = expand(i3), expand(i4)
 	assert a == b
-	if compare:
-		c = expand(compare[took:])
-		assert a == c
 
 
 def test_subclassing_count():

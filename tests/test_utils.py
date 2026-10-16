@@ -99,7 +99,7 @@ class NoRepr:
 no_repr_instance = NoRepr()
 
 
-def get_mem_addr(obj: object):
+def get_mem_addr(obj: object) -> str:
 	if sys.platform == "win32" and platform.python_implementation() != "PyPy":
 		return f"0x0*{hex(id(obj))[2:].upper()}"
 	else:
@@ -178,7 +178,7 @@ class TestStr2Tuple:
 					("1, 2, 3", (1, 2, 3)),  # tests with spaces
 					],
 			)
-	def test_str2tuple(self, value, expects):
+	def test_str2tuple(self, value: str, expects: Tuple[int, ...]):
 		assert isinstance(str2tuple(value), tuple)
 		assert str2tuple(value) == expects
 
@@ -197,7 +197,7 @@ class TestStr2Tuple:
 class TestStrToBool:
 
 	@coincidence.testing_boolean_values(extra_truthy=[50, -1])
-	def test_strtobool(self, boolean_string, expected_boolean: bool):
+	def test_strtobool(self, boolean_string: str, expected_boolean: bool):
 		assert strtobool(boolean_string) == expected_boolean
 
 	@pytest.mark.parametrize(

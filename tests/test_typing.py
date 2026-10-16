@@ -35,7 +35,7 @@ from domdf_python_tools.typing import PathLike, check_membership
 				(12.34, Dict[int, float]),
 				],
 		)
-def test_check_membership_true(obj: Any, type_):
+def test_check_membership_true(obj: Any, type_: type):
 	# todo: Positions for Tuple and Dict
 	assert check_membership(obj, type_)
 
@@ -57,7 +57,7 @@ def test_check_membership_true(obj: Any, type_):
 				(12.34, Dict[int, str]),
 				],
 		)
-def test_check_membership_false(obj: Any, type_):
+def test_check_membership_false(obj: Any, type_: type):
 	# todo: Positions for Tuple and Dict
 	assert not check_membership(obj, type_)
 

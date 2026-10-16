@@ -230,7 +230,11 @@ class StringList(List[str]):
 	@overload
 	def __setitem__(self, index: slice, line: Iterable[String]) -> None: ...
 
-	def __setitem__(self, index: Union[SupportsIndex, slice], line: Union[String, Iterable[String]]):
+	def __setitem__(  # noqa: MAN002
+		self,
+		index: Union[SupportsIndex, slice],
+		line: Union[String, Iterable[String]],
+	):
 		"""
 		Replaces the given line with new content.
 
@@ -291,7 +295,7 @@ class StringList(List[str]):
 		else:
 			return super().__getitem__(index)
 
-	def blankline(self, ensure_single: bool = False):
+	def blankline(self, ensure_single: bool = False) -> None:
 		"""
 		Append a blank line to the end of the :class:`~domdf_python_tools.stringlist.StringList`.
 
@@ -386,7 +390,7 @@ class StringList(List[str]):
 
 		return str(self).encode("UTF-8")
 
-	def __eq__(self, other) -> bool:  # noqa: PRM002
+	def __eq__(self, other) -> bool:  # noqa: PRM002,MAN001
 		"""
 		Returns whether the other object is equal to this :class:`~domdf_python_tools.stringlist.StringList`.
 		"""
@@ -397,7 +401,7 @@ class StringList(List[str]):
 			return super().__eq__(other)
 
 	@contextmanager
-	def with_indent(self, indent: Union[String, Indent], size: int = 0):
+	def with_indent(self, indent: Union[String, Indent], size: int = 0) -> Iterator[None]:
 		"""
 		Context manager to temporarily use a different indent.
 
@@ -420,7 +424,7 @@ class StringList(List[str]):
 			self.indent = Indent(*original_indent)
 
 	@contextmanager
-	def with_indent_size(self, size: int = 0):
+	def with_indent_size(self, size: int = 0) -> Iterator[None]:
 		"""
 		Context manager to temporarily use a different indent size.
 
@@ -442,7 +446,7 @@ class StringList(List[str]):
 			self.indent_size = original_indent_size
 
 	@contextmanager
-	def with_indent_type(self, indent_type: str = '\t'):
+	def with_indent_type(self, indent_type: str = '\t') -> Iterator[None]:
 		"""
 		Context manager to temporarily use a different indent type.
 

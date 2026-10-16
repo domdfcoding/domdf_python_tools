@@ -12,7 +12,7 @@ import os
 import shutil
 from contextlib import redirect_stdout
 from io import StringIO
-from typing import Sequence
+from typing import Callable, List, Sequence
 
 # 3rd party
 import pytest
@@ -103,7 +103,7 @@ class TestDirComparator:
 			["file", "file2"],
 		) != (["file"], ["file2"], []), "Comparing mismatched directories fails"
 
-	def _assert_lists(self, actual: Sequence, expected: Sequence):
+	def _assert_lists(self, actual: Sequence, expected: Sequence) -> None:
 		"""
 		Assert that two lists are equal, up to ordering.
 		"""
@@ -238,7 +238,7 @@ class TestDirComparator:
 				]
 		self._assert_report(d.report_full_closure, expected_report)
 
-	def _assert_report(self, dircmp_report, expected_report_lines):
+	def _assert_report(self, dircmp_report: Callable, expected_report_lines: List[str]) -> None:
 		stdout = StringIO()
 		with redirect_stdout(stdout):
 			dircmp_report()
