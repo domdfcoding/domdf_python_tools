@@ -33,7 +33,8 @@ from domdf_python_tools.paths import (
 		in_directory,
 		matchglob,
 		sort_paths,
-		traverse_to_file
+		traverse_to_file,
+		unwanted_dirs
 		)
 from domdf_python_tools.typing import PathLike
 

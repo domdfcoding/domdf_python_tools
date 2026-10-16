@@ -76,6 +76,7 @@ __all__ = [
 		"LF",
 		"Plural",
 		"PluralPhrase",
+		"removeprefix",
 		"truncate_string",
 		]
 
@@ -99,6 +100,24 @@ Lowercase Greek letters.
 
 .. versionadded:: 0.7.0
 """
+
+
+def removeprefix(string: str, prefix: str) -> str:
+	"""
+	Remove ``prefix`` from ``string``.
+
+	.. versionadded:: 3.11.0
+
+	:param string:
+	:param prefix:
+	"""
+
+	if sys.version_info >= (3, 9):
+		return string.removeprefix(prefix)
+	else:
+		if string.startswith(prefix):
+			return string[len(prefix):]
+		return string
 
 
 @functools.lru_cache()
@@ -715,3 +734,27 @@ def truncate_string(string: str, max_length: int, ending: str = "...") -> str:
 		return string[_slice_end(max_length, ending)] + ending
 	else:
 		return string
+
+
+# _case_boundary_re = re.compile(r"(\\p{Ll})(\\p{Lu})")
+# _single_letters_re = re.compile(r"(\\p{Lu}|\\p{N})(\\p{Lu})(\\p{Ll})")
+
+# def to_snake_case(value: str) -> str:
+# 	"""
+# 	Convert the given string into ``snake_case``.
+
+# 	:param value:
+# 	"""
+
+# 	# Matches VSCode behaviour
+# 	case_boundary = _case_boundary_re.findall(value)
+# 	single_letters = _single_letters_re.findall(value)
+# 	if not case_boundary and not single_letters:
+# 		return value.lower()
+# 	value = _case_boundary_re.sub(r"\1_\2", value)
+# 	value = _case_boundary_re.sub(r"\1_\2\3", value)
+# 	return value.lower()
+
+# _case_boundary = re.compile('(\\p{Ll})(\\p{Lu})', 'gmu');
+# _single_letters = re.compile('(\\p{Lu}|\\p{N})(\\p{Lu}\\p{Ll})', 'gmu');
+# _underscore_boundary = re.compile('(\\S)(_)(\\S)', 'gm');

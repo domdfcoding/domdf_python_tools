@@ -59,6 +59,9 @@ from collections import OrderedDict
 from types import ModuleType
 from typing import Optional, Union
 
+# this package
+from domdf_python_tools._isoformat import date_from_isoformat, datetime_from_isoformat, time_from_isoformat
+
 __all__ = [
 		"current_tzinfo",
 		"set_timezone",
@@ -71,6 +74,9 @@ __all__ = [
 		"month_short_names",
 		"month_full_names",
 		"is_bst",
+		"date_from_isoformat",
+		"time_from_isoformat",
+		"datetime_from_isoformat",
 		]
 
 

@@ -5,6 +5,7 @@
 - doc-source/latex_unicode.py
 - domdf_python_tools/__init__.py
 - domdf_python_tools/_is_match.py
+- domdf_python_tools/_isoformat.py
 - domdf_python_tools/bases.py
 - domdf_python_tools/compat/__init__.py
 - domdf_python_tools/compat/importlib_metadata.py
