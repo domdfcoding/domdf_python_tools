@@ -123,6 +123,7 @@ elif sys.version_info[:2] < (3, 7) or domdf_python_tools.__docs:  # pragma: no c
 			cm = optional_cm if condition else nullcontext()
 			with cm:
 				# Perform operation, using optional_cm if condition is True
+				pass
 
 		.. versionadded:: 2.1.0
 

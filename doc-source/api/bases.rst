@@ -70,8 +70,8 @@ and not this:
 
 .. code-block:: python
 
-	>>> class ShoppingList(namedlist())
-	...     pass
+	>>> class ShoppingList(namedlist()):
+	... 	pass
 	>>>
 
 This avoids any potential issues with :github:repo:`mypy <python/mypy>`.
