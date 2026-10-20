@@ -1,5 +1,6 @@
 - domdf_python_tools
 - domdf_python_tools._is_match
+- domdf_python_tools._isoformat
 - domdf_python_tools.bases
 - domdf_python_tools.compat
 - domdf_python_tools.compat.importlib_metadata
