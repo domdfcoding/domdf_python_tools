@@ -976,7 +976,10 @@ def test_datetime_from_isoformat_fails_datetime_valueerror():
 			dates.datetime_from_isoformat(bad_str)
 
 	# days out of range have their own error message, see issue 70647
-	with pytest.raises(ValueError, match="^day is out of range for month"):
+	with pytest.raises(
+			ValueError,
+			match=r"^(day is out of range for month|\('day must be in 1\.\.30', 32\)|day 32 must be in range 1\.\.30 for month 4 in year 2009)",
+			):
 		dates.datetime_from_isoformat("2009-04-32T24:00:00")
 
 
