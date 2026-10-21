@@ -541,16 +541,18 @@ def datetime_from_isoformat(date_string: str) -> datetime:
 			if became_next_day:
 				year, month, day = date_components
 				# Only wrap day/month when it was previously valid
-				if 1 <= month <= 12 and day <= (days_in_month := _days_in_month(year, month)):
-					# Calculate midnight of the next day
-					day += 1
-					if day > days_in_month:
-						day = 1
-						month += 1
-						if month > 12:
-							month = 1
-							year += 1
-					date_components = (year, month, day)
+				if 1 <= month <= 12:
+					days_in_month = _days_in_month(year, month)
+					if day <= days_in_month:
+						# Calculate midnight of the next day
+						day += 1
+						if day > days_in_month:
+							day = 1
+							month += 1
+							if month > 12:
+								month = 1
+								year += 1
+						date_components = (year, month, day)
 	else:
 		time_components = (0, 0, 0, 0, None)
 
